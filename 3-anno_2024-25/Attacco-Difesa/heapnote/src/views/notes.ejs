@@ -1,0 +1,11 @@
+<%- include('header'); -%>
+<h1>These are your notes.</h1>
+<ol>
+    <% for(var i=0; i<files.length; i++) {%>
+        <li>
+            <a href="<%= files[i].url %>"><%= files[i].content %></a>
+        </li>
+        <% } %>
+</ol>
+
+<%- include('footer'); -%>

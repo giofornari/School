@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      DB_HOST: mysql
+      DB_USER: classroom
+      DB_PASSWD: classroom
+      DB_NAME: classroom
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: yes
+    volumes:
+      - ./db.sql:/docker-entrypoint-initdb.d/db.sql:ro

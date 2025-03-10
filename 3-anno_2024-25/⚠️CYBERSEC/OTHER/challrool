@@ -1,0 +1,14 @@
+import requests
+
+
+
+url = "http://roller.challs.olicyber.it/get_flag.php"
+
+response = requests.get(url, allow_redirects=False)  # Blocca il redirect
+
+# Mostra lo status code e l'header "Location" (se presente)
+print("Status Code:", response.status_code)
+print("Redirect Location:", response.headers.get("Location"))
+
+# Mostra il contenuto della pagina originale
+print("Page Content:\n", response.text)

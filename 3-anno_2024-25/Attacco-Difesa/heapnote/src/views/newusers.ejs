@@ -1,0 +1,11 @@
+<%- include('header'); -%>
+<h1>Users registered in the last 15 minutes.</h1>
+<ol>
+    <% for(var i=0; i<newusers.length; i++) {%>
+        <li>
+            <%= newusers[i].ID %>, <%= newusers[i].name %>, <%= newusers[i].created_at %>
+        </li>
+        <% } %>
+</ol>
+
+<%- include('footer'); -%>

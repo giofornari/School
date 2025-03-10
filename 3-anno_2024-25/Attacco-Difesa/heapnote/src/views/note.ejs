@@ -1,0 +1,6 @@
+<%- include('header'); -%>
+    <h1>
+        Note <%= id %>
+    </h1>
+    <textarea readonly><%= (file) ? file : 'error' %></textarea>
+<%- include('footer'); -%>

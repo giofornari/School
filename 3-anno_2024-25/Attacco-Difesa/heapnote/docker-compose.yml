@@ -1,0 +1,10 @@
+services:
+  heapnote:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - data:/usr/src/app/data
+volumes:
+  data:
