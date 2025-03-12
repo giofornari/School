@@ -14,7 +14,7 @@ with open("parole.txt", "r") as f:
 errori = 0
 user_word = ""
 letters = ""
-
+displayed_word = ""
 def get_hangman_stage(errors):
     hangman_stages = [
         """
@@ -154,9 +154,13 @@ def get_hangman_stage(errors):
     return hangman_stages[min(errors, len(hangman_stages) - 1)]
 
 
-while user_word != parola:
-    os.system("clear")
+while displayed_word != parola:
+    try:
+        os.system("clear")
+    except:
+        pass
     print(greeting)
+    print(parola)  
     print(get_hangman_stage(errori))
     displayed_word = ' '.join([letter if letter in letters else '_' for letter in parola])
     print(f"Parola: {displayed_word}")
@@ -180,5 +184,7 @@ while user_word != parola:
         print(get_hangman_stage(6))
         print("Hai perso!")
         print(f"La parola era: {parola}\n")
-        print("Sei un fallito!")
+#        print("Sei un fallito!")
         break
+    displayed_word.replace((' ', '') for " " in letters)
+

