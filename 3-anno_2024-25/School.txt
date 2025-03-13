@@ -1,0 +1,382 @@
+.
+├── README.md
+├── ☢️attacco_difesa
+│   ├── bandiera
+│   │   ├── docker-compose.yml
+│   │   ├── Dockerfile
+│   │   ├── index.js
+│   │   ├── package-lock.json
+│   │   └── package.json
+│   ├── blocconote
+│   │   ├── docker-compose.yml
+│   │   ├── Dockerfile
+│   │   ├── notes
+│   │   ├── requirements.txt
+│   │   └── src
+│   │       └── app.py
+│   ├── gugul_classroom
+│   │   ├── db.sql
+│   │   ├── docker-compose.yml
+│   │   ├── Dockerfile
+│   │   └── src
+│   │       ├── assignment.php
+│   │       ├── create_assignment.php
+│   │       ├── db.php
+│   │       └── index.php
+│   └── heapnote
+│       ├── docker-compose.yml
+│       ├── Dockerfile
+│       └── src
+│           ├── index.js
+│           ├── migrations
+│           │   └── 00000000.sql
+│           ├── package-lock.json
+│           ├── package.json
+│           └── views
+│               ├── addnote.ejs
+│               ├── footer.ejs
+│               ├── header.ejs
+│               ├── login.ejs
+│               ├── newusers.ejs
+│               ├── note.ejs
+│               ├── notes.ejs
+│               └── register.ejs
+├── ⚠️CYBERSEC
+│   ├── OTHER
+│   │   ├── aa.py
+│   │   ├── challenge.py
+│   │   ├── challrool
+│   │   ├── chepyes.py
+│   │   ├── cryptochef.py
+│   │   ├── 'def f(n):.py'
+│   │   ├── expliot.py
+│   │   ├── flag.py
+│   │   ├── operati.py
+│   │   ├── script.py
+│   │   └── web15.py
+│   ├── sql_tools
+│   │   ├── detect
+│   │   │   ├── Generic_ErrorBased.txt
+│   │   │   ├── Generic_SQLI.txt
+│   │   │   ├── Generic_TimeBased.txt
+│   │   │   ├── Generic_UnionSelect.txt
+│   │   │   ├── GenericBlind.txt
+│   │   │   ├── MSSQL
+│   │   │   │   ├── MSSQL.txt
+│   │   │   │   └── MSSQL_blind.txt
+│   │   │   ├── MySQL
+│   │   │   │   ├── MySQL.txt
+│   │   │   │   └── MySQL_MSSQL.txt
+│   │   │   ├── NoSQL
+│   │   │   │   └── no-sql.txt
+│   │   │   ├── Oracle
+│   │   │   │   └── oracle.txt
+│   │   │   └── xPlatform
+│   │   │       └── xplatform.txt
+│   │   ├── exploit
+│   │   │   ├── Auth_Bypass.txt
+│   │   │   ├── DB2
+│   │   │   │   └── db2-enumeration.txt
+│   │   │   ├── MSSQL
+│   │   │   │   └── ms-sql-enumeration.txt
+│   │   │   ├── MySQL
+│   │   │   │   ├── mysql-injection-login-bypass.txt
+│   │   │   │   └── mysql-read-local-files.txt
+│   │   │   └── PostgresSQL
+│   │   │       └── postgres-enumeration.txt
+│   │   └── payloads-sql-blind
+│   │       ├── MSSQL
+│   │       │   ├── payloads-sql-blind-MSSQL-INSERT.txt
+│   │       │   └── payloads-sql-blind-MSSQL-WHERE.txt
+│   │       └── MySQL
+│   │           ├── payloads-sql-blind-MySQL-INSERT.txt
+│   │           ├── payloads-sql-blind-MySQL-ORDER_BY.txt
+│   │           └── payloads-sql-blind-MySQL-WHERE.txt
+│   └── territoriale
+│       ├── crypto
+│       │   ├── again
+│       │   │   ├── again_output.txt
+│       │   │   └── solve.py
+│       │   ├── cry2
+│       │   │   ├── insecure_passphrase_generator.py
+│       │   │   └── passphrase.txt
+│       │   └── cry3
+│       │       ├── secure_passphrase_generator.py
+│       │       └── 'secure_passphrase_generator copy.py'
+│       ├── misc
+│       │   ├── img
+│       │   │   ├── decrypted_immagine0.png
+│       │   │   ├── decrypted_immagine1.png
+│       │   │   ├── decrypted_immagine2.png
+│       │   │   ├── decrypted_immagine3.png
+│       │   │   ├── decrypted_immagine4.png
+│       │   │   ├── encrypt_files.py
+│       │   │   ├── exploit.py
+│       │   │   ├── immagine0.png_00.enc
+│       │   │   ├── immagine0.png_01.enc
+│       │   │   ├── immagine0.png_02.enc
+│       │   │   ├── immagine0.png_03.enc
+│       │   │   ├── immagine0.png_04.enc
+│       │   │   ├── immagine0.png_05.enc
+│       │   │   ├── immagine0.png_06.enc
+│       │   │   ├── immagine0.png_07.enc
+│       │   │   ├── immagine0.png_08.enc
+│       │   │   ├── immagine0.png_09.enc
+│       │   │   ├── immagine0.png_10.enc
+│       │   │   ├── immagine0.png_11.enc
+│       │   │   ├── immagine0.png_12.enc
+│       │   │   ├── immagine0.png_13.enc
+│       │   │   ├── immagine0.png_14.enc
+│       │   │   ├── immagine0.png_15.enc
+│       │   │   ├── immagine0.png_16.enc
+│       │   │   ├── immagine0.png_17.enc
+│       │   │   ├── immagine0.png_18.enc
+│       │   │   ├── immagine0.png_19.enc
+│       │   │   ├── immagine0.png_20.enc
+│       │   │   ├── immagine0.png_21.enc
+│       │   │   ├── immagine0.png_22.enc
+│       │   │   ├── immagine0.png_23.enc
+│       │   │   ├── immagine0.png_24.enc
+│       │   │   ├── immagine0.png_25.enc
+│       │   │   ├── immagine0.png_26.enc
+│       │   │   ├── immagine0.png_27.enc
+│       │   │   ├── immagine0.png_28.enc
+│       │   │   ├── immagine0.png_29.enc
+│       │   │   ├── immagine0.png_30.enc
+│       │   │   ├── immagine0.png_31.enc
+│       │   │   ├── immagine0.png_32.enc
+│       │   │   ├── immagine0.png_33.enc
+│       │   │   ├── immagine0.png_34.enc
+│       │   │   ├── immagine0.png_35.enc
+│       │   │   ├── immagine0.png_36.enc
+│       │   │   ├── immagine1.png_00.enc
+│       │   │   ├── immagine1.png_01.enc
+│       │   │   ├── immagine1.png_02.enc
+│       │   │   ├── immagine1.png_03.enc
+│       │   │   ├── immagine1.png_04.enc
+│       │   │   ├── immagine1.png_05.enc
+│       │   │   ├── immagine1.png_06.enc
+│       │   │   ├── immagine1.png_07.enc
+│       │   │   ├── immagine1.png_08.enc
+│       │   │   ├── immagine1.png_09.enc
+│       │   │   ├── immagine1.png_10.enc
+│       │   │   ├── immagine1.png_11.enc
+│       │   │   ├── immagine1.png_12.enc
+│       │   │   ├── immagine1.png_13.enc
+│       │   │   ├── immagine1.png_14.enc
+│       │   │   ├── immagine1.png_15.enc
+│       │   │   ├── immagine1.png_16.enc
+│       │   │   ├── immagine1.png_17.enc
+│       │   │   ├── immagine1.png_18.enc
+│       │   │   ├── immagine1.png_19.enc
+│       │   │   ├── immagine1.png_20.enc
+│       │   │   ├── immagine1.png_21.enc
+│       │   │   ├── immagine1.png_22.enc
+│       │   │   ├── immagine1.png_23.enc
+│       │   │   ├── immagine1.png_24.enc
+│       │   │   ├── immagine1.png_25.enc
+│       │   │   ├── immagine1.png_26.enc
+│       │   │   ├── immagine1.png_27.enc
+│       │   │   ├── immagine1.png_28.enc
+│       │   │   ├── immagine1.png_29.enc
+│       │   │   ├── immagine1.png_30.enc
+│       │   │   ├── immagine1.png_31.enc
+│       │   │   ├── immagine1.png_32.enc
+│       │   │   ├── immagine1.png_33.enc
+│       │   │   ├── immagine1.png_34.enc
+│       │   │   ├── immagine1.png_35.enc
+│       │   │   ├── immagine1.png_36.enc
+│       │   │   ├── immagine1.png_37.enc
+│       │   │   ├── immagine1.png_38.enc
+│       │   │   ├── immagine1.png_39.enc
+│       │   │   ├── immagine1.png_40.enc
+│       │   │   ├── immagine1.png_41.enc
+│       │   │   ├── immagine1.png_42.enc
+│       │   │   ├── immagine1.png_43.enc
+│       │   │   ├── immagine1.png_44.enc
+│       │   │   ├── immagine1.png_45.enc
+│       │   │   ├── immagine2.png_00.enc
+│       │   │   ├── immagine2.png_01.enc
+│       │   │   ├── immagine2.png_02.enc
+│       │   │   ├── immagine2.png_03.enc
+│       │   │   ├── immagine2.png_04.enc
+│       │   │   ├── immagine2.png_05.enc
+│       │   │   ├── immagine2.png_06.enc
+│       │   │   ├── immagine2.png_07.enc
+│       │   │   ├── immagine2.png_08.enc
+│       │   │   ├── immagine2.png_09.enc
+│       │   │   ├── immagine2.png_10.enc
+│       │   │   ├── immagine2.png_11.enc
+│       │   │   ├── immagine2.png_12.enc
+│       │   │   ├── immagine2.png_13.enc
+│       │   │   ├── immagine2.png_14.enc
+│       │   │   ├── immagine2.png_15.enc
+│       │   │   ├── immagine2.png_16.enc
+│       │   │   ├── immagine2.png_17.enc
+│       │   │   ├── immagine2.png_18.enc
+│       │   │   ├── immagine2.png_19.enc
+│       │   │   ├── immagine2.png_20.enc
+│       │   │   ├── immagine2.png_21.enc
+│       │   │   ├── immagine2.png_22.enc
+│       │   │   ├── immagine2.png_23.enc
+│       │   │   ├── immagine2.png_24.enc
+│       │   │   ├── immagine2.png_25.enc
+│       │   │   ├── immagine2.png_26.enc
+│       │   │   ├── immagine2.png_27.enc
+│       │   │   ├── immagine2.png_28.enc
+│       │   │   ├── immagine2.png_29.enc
+│       │   │   ├── immagine2.png_30.enc
+│       │   │   ├── immagine2.png_31.enc
+│       │   │   ├── immagine2.png_32.enc
+│       │   │   ├── immagine2.png_33.enc
+│       │   │   ├── immagine2.png_34.enc
+│       │   │   ├── immagine2.png_35.enc
+│       │   │   ├── immagine2.png_36.enc
+│       │   │   ├── immagine2.png_37.enc
+│       │   │   ├── immagine2.png_38.enc
+│       │   │   ├── immagine2.png_39.enc
+│       │   │   ├── immagine2.png_40.enc
+│       │   │   ├── immagine2.png_41.enc
+│       │   │   ├── immagine2.png_42.enc
+│       │   │   ├── immagine2.png_43.enc
+│       │   │   ├── immagine2.png_44.enc
+│       │   │   ├── immagine2.png_45.enc
+│       │   │   ├── immagine2.png_46.enc
+│       │   │   ├── immagine2.png_47.enc
+│       │   │   ├── immagine2.png_48.enc
+│       │   │   ├── immagine2.png_49.enc
+│       │   │   ├── immagine2.png_50.enc
+│       │   │   ├── immagine2.png_51.enc
+│       │   │   ├── immagine2.png_52.enc
+│       │   │   ├── immagine2.png_53.enc
+│       │   │   ├── immagine2.png_54.enc
+│       │   │   ├── immagine2.png_55.enc
+│       │   │   ├── immagine2.png_56.enc
+│       │   │   ├── immagine2.png_57.enc
+│       │   │   ├── immagine2.png_58.enc
+│       │   │   ├── immagine2.png_59.enc
+│       │   │   ├── immagine2.png_60.enc
+│       │   │   ├── immagine2.png_61.enc
+│       │   │   ├── immagine2.png_62.enc
+│       │   │   ├── immagine2.png_63.enc
+│       │   │   ├── immagine2.png_64.enc
+│       │   │   ├── immagine2.png_65.enc
+│       │   │   ├── immagine2.png_66.enc
+│       │   │   ├── immagine2.png_67.enc
+│       │   │   ├── immagine2.png_68.enc
+│       │   │   ├── immagine2.png_69.enc
+│       │   │   ├── immagine2.png_70.enc
+│       │   │   ├── immagine2.png_71.enc
+│       │   │   ├── immagine2.png_72.enc
+│       │   │   ├── immagine2.png_73.enc
+│       │   │   ├── immagine2.png_74.enc
+│       │   │   ├── immagine2.png_75.enc
+│       │   │   ├── immagine2.png_76.enc
+│       │   │   ├── immagine2.png_77.enc
+│       │   │   ├── immagine2.png_78.enc
+│       │   │   ├── immagine2.png_79.enc
+│       │   │   ├── immagine2.png_80.enc
+│       │   │   ├── immagine2.png_81.enc
+│       │   │   ├── immagine2.png_82.enc
+│       │   │   ├── immagine2.png_83.enc
+│       │   │   ├── immagine2.png_84.enc
+│       │   │   ├── immagine2.png_85.enc
+│       │   │   ├── immagine2.png_86.enc
+│       │   │   ├── immagine2.png_87.enc
+│       │   │   ├── immagine3.png_00.enc
+│       │   │   ├── immagine3.png_01.enc
+│       │   │   ├── immagine3.png_02.enc
+│       │   │   ├── immagine3.png_03.enc
+│       │   │   ├── immagine3.png_04.enc
+│       │   │   ├── immagine3.png_05.enc
+│       │   │   ├── immagine3.png_06.enc
+│       │   │   ├── immagine4.png_00.enc
+│       │   │   ├── immagine4.png_01.enc
+│       │   │   ├── immagine4.png_02.enc
+│       │   │   ├── immagine4.png_03.enc
+│       │   │   ├── immagine4.png_04.enc
+│       │   │   ├── immagine4.png_05.enc
+│       │   │   ├── immagine4.png_06.enc
+│       │   │   ├── immagine4.png_07.enc
+│       │   │   ├── immagine4.png_08.enc
+│       │   │   ├── immagine4.png_09.enc
+│       │   │   ├── immagine4.png_10.enc
+│       │   │   ├── immagine4.png_11.enc
+│       │   │   ├── immagine4.png_12.enc
+│       │   │   ├── immagine4.png_13.enc
+│       │   │   └── immagine4.png_14.enc
+│       │   └── misc3.py
+│       ├── pwn
+│       │   └── baity5
+│       └── web
+│           ├── docker-compose.yml
+│           ├── init.sql
+│           ├── segnalazione-cinghiali-cittadini.zip
+│           └── website
+│               ├── database.ts
+│               ├── db.d.ts
+│               ├── Dockerfile
+│               ├── index.ts
+│               ├── package-lock.json
+│               ├── package.json
+│               ├── public
+│               ├── tsconfig.json
+│               └── views
+├── 💾informatica
+│   ├── impiccato.py
+│   ├── love_score.py
+│   ├── parole.txt
+│   └── parole2.txt
+├── 📡TDP
+│   └── html_project
+│       ├── sito.html
+│       └── src
+│           ├── '386451_arch linux_archlinux_icon.png'
+│           ├── hq720.jpg
+│           ├── 'Minimalist Linux logo - Imgur.png'
+│           ├── pac-36710_640.png
+│           └── sddefault.jpg
+└── 🛠️SISTEMI
+    └── gcc
+        ├── bruteforce
+        │   ├── benchmark
+        │   ├── benchmark.c
+        │   ├── benchmark.txt
+        │   ├── benchmark02
+        │   ├── benchmarkfast
+        │   ├── benchmarkfastnative
+        │   ├── not_optimised
+        │   │   ├── benchmark
+        │   │   ├── benchmark.i
+        │   │   ├── benchmark.o
+        │   │   └── benchmark.s
+        │   └── optimised
+        │       ├── benchmark00.s
+        │       ├── benchmark01.s
+        │       ├── benchmark02.s
+        │       └── benchmark03.s
+        ├── dec2bin
+        │   ├── dectobin
+        │   ├── dectobin.c
+        │   ├── dectobin.exe
+        │   ├── dectobin.i
+        │   ├── dectobin.o
+        │   ├── dectobin.s
+        │   └── dectobin.zip
+        ├── lancio_dadi
+        │   ├── dadi
+        │   ├── dadi.exe
+        │   ├── dadi.i
+        │   ├── dadi.o
+        │   ├── dadi.s
+        │   └── dadi2.c
+        └── terne_pitagoriche
+            ├── rec_terne
+            ├── rec_terne.exe
+            ├── recursive_terne.c
+            ├── terne
+            ├── terne.c
+            ├── terne.exe
+            ├── terne.i
+            ├── terne.o
+            └── terne.s
