@@ -63,6 +63,41 @@
             height: 24px;
             margin-right: 10px;
         }
+        .table {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+            max-width: 80%;
+            margin: 20px auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            }
+        .table table {
+            display: flex;
+            
+            width: 80%;
+            border-collapse: collapse;
+        }
+        .table table {
+            width: 100%; /* Make the table take up the full width of its container */
+            border-collapse: collapse;
+            margin: 0 auto; /* Center the table horizontally */
+        }
+
+        .table th {
+            text-align: center; /* Center text within table cells */
+            background-color: #444;
+            color: #ffffff;
+            padding: 10px;
+             border: 1px solid #ddd;
+        }
+        .table td {
+            background-color: #9c9c9c;
+            color: #ffffff;
+            padding: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -95,7 +130,33 @@
                 <li><img src="https://cdn-icons-png.flaticon.com/512/753/753399.png" alt="Simple Icon"><strong>Filosofia KISS (Keep It Simple, Stupid):</strong> Design semplice e pulito per un maggiore controllo da parte dell'utente.</li>
             </ul>
         </div>
-        
+        <div class="table">
+            <table>
+                <tr>
+                    <th>Nome</th>
+                    <th>Versione</th>
+                    <th>Architettura</th>
+                    <th>Desktop Environment</th>
+                </tr>
+                <tr>
+                    <td>Arch Linux</td>
+                    <td>2021.10.01</td>
+                    <td>x86_64</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td>Arch Linux ARM</td>
+                    <td>2021.10.01</td>
+                    <td>armv7h</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td>Arch Linux ARM</td>
+                    <td>2021.10.01</td>
+                    <td>aarch64</td>
+                    <td>None</td>
+                </tr>
+            </table>
     </div>
 </body>
 </html>
