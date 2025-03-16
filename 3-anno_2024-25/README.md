@@ -9,6 +9,13 @@
 ![Built with](https://img.shields.io/badge/Built%40with-CTF%40Challenges-orange)
 ![Made by](https://img.shields.io/badge/Made%40by-bigBrodyG-blue)
 ![Powered by](https://img.shields.io/badge/Powered%40by-Linux%40%7C%40Python%40%7C%40Bash-brightgreen)
+<br>
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
+![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white)
+![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white)
 
 🚀 Qui trovi tutti i miei compiti e progetti, suddivisi per materia.  
 
