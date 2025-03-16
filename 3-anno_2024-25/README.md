@@ -6,9 +6,9 @@
 ![GitHub forks](https://img.shields.io/github/forks/bigBrodyG/School_journey?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bigBrodyG/School_journey)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/bigBrodyG/School_journey)
+![Built with](https://img.shields.io/badge/Built%40with-CTF%40Challenges-orange)
 ![Made by](https://img.shields.io/badge/Made%40by-bigBrodyG-blue)
 ![Powered by](https://img.shields.io/badge/Powered%40by-Linux%40%7C%40Python%40%7C%40Bash-brightgreen)
-![Built with](https://img.shields.io/badge/Built%40with-CTF%40Challenges-orange)
 
 🚀 Qui trovi tutti i miei compiti e progetti, suddivisi per materia.  
 
