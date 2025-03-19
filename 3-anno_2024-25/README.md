@@ -10,6 +10,9 @@
 ![Made by](https://img.shields.io/badge/Made%40by-bigBrodyG-blue)
 ![Powered by](https://img.shields.io/badge/Powered%40by-Linux%40%7C%40Python%40%7C%40Bash-brightgreen)
 <br>
+
+🚀 Qui trovi tutti i miei compiti e progetti, suddivisi per materia.  
+
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 ![C](https://img.shields.io/badge/c-%2300599C.svg?style=for-the-badge&logo=c&logoColor=white)
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white)
@@ -17,7 +20,6 @@
 ![Markdown](https://img.shields.io/badge/markdown-%23000000.svg?style=for-the-badge&logo=markdown&logoColor=white)
 ![Windows Terminal](https://img.shields.io/badge/Windows%20Terminal-%234D4D4D.svg?style=for-the-badge&logo=windows-terminal&logoColor=white)
 
-🚀 Qui trovi tutti i miei compiti e progetti, suddivisi per materia.  
 
 ## 🔹 Contenuto  
 
