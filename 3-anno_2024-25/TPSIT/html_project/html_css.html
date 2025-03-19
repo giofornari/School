@@ -38,7 +38,7 @@
 
         header {
             position: relative;
-            height: 80vh;
+            height: 15%;
             max-height: 700px;
             display: flex;
             flex-direction: column;
@@ -74,15 +74,6 @@
             font-style: italic;
             color: var(--text-light);
             margin-bottom: 30px;
-        }
-
-        .header-quote {
-            font-size: 1.8rem;
-            margin: 30px 0;
-            font-family: 'Georgia', serif;
-            font-style: italic;
-            opacity: 0.9;
-            max-width: 800px;
         }
 
         .container {
@@ -252,31 +243,31 @@
             background-color: rgba(192, 160, 98, 0.1);
         }
 
-        .rating-cell {
+        .valutazione {
             position: relative;
         }
 
-        .rating-bar {
+        .valu_bar {
             height: 8px;
             background-color: var(--accent-color);
             border-radius: 4px;
             margin-top: 5px;
         }
 
-        .awards-cell {
+        .premi {
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        .award-icon {
+        .premi_ico {
             color: var(--secondary-color);
             font-size: 1.2rem;
         }
 
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             margin: 40px 0;
         }
@@ -296,120 +287,7 @@
         }
 
         .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .quote-section {
-            background-color: rgba(26, 26, 26, 0.7);
-            padding: 40px;
-            border-radius: 10px;
-            margin: 50px 0;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--accent-color);
-        }
-
-        .quote {
-            font-size: 1.5rem;
-            font-style: italic;
-            margin-bottom: 20px;
-            line-height: 1.8;
-            color: var(--text-light);
-        }
-
-        .quote-author {
-            font-size: 1.1rem;
-            color: var(--secondary-color);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: var(--primary-color);
-            border-top: 1px solid var(--secondary-color);
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin: 20px 0;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background-color: var(--secondary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-5px);
-            background-color: var(--accent-color);
-            color: var(--text-light);
-        }
-
-        .copyright {
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #888;
-        }
-
-        @media (max-width: 992px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            .header-quote {
-                font-size: 1.4rem;
-            }
-            
-            .card {
-                min-width: 45%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                height: 60vh;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .header-quote {
-                font-size: 1.2rem;
-            }
-            
-            .card {
-                min-width: 100%;
-            }
-            
-            .gallery {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 576px) {
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-            
-            .quote {
-                font-size: 1.2rem;
-            }
+            transform: scale(1.2);
         }
     </style>
 </head>
@@ -418,7 +296,6 @@
         <header>
             <h1>Game of Thrones</h1>
             <p class="subtitle">Il Trono di Spade</p>
-            <p class="header-quote">"Quando giochi al gioco del trono, o vinci o muori. Non c'è via di mezzo."</p>
         </header>
 
         <div class="container">
@@ -434,7 +311,7 @@
                 
                 <div class="card-container">
                     <div class="card">
-                        <img src="/api/placeholder/400/400" alt="Jon Snow">
+                        <img src="https://static.wikia.nocookie.net/game-of-thrones-ff/images/5/56/Jon-snow-game-thrones.jpg/revision/latest?cb=20190829192525" alt="Jon Snow">
                         <div class="card-content">
                             <h3>Jon Snow</h3>
                             <p class="house-info">Casa Stark (figlio bastardo di Ned Stark)</p>
@@ -443,7 +320,7 @@
                     </div>
                     
                     <div class="card">
-                        <img src="/api/placeholder/400/400" alt="Daenerys Targaryen">
+                        <img src="https://static.wikia.nocookie.net/hieloyfuego/images/2/2f/Daenerys_Targaryen_Queen.png/revision/latest/scale-to-width-down/1200?cb=20241023160006" alt="Daenerys Targaryen">
                         <div class="card-content">
                             <h3>Daenerys Targaryen</h3>
                             <p class="house-info">Casa Targaryen</p>
@@ -452,7 +329,7 @@
                     </div>
                     
                     <div class="card">
-                        <img src="/api/placeholder/400/400" alt="Tyrion Lannister">
+                        <img src="https://static.toiimg.com/photo/62981209.cms" alt="Tyrion Lannister">
                         <div class="card-content">
                             <h3>Tyrion Lannister</h3>
                             <p class="house-info">Casa Lannister</p>
@@ -480,101 +357,101 @@
                                 <td>Stagione 1</td>
                                 <td>10</td>
                                 <td>2011</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     9.1
-                                    <div class="rating-bar" style="width: 91%;"></div>
+                                    <div class="valu_bar" style="width: 91%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Stagione 2</td>
                                 <td>10</td>
                                 <td>2012</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     9.2
-                                    <div class="rating-bar" style="width: 92%;"></div>
+                                    <div class="valu_bar" style="width: 92%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Stagione 3</td>
                                 <td>10</td>
                                 <td>2013</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     9.3
-                                    <div class="rating-bar" style="width: 93%;"></div>
+                                    <div class="valu_bar" style="width: 93%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
-                                    <span class="award-icon">🏆</span>
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
+                                    <span class="premi_ico">🏆</span>
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Stagione 4</td>
                                 <td>10</td>
                                 <td>2014</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     9.6
-                                    <div class="rating-bar" style="width: 96%;"></div>
+                                    <div class="valu_bar" style="width: 96%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
-                                    <span class="award-icon">🏆</span>
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
+                                    <span class="premi_ico">🏆</span>
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Stagione 5</td>
                                 <td>10</td>
                                 <td>2015</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     9.1
-                                    <div class="rating-bar" style="width: 91%;"></div>
+                                    <div class="valu_bar" style="width: 91%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Stagione 6</td>
                                 <td>10</td>
                                 <td>2016</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     9.9
-                                    <div class="rating-bar" style="width: 99%;"></div>
+                                    <div class="valu_bar" style="width: 99%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Stagione 7</td>
                                 <td>10</td>
                                 <td>2017</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     9.4
-                                    <div class="rating-bar" style="width: 94%;"></div>
+                                    <div class="valu_bar" style="width: 94%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                             <tr>
                                 <td>Stagione 8</td>
                                 <td>6</td>
                                 <td>2019</td>
-                                <td class="rating-cell">
+                                <td class="valutazione">
                                     4.1
-                                    <div class="rating-bar" style="width: 41%;"></div>
+                                    <div class="valu_bar" style="width: 41%;"></div>
                                 </td>
-                                <td class="awards-cell">
-                                    <span class="award-icon">🏆</span>
+                                <td class="premi">
+                                    <span class="premi_ico">🏆</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -586,16 +463,16 @@
                 <h2>Gallery</h2>
                 <div class="gallery">
                     <div class="gallery-item">
-                        <img src="/api/placeholder/400/200" alt="Game of Thrones">
+                        <img src="https://www.rollingstone.it/wp-content/uploads/2019/04/game-of-thrones-8-collage-1148x765.jpg" alt="Game of Thrones">
                     </div>
                     <div class="gallery-item">
-                        <img src="/api/placeholder/400/200" alt="Game of Thrones">
+                        <img src="https://rm-style.com/wp-content/uploads/2023/07/Game-of-Thrones-Armocromia-Analisi-del-Colore.jpg" alt="Game of Thrones">
                     </div>
                     <div class="gallery-item">
-                        <img src="/api/placeholder/400/200" alt="Game of Thrones">
+                        <img src="https://www.repstatic.it/content/nazionale/img/2019/10/30/100904518-bc6e0b51-ec26-4bee-bc3a-0b65e409be3c.jpg" alt="Game of Thrones">
                     </div>
                     <div class="gallery-item">
-                        <img src="/api/placeholder/400/200" alt="Game of Thrones">
+                        <img src="https://i0.wp.com/www.lindiependente.it/wp-content/uploads/2019/05/got.jpg?fit=800%2C450&ssl=1" alt="Game of Thrones">
                     </div>
                 </div>
             </section>
