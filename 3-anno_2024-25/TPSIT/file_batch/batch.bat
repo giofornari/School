@@ -1,46 +1,40 @@
 @echo off
-rem ***********************************************
-rem  Giordano's Batch Script to simplify gcc
-rem  Script Batch per compilare un programma in gcc
-rem ***********************************************
+echo ***********************************************
+echo  Script Batch per compilare un programma in gcc
+echo ***********************************************
 
-echo Compilatore gcc
-echo Version 1.0
-echo.
-
-rem Impostiamo la variabile SYSTEM: in Windows il valore sarà "windows"
 set "SYSTEM=windows"
 
 rem ================================
-rem 1. NOME DEL FILE SORGENTE
+rem 1. SORGENTE
 rem ================================
 :input_source
 set "FILENAME="
-set /p FILENAME="Source code name: "
+set /p FILENAME="Nome del sorgente: "
 if not "%FILENAME:~-2%"==".c" (
-    echo File is not a .c source code!
+    echo Il file non è .c !
     goto input_source
 )
 if not exist "%FILENAME%" (
-    echo File not found!
-    echo Available .c files:
+    echo File non trovato!
+    echo Validi: 
     dir /b *.c
     goto input_source
 )
 
 rem ================================
-rem 2. NOME OUTPUT
+rem 2. OUTPUT
 rem ================================
 :input_output
 set "OUTPUT="
-set /p OUTPUT="Output name: "
+set /p OUTPUT="Nome del programma: "
 
 rem ================================
 rem 3. COMPILAZIONE
 rem ================================
 :input_method
 set "METHOD="
-set /p METHOD="Metodo di compilazione (1. Diretto, 2. Passo passo): " 
+set /p METHOD="Metodo di compilazione (1. Diretto, 2. Con file intermedi): " 
 if not "%METHOD%"=="1" if not "%METHOD%"=="2" (
     echo Metodo non valido!
     goto input_method
@@ -51,26 +45,22 @@ rem 4. WARNING
 rem ================================
 :input_warnings
 set "SHOW_WARNINGS_FLAG="
-set /p SHOW_WARNINGS_FLAG="Show warnings (y/n): "
-if not "%SHOW_WARNINGS_FLAG%"=="y" if not "%SHOW_WARNINGS_FLAG%"=="n" (
-    echo Please answer y or n.
-    goto input_warnings
-)
+set /p SHOW_WARNINGS_FLAG="Modalità mostra errori? (y/n): "
 
 rem ================================
 rem 6. OTTIMIZZAZIONE
 rem ================================
+
 :input_optimization
 set "OPTIMIZATION="
 echo Scegli ottimizzazione:
-echo 1. Base, 2. Media, 3. Avanzata, 4. Compressione, 5. Massima, 6. Nessuna
+echo "Livello da 1 a 5 (1=Base; 5=Massima), altrimenti 0 per Nessuna"
 set /p OPTIMIZATION="(1-6)    > "
-if not "%OPTIMIZATION%"=="1" if not "%OPTIMIZATION%"=="2" if not "%OPTIMIZATION%"=="3" if not "%OPTIMIZATION%"=="4" if not "%OPTIMIZATION%"=="5" if not "%OPTIMIZATION%"=="6" (
+if not "%OPTIMIZATION%"=="1" if not "%OPTIMIZATION%"=="2" if not "%OPTIMIZATION%"=="3" if not "%OPTIMIZATION%"=="4" if not "%OPTIMIZATION%"=="5" if not "%OPTIMIZATION%"=="0" (
     echo Opzione non valida
     goto input_optimization
 )
 
-rem Define main compilation and execution
 set "BASE_CMD=gcc %FILENAME%"
 
 if "%METHOD%"=="1" (
