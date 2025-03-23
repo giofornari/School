@@ -7,7 +7,7 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/bigBrodyG/School_journey)
 ![Built with](https://img.shields.io/badge/Built%20with-CTF%20Challenges-orange)
 ![Made by](https://img.shields.io/badge/Made%20by-bigBrodyG-blue)
-![Powered by](https://img.shields.io/badge/Powered%20by-Linux%20%7C%20Python%20%7C%20Bash-brightgreen)
+![Powered by](https://img.shields.io/badge/Powered%20by-Linux%20%7C%20Python%20%7C%20Bash-green)
 <br>
 
 🚀 Qui trovi tutti i miei compiti e progetti, suddivisi per materia.  
