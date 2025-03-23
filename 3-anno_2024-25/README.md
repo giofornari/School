@@ -1,7 +1,7 @@
 
 
 # 📚 School Repository  
-
+[![Visits Badge](https://badges.pufler.dev/visits/pujux/badge-it)](https://badges.pufler.dev)
 ![GitHub Repo stars](https://img.shields.io/github/stars/bigBrodyG/School_journey?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/bigBrodyG/School_journey?style=social)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bigBrodyG/School_journey)
