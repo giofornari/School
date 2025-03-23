@@ -5,9 +5,9 @@
 [![Visits Badge](https://badges.pufler.dev/visits/bigBrodyG/School_journey)](https://badges.pufler.dev)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bigBrodyG/School_journey)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/bigBrodyG/School_journey)
-![Built with](https://img.shields.io/badge/Built%40with-CTF%40Challenges-orange)
-![Made by](https://img.shields.io/badge/Made%40by-bigBrodyG-blue)
-![Powered by](https://img.shields.io/badge/Powered%40by-Linux%40%7C%40Python%40%7C%40Bash-brightgreen)
+![Built with](https://img.shields.io/badge/Built%20with-CTF%20Challenges-orange)
+![Made by](https://img.shields.io/badge/Made%20by-bigBrodyG-blue)
+![Powered by](https://img.shields.io/badge/Powered%20by-Linux%20%7C%20Python%20%7C%20Bash-brightgreen)
 <br>
 
 🚀 Qui trovi tutti i miei compiti e progetti, suddivisi per materia.  
