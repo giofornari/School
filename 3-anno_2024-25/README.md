@@ -54,9 +54,8 @@ Se sei curioso, dai un'occhiata! 😃
 <a href="https://forthebadge.com">
     <img src="https://forthebadge.com/images/badges/code-it-test-it-break-it.svg" height="40">
     <img src="https://forthebadge.com/images/badges/built-by-developers.svg" height="40">
-    <img src="https://forthebadge.com/images/badges/built-by-developers.svg" height="40">
-    <img src="https://forthebadge.com/images/badges/reading-6th-grade-level.svg" height="40">
     <img src="https://forthebadge.com/images/badges/fuck-it-ship-it.svg" height="40">
+    <img src="https://forthebadge.com/images/badges/reading-6th-grade-level.svg" height="40">
     <img src="https://forthebadge.com/images/badges/contains-17-coffee-cups.svg" height="40">
     <img src="https://forthebadge.com/images/badges/license-mit.svg" height="40">
 </a>
