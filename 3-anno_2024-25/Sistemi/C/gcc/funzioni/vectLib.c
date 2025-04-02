@@ -1,55 +1,58 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "vectLib.h"
+#include <stdbool.h>
 #include <math.h>
 // —— Input/Output ——
 
 /** Stampa il vettore v ben formattato [v1, v2, ..., vn] */
 void print_vec(const double *v, size_t dim) {
     printf("[");
-    for (int i = 0; i < dim; i++) {
-        printf("%lf ", v[i]);
+    for (size_t i = 0; i < dim; i++) {
+        printf("%.1lf ", v[i]);
     }
     printf("]\n");
 }
 
 /** Legge dim valori da stdin e li salva nel vettore v */
 void scanf_vec(double *v, size_t dim){
-    for (int i = 0; i < dim; i++) {
+    for (size_t i = 0; i < dim; i++) {
         scanf("%lf", &v[i]);
     }
 }
 // —— Operazioni algebriche ——
 /** res = v1 + v2 elemento per elemento*/
 void add_vec(const double *v1, const double *v2, double *res, size_t dim){
-    for (int i = 0; i < dim; i++) {
+    for (size_t i = 0; i < dim; i++) {
         res[i] = v1[i] + v2[i];
     }
 
 }
 /** res = v1 + k  per ogni elemento*/
 void adds_vec(const double *v1, double k, double *res, size_t dim){
-    for (int i = 0; i < dim; i++) {
+    for (size_t i = 0; i < dim; i++) {
         res[i] = v1[i] + k;
     }
 }
 /** res = v * k (moltiplicazione per scalare) */
 void muls_vec(const double *v, double k, double *res, size_t dim){
-    for (int i = 0; i < dim; i++) {
+    for (size_t i = 0; i < dim; i++) {
         res[i] = v[i] * k;
     }
 }
 /** res = v1 - v2 ...sfruttare muls_vec() */
 void sub_vec(const double *v1, const double *v2, double *res, size_t dim){
-    muls_vec(v2, -1, v2, dim);
-    for (int i = 0; i < dim; i++) {
+    double tmp[dim] = {};
+    muls_vec(v2, -1, tmp, dim);
+    for (size_t i = 0; i < dim; i++) {
         res[i] = v1[i] + v2[i];
     }
 }
+
 /** Prodotto scalare (v1 • v2) */
 double dot_vec(const double *v1, const double *v2, size_t dim){
     double res = 0;
-    for (int i = 0; i < dim; i++) {
+    for (size_t i = 0; i < dim; i++) {
         res += v1[i] * v2[i];
     }
     return res;
@@ -58,16 +61,16 @@ double dot_vec(const double *v1, const double *v2, size_t dim){
 // —— Manipolazione vettori ——
 /** Concatena v1 (dim1) e v2 (dim2) in res (dim1 + dim2 elementi) */
 void concat_vec(const double *v1, size_t dim1, const double *v2, size_t dim2, double *res){
-    for (int i = 0; i < dim1; i++) {
+    for (size_t i = 0; i < dim1; i++) {
         res[i] = v1[i];
     }
-    for (int i = 0; i < dim2; i++) {
+    for (size_t i = 0; i < dim2; i++) {
         res[dim1 + i] = v2[i];
     }
 }
 /** Inverte l'ordine degli elementi (es. [1,2,3] → [3,2,1]) */
 void reverse_vec(double *v, size_t dim){
-    for (int i = 0; i < dim / 2; i++) {
+    for (size_t i = 0; i < dim / 2; i++) {
         double tmp = v[i];
         v[i] = v[dim - i - 1];
         v[dim - i - 1] = tmp;
@@ -99,7 +102,6 @@ void shuffle_vec(double *v, size_t dim) {
 /** Shift a destra */
 void rshft_vec(double *v, size_t step, size_t dim) {
     for (size_t s = 0; s < step; s++) {
-        double tmp = v[dim - 1];
         for (size_t i = dim - 1; i > 0; i--) {
             v[i] = v[i - 1];
         }
