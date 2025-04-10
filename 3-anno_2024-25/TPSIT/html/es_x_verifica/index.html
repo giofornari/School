@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leonardo da Vinci</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #666;
+    }
+    #wrapper {
+      width: auto;
+      margin: 0 auto;
+    }
+    header {
+      background: linear-gradient(to bottom, #8B0000, #660000);
+      background-image: url("./img/bg-header.jpg");
+      background-repeat: repeat;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: unset;
+    }
+    header h1 {
+      font-size: 52px;
+      margin-bottom: 0;
+    }
+    header img {
+      margin: unset;
+      height: 90px;
+
+    }
+    #container {
+      display: flex;
+      background: url("./img/bg.jpg") repeat;
+    }
+    nav {
+      width: 15%;
+      background-color: #F0F5E0;
+      padding: 20px;
+    }
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    nav li {
+      margin-bottom: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      color: #006400;
+    }
+    main {
+      width: 75%;
+      background-color: white;
+      padding: 20px;
+    }
+    h2 {
+      color: #000;
+      margin-top: 0;
+      padding-top: 15px;
+    }
+    .ritratto-container {
+      float: right;
+      margin-left: 20px;
+      text-align: center;
+      border: #000 solid 1.5px;
+      padding: 5px;
+    }
+    .ritratto-container img {
+      width: 200px;
+    }
+    .ritratto-container p {
+      margin-top: 10px;
+      margin-bottom: 0px;
+      font-style: italic;
+      font-size: 100%;
+    }
+    footer {
+      background-color: #AEBCAC;
+      padding: 10px;
+      text-align: center;
+      color: #333;
+      font-size: 14px;
+    }
+    .blue-title {
+      color: blue;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+    ol {
+      padding-left: 50px;
+      margin-top: 0;
+    }
+
+    ol li p{
+      margin: 0;
+      padding-left: 10px;
+    }
+    ol li strong {
+      padding: 15px; 
+      display: inline-block; 
+    }
+  </style>
+</head>
+<body>
+  <div id="wrapper">
+    <header>
+      <h1>Leonardo da Vinci</h1>
+      <img src="../daRiprodurre.PNG" alt="Uomo Vitruviano">
+    </header>
+    <div id="container">
+      <nav>
+        <ul>
+          <li>• <a href="#">Home</a></li>
+          <li>• <a href="#">Biografia</a></li>
+          <li>• <a href="#">Opere</a></li>
+        </ul>
+      </nav>
+      <main>
+        <h2>Il museo di Leonardo</h2>
+        
+        <div class="ritratto-container">
+          <img src="img/leonardo.jpg" alt="Ritratto di Leonardo">
+          <p>Ritratto</p>
+        </div>
+        
+        <p><strong>Leonardo</strong> è uno dei massimi esponenti dell'unione tra umanesimo e scienza. Uomo d'ingegno e talento universale del Rinascimento italiano; fu pittore, scultore, architetto, ingegnere, matematico, anatomista, musicista, inventore e scienziato. Incarnò a pieno lo spirito universalista della sua epoca, portandolo alle maggiori forme di espressione nei più disparati campi dell'arte e della conoscenza. È considerato uno dei più grandi geni dell'umanità.</p>
+        
+        <h3 class="blue-title">Biografia</h3>
+        
+        <p>Fu tanto raro e universale, che dalla natura per suo miracolo esser produtto dire si puote: la quale non solo della bellezza del corpo, che molto bene gli concedette, volse dotarlo, ma di molte rare virtù volse anchora farlo maestro. Assai valse in matematica et in prospettiva non meno, et operò di scultura, et in disegno passò di gran lunga tutti li altri. Hebbe bellissime inventioni, ma non colorì molte cose, perché si dice mai a sé medesimo avere satisfatto, et però sono tante rare le opere sue. Fu nel parlare eloquentissimo et raro sonatore di lira [...] et fu valentissimo in tirari et in edifizi d'acque, et altri ghiribizzi, né mai co l'animo suo si quietava, ma sempre con l'ingegno fabricava cose nuove</p>
+        
+        <h3 class="blue-title">Opere principali</h3>
+        
+        <p>Leonardo non è stato un artista molto prolifico. Non sono tantissime le opere giunte fino a noi, ma di sicuro ognuna di esse può considerarsi un capolavoro. Se dovessimo sceglierne solo 3 (impresa ardua!), probabilmente queste racconterebbero meglio di tutte il genio toscano.</p>
+        
+        <ol>
+          <li><strong>La Gioconda(1503-1504)</strong> 
+          <p>Conservato al Louvre, è probabilmente il dipinto più famoso al mondo. Se ti stai chiedendo perché, ti do tre buoni motivi: per l'enigmatico sorriso della Monna Lisa; per la posa di tre quarti assolutamente originale per l'epoca, che conferisce dinamicità alla posa; per la cura del paesaggio sullo sfondo, reso con pennellate delicate e attente.</p></li>
+          
+          <li><strong>L'Ultima cena (1495-1498)</strong>
+          <p>Puoi ammirare quest'opera nell'ex-refettorio del convento di Santa Maria delle Grazie a Milano. Per realizzare quest'affresco, Leonardo sperimentò una tecnica nuova, incompatibile però con l'umidità dell'ambiente che, col tempo, sta logorando l'opera. Dal 1980 è entrato nella lista dei Patrimoni dell'Unesco.</p></li>
+          
+          <li><strong>Uomo Vitruviano (1490 circa)</strong>
+          <p>Può un disegno su carta essere considerato un capolavoro dell'arte? Sì, se lo ha realizzato Leonardo! Quest'opera, che potete ammirare alle Gallerie dell'Accademia di Venezia (e sulla monetina da un euro), rappresenta in maniera ideale le armoniose proporzioni del corpo umano, iscritte in un cerchio perfetto. Equilibrio, armonia, accuratezza scientifica: ecco perché quest'opera è un capolavoro.</p></li>
+        </ol>
+      </main>
+    </div>
+    <footer>
+      <p>Sito web "Il museo di Leonardo"<br>
+      Esercizio di preparazione alla verifica</p>
+    </footer>
+  </div>
+</body>
+</html>
