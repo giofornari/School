@@ -47,12 +47,12 @@ char* rot13_decrypt(const char* input){
 }
 
 char* livello6_send(const char* dati) {
-    printf("[6] Sessione - Messaggio da inviare: %s\n", dati);
+    printf("[6] Presentazione - Messaggio da inviare: %s\n", dati);
 
     return livello5_send(rot13_encrypt(dati));
 }
 
 char* livello6_receive(const char* pdu) {
-    printf("[6] Sessione - Messaggio da ricevere: %s\n", pdu);
+    printf("[6] Presentazione - Messaggio da ricevere: %s\n", pdu);
     return rot13_decrypt(livello5_receive(pdu));
 }
