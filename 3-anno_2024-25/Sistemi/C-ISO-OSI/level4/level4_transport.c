@@ -8,5 +8,5 @@ char* livello4_send(const char* dati) {
 }
 
 char* livello4_receive(const char* pdu) {
-    return livello4_send(pdu);
+    return livello3_receive(pdu);
 }
