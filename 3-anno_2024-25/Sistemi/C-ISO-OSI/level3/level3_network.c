@@ -52,7 +52,8 @@ char *livello3_receive(const char *pdu)
    return *datas;
 }
 */
-
+/*
 char* livello3_receive(const char* pdu) {
     return livello2_receive(pdu);
 }
+*/
