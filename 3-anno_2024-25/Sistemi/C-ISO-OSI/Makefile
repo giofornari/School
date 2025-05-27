@@ -1,88 +1,62 @@
 ###############################################################################
-# Makefile for ISO/OSI Simulation Project (fixed include path)
+# Makefile for ISO/OSI Simulation Project (Linux + MinGW-w64 support)
 #
-# - Ensures "constants.h" in the repo root is found by adding -I. (dot) to CFLAGS
-# - Assumes this directory structure:
-#     .
-#     ├── constants.h
-#     ├── main.c
-#     ├── level1/
-#     │   ├── level1_fisic.c
-#     │   └── level1_fisic.h
-#     ├── level2/
-#     │   ├── level2_datalink.c
-#     │   └── level2_datalink.h
-#     ├── level3/
-#     │   ├── level3_network.c
-#     │   └── level3_network.h
-#     ├── level4/
-#     │   ├── level4_transport.c
-#     │   └── level4_transport.h
-#     ├── level5/
-#     │   ├── level5_session.c
-#     │   └── level5_session.h
-#     ├── level6/
-#     │   ├── level6_presentation.c
-#     │   └── level6_presentation.h
-#     └── level7/
-#         ├── level7_application.c
-#         └── level7_application.h
-#
-# - Produces a single executable named "osi_simulation"
-# - Uses gcc, with -Wall -Wextra -std=c11, and includes each level directory plus the root
-# - Supports a "clean" target to remove object files and the binary
+# Supports PLATFORM=linux (default) or PLATFORM=mingw for Windows cross-compile
+# Adds -I. for constants.h and includes all levelN/ directories
 ###############################################################################
 
 #----------------------------------------
-# 1) Compiler and flags
+# 1) Platform and Compiler Selection
 #----------------------------------------
-CC      := gcc
-CFLAGS  := -Wall -Wextra -g
+# Choose platform: "linux" (default) or "mingw"
+PLATFORM ?= linux
 
-# Include project root so that constants.h is found:
-CFLAGS  += -I.
+ifeq ($(PLATFORM), mingw)
+    CC := x86_64-w64-mingw32-gcc
+    TARGET := osi_simulation.exe
+    CFLAGS := -Wall -Wextra -g -std=c11
+    CFLAGS += -DPLATFORM_WINDOWS
+else
+    CC := gcc
+    TARGET := osi_simulation
+    CFLAGS := -Wall -Wextra -g -std=c11
+    CFLAGS += -DPLATFORM_LINUX
+endif
 
-# Include each levelN/ folder for its own headers
+# Include root directory (for constants.h) and levelN folders
+CFLAGS += -I.
 LEVEL_DIRS := level1 level2 level3 level4 level5 level6 level7
-CFLAGS     += $(addprefix -I,$(LEVEL_DIRS))
+CFLAGS += $(addprefix -I,$(LEVEL_DIRS))
 
 #----------------------------------------
 # 2) Source files and object files
 #----------------------------------------
-# Gather all .c files under level*/ and also main.c
-SRCS   := main.c $(wildcard level1/*.c) $(wildcard level2/*.c) \
-           $(wildcard level3/*.c) $(wildcard level4/*.c) \
-           $(wildcard level5/*.c) $(wildcard level6/*.c) \
-           $(wildcard level7/*.c)
+SRCS := main.c $(wildcard level1/*.c) $(wildcard level2/*.c) \
+        $(wildcard level3/*.c) $(wildcard level4/*.c) \
+        $(wildcard level5/*.c) $(wildcard level6/*.c) \
+        $(wildcard level7/*.c)
 
-# Convert each .c to .o for object files
-OBJS   := $(SRCS:.c=.o)
+OBJS := $(SRCS:.c=.o)
 
 #----------------------------------------
-# 3) Target executable
-#----------------------------------------
-TARGET := osi_simulation
-
-#----------------------------------------
-# 4) Default rule: build the executable
+# 3) Default rule: build the executable
 #----------------------------------------
 .PHONY: all
 all: $(TARGET)
 
-# Link all object files into the final executable
 $(TARGET): $(OBJS)
 	@echo "Linking all modules → $(TARGET)"
 	$(CC) $(CFLAGS) $^ -o $@
 
 #----------------------------------------
-# 5) Compile rule: .c → .o
+# 4) Compile rule: .c → .o
 #----------------------------------------
 %.o: %.c
 	@echo "Compiling $< → $@"
 	$(CC) $(CFLAGS) -c $< -o $@
 
 #----------------------------------------
-# 6) Clean up
+# 5) Clean up
 #----------------------------------------
 .PHONY: clean
 clean:
@@ -90,7 +64,7 @@ clean:
 	rm -f $(OBJS) $(TARGET)
 
 #----------------------------------------
-# 7) Phony target for force rebuild
+# 6) Force rebuild
 #----------------------------------------
 .PHONY: rebuild
 rebuild: clean all
@@ -98,13 +72,13 @@ rebuild: clean all
 ###############################################################################
 # Usage:
 #
-#   make           # builds 'osi_simulation'
-#   make clean     # removes all *.o and the 'osi_simulation' binary
-#   make rebuild   # same as 'make clean' then 'make'
+#   make                    # builds 'osi_simulation' for Linux
+#   make PLATFORM=mingw     # builds 'osi_simulation.exe' for Windows (cross)
+#   make clean              # removes all *.o and the executable
+#   make rebuild            # cleans and rebuilds
 #
 # Notes:
-#   - The "-I." in CFLAGS ensures that "constants.h" (in the repo root)
-#     is visible to all levelN/*.c files.
-#   - Each levelN folder is also in the include path, so #include "levelX_*.h"
-#     works without specifying a relative path.
+#   - Requires MinGW-w64 cross compiler for PLATFORM=mingw:
+#       sudo apt install mingw-w64
+#   - PLATFORM_WINDOWS and PLATFORM_LINUX macros allow conditional C code
 ###############################################################################
