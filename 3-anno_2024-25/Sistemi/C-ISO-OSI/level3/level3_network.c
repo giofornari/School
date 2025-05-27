@@ -15,25 +15,18 @@ char *livello3_send(const char *dati)
 char *livello3_receive(const char *pdu) {
     char *data_from_l2 = livello2_receive(pdu);
 
+    const char *header = "[SRC=192.168.1.7] [DST=192.168.1.45]";
+
     if (data_from_l2 == NULL) {
         printf("[L3] Network - No data received from L2.\n");
         return NULL; // Propagate the NULL up the stack
     }
 
-    printf("[L3] Network - Received PDU from L2: \"%s\"\n", data_from_l2);
+    //printf("[L3] Network - Received PDU from L2: \"%s\"\n", data_from_l2);
 
-    char *data_for_l4 = strdup(data_from_l2);
-    if (data_for_l4 == NULL) {
-        fprintf(stderr, "[L3] Memory allocation failed for data_for_l4.\n");
-        free(data_from_l2);
-        return NULL;
-    }
+    printf("[L3] Network - Sending data to L4: \"%s\"\n", data_from_l2);
 
-    printf("[L3] Network - Sending data to L4: \"%s\"\n", data_for_l4);
-
-    free(data_from_l2);
-
-    return data_for_l4;
+    return data_from_l2;
 }
 /*
 char *livello3_receive(const char *pdu)
