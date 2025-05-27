@@ -12,23 +12,26 @@ char *livello3_send(const char *dati)
     return livello2_send(dati);
 }
 
-char *livello3_receive(const char *pdu)
-{
+char *livello3_receive(const char *pdu) {
+    char *data_from_l2 = livello2_receive(pdu);
 
-    // const char* header = "[SRC=192.168.1.2] [DST=192.168.1.5]";
-    char datas = calloc(100, 1);
-    strcat(*datas, livello2_receive(pdu));
-    /*
-    char* src[50] = {'\0'};
-    strcat(*src, livello2_receive(pdu));
-    printf("[L3: Sending to L4] %s", src);
-    return *src;
-    */
-   printf("\n\n%s\n\n", datas);
-   return *datas;
+    if (data_from_l2 == NULL) {
+        printf("[L3] Network - No data received from L2.\n");
+        return NULL; // Propagate the NULL up the stack
+    }
+
+    printf("[L3] Network - Received PDU from L2: \"%s\"\n", data_from_l2);
+
+    char *data_for_l4 = strdup(data_from_l2);
+    if (data_for_l4 == NULL) {
+        fprintf(stderr, "[L3] Memory allocation failed for data_for_l4.\n");
+        free(data_from_l2);
+        return NULL;
+    }
+
+    printf("[L3] Network - Sending data to L4: \"%s\"\n", data_for_l4);
+
+    free(data_from_l2);
+
+    return data_for_l4;
 }
-
-/*
-char* livello3_receive(const char* pdu) {
-    return livello2_receive(pdu);
-}*/
