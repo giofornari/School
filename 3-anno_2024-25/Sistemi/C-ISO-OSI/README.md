@@ -186,6 +186,3 @@ Esempio di imbustamento (da `Consegna.md`):
 * **`FIFO_SIZE`**: Dimensione della coda FIFO nel Livello Fisico per simulare il mezzo trasmissivo (non definita in `constants.h` ma usata implicitamente da `PDU_SIZE` in `level1_fisic.c` per l'array `fifo`, o dovrebbe essere una costante separata come da specifica `source.pdf`). La specifica `source.pdf` indica `#define FIFO_SIZE 1024`.
 
 ---
-
-Questo README mira a fornire una panoramica completa del progetto C-ISO-OSI. Buona esplorazione e apprendimento!
-```
