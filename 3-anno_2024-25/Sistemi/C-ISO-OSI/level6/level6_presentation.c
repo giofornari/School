@@ -47,13 +47,11 @@ char* rot13_decrypt(const char* input){
 }
 
 char* livello6_send(const char* dati) {
-    char *res = rot13(dati);
-    strcpy(tmpbuf, res);
-    printf("[L6] Sessione - Messaggio da inviare: %s\n", res);
-    return res;
+    printf("[L6] Sessione - Messaggio da inviare: %s\n", dati);
+    return livello5_send(rot13_encrypt(dati));
 }
 
 char* livello6_receive(const char* pdu) {
-    printf("[L6] Sessione - Messaggio da ricevere: %s\n", tmpbuf);
-    return rot13(tmpbuf);
+    printf("[L6] Sessione - Messaggio da ricevere: %s\n", pdu);
+    return rot13_decrypt(livello5_receive(pdu));
 }

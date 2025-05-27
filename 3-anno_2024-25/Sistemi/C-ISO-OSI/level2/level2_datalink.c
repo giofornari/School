@@ -9,17 +9,18 @@
 */
 
 /* LIBRARY HEADERS */
-#include <constants.h>  // Library constants
+#include "constants.h"  // Library constants
 #include "level1_fisic.h"
 #include "level2_datalink.h"
-#include "level3_network.h"
 
 /* STANDARD HEADERS */
-#include <stdio.h>
 #include <stdlib.h>
 
 
 char* livello2_receive(const char* pdu) {
-    char *bitstring = livello1_receive();
-    
+    return livello1_receive();
+}
+char* livello2_send(const char* dati) {
+    livello1_send(dati);
+    return NULL;
 }
