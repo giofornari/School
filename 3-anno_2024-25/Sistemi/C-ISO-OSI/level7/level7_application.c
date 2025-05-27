@@ -17,13 +17,13 @@
 #include <stdio.h>
 
 char* livello7_send(const char* dati) {
-    printf("[7] Application - Message to send: %s\n", dati);
+    printf("\n\t--------- ISO/OSI Send stack -------\n\n[7] Application - Message to send: %s\n", dati);
 
     return livello6_send(dati);
 }
 
 char* livello7_receive(const char* pdu) {
 //    char* dati = livello6_receive(pdu);
-    printf("[7] Application - Message received: %s\n", pdu);
+    printf("\n\n\t--------- ISO/OSI Receive stack -------\n\n[7] Application - Message received: %s\n", pdu);
     return livello6_receive(pdu);
 }
