@@ -38,9 +38,9 @@ char* rot13_decrypt(const char* input){
         char c = output[i];
 
         if (c >= 'A' && c <= 'Z') {
-            output[i] = ((c - 'A' - 13) % 26) + 'A';
+            output[i] = ((c - 'A' + 13) % 26) + 'A';
         } else if (c >= 'a' && c <= 'z') {
-            output[i] = ((c - 'a' - 13) % 26) + 'a';
+            output[i] = ((c - 'a' + 13) % 26) + 'a';
         }
     }
     return output;
@@ -48,6 +48,7 @@ char* rot13_decrypt(const char* input){
 
 char* livello6_send(const char* dati) {
     printf("[6] Sessione - Messaggio da inviare: %s\n", dati);
+
     return livello5_send(rot13_encrypt(dati));
 }
 
