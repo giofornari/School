@@ -49,7 +49,7 @@ char* rot13_decrypt(const char* input){
 char* livello6_send(const char* dati) {
     printf("[6] Presentazione - Messaggio da inviare: %s\n", dati);
 
-    return livello5_send(rot13_encrypt(dati));
+    return livello5_send(rot13_encrypt(dati), "NORMAL");
 }
 
 char* livello6_receive(const char* pdu) {
