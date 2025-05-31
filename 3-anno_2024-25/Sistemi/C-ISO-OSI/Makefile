@@ -13,13 +13,13 @@ PLATFORM ?= linux
 
 ifeq ($(PLATFORM), mingw)
     CC := x86_64-w64-mingw32-gcc
-    TARGET := osi_simulation.exe
-    CFLAGS := -Wall -Wextra -g
+    TARGET := ISOSI_Ultimate_Simulator.exe
+    CFLAGS := -Wall -Wextra
     CFLAGS += -DPLATFORM_WINDOWS
 else
     CC := gcc
-    TARGET := osi_simulation
-    CFLAGS := -Wall -Wextra -g
+    TARGET :=  ISOSI_Ultimate_Simulator
+    CFLAGS := -Wall -Wextra
     CFLAGS += -DPLATFORM_LINUX
 endif
 
