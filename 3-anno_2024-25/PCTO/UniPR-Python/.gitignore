@@ -214,7 +214,7 @@ PublishScripts/
 # Microsoft Azure Build Output
 csx/
 *.build.csdef
-
+.ropeproject
 # Microsoft Azure Emulator
 ecf/
 rcf/
