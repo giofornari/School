@@ -6,19 +6,11 @@ import sys
 import random
 import math
 
-# =============================================================================
-# --- CONFIGURAZIONE DEL CLIENT ---
-# =============================================================================
-SERVER_ADDRESS = "game.franciuto.com"  # CAMBIA QUESTO con il tuo dominio
+SERVER_ADDRESS = "netfonta.ddns.net" 
 SERVER_PORT = 12345
 VIEW_W, VIEW_H = 900, 700
 FPS = 60
 
-# =============================================================================
-# --- CLASSI DI GIOCO (LOGICA CLIENT-SIDE) ---
-# =============================================================================
-
-# Costanti
 ARENA_W, ARENA_H = 3000, 2000
 COLORS = {
     'player': (100, 150, 255), 'crystal': (255, 200, 50),
@@ -26,12 +18,8 @@ COLORS = {
     'boss': (200, 50, 200), 'projectile': (255, 255, 255)
 }
 
-# ***** INIZIO MODIFICA IMPORTANTE *****
-# Aggiungiamo una definizione vuota di GameWorld.
-# Serve solo a pickle per sapere come ricostruire l'oggetto ricevuto dal server.
 class GameWorld:
     pass
-# ***** FINE MODIFICA IMPORTANTE *****
 
 class Player:
     def draw(self, camera, is_me):
@@ -39,7 +27,7 @@ class Player:
         screen_y = self.y - camera.y
 
         if self.invincible_time > 0 and int(self.invincible_time / 6) % 2:
-            alpha = 128 # In futuro, g2d potrebbe supportare l'alpha
+            alpha = 128
         else:
             alpha = 255
 
@@ -86,7 +74,7 @@ class Enemy:
 
         if self.dead:
             alpha = int(255 * (1 - self.death_time / 60))
-            g2d.set_color(color) # Modificare se g2d supporterà alpha
+            g2d.set_color(color)
         else:
             g2d.set_color(color)
         
@@ -127,10 +115,6 @@ class SmoothCamera:
         self.x += (self.target_x - self.x) * self.lerp_factor
         self.y += (self.target_y - self.y) * self.lerp_factor
 
-# =============================================================================
-# --- LOGICA DI RETE CLIENT ---
-# =============================================================================
-
 world = None
 world_lock = threading.Lock()
 client_socket = None
@@ -159,11 +143,10 @@ def receive_thread():
             buffer = buffer[msg_size:]
             
             with world_lock:
-                # Il client ora sa cos'è GameWorld e può deserializzarlo
                 world = pickle.loads(packed_state)
 
         except (ConnectionAbortedError, ConnectionResetError, EOFError, pickle.UnpicklingError) as e:
-            print(f"❌ Errore di connessione o deserializzazione: {e}")
+            print(f"âŒ Errore di connessione o deserializzazione: {e}")
             with world_lock:
                 world = "disconnected"
             break
@@ -171,7 +154,7 @@ def receive_thread():
 def tick():
     global world
 
-    if client_socket.fileno() != -1: # Controlla se il socket è ancora valido
+    if client_socket.fileno() != -1:
         mouse_world_x = g2d.mouse_pos()[0] + camera.x
         mouse_world_y = g2d.mouse_pos()[1] + camera.y
         inputs = {
@@ -203,14 +186,10 @@ def tick():
     camera.follow(my_player)
     camera.update()
 
-    # Le classi inviate dal server hanno già i metodi 'draw' definiti qui sul client.
-    # Possiamo semplicemente chiamarli.
     for crystal_obj in current_world.crystals:
-        # Per oggetti con animazioni client-side, potremmo usare un approccio più avanzato,
-        # ma per ora questo va bene anche se l'animazione non sarà perfetta.
         if not hasattr(crystal_obj, 'pulse'): crystal_obj.pulse = 0
         crystal_obj.pulse += 5 / FPS
-        Crystal.draw(crystal_obj, camera) # Chiamiamo il metodo della classe
+        Crystal.draw(crystal_obj, camera)
 
     for powerup_obj in current_world.powerups:
         if not hasattr(powerup_obj, 'pulse'): powerup_obj.pulse = 0
@@ -256,11 +235,11 @@ def main():
         if not addr: addr = SERVER_ADDRESS
         
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print(f"🔌 In connessione a {addr}:{SERVER_PORT}...")
+        print(f"ðŸ”Œ In connessione a {addr}:{SERVER_PORT}...")
         client_socket.connect((addr, SERVER_PORT))
         
         my_player_id = pickle.loads(client_socket.recv(1024))
-        print(f"✅ Connesso! Il tuo ID è: {my_player_id}")
+        print(f"âœ… Connesso! Il tuo ID Ã¨: {my_player_id}")
         
     except Exception as e:
         g2d.alert(f"Impossibile connettersi al server: {e}")
