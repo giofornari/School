@@ -2,7 +2,6 @@
 
 # 📚 School Repository  
 ![GitHub Repo stars](https://img.shields.io/github/stars/bigBrodyG/School_journey?style=social)
-[![Visits Badge](https://badges.pufler.dev/visits/bigBrodyG/School_journey)](https://badges.pufler.dev)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bigBrodyG/School_journey)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/bigBrodyG/School_journey)
 ![Built with](https://img.shields.io/badge/Built%20with-CTF%20Challenges-orange)
