@@ -65,7 +65,6 @@ win_main
 mac_main
 *_main
 baa
-benchmark
 benchmark_debug
 multicore
 prime_parallel
@@ -85,7 +84,7 @@ terne
 converter
 mio_programma
 multifile_program
-
+!gcc/bruteforce/compiled
 # Temporary files
 *.tmp
 *.temp
