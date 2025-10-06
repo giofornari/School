@@ -127,5 +127,5 @@ core.*
 !makefile
 
 # Keep PDFs (course materials)
-# If you want to ignore PDFs, uncomment the line below
+# If you want to ignore PDFs, uncoment the line below
 # *.pdf
