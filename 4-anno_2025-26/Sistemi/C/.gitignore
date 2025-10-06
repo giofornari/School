@@ -1,0 +1,132 @@
+# Compiled Object files
+*.o
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Assembly files (intermediate)
+*.i
+*.s
+*.asm
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.ko
+*.obj
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+# Build directories
+build/
+bin/
+obj/
+compiled/
+
+# Linux executables (no extension)
+# Specific to your project structure
+linux_main
+win_main
+mac_main
+*_main
+baa
+benchmark
+benchmark_debug
+multicore
+prime_parallel
+dectobin
+dadi
+anagram
+dicotom
+min_arr
+palidroma
+parita
+sommacifre
+sommanum
+stampaarray
+stampanum
+rec_terne
+terne
+converter
+mio_programma
+multifile_program
+
+# Temporary files
+*.tmp
+*.temp
+temp
+*.swp
+*.swo
+*~
+
+# Editor backup files
+*.bak
+*.BAK
+*~
+
+# IDE specific files
+.vscode/
+.idea/
+*.code-workspace
+
+# OS specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Core dumps
+core
+core.*
+*.core
+
+# Zip archives (uncomment if you want to ignore them)
+# *.zip
+
+# Keep important files
+!.gitkeep
+!Makefile
+!makefile
+
+# Keep PDFs (course materials)
+# If you want to ignore PDFs, uncomment the line below
+# *.pdf
