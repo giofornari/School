@@ -1,10 +1,8 @@
-# Java Lessons — School Projects 📚
+# JavaScript Playground 🎡🎈
 
-![Java](https://img.shields.io/badge/Java-007396.svg?style=for-the-badge&logo=java&logoColor=white)
-![School Project](https://img.shields.io/badge/School-Project-29AB87?style=for-the-badge&logo=gradle&logoColor=white)
-![Files](https://img.shields.io/badge/Files-student%20materials-blueviolet?style=for-the-badge&logo=google-drive&logoColor=white)
-![Maintained](https://img.shields.io/badge/maintained-yes-brightgreen?style=for-the-badge&logo=github)
-![License](https://img.shields.io/github/license/bigBrodyG/JavaProjects?style=for-the-badge)
-![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange?style=for-the-badge&logo=github)
-![Last Commit](https://img.shields.io/github/last-commit/bigBrodyG/JavaProjects?style=for-the-badge)
-![Issues](https://img.shields.io/github/issues/bigBrodyG/JavaProjects?style=for-the-badge)
+![JS](https://img.shields.io/badge/Magic%20with-JavaScript-F7DF1E?logo=javascript&logoColor=black&style=for-the-badge)
+![Node Party 🎉](https://img.shields.io/badge/Powered%20by-Node.js-339933?logo=node.js&logoColor=white&style=for-the-badge)
+![Web Wizardry 🖥️✨](https://img.shields.io/badge/Web-Wizardry-43BE2E?style=for-the-badge&logo=visualstudiocode)
+![Async Ninja 🥷](https://img.shields.io/badge/Async-Ninja-black?style=for-the-badge&logo=codewars)
+![Lab Ready 🚦](https://img.shields.io/badge/Lab%20Ready-Green-lightgreen?logo=githubactions&style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/bigBrodyG/DIYJavaScript?style=for-the-badge)
