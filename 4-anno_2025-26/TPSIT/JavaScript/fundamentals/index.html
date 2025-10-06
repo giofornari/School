@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Somma Numeri Positivi e Negativi</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+    #risultati {
+      color: red;
+      font-size: 48px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="risultati" style="width: 100%; text-align: center;"></div>
+
+
+
+  <script>
+    let pos = 0;
+    let neg = 0;
+
+    for (let i = 1; i <= 10; i++) {
+      let input = prompt("GET num = " + i + ":");
+      let num = Number(input);
+
+      if (!isNaN(num)) {
+        if (num > 0) {
+          pos += num;
+        } else if (num < 0) {
+          neg += num;
+        }
+      } else {
+        alert("404. Entry not valid.");
+        i--;
+      }
+    }
+
+    const divRisultati = document.getElementById('risultati');
+    divRisultati.innerHTML =
+      'Somma numeri positivi: ' + pos + '<br>' +
+      'Somma numeri negativi: ' + neg;
+  </script>
+
+</body>
+</html>
