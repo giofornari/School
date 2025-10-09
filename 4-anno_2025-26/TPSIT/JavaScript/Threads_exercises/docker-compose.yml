@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  webscraper:
+    build: .
+    container_name: webscraper_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./urls.txt:/app/urls.txt:ro
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - webscraper_network
+
+networks:
+  webscraper_network:
+    driver: bridge
