@@ -237,7 +237,7 @@ html_content = '''<!DOCTYPE html>
     </div>
 
     <script>
-        const urls = ''' + json.dumps(urls[:100]) + ''';  // Limitato a 100 per performance nel browser
+        const urls = ''' + json.dumps(urls[:]) + ''';  // Limitato a 100 per performance nel browser
         
         let foundUrls = [];
         let processedCount = 0;
