@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contatore Personalizzato</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        padding: 20px;
+      }
+
+      .container {
+        background-color: white;
+        padding: 40px;
+        border-radius: 20px;
+        max-width: 450px;
+        width: 100%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 28px;
+        color: #333;
+        text-align: center;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #666;
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+
+      input[type="number"] {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 1.3rem;
+        text-align: center;
+        font-weight: 600;
+        color: #333;
+        transition: border-color 0.3s;
+      }
+
+      input[type="number"]:focus {
+        outline: none;
+        border-color: #fa709a;
+      }
+
+      #counter {
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      button {
+        flex: 1;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 1.2rem;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+
+      #decrement {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+      }
+
+      #increment {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      button:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Contatore Personalizzato</h1>
+      
+      <div class="input-group">
+        <label for="counter">Valore corrente:</label>
+        <input type="number" id="counter" value="0" />
+      </div>
+
+      <div class="input-group">
+        <label for="step">Incremento/Decremento (X):</label>
+        <input type="number" id="step" value="1" />
+      </div>
+
+      <div class="buttons">
+        <button onclick="decrementaX()">- X</button>
+        <button onclick="incrementaX()">+ X</button>
+      </div>
+    </div>
+
+    <script>
+      function incrementaX() {
+        const val = document.getElementById("counter");
+        const diff = document.getElementById("step");
+        const intVal = parseInt(val.value) || 0;
+        const diffIntVal = parseInt(diff.value) || 1;
+        val.value = intVal + diffIntVal;
+      }
+
+      function decrementaX() {
+        const val = document.getElementById("counter");
+        const diff = document.getElementById("step");
+        const intVal = parseInt(val.value) || 0;
+        const diffIntVal = parseInt(diff.value) || 1;
+        val.value = intVal - diffIntVal;
+      }
+    </script>
+  </body>
+</html>
