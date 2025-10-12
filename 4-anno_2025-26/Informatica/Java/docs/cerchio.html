@@ -391,7 +391,7 @@
             <div class="output-area">
                 <div class="info-box">
                     <i class="fas fa-info-circle"></i>
-                    Premi "Esegui" per compilare ed eseguire il codice
+                    Il codice è già compilato ed eseguito. Premi "Esegui" per vedere l'output animato.
                 </div>
                 <div id="statusIndicator"></div>
                 <div class="output-box" id="output">10.0
@@ -411,6 +411,7 @@
     </div>
     
     <script>
+        // Project data
         const sourceCode = ["public class Cerchio {\n    private double raggio;\n\n    public Cerchio() {\n        this.raggio = 10;\n    }\n    public Cerchio(double r) {\n        this.raggio = r;\n    }\n    public double getraggio() {\n        return raggio;\n    }\n    public void setraggio(double r) {\n        this.raggio = r;\n    }\n    public double area() {\n        return Math.PI * raggio * raggio;\n    }\n    public double circonferenza() {\n        return 2 * Math.PI * raggio;\n    }\n\n    public static void main(String[] args) {\n        Cerchio CIrl1 = new Cerchio();\n        System.out.println(CIrl1.getraggio());\n        System.out.println(CIrl1.area());\n        System.out.println(CIrl1.circonferenza());\n        System.out.println();\n\n        Cerchio CIrl2 = new Cerchio(5);\n        System.out.println(CIrl2.getraggio());\n        System.out.println(CIrl2.area());\n        System.out.println(CIrl2.circonferenza());\n        System.out.println();\n\n        Cerchio CIrl3 = new Cerchio(7.5);\n        System.out.println(CIrl3.getraggio());\n        System.out.println(CIrl3.area());\n        System.out.println(CIrl3.circonferenza());\n    }\n}"];
         const projectName = "Cerchio";
         const buildStatus = "success";
@@ -475,74 +476,58 @@
             
             // Disable button
             runBtn.disabled = true;
-            runBtn.innerHTML = '<div class="spinner"></div> Compilazione...';
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
             
             // Show running status
-            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Compilazione ed esecuzione in corso...</div>';
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
             output.className = 'output-box';
-            output.textContent = 'Attendere...';
+            output.textContent = '';
             
-            try {
-                // Get the main code (first file)
-                const code = sourceCode[0];
-                console.log('Code to execute:', code.substring(0, 100) + '...');
-                
-                // Use JDoodle API for compilation and execution
-                const response = await fetch('https://api.jdoodle.com/v1/execute', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        clientId: '8c4e567af1e9ad942eb1465f47a3141f',
-                        clientSecret: 'cfef3c1ab0f3bc1c5f3e80e2cf8cc6f7e73c6f8a1f6b3e6b8b1c0f3e6b8b1c0f',
-                        script: code,
-                        language: 'java',
-                        versionIndex: '4'
-                    })
-                });
-                
-                console.log('Response status:', response.status);
-                const result = await response.json();
-                console.log('Result:', result);
-                
-                if (result.error) {
-                    statusIndicator.innerHTML = '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errore di compilazione</div>';
-                    output.className = 'output-box error';
-                    output.textContent = result.error;
-                } else if (result.output) {
-                    statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
-                    output.className = 'output-box success';
-                    output.textContent = result.output;
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
                 } else {
-                    statusIndicator.innerHTML = '<div class="status-indicator error"><i class="fas fa-exclamation-circle"></i> Nessun output</div>';
-                    output.className = 'output-box error';
-                    output.textContent = 'Il programma è stato eseguito ma non ha prodotto output.\n\nOutput pre-compilato:\n' + precompiledOutput;
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
                 }
-            } catch (error) {
-                console.error('Error during execution:', error);
-                statusIndicator.innerHTML = '<div class="status-indicator error"><i class="fas fa-exclamation-triangle"></i> Errore di rete</div>';
-                output.className = 'output-box error';
-                output.textContent = 'Errore: ' + error.message + '\n\nMostrando output pre-compilato:\n\n' + precompiledOutput;
             }
             
-            // Re-enable button
-            runBtn.disabled = false;
-            runBtn.innerHTML = '<i class="fas fa-play"></i> Esegui';
+            typeWriter();
         }
         
         // Initialize syntax highlighting
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
             hljs.highlightAll();
             
             // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
             if (buildStatus === 'success') {
-                document.getElementById('statusIndicator').innerHTML = 
-                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Pre-compilato con successo</div>';
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
             } else {
-                document.getElementById('statusIndicator').innerHTML = 
-                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori nella pre-compilazione</div>';
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
             }
+            
+            console.log('Initialization complete');
         });
     </script>
 </body>
