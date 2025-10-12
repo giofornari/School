@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Projects Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        .github-link {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        
+        .github-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+        
+        .card-header h2 {
+            color: #764ba2;
+            font-size: 1.8em;
+            flex: 1;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-badge.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .card-description {
+            color: #666;
+            font-size: 1em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            min-height: 48px;
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid #f0f0f0;
+        }
+        
+        .view-link {
+            color: #667eea;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s;
+        }
+        
+        .project-card:hover .view-link {
+            gap: 12px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☕ Java Projects</h1>
+            <p class="subtitle">Progetti scolastici interattivi</p>
+            <a href="https://github.com/bigBrodyG/JavaProjects" class="github-link">
+                <i class="fab fa-github"></i>
+                View on GitHub
+            </a>
+        </header>
+        
+        <div class="projects-grid">
+            
+        <a href="cerchio.html" class="project-card">
+            <div class="card-header">
+                <h2>Cerchio</h2>
+                <span class="status-badge success">
+                    ✅ Compilato
+                </span>
+            </div>
+            <p class="card-description">Classe per calcolare area e circonferenza di un cerchio</p>
+            <div class="card-footer">
+                <span class="view-link">
+                    Visualizza ed Esegui
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+        
+        <a href="mergearray.html" class="project-card">
+            <div class="card-header">
+                <h2>mergeArray</h2>
+                <span class="status-badge success">
+                    ✅ Compilato
+                </span>
+            </div>
+            <p class="card-description">Unione e ordinamento di array</p>
+            <div class="card-footer">
+                <span class="view-link">
+                    Visualizza ed Esegui
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+        
+        <a href="oggettocd.html" class="project-card">
+            <div class="card-header">
+                <h2>OggettoCD</h2>
+                <span class="status-badge success">
+                    ✅ Compilato
+                </span>
+            </div>
+            <p class="card-description">Gestione di un catalogo CD</p>
+            <div class="card-footer">
+                <span class="view-link">
+                    Visualizza ed Esegui
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+        
+        <a href="punto.html" class="project-card">
+            <div class="card-header">
+                <h2>Punto</h2>
+                <span class="status-badge success">
+                    ✅ Compilato
+                </span>
+            </div>
+            <p class="card-description">Rappresentazione di un punto nel piano cartesiano</p>
+            <div class="card-footer">
+                <span class="view-link">
+                    Visualizza ed Esegui
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+        
+        <a href="rettangolo.html" class="project-card">
+            <div class="card-header">
+                <h2>Rettangolo</h2>
+                <span class="status-badge success">
+                    ✅ Compilato
+                </span>
+            </div>
+            <p class="card-description">Calcolo di vertici e proprietà di un rettangolo</p>
+            <div class="card-footer">
+                <span class="view-link">
+                    Visualizza ed Esegui
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+        
+        <a href="vocalcount.html" class="project-card">
+            <div class="card-header">
+                <h2>vocalcount</h2>
+                <span class="status-badge success">
+                    ✅ Compilato
+                </span>
+            </div>
+            <p class="card-description">Conteggio delle vocali in una stringa</p>
+            <div class="card-footer">
+                <span class="view-link">
+                    Visualizza ed Esegui
+                    <i class="fas fa-arrow-right"></i>
+                </span>
+            </div>
+        </a>
+        
+        </div>
+        
+        <footer>
+            <p>Generato automaticamente con GitHub Actions</p>
+            <p style="margin-top: 10px;">
+                <a href="https://github.com/bigBrodyG/JavaProjects">bigBrodyG/JavaProjects</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

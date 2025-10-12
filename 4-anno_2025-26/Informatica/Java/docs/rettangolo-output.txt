@@ -1,0 +1,9 @@
+Vertici:
+A: (1.5, 19.5)
+B: (8.5, 19.5)
+C: (8.5, 8.5)
+D: (1.5, 8.5)
+
+Punto (3,4) contenuto: true
+
+Vertice più vicino all'origine: (1.5, 8.5)

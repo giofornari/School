@@ -8,3 +8,9 @@
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange?style=for-the-badge&logo=github)
 ![Last Commit](https://img.shields.io/github/last-commit/bigBrodyG/JavaProjects?style=for-the-badge)
 ![Issues](https://img.shields.io/github/issues/bigBrodyG/JavaProjects?style=for-the-badge)
+
+## 🌐 Live Showcase
+
+**[View the interactive showcase website →](https://bigBrodyG.github.io/JavaProjects/)**
+
+All projects are automatically compiled and run with each commit. The website displays source code, build status, and program output.
