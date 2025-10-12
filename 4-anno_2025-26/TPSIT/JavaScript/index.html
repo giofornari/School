@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DIY JavaScript - Projects & Exercises</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .emoji {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .project-section {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .project-title {
+            font-size: 1.8rem;
+            color: #333;
+        }
+
+        .project-count {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .files-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .file-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .file-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .file-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .file-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .file-type {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 5px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .file-type.html {
+            background: #e34c26;
+        }
+
+        .file-type.py {
+            background: #3776ab;
+        }
+
+        .file-type.js {
+            background: #f7df1e;
+            color: #333;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        .github-link {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        .github-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .last-updated {
+            margin-top: 20px;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats {
+                gap: 15px;
+            }
+
+            .files-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="emoji">🎡 🚀 💻</div>
+            <h1>DIY JavaScript</h1>
+            <p class="subtitle">Projects & Exercises Collection</p>
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-number">2</span>
+                    <span class="stat-label">Categories</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">7</span>
+                    <span class="stat-label">Total Files</span>
+                </div>
+            </div>
+        </header>
+
+
+        <section class="project-section">
+            <div class="project-header">
+                <h2 class="project-title">Threads_exercises</h2>
+                <span class="project-count">2 files</span>
+            </div>
+            <div class="files-grid">
+
+                <a href="Threads_exercises/generate_static_site.py" class="file-card">
+                    <span class="file-type py">PY</span>
+                    <div class="file-name">generate_static_site.py</div>
+                    <div class="file-meta">
+                        <span>📦 13.7 KB</span>
+                        <span>📅 2025-10-09</span>
+                    </div>
+                </a>
+
+                <a href="Threads_exercises/webscraper.py" class="file-card">
+                    <span class="file-type py">PY</span>
+                    <div class="file-name">webscraper.py</div>
+                    <div class="file-meta">
+                        <span>📦 1.7 KB</span>
+                        <span>📅 2025-10-07</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <section class="project-section">
+            <div class="project-header">
+                <h2 class="project-title">fundamentals</h2>
+                <span class="project-count">5 files</span>
+            </div>
+            <div class="files-grid">
+
+                <a href="fundamentals/contatore.html" class="file-card">
+                    <span class="file-type html">HTML</span>
+                    <div class="file-name">contatore.html</div>
+                    <div class="file-meta">
+                        <span>📦 2.9 KB</span>
+                        <span>📅 2025-10-11</span>
+                    </div>
+                </a>
+
+                <a href="fundamentals/contatore_custom.html" class="file-card">
+                    <span class="file-type html">HTML</span>
+                    <div class="file-name">contatore_custom.html</div>
+                    <div class="file-meta">
+                        <span>📦 3.5 KB</span>
+                        <span>📅 2025-10-12</span>
+                    </div>
+                </a>
+
+                <a href="fundamentals/index.html" class="file-card">
+                    <span class="file-type html">HTML</span>
+                    <div class="file-name">index.html</div>
+                    <div class="file-meta">
+                        <span>📦 1.1 KB</span>
+                        <span>📅 2025-10-06</span>
+                    </div>
+                </a>
+
+                <a href="fundamentals/stringhe.html" class="file-card">
+                    <span class="file-type html">HTML</span>
+                    <div class="file-name">stringhe.html</div>
+                    <div class="file-meta">
+                        <span>📦 2.8 KB</span>
+                        <span>📅 2025-10-10</span>
+                    </div>
+                </a>
+
+                <a href="fundamentals/tabeline.html" class="file-card">
+                    <span class="file-type html">HTML</span>
+                    <div class="file-name">tabeline.html</div>
+                    <div class="file-meta">
+                        <span>📦 3.8 KB</span>
+                        <span>📅 2025-10-06</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <footer>
+            <a href="https://github.com/bigBrodyG/DIYJavaScript" class="github-link" target="_blank">
+                <span>⭐</span>
+                <span>View on GitHub</span>
+            </a>
+            <p class="last-updated">Last updated: October 12, 2025 at 14:50 UTC</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add some interactivity
+        console.log('🎉 DIY JavaScript - Projects loaded successfully!');
+        console.log('📊 Total categories: 2');
+        console.log('📁 Total files: 7');
+    </script>
+</body>
+</html>
