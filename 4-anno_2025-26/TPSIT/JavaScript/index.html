@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIY JavaScript - Projects & Exercises</title>
+    <title>JavaScript homemade - Projects & Exercises</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --card-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.2);
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,75 +36,169 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--primary-gradient);
+            background-attachment: fixed;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         header {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: var(--spacing-xl) var(--spacing-lg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            margin-bottom: var(--spacing-xl);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         h1 {
-            color: #333;
+            color: #1a1a2e;
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+            letter-spacing: -0.02em;
         }
 
         .emoji {
             font-size: 3rem;
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-md);
+            display: inline-block;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 8px 20px rgba(102, 126, 234, 0.4));
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .emoji:hover {
+            transform: translateY(-5px) scale(1.1);
+            filter: drop-shadow(0 12px 30px rgba(102, 126, 234, 0.6));
         }
 
         .subtitle {
             color: #666;
             font-size: 1.1rem;
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-md);
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            line-height: 1.6;
         }
 
         .stats {
             display: flex;
             justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
             flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
         }
 
         .stat {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             color: white;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-weight: bold;
+            padding: 18px 32px;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            min-width: 140px;
+        }
+
+        .stat:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+
+        .stat:active {
+            transform: translateY(-3px) scale(1.02);
         }
 
         .stat-number {
-            font-size: 2rem;
+            font-size: 2.2rem;
             display: block;
+            font-weight: 800;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+            margin-bottom: var(--spacing-xs);
         }
 
         .stat-label {
-            font-size: 0.9rem;
-            opacity: 0.9;
+            font-size: 0.85rem;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
         }
 
         .project-section {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            padding: 28px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.4s ease;
+        }
+
+        .project-section:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl), 0 0 40px rgba(102, 126, 234, 0.1);
         }
 
         .project-header {
@@ -88,144 +206,362 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
+            padding: 18px;
+            background: var(--card-gradient);
+            border-radius: var(--radius-md);
+            border-bottom: 3px solid rgba(102, 126, 234, 0.1);
         }
 
         .project-title {
-            font-size: 1.8rem;
-            color: #333;
+            font-size: 1.6rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .project-title::before {
+            content: '📁';
+            font-size: 1.4rem;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .project-section:hover .project-title::before {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .project-count {
-            background: #667eea;
+            background: var(--success-gradient);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
             font-size: 0.9rem;
-            font-weight: bold;
+            font-weight: 700;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .project-section:hover .project-count {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(255, 255, 255, 0.8);
         }
 
         .files-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
             gap: 20px;
+            padding: var(--spacing-sm);
         }
 
         .file-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: white;
             padding: 20px;
-            border-radius: 10px;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border-radius: var(--radius-lg);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             cursor: pointer;
             text-decoration: none;
             color: inherit;
             display: block;
+            border: 2px solid #f0f0f0;
+            position: relative;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .file-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 2px;
+            background: var(--primary-gradient);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .file-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .file-card:hover::before {
+            opacity: 1;
+        }
+
+        /* Active state */
+        .file-card:active {
+            transform: translateY(-4px) scale(1.005);
+            transition: all 0.1s ease;
         }
 
         .file-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 12px;
             word-break: break-word;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .file-card:hover .file-name {
+            color: #667eea;
+            transform: translateX(3px);
         }
 
         .file-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #666;
-            margin-top: 10px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 2px solid #f0f0f0;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .file-card:hover .file-meta {
+            border-top-color: rgba(102, 126, 234, 0.3);
+            color: #555;
+        }
+
+        .file-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: 500;
         }
 
         .file-type {
             display: inline-block;
             background: #667eea;
             color: white;
-            padding: 4px 12px;
-            border-radius: 5px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            margin-bottom: 8px;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .file-card:hover .file-type {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: var(--shadow-md);
         }
 
         .file-type.html {
-            background: #e34c26;
+            background: linear-gradient(135deg, #e34c26 0%, #f06529 100%);
+        }
+
+        .file-card:hover .file-type.html {
+            box-shadow: 0 4px 12px rgba(227, 76, 38, 0.4);
         }
 
         .file-type.py {
-            background: #3776ab;
+            background: linear-gradient(135deg, #3776ab 0%, #4b8bbe 100%);
+        }
+
+        .file-card:hover .file-type.py {
+            box-shadow: 0 4px 12px rgba(55, 118, 171, 0.4);
         }
 
         .file-type.js {
-            background: #f7df1e;
-            color: #333;
+            background: linear-gradient(135deg, #f7df1e 0%, #ffd700 100%);
+            color: #1a1a2e;
+        }
+
+        .file-card:hover .file-type.js {
+            box-shadow: 0 4px 12px rgba(247, 223, 30, 0.5);
+        }
+
+        .file-type.mjs {
+            background: linear-gradient(135deg, #f7df1e 0%, #ffd700 100%);
+            color: #1a1a2e;
+        }
+
+        .file-card:hover .file-type.mjs {
+            box-shadow: 0 4px 12px rgba(247, 223, 30, 0.5);
         }
 
         footer {
             text-align: center;
             color: white;
-            margin-top: 40px;
-            padding: 20px;
+            margin-top: var(--spacing-xl);
+            padding: var(--spacing-xl) var(--spacing-md);
+            position: relative;
+            z-index: 1;
+        }
+
+        .last-updated {
+            margin-top: var(--spacing-lg);
+            opacity: 0.9;
+            font-size: 1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .github-link {
             color: white;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 10px;
-            transition: background 0.3s;
+            gap: var(--spacing-sm);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 16px 28px;
+            border-radius: var(--radius-lg);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            font-size: 1rem;
+            position: relative;
+            box-shadow: var(--shadow-md);
         }
 
         .github-link:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.35);
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-lg), 0 12px 36px rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.8);
         }
 
-        .last-updated {
-            margin-top: 20px;
-            opacity: 0.8;
-            font-size: 0.9rem;
+        .github-link:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .github-link span {
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .github-link:hover span {
+            transform: scale(1.15) rotate(10deg);
         }
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
+            }
+
+            .emoji {
+                font-size: 2.5rem;
             }
 
             .stats {
                 gap: 15px;
             }
 
+            .stat {
+                padding: 15px 25px;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
             .files-grid {
                 grid-template-columns: 1fr;
             }
+
+            .project-title {
+                font-size: 1.5rem;
+            }
+
+            .project-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            header {
+                padding: 35px 25px;
+            }
+
+            .project-section {
+                padding: 25px 20px;
+            }
+        }
+
+        /* Scroll animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .project-section:nth-child(even) {
+            animation-delay: 0.1s;
+        }
+
+        /* Loading state */
+        .file-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <div class="emoji">🎡 🚀 💻</div>
-            <h1>DIY JavaScript</h1>
-            <p class="subtitle">Projects & Exercises Collection</p>
+            <div class="emoji">🚀 💻 🎨</div>
+            <h1>JavaScript Homemade</h1>
+            <p class="subtitle">Interactive Projects & Coding Exercises</p>
             <div class="stats">
                 <div class="stat">
                     <span class="stat-number">2</span>
                     <span class="stat-label">Categories</span>
                 </div>
                 <div class="stat">
-                    <span class="stat-number">7</span>
+                    <span class="stat-number">6</span>
                     <span class="stat-label">Total Files</span>
                 </div>
             </div>
@@ -235,25 +571,16 @@
         <section class="project-section">
             <div class="project-header">
                 <h2 class="project-title">Threads_exercises</h2>
-                <span class="project-count">2 files</span>
+                <span class="project-count">1 files</span>
             </div>
             <div class="files-grid">
-
-                <a href="Threads_exercises/generate_static_site.py" class="file-card">
-                    <span class="file-type py">PY</span>
-                    <div class="file-name">generate_static_site.py</div>
-                    <div class="file-meta">
-                        <span>📦 13.7 KB</span>
-                        <span>📅 2025-10-12</span>
-                    </div>
-                </a>
 
                 <a href="Threads_exercises/webscraper.py" class="file-card">
                     <span class="file-type py">PY</span>
                     <div class="file-name">webscraper.py</div>
                     <div class="file-meta">
                         <span>📦 1.7 KB</span>
-                        <span>📅 2025-10-12</span>
+                        <span>📅 2025-10-07</span>
                     </div>
                 </a>
 
@@ -272,7 +599,7 @@
                     <div class="file-name">contatore.html</div>
                     <div class="file-meta">
                         <span>📦 2.9 KB</span>
-                        <span>📅 2025-10-12</span>
+                        <span>📅 2025-10-11</span>
                     </div>
                 </a>
 
@@ -290,7 +617,7 @@
                     <div class="file-name">index.html</div>
                     <div class="file-meta">
                         <span>📦 1.1 KB</span>
-                        <span>📅 2025-10-12</span>
+                        <span>📅 2025-10-06</span>
                     </div>
                 </a>
 
@@ -299,7 +626,7 @@
                     <div class="file-name">stringhe.html</div>
                     <div class="file-meta">
                         <span>📦 2.8 KB</span>
-                        <span>📅 2025-10-12</span>
+                        <span>📅 2025-10-10</span>
                     </div>
                 </a>
 
@@ -308,7 +635,7 @@
                     <div class="file-name">tabeline.html</div>
                     <div class="file-meta">
                         <span>📦 3.8 KB</span>
-                        <span>📅 2025-10-12</span>
+                        <span>📅 2025-10-06</span>
                     </div>
                 </a>
 
@@ -320,7 +647,7 @@
                 <span>⭐</span>
                 <span>View on GitHub</span>
             </a>
-            <p class="last-updated">Last updated: October 12, 2025 at 13:57 UTC</p>
+            <p class="last-updated">Last updated: October 12, 2025 at 18:57 UTC</p>
         </footer>
     </div>
 
@@ -328,7 +655,24 @@
         // Add some interactivity
         console.log('🎉 DIY JavaScript - Projects loaded successfully!');
         console.log('📊 Total categories: 2');
-        console.log('📁 Total files: 7');
+        console.log('📁 Total files: 6');
+
+        // Scroll reveal animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.project-section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
     </script>
 </body>
 </html>
