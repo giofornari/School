@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Java Projects Showcase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,11 +15,36 @@
             box-sizing: border-box;
         }
         
+        :root {
+            /* Palette scura moderna e accattivante */
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-tertiary: #1e2642;
+            --text-primary: #f0f3ff;
+            --text-secondary: #a0a8c0;
+            --text-muted: #6b7599;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-tertiary: #ff006e;
+            --accent-success: #00ff88;
+            --accent-warning: #ffd60a;
+            --accent-error: #ff4757;
+            --border-default: #2d3551;
+            --border-accent: rgba(0, 212, 255, 0.3);
+            --glow-primary: rgba(0, 212, 255, 0.4);
+            --glow-secondary: rgba(124, 58, 237, 0.4);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px var(--glow-primary);
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
         }
         
         .container {
@@ -26,137 +54,234 @@
         
         header {
             text-align: center;
-            color: white;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
             padding: 40px 20px;
         }
         
         h1 {
             font-size: 3.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 12px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 50%, var(--accent-tertiary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1.5px;
+            text-shadow: 0 0 40px var(--glow-primary);
+        }
+        
+        h1 .emoji {
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
         }
         
         .subtitle {
-            font-size: 1.3em;
+            font-size: 1.25em;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            font-weight: 500;
             opacity: 0.9;
-            margin-bottom: 20px;
         }
         
         .github-link {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 25px;
-            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            padding: 14px 28px;
+            border-radius: 12px;
+            color: var(--text-primary);
             text-decoration: none;
-            transition: background 0.3s;
-            margin-top: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-default);
+            font-weight: 600;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .github-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--glow-primary), transparent);
+            transition: left 0.5s;
+        }
+        
+        .github-link:hover::before {
+            left: 100%;
         }
         
         .github-link:hover {
-            background: rgba(255,255,255,0.3);
+            border-color: var(--accent-primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow), var(--shadow-lg);
+            color: var(--accent-primary);
         }
         
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
         }
         
         .project-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-radius: 20px;
+            padding: 32px;
             text-decoration: none;
             color: inherit;
             display: block;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid var(--border-default);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--glow-primary) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .project-card:hover::before {
+            opacity: 0.15;
         }
         
         .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 48px rgba(0, 212, 255, 0.25), 0 0 40px var(--glow-secondary);
+            border-color: var(--accent-primary);
         }
         
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
-            gap: 15px;
+            margin-bottom: 18px;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
         }
         
         .card-header h2 {
-            color: #764ba2;
-            font-size: 1.8em;
+            font-size: 1.7em;
             flex: 1;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
         }
         
         .status-badge {
             padding: 6px 12px;
             border-radius: 20px;
-            font-size: 0.8em;
-            font-weight: bold;
+            font-size: 0.75em;
+            font-weight: 600;
             white-space: nowrap;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .status-badge.success {
-            background: #d4edda;
-            color: #155724;
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-success);
+            border: 2px solid var(--accent-success);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        }
+        
+        .status-badge.theory {
+            background: rgba(255, 215, 0, 0.15);
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
         
         .status-badge.error {
-            background: #f8d7da;
-            color: #721c24;
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--accent-error);
+            border: 2px solid var(--accent-error);
+            box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
         }
         
         .card-description {
-            color: #666;
+            color: var(--text-primary);
             font-size: 1em;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            line-height: 1.7;
+            margin-bottom: 24px;
             min-height: 48px;
+            position: relative;
+            z-index: 1;
+            opacity: 0.85;
         }
         
         .card-footer {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            padding-top: 15px;
-            border-top: 2px solid #f0f0f0;
+            padding-top: 20px;
+            border-top: 2px solid var(--border-default);
+            position: relative;
+            z-index: 1;
         }
         
         .view-link {
-            color: #667eea;
-            font-weight: bold;
+            color: var(--accent-primary);
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: gap 0.3s;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .project-card:hover .view-link {
-            gap: 12px;
+            gap: 14px;
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px var(--glow-secondary);
         }
         
         footer {
             text-align: center;
-            color: white;
-            padding: 30px;
-            margin-top: 30px;
+            color: var(--text-secondary);
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 2px solid var(--border-default);
         }
         
         footer a {
-            color: white;
+            color: var(--accent-primary);
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
+            transition: all 0.3s;
+            position: relative;
         }
         
         footer a:hover {
-            text-decoration: underline;
+            color: var(--accent-secondary);
+            text-shadow: 0 0 10px var(--glow-secondary);
         }
         
         @media (max-width: 768px) {
@@ -167,14 +292,18 @@
             .projects-grid {
                 grid-template-columns: 1fr;
             }
+            
+            body {
+                padding: 20px 15px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>☕ Java Projects</h1>
-            <p class="subtitle">Progetti scolastici interattivi</p>
+            <h1>☕ School homewerks and exercises</h1>
+            <p class="subtitle">My own showcase for all my exercises and </p>
             <a href="https://github.com/bigBrodyG/JavaProjects" class="github-link">
                 <i class="fab fa-github"></i>
                 View on GitHub
@@ -186,8 +315,8 @@
         <a href="cerchio.html" class="project-card">
             <div class="card-header">
                 <h2>Cerchio</h2>
-                <span class="status-badge success">
-                    ✅ Compilato
+                <span class="status-badge theory">
+                    📚 Teoria
                 </span>
             </div>
             <p class="card-description">Classe per calcolare area e circonferenza di un cerchio</p>
@@ -203,7 +332,7 @@
             <div class="card-header">
                 <h2>mergeArray</h2>
                 <span class="status-badge success">
-                    ✅ Compilato
+                    🔬 Laboratorio
                 </span>
             </div>
             <p class="card-description">Unione e ordinamento di array</p>
@@ -219,7 +348,7 @@
             <div class="card-header">
                 <h2>OggettoCD</h2>
                 <span class="status-badge success">
-                    ✅ Compilato
+                    🔬 Laboratorio
                 </span>
             </div>
             <p class="card-description">Gestione di un catalogo CD</p>
@@ -234,8 +363,8 @@
         <a href="punto.html" class="project-card">
             <div class="card-header">
                 <h2>Punto</h2>
-                <span class="status-badge success">
-                    ✅ Compilato
+                <span class="status-badge theory">
+                    📚 Teoria
                 </span>
             </div>
             <p class="card-description">Rappresentazione di un punto nel piano cartesiano</p>
@@ -250,8 +379,8 @@
         <a href="rettangolo.html" class="project-card">
             <div class="card-header">
                 <h2>Rettangolo</h2>
-                <span class="status-badge success">
-                    ✅ Compilato
+                <span class="status-badge theory">
+                    📚 Teoria
                 </span>
             </div>
             <p class="card-description">Calcolo di vertici e proprietà di un rettangolo</p>
@@ -267,7 +396,7 @@
             <div class="card-header">
                 <h2>vocalcount</h2>
                 <span class="status-badge success">
-                    ✅ Compilato
+                    🔬 Laboratorio
                 </span>
             </div>
             <p class="card-description">Conteggio delle vocali in una stringa</p>

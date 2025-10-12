@@ -9,99 +9,146 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        :root {
+            /* Palette scura moderna e accattivante */
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151932;
+            --bg-tertiary: #1e2642;
+            --bg-card: linear-gradient(135deg, #1a1f3a 0%, #252b4a 100%);
+            --bg-code: #0f1421;
+            --text-primary: #f0f3ff;
+            --text-secondary: #a0a8c0;
+            --text-muted: #6b7599;
+            --accent-primary: #00d4ff;
+            --accent-secondary: #7c3aed;
+            --accent-tertiary: #ff006e;
+            --accent-success: #00ff88;
+            --accent-warning: #ffd60a;
+            --accent-error: #ff4757;
+            --border-default: #2d3551;
+            --border-accent: rgba(0, 212, 255, 0.3);
+            --glow-primary: rgba(0, 212, 255, 0.4);
+            --glow-secondary: rgba(124, 58, 237, 0.4);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px var(--glow-primary);
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #1e1e1e;
-            color: #d4d4d4;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
         
         header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 30px;
+            background: var(--bg-secondary);
+            padding: 20px 32px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
         }
         
         header h1 {
-            font-size: 1.8em;
+            font-size: 1.5em;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 10px;
+            color: var(--text-primary);
+        }
+        
+        header h1 i {
+            color: var(--accent-primary);
         }
         
         .back-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 14px;
-            transition: background 0.3s;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
         
         .back-btn:hover {
-            background: rgba(255,255,255,0.3);
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
         
         .container {
             display: flex;
             flex: 1;
             overflow: hidden;
+            background: var(--bg-primary);
         }
         
         .left-panel {
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: #252526;
-            border-right: 1px solid #3e3e42;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-light);
         }
         
         .tabs {
             display: flex;
-            background: #2d2d30;
-            border-bottom: 1px solid #3e3e42;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0 16px;
             overflow-x: auto;
         }
         
         .tab-button {
             background: transparent;
             border: none;
-            color: #969696;
+            color: var(--text-muted);
             padding: 12px 20px;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
+            border-radius: 8px;
             font-size: 13px;
+            font-weight: 600;
             white-space: nowrap;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid transparent;
         }
         
         .tab-button:hover {
-            color: #d4d4d4;
-            background: #2a2d2e;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border-color: var(--border-accent);
         }
         
         .tab-button.active {
-            color: white;
-            border-bottom-color: #667eea;
-            background: #1e1e1e;
+            color: var(--accent-primary);
+            background: var(--bg-primary);
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 12px var(--glow-primary);
         }
         
         .code-area {
@@ -126,56 +173,61 @@
         
         .tab-content pre code {
             display: block;
-            padding: 20px !important;
-            background: #1e1e1e !important;
+            padding: 24px !important;
+            background: var(--bg-code) !important;
             height: 100%;
             font-size: 14px;
             line-height: 1.6;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--text-primary) !important;
         }
         
         .right-panel {
-            width: 500px;
+            width: 45%;
             display: flex;
             flex-direction: column;
-            background: #1e1e1e;
+            background: var(--bg-secondary);
+            border-left: 2px solid var(--border-default);
         }
         
         .run-header {
-            background: #2d2d30;
-            padding: 15px 20px;
-            border-bottom: 1px solid #3e3e42;
+            background: var(--bg-tertiary);
+            padding: 16px 24px;
+            border-bottom: 2px solid var(--border-default);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .run-header h2 {
-            font-size: 1.1em;
-            color: #cccccc;
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
         .run-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--accent-primary);
             color: white;
             border: none;
-            padding: 10px 25px;
-            border-radius: 5px;
+            padding: 10px 24px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: bold;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
         
         .run-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
         
         .run-btn:active {
@@ -190,69 +242,75 @@
         
         .output-area {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow: auto;
-            background: #1e1e1e;
+            background: var(--bg-primary);
         }
         
         .output-box {
-            background: #0e0e0e;
-            border: 1px solid #3e3e42;
-            border-radius: 8px;
-            padding: 15px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 20px;
             min-height: 200px;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-family: 'Fira Code', 'Consolas', monospace;
             font-size: 13px;
             line-height: 1.6;
             white-space: pre-wrap;
             word-wrap: break-word;
-            color: #d4d4d4;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
         }
         
         .output-box.error {
-            color: #f48771;
-            border-color: #f48771;
+            color: #dc2626;
+            background: #fef2f2;
+            border-color: #fecaca;
         }
         
         .output-box.success {
-            color: #4ec9b0;
+            color: var(--accent-success);
         }
         
         .status-indicator {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 8px 16px;
+            border-radius: 8px;
             font-size: 13px;
-            margin-bottom: 15px;
+            font-weight: 500;
+            margin-bottom: 16px;
         }
         
         .status-indicator.success {
-            background: rgba(78, 201, 176, 0.1);
-            color: #4ec9b0;
-            border: 1px solid rgba(78, 201, 176, 0.3);
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-success);
+            border: 1px solid var(--accent-success);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
         
         .status-indicator.error {
-            background: rgba(244, 135, 113, 0.1);
-            color: #f48771;
-            border: 1px solid rgba(244, 135, 113, 0.3);
+            background: rgba(255, 71, 87, 0.15);
+            color: var(--accent-error);
+            border: 1px solid var(--accent-error);
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
         }
         
         .status-indicator.running {
-            background: rgba(102, 126, 234, 0.1);
-            color: #667eea;
-            border: 1px solid rgba(102, 126, 234, 0.3);
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
         
         .spinner {
-            border: 2px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
-            border-top: 2px solid #667eea;
-            width: 16px;
-            height: 16px;
-            animation: spin 1s linear infinite;
+            border-top: 2px solid currentColor;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.6s linear infinite;
         }
         
         @keyframes spin {
@@ -261,13 +319,20 @@
         }
         
         .info-box {
-            background: #2d2d30;
-            border-left: 3px solid #667eea;
-            padding: 12px 15px;
-            margin-bottom: 15px;
-            border-radius: 4px;
+            background: #ede9fe;
+            border-left: 3px solid var(--accent-primary);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 8px;
             font-size: 13px;
-            color: #cccccc;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box i {
+            color: var(--accent-primary);
         }
         
         @media (max-width: 1024px) {
@@ -278,23 +343,25 @@
             .right-panel {
                 width: 100%;
                 border-left: none;
-                border-top: 1px solid #3e3e42;
+                border-top: 1px solid var(--border-light);
             }
         }
         
         .copy-btn {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(102, 126, 234, 0.8);
+            top: 12px;
+            right: 12px;
+            background: var(--accent-primary);
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
+            padding: 6px 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
+            font-weight: 500;
             opacity: 0;
-            transition: opacity 0.2s, background 0.2s;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
         
         .code-area:hover .copy-btn {
@@ -302,7 +369,9 @@
         }
         
         .copy-btn:hover {
-            background: rgba(102, 126, 234, 1);
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
     </style>
 </head>
@@ -412,10 +481,6 @@
                 </button>
             </div>
             <div class="output-area">
-                <div class="info-box">
-                    <i class="fas fa-info-circle"></i>
-                    Il codice è già compilato ed eseguito. Premi "Esegui" per vedere l'output animato.
-                </div>
                 <div id="statusIndicator"></div>
                 <div class="output-box" id="output">p1: (3.0, 4.0)
 p2: (0.0, 0.0)
