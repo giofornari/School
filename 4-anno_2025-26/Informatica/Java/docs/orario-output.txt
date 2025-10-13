@@ -1,0 +1,4 @@
+Orario iniziale: 23:59:59
+Dopo un tic: 0:0:0
+Dopo 125 minuti: 2:5:0
+Gli orari sono diversi.
