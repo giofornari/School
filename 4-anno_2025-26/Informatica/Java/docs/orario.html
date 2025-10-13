@@ -18,26 +18,33 @@
         }
         
         :root {
+            /* Palette scura moderna e accattivante */
             --bg-primary: #0a0e27;
             --bg-secondary: #151932;
             --bg-tertiary: #1e2642;
+            --bg-card: linear-gradient(135deg, #1a1f3a 0%, #252b4a 100%);
             --bg-code: #0f1421;
             --text-primary: #f0f3ff;
             --text-secondary: #a0a8c0;
             --text-muted: #6b7599;
             --accent-primary: #00d4ff;
             --accent-secondary: #7c3aed;
+            --accent-tertiary: #ff006e;
             --accent-success: #00ff88;
+            --accent-warning: #ffd60a;
             --accent-error: #ff4757;
             --border-default: #2d3551;
             --border-accent: rgba(0, 212, 255, 0.3);
             --glow-primary: rgba(0, 212, 255, 0.4);
+            --glow-secondary: rgba(124, 58, 237, 0.4);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
             --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
             --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+            --shadow-glow: 0 0 20px var(--glow-primary);
         }
         
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             height: 100vh;
@@ -52,7 +59,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow-md);
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
         }
         
         header h1 {
@@ -61,6 +69,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            color: var(--text-primary);
         }
         
         header h1 i {
@@ -70,13 +79,15 @@
         .back-btn {
             background: var(--bg-primary);
             color: var(--text-primary);
-            border: 1px solid var(--border-default);
+            border: 1px solid var(--border-light);
             padding: 10px 20px;
             border-radius: 8px;
+            cursor: pointer;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
             font-weight: 500;
             transition: all 0.2s ease;
         }
@@ -86,12 +97,14 @@
             color: white;
             border-color: var(--accent-primary);
             transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
         
         .container {
             display: flex;
             flex: 1;
             overflow: hidden;
+            background: var(--bg-primary);
         }
         
         .left-panel {
@@ -99,13 +112,15 @@
             display: flex;
             flex-direction: column;
             background: var(--bg-secondary);
+            border-right: 1px solid var(--border-light);
         }
         
         .tabs {
             display: flex;
             background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border-default);
+            border-bottom: 1px solid var(--border-light);
             padding: 0 16px;
+            overflow-x: auto;
         }
         
         .tab-button {
@@ -114,13 +129,18 @@
             color: var(--text-muted);
             padding: 12px 20px;
             cursor: pointer;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 600;
+            white-space: nowrap;
             transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
             border: 1px solid transparent;
         }
         
         .tab-button:hover {
             color: var(--text-primary);
+            background: var(--bg-secondary);
             border-color: var(--border-accent);
         }
         
@@ -134,6 +154,7 @@
         .code-area {
             flex: 1;
             overflow: auto;
+            position: relative;
         }
         
         .tab-content {
@@ -157,7 +178,8 @@
             height: 100%;
             font-size: 14px;
             line-height: 1.6;
-            font-family: 'Fira Code', monospace;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--text-primary) !important;
         }
         
         .right-panel {
@@ -178,197 +200,298 @@
         }
         
         .run-header h2 {
-            font-size: 1.1em;
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-        
-        .controls {
-            display: flex;
             gap: 10px;
         }
         
         .run-btn {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: var(--accent-primary);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 24px;
             border-radius: 8px;
             cursor: pointer;
+            font-size: 14px;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
         }
         
-        .run-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px var(--glow-primary);
+        .run-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .run-btn:active {
+            transform: translateY(0);
         }
         
         .run-btn:disabled {
-            opacity: 0.6;
+            opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         
-        .copy-btn {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            border: 1px solid var(--border-default);
-            padding: 10px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .copy-btn:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-        
-        .output-container {
+        .output-area {
             flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .status-bar {
-            padding: 12px 24px;
-            background: var(--bg-primary);
-            border-bottom: 1px solid var(--border-default);
-        }
-        
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-        
-        .status-indicator.success {
-            color: var(--accent-success);
-        }
-        
-        .status-indicator.error {
-            color: var(--accent-error);
-        }
-        
-        .output-wrapper {
-            flex: 1;
-            overflow: auto;
             padding: 24px;
-            background: var(--bg-code);
+            overflow: auto;
+            background: var(--bg-primary);
         }
         
         .output-box {
-            font-family: 'Fira Code', monospace;
-            font-size: 14px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 200px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
             line-height: 1.6;
             white-space: pre-wrap;
-            color: var(--text-secondary);
-            padding: 16px;
-            background: var(--bg-primary);
-            border-radius: 8px;
-            border: 1px solid var(--border-default);
-        }
-        
-        .output-box.success {
-            border-color: var(--accent-success);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            word-wrap: break-word;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-sm);
         }
         
         .output-box.error {
-            border-color: var(--accent-error);
+            color: #dc2626;
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .output-box.success {
+            color: var(--accent-success);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .status-indicator.success {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-success);
+            border: 1px solid var(--accent-success);
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+        
+        .status-indicator.error {
+            background: rgba(255, 71, 87, 0.15);
             color: var(--accent-error);
+            border: 1px solid var(--accent-error);
+            box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+        }
+        
+        .status-indicator.running {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-primary);
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
         
         .spinner {
-            display: inline-block;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 2px solid currentColor;
             width: 14px;
             height: 14px;
-            border: 2px solid var(--border-default);
-            border-top-color: var(--accent-primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.6s linear infinite;
         }
         
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
-        ::-webkit-scrollbar {
-            width: 10px;
+        .info-box {
+            background: #ede9fe;
+            border-left: 3px solid var(--accent-primary);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
+        .info-box i {
+            color: var(--accent-primary);
         }
         
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-default);
-            border-radius: 5px;
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-light);
+            }
         }
         
-        ::-webkit-scrollbar-thumb:hover {
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
             background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .code-area:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
     </style>
 </head>
 <body>
     <header>
         <h1>
-            <i class="fas fa-code"></i>
+            <i class="fas fa-coffee"></i>
             Orario
         </h1>
         <a href="index.html" class="back-btn">
             <i class="fas fa-arrow-left"></i>
-            Torna alla Home
+            Tutti i Progetti
         </a>
     </header>
     
     <div class="container">
         <div class="left-panel">
             <div class="tabs">
-                <button class="tab-button active" data-tab="source">
-                    <i class="fas fa-file-code"></i>
-                    TestOrario.java
-                </button>
+                
+            <button class="tab-button active" data-tab="orario-tab0">Orario.java</button>
+        
+            <button class="tab-button " data-tab="orario-tab1">TestOrario.java</button>
+        
             </div>
-            
-            <div class="code-area">
-                <div id="source" class="tab-content active">
-                    <pre><code class="language-java">public class TestOrario {
+            <div class="code-area" id="codeArea">
+                
+            <div id="orario-tab0" class="tab-content active">
+                <pre><code class="language-java">public class Orario {
+    private int ore;
+    private int minuti;
+    private int secondi;
+
+    public Orario(int ore, int minuti, int secondi) {
+        if (ore &lt; 0 || ore &gt;= 24 || minuti &lt; 0 || minuti &gt;= 60 || secondi &lt; 0 || secondi &gt;= 60) {
+            this.ore = 0;
+            this.minuti = 0;
+            this.secondi = 0;
+        } else {
+            this.ore = ore;
+            this.minuti = minuti;
+            this.secondi = secondi;
+        }
+    }
+
+    public Orario() {
+        this.ore = 0;
+        this.minuti = 0;
+        this.secondi = 0;
+    }
+   
+    public int getOre() { return ore; }
+   
+    public int getMinuti() { return minuti; }
+   
+    public int getSecondi() { return secondi; }
+    
+    public void tic() {
+        this.secondi++;
+        if (this.secondi &gt;= 60) {
+            this.secondi = 0;
+            this.minuti++;
+            if (this.minuti &gt;= 60) {
+                this.minuti = 0;
+                this.ore++;
+                if (this.ore &gt;= 24) {
+                    this.ore = 0;
+                }
+            }
+        }
+    }
+    
+    public void aggiungiMinuti(int m) {
+        this.minuti += m;
+        while (this.minuti &gt;= 60) {
+            this.minuti -= 60;
+            this.ore++;
+            if (this.ore &gt;= 24) {
+                this.ore -= 24;
+            }
+        }
+    }
+
+    public String mostra() {
+        return ore + &quot;:&quot; + minuti + &quot;:&quot; + secondi;
+    }
+    
+    public boolean ugualeA(Orario altro) {
+        return this.ore == altro.ore &amp;&amp; this.minuti == altro.minuti &amp;&amp; this.secondi == altro.secondi;
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="orario-tab1" class="tab-content ">
+                <pre><code class="language-java">public class TestOrario {
     public static void main(String[] args) {
-        // Crea un oggetto Orario con valore iniziale 23:59:59
         Orario orario1 = new Orario(23, 59, 59);
         
-        // Visualizza l'orario con mostra()
-        System.out.println("Orario iniziale: " + orario1.mostra());
-        
-        // Chiama tic() e mostra il nuovo orario (dovrebbe diventare 00:00:00)
+        System.out.println(&quot;now: &quot; + orario1.mostra());
         orario1.tic();
-        System.out.println("Dopo un tic: " + orario1.mostra());
+        System.out.println(&quot;after un tic: &quot; + orario1.mostra());
         
-        // Aggiunge 125 minuti e mostra il risultato
         orario1.aggiungiMinuti(125);
-        System.out.println("Dopo 125 minuti: " + orario1.mostra());
+        System.out.println(&quot;after 125 minutes: &quot; + orario1.mostra());
         
-        // Crea un secondo oggetto Orario e verifica se i due orari sono uguali
         Orario orario2 = new Orario(10, 30, 45);
         
         if (orario1.ugualeA(orario2)) {
-            System.out.println("Gli orari sono uguali.");
+            System.out.println(&quot;same time&quot;);
         } else {
-            System.out.println("Gli orari sono diversi.");
+            System.out.println(&quot;you need a resync.&quot;);
         }
     }
 }
 </code></pre>
-                </div>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
             </div>
         </div>
         
@@ -378,36 +501,66 @@
                     <i class="fas fa-terminal"></i>
                     Output
                 </h2>
-                <div class="controls">
-                    <button class="run-btn" id="runBtn" onclick="runCode()">
-                        <i class="fas fa-play"></i>
-                        Esegui
-                    </button>
-                    <button class="copy-btn" onclick="copyCode()">
-                        <i class="fas fa-copy"></i>
-                    </button>
-                </div>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
             </div>
-            
-            <div class="output-container">
-                <div class="status-bar">
-                    <div id="statusIndicator"></div>
-                </div>
-                <div class="output-wrapper">
-                    <div id="output" class="output-box">Orario iniziale: 23:59:59
-Dopo un tic: 0:0:0
-Dopo 125 minuti: 2:5:0
-Gli orari sono diversi.
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">now: 23:59:59
+after un tic: 0:0:0
+after 125 minutes: 2:5:0
+you need a resync.
 </div>
-                </div>
             </div>
         </div>
     </div>
     
     <script>
+        // Project data
+        const sourceCode = ["public class Orario {\n    private int ore;\n    private int minuti;\n    private int secondi;\n\n    public Orario(int ore, int minuti, int secondi) {\n        if (ore < 0 || ore >= 24 || minuti < 0 || minuti >= 60 || secondi < 0 || secondi >= 60) {\n            this.ore = 0;\n            this.minuti = 0;\n            this.secondi = 0;\n        } else {\n            this.ore = ore;\n            this.minuti = minuti;\n            this.secondi = secondi;\n        }\n    }\n\n    public Orario() {\n        this.ore = 0;\n        this.minuti = 0;\n        this.secondi = 0;\n    }\n   \n    public int getOre() { return ore; }\n   \n    public int getMinuti() { return minuti; }\n   \n    public int getSecondi() { return secondi; }\n    \n    public void tic() {\n        this.secondi++;\n        if (this.secondi >= 60) {\n            this.secondi = 0;\n            this.minuti++;\n            if (this.minuti >= 60) {\n                this.minuti = 0;\n                this.ore++;\n                if (this.ore >= 24) {\n                    this.ore = 0;\n                }\n            }\n        }\n    }\n    \n    public void aggiungiMinuti(int m) {\n        this.minuti += m;\n        while (this.minuti >= 60) {\n            this.minuti -= 60;\n            this.ore++;\n            if (this.ore >= 24) {\n                this.ore -= 24;\n            }\n        }\n    }\n\n    public String mostra() {\n        return ore + \":\" + minuti + \":\" + secondi;\n    }\n    \n    public boolean ugualeA(Orario altro) {\n        return this.ore == altro.ore && this.minuti == altro.minuti && this.secondi == altro.secondi;\n    }\n}\n", "public class TestOrario {\n    public static void main(String[] args) {\n        Orario orario1 = new Orario(23, 59, 59);\n        \n        System.out.println(\"now: \" + orario1.mostra());\n        orario1.tic();\n        System.out.println(\"after un tic: \" + orario1.mostra());\n        \n        orario1.aggiungiMinuti(125);\n        System.out.println(\"after 125 minutes: \" + orario1.mostra());\n        \n        Orario orario2 = new Orario(10, 30, 45);\n        \n        if (orario1.ugualeA(orario2)) {\n            System.out.println(\"same time\");\n        } else {\n            System.out.println(\"you need a resync.\");\n        }\n    }\n}\n"];
         const projectName = "Orario";
         const buildStatus = "success";
-        const precompiledOutput = "Orario iniziale: 23:59:59\nDopo un tic: 0:0:0\nDopo 125 minuti: 2:5:0\nGli orari sono diversi.\n";
+        const precompiledOutput = "now: 23:59:59\nafter un tic: 0:0:0\nafter 125 minutes: 2:5:0\nyou need a resync.\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
         
         function copyCode() {
             const activeTab = document.querySelector('.tab-content.active code');
@@ -423,25 +576,31 @@ Gli orari sono diversi.
         }
         
         async function runCode() {
+            console.log('runCode called');
             const runBtn = document.getElementById('runBtn');
             const output = document.getElementById('output');
             const statusIndicator = document.getElementById('statusIndicator');
             
+            // Disable button
             runBtn.disabled = true;
             runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
             
+            // Show running status
             statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
             output.className = 'output-box';
             output.textContent = '';
             
+            // Simulate compilation and execution with animation
             await new Promise(resolve => setTimeout(resolve, 500));
             
+            // Show the pre-compiled output with typing effect
             statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
             output.className = 'output-box success';
             
+            // Type out the output character by character
             let i = 0;
             const outputText = precompiledOutput;
-            const typeSpeed = 2;
+            const typeSpeed = 2; // milliseconds per character
             
             function typeWriter() {
                 if (i < outputText.length) {
@@ -449,6 +608,7 @@ Gli orari sono diversi.
                     i++;
                     setTimeout(typeWriter, typeSpeed);
                 } else {
+                    // Re-enable button when done
                     runBtn.disabled = false;
                     runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
                 }
@@ -457,9 +617,14 @@ Gli orari sono diversi.
             typeWriter();
         }
         
+        // Initialize syntax highlighting
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
             hljs.highlightAll();
             
+            // Show precompiled status
             const statusIndicator = document.getElementById('statusIndicator');
             if (buildStatus === 'success') {
                 statusIndicator.innerHTML = 
@@ -468,6 +633,8 @@ Gli orari sono diversi.
                 statusIndicator.innerHTML = 
                     '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
             }
+            
+            console.log('Initialization complete');
         });
     </script>
 </body>
