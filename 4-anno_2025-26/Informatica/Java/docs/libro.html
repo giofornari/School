@@ -18,18 +18,15 @@
         }
         
         :root {
-            /* Palette scura moderna e accattivante */
             --bg-primary: #0a0e27;
             --bg-secondary: #151932;
             --bg-tertiary: #1e2642;
-            --bg-card: linear-gradient(135deg, #1a1f3a 0%, #252b4a 100%);
             --bg-code: #0f1421;
             --text-primary: #f0f3ff;
             --text-secondary: #a0a8c0;
             --text-muted: #6b7599;
             --accent-primary: #00d4ff;
             --accent-secondary: #7c3aed;
-            --accent-tertiary: #ff006e;
             --accent-success: #00ff88;
             --accent-warning: #ffd60a;
             --accent-error: #ff4757;
@@ -334,7 +331,6 @@
             to { transform: rotate(360deg); }
         }
         
-        /* Scrollbar styling */
         ::-webkit-scrollbar {
             width: 10px;
             height: 10px;
@@ -463,7 +459,8 @@
         System.out.println("Prezzo l1: " + l1.prezzo());
         
     }
-}</code></pre>
+}
+</code></pre>
                 </div>
             </div>
         </div>
@@ -491,7 +488,6 @@
                 </div>
                 <div class="output-wrapper">
                     <div id="output" class="output-box">
-
 
 ----------------
 Titolo: How to get AURA
@@ -523,24 +519,20 @@ Autore: aura
 ----------------------------
 
 Prezzo l2: 230.5
-Prezzo l1: 17.5</div>
+Prezzo l1: 17.5
+</div>
                 </div>
             </div>
         </div>
     </div>
     
     <script>
-        // Project data
-        const sourceCode = ["public class Libro {\n    private String titolo;\n    private String autore;\n    private int numeroPagine;\n    private double costoPagina;\n    final private double COSTO_FISSO = 5.5;\n    \n    public Libro(String titolo, String autore, int numeroPagine) {\n        this.titolo = titolo;\n        this.autore = autore;\n        this.numeroPagine = numeroPagine;\n    }\n    \n    public Libro(Libro libro) {\n        this.titolo = libro.titolo;\n        this.autore = libro.autore;\n        this.numeroPagine = libro.numeroPagine;\n        this.costoPagina = libro.costoPagina;\n    }\n\n    public String getTitolo() {\n        return titolo;\n    }\n    \n    public void setTitolo(String titolo) {\n        this.titolo = titolo;\n    }\n    \n    public String getAutore() {\n        return autore;\n    }\n    \n    public void setAutore(String autore) {\n        this.autore = autore;\n    }\n    \n    public int getNumeroPagine() {\n        return numeroPagine;\n    }\n    \n    public void setNumeroPagine(int numeroPagine) {\n        this.numeroPagine = numeroPagine;\n    }\n    \n    public double getCostoPagina() {\n        return costoPagina;\n    }\n    \n    public void setCostoPagina(double costoPagina) {\n        this.costoPagina = costoPagina;\n    }\n\n    public double prezzo() {\n        return costoPagina * numeroPagine + COSTO_FISSO;\n    }\n    public static void main(String[] args) throws Exception {\n        Libro l1 = new Libro(\"How to get AURA\", \"giordii.dev\", 120);\n        l1.setCostoPagina(0.10);\n\n        Libro l2 = new Libro(\"Gasa\", \"per dio\", 1500);\n        System.out.println(\"\\n\\n----------------\\nTitolo: \" + l1.getTitolo() + \"\\nAutore: \" + l1.getAutore() + \"\\n----------------------------\\n\");\n        l2.setTitolo(\"Gasa - per dio\");\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        l2.setAutore(\"dentro\");\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        l2.setCostoPagina(0.15);\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        l2.setAutore(\"aura\");\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        System.out.println(\"Prezzo l2: \" + l2.prezzo());\n        System.out.println(\"Prezzo l1: \" + l1.prezzo());\n        \n    }\n}"];
+        const sourceCode = ["public class Libro {\n    private String titolo;\n    private String autore;\n    private int numeroPagine;\n    private double costoPagina;\n    final private double COSTO_FISSO = 5.5;\n    \n    public Libro(String titolo, String autore, int numeroPagine) {\n        this.titolo = titolo;\n        this.autore = autore;\n        this.numeroPagine = numeroPagine;\n    }\n    \n    public Libro(Libro libro) {\n        this.titolo = libro.titolo;\n        this.autore = libro.autore;\n        this.numeroPagine = libro.numeroPagine;\n        this.costoPagina = libro.costoPagina;\n    }\n\n    public String getTitolo() {\n        return titolo;\n    }\n    \n    public void setTitolo(String titolo) {\n        this.titolo = titolo;\n    }\n    \n    public String getAutore() {\n        return autore;\n    }\n    \n    public void setAutore(String autore) {\n        this.autore = autore;\n    }\n    \n    public int getNumeroPagine() {\n        return numeroPagine;\n    }\n    \n    public void setNumeroPagine(int numeroPagine) {\n        this.numeroPagine = numeroPagine;\n    }\n    \n    public double getCostoPagina() {\n        return costoPagina;\n    }\n    \n    public void setCostoPagina(double costoPagina) {\n        this.costoPagina = costoPagina;\n    }\n\n    public double prezzo() {\n        return costoPagina * numeroPagine + COSTO_FISSO;\n    }\n    public static void main(String[] args) throws Exception {\n        Libro l1 = new Libro(\"How to get AURA\", \"giordii.dev\", 120);\n        l1.setCostoPagina(0.10);\n\n        Libro l2 = new Libro(\"Gasa\", \"per dio\", 1500);\n        System.out.println(\"\\n\\n----------------\\nTitolo: \" + l1.getTitolo() + \"\\nAutore: \" + l1.getAutore() + \"\\n----------------------------\\n\");\n        l2.setTitolo(\"Gasa - per dio\");\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        l2.setAutore(\"dentro\");\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        l2.setCostoPagina(0.15);\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        l2.setAutore(\"aura\");\n        System.out.println(\"\\n----------------\\nTitolo: \" + l2.getTitolo() + \"\\nAutore: \" + l2.getAutore() + \"\\n----------------------------\\n\");\n        System.out.println(\"Prezzo l2: \" + l2.prezzo());\n        System.out.println(\"Prezzo l1: \" + l1.prezzo());\n        \n    }\n}\n"];
         const projectName = "Libro";
         const buildStatus = "success";
         const precompiledOutput = "\n\n----------------\nTitolo: How to get AURA\nAutore: giordii.dev\n----------------------------\n\n\n----------------\nTitolo: Gasa - per dio\nAutore: per dio\n----------------------------\n\n\n----------------\nTitolo: Gasa - per dio\nAutore: dentro\n----------------------------\n\n\n----------------\nTitolo: Gasa - per dio\nAutore: dentro\n----------------------------\n\n\n----------------\nTitolo: Gasa - per dio\nAutore: aura\n----------------------------\n\nPrezzo l2: 230.5\nPrezzo l1: 17.5\n";
         
-        // Tab switching functionality
         function switchTab(tabId) {
-            console.log('Switching to tab:', tabId);
-            
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -548,23 +540,19 @@ Prezzo l1: 17.5</div>
                 btn.classList.remove('active');
             });
             
-            // Show selected tab
             const selectedTab = document.getElementById(tabId);
             if (selectedTab) {
                 selectedTab.classList.add('active');
             }
             
-            // Mark button as active
             const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
             if (clickedButton) {
                 clickedButton.classList.add('active');
             }
             
-            // Re-highlight
             hljs.highlightAll();
         }
         
-        // Add click handlers to tab buttons
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.addEventListener('click', function() {
@@ -588,31 +576,25 @@ Prezzo l1: 17.5</div>
         }
         
         async function runCode() {
-            console.log('runCode called');
             const runBtn = document.getElementById('runBtn');
             const output = document.getElementById('output');
             const statusIndicator = document.getElementById('statusIndicator');
             
-            // Disable button
             runBtn.disabled = true;
             runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
             
-            // Show running status
             statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
             output.className = 'output-box';
             output.textContent = '';
             
-            // Simulate compilation and execution with animation
             await new Promise(resolve => setTimeout(resolve, 500));
             
-            // Show the pre-compiled output with typing effect
             statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
             output.className = 'output-box success';
             
-            // Type out the output character by character
             let i = 0;
             const outputText = precompiledOutput;
-            const typeSpeed = 2; // milliseconds per character
+            const typeSpeed = 2;
             
             function typeWriter() {
                 if (i < outputText.length) {
@@ -620,7 +602,6 @@ Prezzo l1: 17.5</div>
                     i++;
                     setTimeout(typeWriter, typeSpeed);
                 } else {
-                    // Re-enable button when done
                     runBtn.disabled = false;
                     runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
                 }
@@ -629,14 +610,9 @@ Prezzo l1: 17.5</div>
             typeWriter();
         }
         
-        // Initialize syntax highlighting
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded');
-            
-            // Highlight code
             hljs.highlightAll();
             
-            // Show precompiled status
             const statusIndicator = document.getElementById('statusIndicator');
             if (buildStatus === 'success') {
                 statusIndicator.innerHTML = 
@@ -645,8 +621,6 @@ Prezzo l1: 17.5</div>
                 statusIndicator.innerHTML = 
                     '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
             }
-            
-            console.log('Initialization complete');
         });
     </script>
 </body>

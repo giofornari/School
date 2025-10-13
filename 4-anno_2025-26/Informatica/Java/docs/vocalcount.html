@@ -18,18 +18,15 @@
         }
         
         :root {
-            /* Palette scura moderna e accattivante */
             --bg-primary: #0a0e27;
             --bg-secondary: #151932;
             --bg-tertiary: #1e2642;
-            --bg-card: linear-gradient(135deg, #1a1f3a 0%, #252b4a 100%);
             --bg-code: #0f1421;
             --text-primary: #f0f3ff;
             --text-secondary: #a0a8c0;
             --text-muted: #6b7599;
             --accent-primary: #00d4ff;
             --accent-secondary: #7c3aed;
-            --accent-tertiary: #ff006e;
             --accent-success: #00ff88;
             --accent-warning: #ffd60a;
             --accent-error: #ff4757;
@@ -200,19 +197,23 @@
         }
         
         .run-header h2 {
-            font-size: 1em;
-            font-weight: 600;
+            font-size: 1.1em;
             color: var(--text-primary);
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
+        .controls {
+            display: flex;
+            gap: 10px;
+        }
+        
         .run-btn {
-            background: var(--accent-primary);
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
             border: none;
-            padding: 10px 24px;
+            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
@@ -220,119 +221,132 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px var(--glow-primary);
         }
         
-        .run-btn:hover {
-            background: var(--accent-secondary);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .run-btn:active {
-            transform: translateY(0);
+        .run-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px var(--glow-primary), var(--shadow-lg);
         }
         
         .run-btn:disabled {
-            opacity: 0.5;
+            opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
         
-        .output-area {
-            flex: 1;
-            padding: 24px;
-            overflow: auto;
+        .copy-btn {
             background: var(--bg-primary);
-        }
-        
-        .output-box {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            padding: 20px;
-            min-height: 200px;
-            font-family: 'Fira Code', 'Consolas', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
             color: var(--text-primary);
-            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-default);
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
         
-        .output-box.error {
-            color: #dc2626;
-            background: #fef2f2;
-            border-color: #fecaca;
+        .copy-btn:hover {
+            background: var(--bg-tertiary);
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
         }
         
-        .output-box.success {
-            color: var(--accent-success);
+        .output-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .status-bar {
+            padding: 12px 24px;
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border-default);
         }
         
         .status-indicator {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
-            border-radius: 8px;
             font-size: 13px;
             font-weight: 500;
-            margin-bottom: 16px;
         }
         
         .status-indicator.success {
-            background: rgba(0, 255, 136, 0.15);
             color: var(--accent-success);
-            border: 1px solid var(--accent-success);
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
         
         .status-indicator.error {
-            background: rgba(255, 71, 87, 0.15);
             color: var(--accent-error);
-            border: 1px solid var(--accent-error);
-            box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
         }
         
         .status-indicator.running {
-            background: rgba(0, 212, 255, 0.15);
-            color: var(--accent-primary);
-            border: 1px solid var(--accent-primary);
-            box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            color: var(--accent-warning);
+        }
+        
+        .output-wrapper {
+            flex: 1;
+            overflow: auto;
+            padding: 24px;
+            background: var(--bg-code);
+        }
+        
+        .output-box {
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            color: var(--text-secondary);
+            padding: 16px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border-default);
+            min-height: 100px;
+        }
+        
+        .output-box.success {
+            border-color: var(--accent-success);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+        
+        .output-box.error {
+            border-color: var(--accent-error);
+            box-shadow: 0 0 20px rgba(255, 71, 87, 0.2);
+            color: var(--accent-error);
         }
         
         .spinner {
-            border: 2px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top: 2px solid currentColor;
+            display: inline-block;
             width: 14px;
             height: 14px;
-            animation: spin 0.6s linear infinite;
+            border: 2px solid var(--border-default);
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
         
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
         
-        .info-box {
-            background: #ede9fe;
-            border-left: 3px solid var(--accent-primary);
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
         }
         
-        .info-box i {
-            color: var(--accent-primary);
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-default);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
         }
         
         @media (max-width: 1024px) {
@@ -342,70 +356,45 @@
             
             .right-panel {
                 width: 100%;
+                height: 50%;
                 border-left: none;
-                border-top: 1px solid var(--border-light);
+                border-top: 2px solid var(--border-default);
             }
-        }
-        
-        .copy-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: var(--accent-primary);
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            opacity: 0;
-            transition: all 0.2s ease;
-            box-shadow: var(--shadow-sm);
-        }
-        
-        .code-area:hover .copy-btn {
-            opacity: 1;
-        }
-        
-        .copy-btn:hover {
-            background: var(--accent-secondary);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
         }
     </style>
 </head>
 <body>
     <header>
         <h1>
-            <i class="fas fa-coffee"></i>
+            <i class="fas fa-code"></i>
             vocalcount
         </h1>
         <a href="index.html" class="back-btn">
             <i class="fas fa-arrow-left"></i>
-            Tutti i Progetti
+            Torna alla Home
         </a>
     </header>
     
     <div class="container">
         <div class="left-panel">
             <div class="tabs">
-                
-            <button class="tab-button active" data-tab="vocalcount-tab0">voc_count.java</button>
-        
+                <button class="tab-button active" data-tab="source">
+                    <i class="fas fa-file-code"></i>
+                    voc_count.java
+                </button>
             </div>
-            <div class="code-area" id="codeArea">
-                
-            <div id="vocalcount-tab0" class="tab-content active">
-                <pre><code class="language-java">public class voc_count {
+            
+            <div class="code-area">
+                <div id="source" class="tab-content active">
+                    <pre><code class="language-java">public class voc_count {
     public static void main(String[] args) {
-        char[] chars = {&#39;p&#39;,&#39;r&#39;,&#39;e&#39;,&#39;f&#39;,&#39;e&#39;,&#39;r&#39;,&#39;i&#39;,&#39;s&#39;,&#39;c&#39;,&#39;o&#39;,&#39; &#39;,&#39;p&#39;,&#39;y&#39;,&#39;t&#39;,&#39;h&#39;,&#39;o&#39;,&#39;n&#39;};
+        char[] chars = {'p','r','e','f','e','r','i','s','c','o',' ','p','y','t','h','o','n'};
         int[] vowelCount = new int[5];
-        char[] vowels = {&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;};
+        char[] vowels = {'a', 'e', 'i', 'o', 'u'};
 
         for (char c : chars) {
             char lower = Character.toLowerCase(c);
-            for (int i = 0; i &lt; vowels.length; i++) {
+            for (int i = 0; i < vowels.length; i++) {
                 if (lower == vowels[i]) {
                     vowelCount[i]++;
                     break;
@@ -413,21 +402,17 @@
             }
         }
 
-        for (int i = 0; i &lt; vowels.length; i++) {
-            System.out.println(vowels[i] + &quot;: &quot; + vowelCount[i]);
+        for (int i = 0; i < vowels.length; i++) {
+            System.out.println(vowels[i] + ": " + vowelCount[i]);
         }       
         int total = 0;
         for (int count : vowelCount) {
             total += count;
         }
-        System.out.println(&quot;vowel num: &quot; + total);
+        System.out.println("vowel num: " + total);
     }
 }</code></pre>
-            </div>
-        
-                <button class="copy-btn" onclick="copyCode()">
-                    <i class="fas fa-copy"></i> Copia
-                </button>
+                </div>
             </div>
         </div>
         
@@ -437,36 +422,41 @@
                     <i class="fas fa-terminal"></i>
                     Output
                 </h2>
-                <button class="run-btn" onclick="runCode()" id="runBtn">
-                    <i class="fas fa-play"></i>
-                    Esegui
-                </button>
+                <div class="controls">
+                    <button class="run-btn" id="runBtn" onclick="runCode()">
+                        <i class="fas fa-play"></i>
+                        Esegui
+                    </button>
+                    <button class="copy-btn" onclick="copyCode()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
             </div>
-            <div class="output-area">
-                <div id="statusIndicator"></div>
-                <div class="output-box" id="output">a: 0
+            
+            <div class="output-container">
+                <div class="status-bar">
+                    <div id="statusIndicator"></div>
+                </div>
+                <div class="output-wrapper">
+                    <div id="output" class="output-box">a: 0
 e: 2
 i: 1
 o: 2
 u: 0
 vowel num: 5
 </div>
+                </div>
             </div>
         </div>
     </div>
     
     <script>
-        // Project data
         const sourceCode = ["public class voc_count {\n    public static void main(String[] args) {\n        char[] chars = {'p','r','e','f','e','r','i','s','c','o',' ','p','y','t','h','o','n'};\n        int[] vowelCount = new int[5];\n        char[] vowels = {'a', 'e', 'i', 'o', 'u'};\n\n        for (char c : chars) {\n            char lower = Character.toLowerCase(c);\n            for (int i = 0; i < vowels.length; i++) {\n                if (lower == vowels[i]) {\n                    vowelCount[i]++;\n                    break;\n                }\n            }\n        }\n\n        for (int i = 0; i < vowels.length; i++) {\n            System.out.println(vowels[i] + \": \" + vowelCount[i]);\n        }       \n        int total = 0;\n        for (int count : vowelCount) {\n            total += count;\n        }\n        System.out.println(\"vowel num: \" + total);\n    }\n}"];
         const projectName = "vocalcount";
         const buildStatus = "success";
         const precompiledOutput = "a: 0\ne: 2\ni: 1\no: 2\nu: 0\nvowel num: 5\n";
         
-        // Tab switching functionality
         function switchTab(tabId) {
-            console.log('Switching to tab:', tabId);
-            
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -474,23 +464,19 @@ vowel num: 5
                 btn.classList.remove('active');
             });
             
-            // Show selected tab
             const selectedTab = document.getElementById(tabId);
             if (selectedTab) {
                 selectedTab.classList.add('active');
             }
             
-            // Mark button as active
             const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
             if (clickedButton) {
                 clickedButton.classList.add('active');
             }
             
-            // Re-highlight
             hljs.highlightAll();
         }
         
-        // Add click handlers to tab buttons
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.tab-button').forEach(button => {
                 button.addEventListener('click', function() {
@@ -514,31 +500,25 @@ vowel num: 5
         }
         
         async function runCode() {
-            console.log('runCode called');
             const runBtn = document.getElementById('runBtn');
             const output = document.getElementById('output');
             const statusIndicator = document.getElementById('statusIndicator');
             
-            // Disable button
             runBtn.disabled = true;
             runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
             
-            // Show running status
             statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
             output.className = 'output-box';
             output.textContent = '';
             
-            // Simulate compilation and execution with animation
             await new Promise(resolve => setTimeout(resolve, 500));
             
-            // Show the pre-compiled output with typing effect
             statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
             output.className = 'output-box success';
             
-            // Type out the output character by character
             let i = 0;
             const outputText = precompiledOutput;
-            const typeSpeed = 2; // milliseconds per character
+            const typeSpeed = 2;
             
             function typeWriter() {
                 if (i < outputText.length) {
@@ -546,7 +526,6 @@ vowel num: 5
                     i++;
                     setTimeout(typeWriter, typeSpeed);
                 } else {
-                    // Re-enable button when done
                     runBtn.disabled = false;
                     runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
                 }
@@ -555,14 +534,9 @@ vowel num: 5
             typeWriter();
         }
         
-        // Initialize syntax highlighting
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded');
-            
-            // Highlight code
             hljs.highlightAll();
             
-            // Show precompiled status
             const statusIndicator = document.getElementById('statusIndicator');
             if (buildStatus === 'success') {
                 statusIndicator.innerHTML = 
@@ -571,8 +545,6 @@ vowel num: 5
                 statusIndicator.innerHTML = 
                     '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
             }
-            
-            console.log('Initialization complete');
         });
     </script>
 </body>

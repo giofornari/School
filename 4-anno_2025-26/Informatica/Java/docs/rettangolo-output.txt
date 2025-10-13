@@ -1,9 +1,107 @@
-Vertici:
-A: (1.5, 19.5)
-B: (8.5, 19.5)
-C: (8.5, 8.5)
-D: (1.5, 8.5)
-
-Punto (3,4) contenuto: true
-
-Vertice più vicino all'origine: (1.5, 8.5)
+Compilation Error:
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:4: error: cannot find symbol
+    private Punto centro;
+            ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:7: error: cannot find symbol
+    public Rettangolo(double base, double altezza, Punto centro) {
+                                                   ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:20: error: cannot find symbol
+    public Punto getCentro() { return centro; }
+           ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:21: error: cannot find symbol
+    public void setCentro(Punto centro) { this.centro = centro; }
+                          ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:23: error: cannot find symbol
+    public Punto[] calcolaVertici() {
+           ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:36: error: cannot find symbol
+    public boolean isInside(Punto a) {
+                            ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:47: error: cannot find symbol
+    public Punto minAss() {
+           ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:24: error: cannot find symbol
+        Punto[] vertici = new Punto[4];
+        ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:24: error: cannot find symbol
+        Punto[] vertici = new Punto[4];
+                              ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:28: error: cannot find symbol
+        vertici[0] = new Punto(centro.getX() - b2, centro.getY() + h2); // A
+                         ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:29: error: cannot find symbol
+        vertici[1] = new Punto(centro.getX() + b2, centro.getY() + h2); // B
+                         ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:30: error: cannot find symbol
+        vertici[2] = new Punto(centro.getX() + b2, centro.getY() - h2); // C
+                         ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:31: error: cannot find symbol
+        vertici[3] = new Punto(centro.getX() - b2, centro.getY() - h2); // D
+                         ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:48: error: cannot find symbol
+        Punto[] vertici = calcolaVertici();
+        ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:49: error: cannot find symbol
+        Punto minPunto = vertici[0];
+        ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:63: error: cannot find symbol
+        Punto centro = new Punto(5, 14);
+        ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:63: error: cannot find symbol
+        Punto centro = new Punto(5, 14);
+                           ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:66: error: cannot find symbol
+        Punto[] vertici = r.calcolaVertici();
+        ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:72: error: cannot find symbol
+        Punto test = new Punto(6, 9);
+        ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:72: error: cannot find symbol
+        Punto test = new Punto(6, 9);
+                         ^
+  symbol:   class Punto
+  location: class Rettangolo
+/home/giordi/Repos/JavaProjects/Rettangolo/src/Rettangolo.java:75: error: cannot find symbol
+        Punto vicino = r.minAss();
+        ^
+  symbol:   class Punto
+  location: class Rettangolo
+21 errors
