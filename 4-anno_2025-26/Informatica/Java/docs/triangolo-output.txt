@@ -1,0 +1,13 @@
+Triangolo originario: Triangolo{A=(0.0, 0.0), B=(6.0, 0.0), C=(2.0, 5.0)}
+Perimetro: 17.788289044567353
+Area: 15.000000000000002
+
+Copia del triangolo: Triangolo{A=(0.0, 0.0), B=(6.0, 0.0), C=(2.0, 5.0)}
+equals(copia) -> true
+
+Triangolo con stessi vertici ma ordine differente: Triangolo{A=(2.0, 5.0), B=(0.0, 0.0), C=(6.0, 0.0)}
+equals(stessoEquilatero) -> false
+equivale(stessoEquilatero) -> true
+
+Triangolo con lati in rapporto 1: Triangolo{A=(0.0, 0.0), B=(3.0, 0.0), C=(1.0, 2.5)}
+equivale(triangoloSimile) -> false
