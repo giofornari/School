@@ -17,22 +17,23 @@ All projects are automatically compiled and run with each commit. The website di
 
 ---
 
-## 🚀 Automatic Documentation Generator
+## 🚀 Automatic Build System
 
-This repository includes an **automatic documentation generator** that scans all Java projects and creates a beautiful interactive showcase website.
+This repository uses **GitHub Actions** to automatically build and deploy all Java projects.
 
 ### ✨ Features
 
-- 🔍 **Auto-discovery**: Automatically finds all Java projects in the workspace
+- 🔍 **Auto-discovery**: Automatically finds all Java projects on every push
 - 🏗️ **Auto-compilation**: Compiles and runs each project to capture output
 - 📝 **HTML Generation**: Creates individual interactive pages for each project
 - 🎨 **Beautiful UI**: Modern dark theme with syntax highlighting
-- ▶️ **Run in Browser**: Execute code with animated output display
+- ▶️ **Interactive Display**: Animated output display with code tabs
 - 📊 **Index Page**: Auto-generated overview of all projects
+- 🌐 **Auto-Deploy**: Deploys to GitHub Pages automatically
 
 ### 🎯 How It Works
 
-#### When you create a new Java project:
+#### Simply push your code:
 
 1. Create a new directory (e.g., `MyNewProject/`)
 2. Add the standard structure:
@@ -40,14 +41,22 @@ This repository includes an **automatic documentation generator** that scans all
    MyNewProject/
    ├── src/
    │   └── MyNewProject.java  (with main method)
-   ├── bin/
-   └── lib/
+   └── README.md (optional)
    ```
 
-3. Run the generator:
+3. Commit and push:
    ```bash
-   ./generate-docs.py
+   git add .
+   git commit -m "Add MyNewProject"
+   git push
    ```
+
+4. **That's it!** GitHub Actions automatically:
+   - Detects your new project
+   - Compiles it
+   - Runs it and captures output
+   - Generates HTML pages
+   - Deploys to the live website
    or
    ```bash
    python3 generate-docs.py
