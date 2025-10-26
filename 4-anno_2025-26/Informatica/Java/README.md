@@ -16,7 +16,7 @@
 All projects are automatically compiled and run with each commit. The website displays source code, build status, and program output.
 
 ---
-
+<!-- 
 ## 🚀 Automatic Build System
 
 This repository uses **GitHub Actions** to automatically build and deploy all Java projects.
@@ -131,4 +131,4 @@ Open `docs/index.html` in your browser to see all your projects!
 3. Open `docs/index.html` in browser
 4. Enjoy! 🎉
 
----
+--- -->
