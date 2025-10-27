@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeseManager - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #020617;
+            --bg-secondary: rgba(15, 23, 42, 0.82);
+            --bg-tertiary: rgba(30, 41, 68, 0.78);
+            --bg-card: linear-gradient(140deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 68, 0.75) 100%);
+            --bg-code: #0b1220;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5f5;
+            --text-muted: #94a3b8;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #f472b6;
+            --accent-success: #34d399;
+            --accent-warning: #facc15;
+            --accent-error: #f87171;
+            --border-default: rgba(148, 163, 184, 0.28);
+            --border-light: rgba(148, 163, 184, 0.22);
+            --border-strong: rgba(56, 189, 248, 0.45);
+            --border-accent: rgba(56, 189, 248, 0.35);
+            --glow-primary: rgba(56, 189, 248, 0.32);
+            --glow-secondary: rgba(139, 92, 246, 0.32);
+            --shadow-sm: 0 6px 18px rgba(2, 6, 23, 0.35);
+            --shadow-md: 0 16px 32px rgba(2, 6, 23, 0.45);
+            --shadow-lg: 0 32px 60px rgba(2, 6, 23, 0.55);
+            --shadow-glow: 0 0 42px rgba(56, 189, 248, 0.32);
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.16) 0%, transparent 45%),
+                linear-gradient(180deg, #020617 0%, #0f172a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(139, 92, 246, 0.12));
+            filter: blur(140px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 24px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-default);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+        
+        header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        
+        header h1 i {
+            color: var(--accent-primary);
+        }
+        
+        .back-btn {
+            background: rgba(8, 16, 32, 0.85);
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.85), rgba(139, 92, 246, 0.85));
+            color: #020617;
+            border-color: rgba(56, 189, 248, 0.65);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            background: transparent;
+            border-top: 1px solid var(--border-default);
+            border-bottom: 1px solid var(--border-default);
+        }
+        
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 68, 0.72));
+            border-right: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.72);
+            border-bottom: 1px solid var(--border-default);
+            padding: 0 16px;
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border-color: var(--border-accent);
+        }
+        
+        .tab-button.active {
+            color: var(--accent-primary);
+            background: rgba(8, 16, 32, 0.85);
+            border-color: var(--border-strong);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .code-area {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-content pre {
+            margin: 0;
+            height: 100%;
+        }
+        
+        .tab-content pre code {
+            display: block;
+            padding: 24px !important;
+            background: var(--bg-code) !important;
+            height: 100%;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--text-primary) !important;
+        }
+        
+        .right-panel {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(200deg, rgba(15, 23, 42, 0.82), rgba(30, 41, 68, 0.68));
+            border-left: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .run-header {
+            background: rgba(15, 23, 42, 0.65);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .run-header h2 {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .run-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .run-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .run-btn:active {
+            transform: translateY(0);
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .output-area {
+            flex: 1;
+            padding: 24px;
+            overflow: auto;
+            background: rgba(2, 10, 24, 0.6);
+        }
+        
+        .output-box {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 200px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .output-box.error {
+            color: var(--accent-error);
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.45);
+        }
+        
+        .output-box.success {
+            color: var(--accent-success);
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.45);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .status-indicator.success {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-success);
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.28);
+        }
+        
+        .status-indicator.error {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-error);
+            border: 1px solid rgba(248, 113, 113, 0.45);
+            box-shadow: 0 0 18px rgba(248, 113, 113, 0.28);
+        }
+        
+        .status-indicator.running {
+            background: rgba(56, 189, 248, 0.14);
+            color: var(--accent-primary);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .spinner {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 2px solid currentColor;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            background: rgba(139, 92, 246, 0.15);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box i {
+            color: var(--accent-secondary);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-light);
+            }
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .code-area:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            SpeseManager
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="spesemanager-tab0">Main.java</button>
+        
+            <button class="tab-button " data-tab="spesemanager-tab1">SpesaManager.java</button>
+        
+            <button class="tab-button " data-tab="spesemanager-tab2">Spese.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="spesemanager-tab0" class="tab-content active">
+                <pre><code class="language-java">import java.time.LocalDate;
+import java.util.List;
+
+public class Main {
+
+    public static void main(String[] args) {
+        SpesaManager revolut = new SpesaManager();
+        revolut.addSpesa(new Spese(&quot;Trasporto&quot;, LocalDate.of(2024, 5, 10), 12.80, &quot;Carta&quot;)); // maledetto carnet 8 corse
+        revolut.addSpesa(new Spese(&quot;Alimentari&quot;, LocalDate.of(2024, 5, 12), 42.30, &quot;Contanti&quot;)); // in nero sotto casa...
+        revolut.addSpesa(new Spese(7.50, &quot;Bar&quot;, &quot;Contanti&quot;)); // uno sprits...
+        revolut.addSpesa(new Spese(120.00, &quot;Tecnologia&quot;, &quot;Bonifico&quot;)); // questa era una truffa
+
+        stampaElenco(revolut.getSpese());
+        stampaStatistiche(revolut);
+    }
+
+    private static void stampaElenco(List&lt;Spese&gt; spese) {
+        System.out.println(&quot;Spese inserite:&quot;);
+        for (int i = 0; i &lt; spese.size(); i++) {
+            Spese spesa = spese.get(i);
+            System.out.printf(
+                &quot;%d) %s - %.2f (%s) | %s%n&quot;,
+                i + 1,
+                spesa.getCategory(),
+                spesa.getMoneyyy(),
+                spesa.getPayMethod(),
+                spesa.getDate() == null ? &quot;data non disponibile&quot; : spesa.getDate()
+            );
+        }
+        System.out.println();
+    }
+
+    private static void stampaStatistiche(SpesaManager manager) {
+        List&lt;Spese&gt; spese = manager.getSpese();
+        double totale = 0;
+        double max = Double.NEGATIVE_INFINITY;
+        double min = Double.POSITIVE_INFINITY;
+
+        for (Spese spesa : spese) {
+            double importo = spesa.getMoneyyy();
+            totale += importo;
+            max = Math.max(max, importo);
+            min = Math.min(min, importo);
+        }
+
+        double media = spese.isEmpty() ? 0 : totale / spese.size();
+
+        System.out.printf(&quot;Totale: %.2f%n&quot;, totale);
+        System.out.printf(&quot;Media: %.2f%n&quot;, media);
+        System.out.printf(&quot;Massimo: %.2f%n&quot;, max);
+        System.out.printf(&quot;Minimo: %.2f%n&quot;, min);
+
+        String categoriaTop = manager.calcolaCategoriaMaggiore();
+        String metodoTop = manager.calcolaPayMethodMaggiore();
+
+        double mediaCategoriaTop = categoriaTop.isEmpty() ? 0 : mediaPerCategoria(spese, categoriaTop);
+        double totaleMetodoTop = metodoTop.isEmpty() ? 0 : totalePerMetodo(spese, metodoTop);
+
+        System.out.println();
+        System.out.printf(&quot;Categoria con media piu alta: %s (%.2f)%n&quot;, categoriaTop, mediaCategoriaTop);
+        System.out.printf(&quot;Metodo con totale piu alto: %s (%.2f)%n&quot;, metodoTop, totaleMetodoTop);
+    }
+
+    private static double mediaPerCategoria(List&lt;Spese&gt; spese, String categoria) {
+        double totale = 0;
+        int count = 0;
+        for (Spese spesa : spese) {
+            if (spesa.getCategory().equals(categoria)) {
+                totale += spesa.getMoneyyy();
+                count++;
+            }
+        }
+        return count == 0 ? 0 : totale / count;
+    }
+
+    private static double totalePerMetodo(List&lt;Spese&gt; spese, String metodo) {
+        double totale = 0;
+        for (Spese spesa : spese) {
+            if (spesa.getPayMethod().equals(metodo)) {
+                totale += spesa.getMoneyyy();
+            }
+        }
+        return totale;
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="spesemanager-tab1" class="tab-content ">
+                <pre><code class="language-java">import java.util.ArrayList;
+
+public class SpesaManager {
+	private final ArrayList&lt;Spese&gt; spese;
+
+	public SpesaManager() {
+		spese = new ArrayList&lt;&gt;();
+	}
+
+	public void addSpesa(Spese spesa) {
+		spese.add(spesa);
+	}
+
+	public ArrayList&lt;Spese&gt; getSpese() {
+		return spese;
+	}
+
+	public double spesaTotale() {
+		double totale = 0;
+		for (Spese spesa : spese) {
+			totale += spesa.getMoneyyy();
+		}
+		return totale;
+	}
+
+	public double spesaMedia() {
+		return spese.isEmpty() ? 0 : spesaTotale() / spese.size();
+	}
+
+	public double spesaMax() {
+		if (spese.isEmpty()) {
+			return 0;
+		}
+		double max = spese.get(0).getMoneyyy();
+		for (Spese spesa : spese) {
+			if (spesa.getMoneyyy() &gt; max) {
+				max = spesa.getMoneyyy();
+			}
+		}
+		return max;
+	}
+
+	public double spesaMin() {
+		if (spese.isEmpty()) {
+			return 0;
+		}
+		double min = spese.get(0).getMoneyyy();
+		for (Spese spesa : spese) {
+			if (spesa.getMoneyyy() &lt; min) {
+				min = spesa.getMoneyyy();
+			}
+		}
+		return min;
+	}
+
+	private ArrayList&lt;String&gt; getCategory() {
+		ArrayList&lt;String&gt; categories = new ArrayList&lt;&gt;();
+		for (Spese spesa : spese) {
+			String category = spesa.getCategory();
+			if (!categories.contains(category)) {
+				categories.add(category);
+			}
+		}
+		return categories;
+	}
+
+	private ArrayList&lt;String&gt; getPayMethod() {
+		ArrayList&lt;String&gt; methods = new ArrayList&lt;&gt;();
+		for (Spese spesa : spese) {
+			String method = spesa.getPayMethod();
+			if (!methods.contains(method)) {
+				methods.add(method);
+			}
+		}
+		return methods;
+	}
+
+	private double spesaMediaPerCategoria(String categoria) {
+		double totale = 0;
+		int count = 0;
+		for (Spese spesa : spese) {
+			if (spesa.getCategory().equals(categoria)) {
+				totale += spesa.getMoneyyy();
+				count++;
+			}
+		}
+		return count == 0 ? 0 : totale / count;
+	}
+
+	private double spesaTotPerPayMethod(String method) {
+		double totale = 0;
+		for (Spese spesa : spese) {
+			if (spesa.getPayMethod().equals(method)) {
+				totale += spesa.getMoneyyy();
+			}
+		}
+		return totale;
+	}
+
+	public String calcolaPayMethodMaggiore() {
+		ArrayList&lt;String&gt; methods = this.getPayMethod();
+		if (methods.isEmpty()) {
+			return &quot;&quot;;
+		}
+		String migliore = methods.get(0);
+		double totaleMigliore = this.spesaTotPerPayMethod(migliore);
+		for (String metodo : methods) {
+			double totaleMetodo = this.spesaTotPerPayMethod(metodo);
+			if (totaleMetodo &gt; totaleMigliore) {
+				migliore = metodo;
+				totaleMigliore = totaleMetodo;
+			}
+		}
+		return migliore;
+	}
+
+	public String calcolaPayMethodMinore() {
+		ArrayList&lt;String&gt; methods = this.getPayMethod();
+		if (methods.isEmpty()) {
+			return &quot;&quot;;
+		}
+		String peggiore = methods.get(0);
+		double totalePeggiore = this.spesaTotPerPayMethod(peggiore);
+		for (String metodo : methods) {
+			double totaleMetodo = this.spesaTotPerPayMethod(metodo);
+			if (totaleMetodo &lt; totalePeggiore) {
+				peggiore = metodo;
+				totalePeggiore = totaleMetodo;
+			}
+		}
+		return peggiore;
+	}
+
+	public String calcolaCategoriaMaggiore() {
+		ArrayList&lt;String&gt; categorie = this.getCategory();
+		if (categorie.isEmpty()) {
+			return &quot;&quot;;
+		}
+		String migliore = categorie.get(0);
+		double mediaMigliore = this.spesaMediaPerCategoria(migliore);
+		for (String categoria : categorie) {
+			double mediaCategoria = this.spesaMediaPerCategoria(categoria);
+			if (mediaCategoria &gt; mediaMigliore) {
+				migliore = categoria;
+				mediaMigliore = mediaCategoria;
+			}
+		}
+		return migliore;
+	}
+
+	public String calcolaCategoriaMinore() {
+		ArrayList&lt;String&gt; categorie = this.getCategory();
+		if (categorie.isEmpty()) {
+			return &quot;&quot;;
+		}
+		String peggiore = categorie.get(0);
+		double mediaPeggiore = this.spesaMediaPerCategoria(peggiore);
+		for (String categoria : categorie) {
+			double mediaCategoria = this.spesaMediaPerCategoria(categoria);
+			if (mediaCategoria &lt; mediaPeggiore) {
+				peggiore = categoria;
+				mediaPeggiore = mediaCategoria;
+			}
+		}
+		return peggiore;
+	}
+}
+</code></pre>
+            </div>
+        
+            <div id="spesemanager-tab2" class="tab-content ">
+                <pre><code class="language-java">
+import java.time.LocalDate;
+
+/**
+ * La classe {@code Spese} rappresenta una singola spesa con attributi relativi alla data,
+ * importo, categoria e metodo di pagamento.
+ * @author giordii.dev
+ */
+public class Spese {
+    private LocalDate date;
+    private double Moneyyy;
+    private String Category;
+    private String PayMethod;
+
+    /**
+     * Costruttore completo per l&#39;inizializzazione completa degli oggetti.
+     * @param date data della spesa
+     */
+
+    public Spese(String Category, LocalDate date, double Moneyyy, String PayMethod) {
+        this.Category = Category;
+        this.date = date;
+        this.Moneyyy = Moneyyy;
+        this.PayMethod = PayMethod;
+    }
+
+
+    /**
+     * Costruttore senza Date per spese incognite
+     * @hidden per i soldi in nero :|
+     */
+
+    public Spese(double moneyyy, String category, String payMethod) {
+		this.Moneyyy = moneyyy;
+		this.Category = category;
+		this.PayMethod = payMethod;
+	}
+
+
+	// getter e setter
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setMoneyyy(double Moneyyy) {
+        this.Moneyyy = Moneyyy;
+    }
+
+    public void setCategory(String Category) {
+        this.Category = Category;
+    }
+
+    public void setPayMethod(String PayMethod) {
+        this.PayMethod = PayMethod;
+    }
+
+    public double getMoneyyy() {
+        return Moneyyy;
+    }
+
+    public String getCategory() {
+        return Category;
+    }
+
+    public String getPayMethod() {
+        return PayMethod;
+    }
+
+    @Override
+	public String toString() {
+		return &quot;Spese [date=&quot; + date + &quot;, Moneyyy=&quot; + Moneyyy + &quot;, Category=&quot; + Category + &quot;, PayMethod=&quot; + PayMethod
+				+ &quot;]&quot;;
+	}
+
+    /**
+     * Metodo per applcare l&#39;iva alle spese con scontrino
+     * @return Spesa+iva 22%
+     */
+    public double applicaIva() {
+        return this.Moneyyy * 1.22;
+    }
+}</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">Spese inserite:
+1) Trasporto - 12.80 (Carta) | 2024-05-10
+2) Alimentari - 42.30 (Contanti) | 2024-05-12
+3) Bar - 7.50 (Contanti) | data non disponibile
+4) Tecnologia - 120.00 (Bonifico) | data non disponibile
+
+Totale: 182.60
+Media: 45.65
+Massimo: 120.00
+Minimo: 7.50
+
+Categoria con media piu alta: Tecnologia (120.00)
+Metodo con totale piu alto: Bonifico (120.00)
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["import java.time.LocalDate;\nimport java.util.List;\n\npublic class Main {\n\n    public static void main(String[] args) {\n        SpesaManager revolut = new SpesaManager();\n        revolut.addSpesa(new Spese(\"Trasporto\", LocalDate.of(2024, 5, 10), 12.80, \"Carta\")); // maledetto carnet 8 corse\n        revolut.addSpesa(new Spese(\"Alimentari\", LocalDate.of(2024, 5, 12), 42.30, \"Contanti\")); // in nero sotto casa...\n        revolut.addSpesa(new Spese(7.50, \"Bar\", \"Contanti\")); // uno sprits...\n        revolut.addSpesa(new Spese(120.00, \"Tecnologia\", \"Bonifico\")); // questa era una truffa\n\n        stampaElenco(revolut.getSpese());\n        stampaStatistiche(revolut);\n    }\n\n    private static void stampaElenco(List<Spese> spese) {\n        System.out.println(\"Spese inserite:\");\n        for (int i = 0; i < spese.size(); i++) {\n            Spese spesa = spese.get(i);\n            System.out.printf(\n                \"%d) %s - %.2f (%s) | %s%n\",\n                i + 1,\n                spesa.getCategory(),\n                spesa.getMoneyyy(),\n                spesa.getPayMethod(),\n                spesa.getDate() == null ? \"data non disponibile\" : spesa.getDate()\n            );\n        }\n        System.out.println();\n    }\n\n    private static void stampaStatistiche(SpesaManager manager) {\n        List<Spese> spese = manager.getSpese();\n        double totale = 0;\n        double max = Double.NEGATIVE_INFINITY;\n        double min = Double.POSITIVE_INFINITY;\n\n        for (Spese spesa : spese) {\n            double importo = spesa.getMoneyyy();\n            totale += importo;\n            max = Math.max(max, importo);\n            min = Math.min(min, importo);\n        }\n\n        double media = spese.isEmpty() ? 0 : totale / spese.size();\n\n        System.out.printf(\"Totale: %.2f%n\", totale);\n        System.out.printf(\"Media: %.2f%n\", media);\n        System.out.printf(\"Massimo: %.2f%n\", max);\n        System.out.printf(\"Minimo: %.2f%n\", min);\n\n        String categoriaTop = manager.calcolaCategoriaMaggiore();\n        String metodoTop = manager.calcolaPayMethodMaggiore();\n\n        double mediaCategoriaTop = categoriaTop.isEmpty() ? 0 : mediaPerCategoria(spese, categoriaTop);\n        double totaleMetodoTop = metodoTop.isEmpty() ? 0 : totalePerMetodo(spese, metodoTop);\n\n        System.out.println();\n        System.out.printf(\"Categoria con media piu alta: %s (%.2f)%n\", categoriaTop, mediaCategoriaTop);\n        System.out.printf(\"Metodo con totale piu alto: %s (%.2f)%n\", metodoTop, totaleMetodoTop);\n    }\n\n    private static double mediaPerCategoria(List<Spese> spese, String categoria) {\n        double totale = 0;\n        int count = 0;\n        for (Spese spesa : spese) {\n            if (spesa.getCategory().equals(categoria)) {\n                totale += spesa.getMoneyyy();\n                count++;\n            }\n        }\n        return count == 0 ? 0 : totale / count;\n    }\n\n    private static double totalePerMetodo(List<Spese> spese, String metodo) {\n        double totale = 0;\n        for (Spese spesa : spese) {\n            if (spesa.getPayMethod().equals(metodo)) {\n                totale += spesa.getMoneyyy();\n            }\n        }\n        return totale;\n    }\n}\n", "import java.util.ArrayList;\n\npublic class SpesaManager {\n\tprivate final ArrayList<Spese> spese;\n\n\tpublic SpesaManager() {\n\t\tspese = new ArrayList<>();\n\t}\n\n\tpublic void addSpesa(Spese spesa) {\n\t\tspese.add(spesa);\n\t}\n\n\tpublic ArrayList<Spese> getSpese() {\n\t\treturn spese;\n\t}\n\n\tpublic double spesaTotale() {\n\t\tdouble totale = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\ttotale += spesa.getMoneyyy();\n\t\t}\n\t\treturn totale;\n\t}\n\n\tpublic double spesaMedia() {\n\t\treturn spese.isEmpty() ? 0 : spesaTotale() / spese.size();\n\t}\n\n\tpublic double spesaMax() {\n\t\tif (spese.isEmpty()) {\n\t\t\treturn 0;\n\t\t}\n\t\tdouble max = spese.get(0).getMoneyyy();\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getMoneyyy() > max) {\n\t\t\t\tmax = spesa.getMoneyyy();\n\t\t\t}\n\t\t}\n\t\treturn max;\n\t}\n\n\tpublic double spesaMin() {\n\t\tif (spese.isEmpty()) {\n\t\t\treturn 0;\n\t\t}\n\t\tdouble min = spese.get(0).getMoneyyy();\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getMoneyyy() < min) {\n\t\t\t\tmin = spesa.getMoneyyy();\n\t\t\t}\n\t\t}\n\t\treturn min;\n\t}\n\n\tprivate ArrayList<String> getCategory() {\n\t\tArrayList<String> categories = new ArrayList<>();\n\t\tfor (Spese spesa : spese) {\n\t\t\tString category = spesa.getCategory();\n\t\t\tif (!categories.contains(category)) {\n\t\t\t\tcategories.add(category);\n\t\t\t}\n\t\t}\n\t\treturn categories;\n\t}\n\n\tprivate ArrayList<String> getPayMethod() {\n\t\tArrayList<String> methods = new ArrayList<>();\n\t\tfor (Spese spesa : spese) {\n\t\t\tString method = spesa.getPayMethod();\n\t\t\tif (!methods.contains(method)) {\n\t\t\t\tmethods.add(method);\n\t\t\t}\n\t\t}\n\t\treturn methods;\n\t}\n\n\tprivate double spesaMediaPerCategoria(String categoria) {\n\t\tdouble totale = 0;\n\t\tint count = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getCategory().equals(categoria)) {\n\t\t\t\ttotale += spesa.getMoneyyy();\n\t\t\t\tcount++;\n\t\t\t}\n\t\t}\n\t\treturn count == 0 ? 0 : totale / count;\n\t}\n\n\tprivate double spesaTotPerPayMethod(String method) {\n\t\tdouble totale = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getPayMethod().equals(method)) {\n\t\t\t\ttotale += spesa.getMoneyyy();\n\t\t\t}\n\t\t}\n\t\treturn totale;\n\t}\n\n\tpublic String calcolaPayMethodMaggiore() {\n\t\tArrayList<String> methods = this.getPayMethod();\n\t\tif (methods.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString migliore = methods.get(0);\n\t\tdouble totaleMigliore = this.spesaTotPerPayMethod(migliore);\n\t\tfor (String metodo : methods) {\n\t\t\tdouble totaleMetodo = this.spesaTotPerPayMethod(metodo);\n\t\t\tif (totaleMetodo > totaleMigliore) {\n\t\t\t\tmigliore = metodo;\n\t\t\t\ttotaleMigliore = totaleMetodo;\n\t\t\t}\n\t\t}\n\t\treturn migliore;\n\t}\n\n\tpublic String calcolaPayMethodMinore() {\n\t\tArrayList<String> methods = this.getPayMethod();\n\t\tif (methods.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString peggiore = methods.get(0);\n\t\tdouble totalePeggiore = this.spesaTotPerPayMethod(peggiore);\n\t\tfor (String metodo : methods) {\n\t\t\tdouble totaleMetodo = this.spesaTotPerPayMethod(metodo);\n\t\t\tif (totaleMetodo < totalePeggiore) {\n\t\t\t\tpeggiore = metodo;\n\t\t\t\ttotalePeggiore = totaleMetodo;\n\t\t\t}\n\t\t}\n\t\treturn peggiore;\n\t}\n\n\tpublic String calcolaCategoriaMaggiore() {\n\t\tArrayList<String> categorie = this.getCategory();\n\t\tif (categorie.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString migliore = categorie.get(0);\n\t\tdouble mediaMigliore = this.spesaMediaPerCategoria(migliore);\n\t\tfor (String categoria : categorie) {\n\t\t\tdouble mediaCategoria = this.spesaMediaPerCategoria(categoria);\n\t\t\tif (mediaCategoria > mediaMigliore) {\n\t\t\t\tmigliore = categoria;\n\t\t\t\tmediaMigliore = mediaCategoria;\n\t\t\t}\n\t\t}\n\t\treturn migliore;\n\t}\n\n\tpublic String calcolaCategoriaMinore() {\n\t\tArrayList<String> categorie = this.getCategory();\n\t\tif (categorie.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString peggiore = categorie.get(0);\n\t\tdouble mediaPeggiore = this.spesaMediaPerCategoria(peggiore);\n\t\tfor (String categoria : categorie) {\n\t\t\tdouble mediaCategoria = this.spesaMediaPerCategoria(categoria);\n\t\t\tif (mediaCategoria < mediaPeggiore) {\n\t\t\t\tpeggiore = categoria;\n\t\t\t\tmediaPeggiore = mediaCategoria;\n\t\t\t}\n\t\t}\n\t\treturn peggiore;\n\t}\n}\n", "\nimport java.time.LocalDate;\n\n/**\n * La classe {@code Spese} rappresenta una singola spesa con attributi relativi alla data,\n * importo, categoria e metodo di pagamento.\n * @author giordii.dev\n */\npublic class Spese {\n    private LocalDate date;\n    private double Moneyyy;\n    private String Category;\n    private String PayMethod;\n\n    /**\n     * Costruttore completo per l'inizializzazione completa degli oggetti.\n     * @param date data della spesa\n     */\n\n    public Spese(String Category, LocalDate date, double Moneyyy, String PayMethod) {\n        this.Category = Category;\n        this.date = date;\n        this.Moneyyy = Moneyyy;\n        this.PayMethod = PayMethod;\n    }\n\n\n    /**\n     * Costruttore senza Date per spese incognite\n     * @hidden per i soldi in nero :|\n     */\n\n    public Spese(double moneyyy, String category, String payMethod) {\n\t\tthis.Moneyyy = moneyyy;\n\t\tthis.Category = category;\n\t\tthis.PayMethod = payMethod;\n\t}\n\n\n\t// getter e setter\n    public void setDate(LocalDate date) {\n        this.date = date;\n    }\n\n    public LocalDate getDate() {\n        return date;\n    }\n\n    public void setMoneyyy(double Moneyyy) {\n        this.Moneyyy = Moneyyy;\n    }\n\n    public void setCategory(String Category) {\n        this.Category = Category;\n    }\n\n    public void setPayMethod(String PayMethod) {\n        this.PayMethod = PayMethod;\n    }\n\n    public double getMoneyyy() {\n        return Moneyyy;\n    }\n\n    public String getCategory() {\n        return Category;\n    }\n\n    public String getPayMethod() {\n        return PayMethod;\n    }\n\n    @Override\n\tpublic String toString() {\n\t\treturn \"Spese [date=\" + date + \", Moneyyy=\" + Moneyyy + \", Category=\" + Category + \", PayMethod=\" + PayMethod\n\t\t\t\t+ \"]\";\n\t}\n\n    /**\n     * Metodo per applcare l'iva alle spese con scontrino\n     * @return Spesa+iva 22%\n     */\n    public double applicaIva() {\n        return this.Moneyyy * 1.22;\n    }\n}"];
+        const projectName = "SpeseManager";
+        const buildStatus = "success";
+        const precompiledOutput = "Spese inserite:\n1) Trasporto - 12.80 (Carta) | 2024-05-10\n2) Alimentari - 42.30 (Contanti) | 2024-05-12\n3) Bar - 7.50 (Contanti) | data non disponibile\n4) Tecnologia - 120.00 (Bonifico) | data non disponibile\n\nTotale: 182.60\nMedia: 45.65\nMassimo: 120.00\nMinimo: 7.50\n\nCategoria con media piu alta: Tecnologia (120.00)\nMetodo con totale piu alto: Bonifico (120.00)\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>
