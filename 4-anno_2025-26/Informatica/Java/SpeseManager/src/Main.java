@@ -1,48 +1,85 @@
-import java.util.Arrays;
+import java.time.LocalDate;
 import java.util.List;
 
 public class Main {
-    public static final String RESET = "\u001B[0m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";
-    public static final String CYAN = "\u001B[36m";
 
-    public static void main(String[] args) throws Exception {
-        System.out.println(RED + "Per Dio!" + RESET);
-        Spese[] ricevute = {
-            new Spese("Trasporto", "2025-10-24", 4.5, "Carta"),
-            new Spese("Alimentari", 12.4, "Contanti"), // in nero
-            new Spese("Bar", 7.0, "Contanti"), // uno sprits..
-            new Spese("Viaggi", "2026-01-13", 340, "Bonifico") // neve 2026
-        };
+    public static void main(String[] args) {
+        SpesaManager revolut = new SpesaManager();
+        revolut.addSpesa(new Spese("Trasporto", LocalDate.of(2024, 5, 10), 12.80, "Carta")); // maledetto carnet 8 corse
+        revolut.addSpesa(new Spese("Alimentari", LocalDate.of(2024, 5, 12), 42.30, "Contanti")); // in nero sotto casa...
+        revolut.addSpesa(new Spese(7.50, "Bar", "Contanti")); // uno sprits...
+        revolut.addSpesa(new Spese(120.00, "Tecnologia", "Bonifico")); // questa era una truffa
 
-        List<Spese> listaSpese = Arrays.asList(ricevute);
-        Stats stats = new Stats();
-
-        double SpesaComplessiva = 0;
-        for (Spese spesa : listaSpese)  {
-            SpesaComplessiva += spesa.getMoneyyy();
-        }
-        System.out.println(GREEN + "Hai speso complessivamente: " + SpesaComplessiva + RESET);
-        System.out.println(YELLOW + "La spesa media è " + (SpesaComplessiva / listaSpese.size()) + RESET);
-
-        double maxSpesa = 0;
-        double minSpesa = listaSpese.get(0).getMoneyyy();
-
-        for (Spese spesa : listaSpese) {
-            if (spesa.getMoneyyy() > maxSpesa) maxSpesa = spesa.getMoneyyy();
-            if (spesa.getMoneyyy() < minSpesa) minSpesa = spesa.getMoneyyy();
-        }
-
-        System.out.println(CYAN + "La spesa max è " + maxSpesa + RESET);
-        System.out.println(RED + "La spesa min è " + minSpesa + RESET);
-
-        String categoriaMediaPiuAlta = stats.categoriaMediaPiuAlta(listaSpese);
-        String categoriaMediaPiuBassa = stats.categoriaMediaPiuBassa(listaSpese);
-
-        System.out.println(CYAN + "Categoria con media più alta: " + categoriaMediaPiuAlta + RESET);
-        System.out.println(RED + "Categoria con media più bassa: " + categoriaMediaPiuBassa + RESET);
+        stampaElenco(revolut.getSpese());
+        stampaStatistiche(revolut);
     }
-    
+
+    private static void stampaElenco(List<Spese> spese) {
+        System.out.println("Spese inserite:");
+        for (int i = 0; i < spese.size(); i++) {
+            Spese spesa = spese.get(i);
+            System.out.printf(
+                "%d) %s - %.2f (%s) | %s%n",
+                i + 1,
+                spesa.getCategory(),
+                spesa.getMoneyyy(),
+                spesa.getPayMethod(),
+                spesa.getDate() == null ? "data non disponibile" : spesa.getDate()
+            );
+        }
+        System.out.println();
+    }
+
+    private static void stampaStatistiche(SpesaManager manager) {
+        List<Spese> spese = manager.getSpese();
+        double totale = 0;
+        double max = Double.NEGATIVE_INFINITY;
+        double min = Double.POSITIVE_INFINITY;
+
+        for (Spese spesa : spese) {
+            double importo = spesa.getMoneyyy();
+            totale += importo;
+            max = Math.max(max, importo);
+            min = Math.min(min, importo);
+        }
+
+        double media = spese.isEmpty() ? 0 : totale / spese.size();
+
+        System.out.printf("Totale: %.2f%n", totale);
+        System.out.printf("Media: %.2f%n", media);
+        System.out.printf("Massimo: %.2f%n", max);
+        System.out.printf("Minimo: %.2f%n", min);
+
+        String categoriaTop = manager.calcolaCategoriaMaggiore();
+        String metodoTop = manager.calcolaPayMethodMaggiore();
+
+        double mediaCategoriaTop = categoriaTop.isEmpty() ? 0 : mediaPerCategoria(spese, categoriaTop);
+        double totaleMetodoTop = metodoTop.isEmpty() ? 0 : totalePerMetodo(spese, metodoTop);
+
+        System.out.println();
+        System.out.printf("Categoria con media piu alta: %s (%.2f)%n", categoriaTop, mediaCategoriaTop);
+        System.out.printf("Metodo con totale piu alto: %s (%.2f)%n", metodoTop, totaleMetodoTop);
+    }
+
+    private static double mediaPerCategoria(List<Spese> spese, String categoria) {
+        double totale = 0;
+        int count = 0;
+        for (Spese spesa : spese) {
+            if (spesa.getCategory().equals(categoria)) {
+                totale += spesa.getMoneyyy();
+                count++;
+            }
+        }
+        return count == 0 ? 0 : totale / count;
+    }
+
+    private static double totalePerMetodo(List<Spese> spese, String metodo) {
+        double totale = 0;
+        for (Spese spesa : spese) {
+            if (spesa.getPayMethod().equals(metodo)) {
+                totale += spesa.getMoneyyy();
+            }
+        }
+        return totale;
+    }
 }
