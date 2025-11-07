@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dizionario Italiano-Inglese</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 flex flex-col items-center min-h-screen p-6">
+  <h1 class="text-2xl font-semibold mb-6">Dict not dict</h1>
+  <div class="w-full max-w-md space-y-4">
+    <input id="wordInput" type="text" placeholder="Inserisci parola in italiano o inglese" 
+      class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <div>
+      <button id="showTableBtn" class="mr-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">show alllll</button>
+      <button id="addWordBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">add word!</button>
+    </div>
+    <div id="result" class="text-center text-lg font-medium mt-4 text-gray-700"></div>
+    <div id="tableContainer" class="overflow-x-auto mt-6 hidden">
+      <table class="w-full border-collapse border border-gray-300 text-left">
+        <thead>
+          <tr class="bg-blue-100">
+            <th class="border border-gray-300 px-4 py-2">Italiano</th>
+            <th class="border border-gray-300 px-4 py-2">Inglese</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+    <div id="addWordForm" class="mt-6 p-4 border border-gray-300 rounded hidden">
+      <h2 class="text-lg font-semibold mb-2">Aggiungi nuova parola</h2>
+      <input id="itWord" type="text" placeholder="Parola in italiano" 
+        class="w-full mb-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500" />
+      <input id="enWord" type="text" placeholder="Inglese" 
+        class="w-full mb-2 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500" />
+      <button id="submitAddBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Aggiungi</button>
+      <p id="addWordMessage" class="mt-2 text-red-600"></p>
+    </div>
+  </div>  
+  <script>
+    // Dizionario con traduzioni italiano-inglese
+    const dictionary = {
+      "ciao": "hello", "amore": "love", "cane": "dog", "gatto": "cat", "casa": "house",
+      "libro": "book", "acqua": "water", "sole": "sun", "luna": "moon", "scuola": "school"
+    };
+
+    const $ = id => document.getElementById(id);
+    const elements = {
+      wordInput: $('wordInput'), result: $('result'), tableContainer: $('tableContainer'),
+      tableBody: $('tableBody'), addWordForm: $('addWordForm'), itWordInput: $('itWord'),
+      enWordInput: $('enWord'), addWordMessage: $('addWordMessage')
+    };
+    const findTranslation = word => {
+      const w = word.toLowerCase();
+      return dictionary[w] || Object.keys(dictionary).find(k => dictionary[k] === w) || null;
+    };
+
+    const showMessage = (msg, isSuccess = false) => {
+      elements.addWordMessage.textContent = msg;
+      elements.addWordMessage.className = `mt-2 ${isSuccess ? 'text-green-600' : 'text-red-600'}`;
+    };
+
+    const hideAll = () => {
+      elements.tableContainer.classList.add('hidden');
+      elements.addWordForm.classList.add('hidden');
+      elements.result.textContent = '';
+      elements.addWordMessage.textContent = '';
+    };
+
+    const wordExists = word => {
+      const w = word.toLowerCase();
+      return dictionary[w] || Object.values(dictionary).includes(w);
+    };
+    elements.wordInput.onkeyup = e => {
+      if (e.key === 'Enter') {
+        const word = e.target.value.trim();
+        if (!word) return elements.result.textContent = '';
+        
+        const translation = findTranslation(word);
+        elements.result.textContent = translation 
+          ? `${word} → ${translation}` 
+          : 'Parola non trovata nel dizionario.';
+      }
+    };
+
+    $('showTableBtn').onclick = () => {
+      elements.tableBody.innerHTML = Object.entries(dictionary)
+        .map(([it, en]) => `<tr><td class="border border-gray-300 px-4 py-2">${it}</td><td class="border border-gray-300 px-4 py-2">${en}</td></tr>`)
+        .join('');
+      elements.tableContainer.classList.toggle('hidden');
+      elements.addWordForm.classList.add('hidden');
+      elements.result.textContent = '';
+    };
+
+    $('addWordBtn').onclick = () => {
+      hideAll();
+      elements.addWordForm.classList.toggle('hidden');
+      elements.itWordInput.value = elements.enWordInput.value = '';
+    };
+
+    $('submitAddBtn').onclick = () => {
+      const [it, en] = [elements.itWordInput.value.trim().toLowerCase(), elements.enWordInput.value.trim().toLowerCase()];
+      
+      if (!it || !en) return showMessage('manca una parola');
+      
+      dictionary[it] = en;
+      showMessage('Parola aggiunta con successo!', true);
+      elements.itWordInput.value = elements.enWordInput.value = '';
+    };
+  </script>
+</body>
+</html>
