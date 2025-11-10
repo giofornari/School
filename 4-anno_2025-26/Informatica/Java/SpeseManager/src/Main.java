@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -42,7 +43,7 @@ public class Main {
             max = Math.max(max, importo);
             min = Math.min(min, importo);
         }
-
+        
         double media = spese.isEmpty() ? 0 : totale / spese.size();
 
         System.out.printf("Totale: %.2f%n", totale);
