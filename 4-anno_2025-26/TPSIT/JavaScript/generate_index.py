@@ -368,9 +368,11 @@ def generate_html(projects):
                 const response = await fetch(currentPath);
                 const code = await response.text();
                 document.getElementById('codeTitle').textContent = currentTitle + ' - HTML Source';
-                document.getElementById('codeContent').textContent = code;
-                document.getElementById('codeContent').className = 'language-html';
-                hljs.highlightElement(document.getElementById('codeContent'));
+                const codeEl = document.getElementById('codeContent');
+                codeEl.textContent = code;
+                codeEl.className = 'language-html';
+                delete codeEl.dataset.highlighted;
+                hljs.highlightElement(codeEl);
                 closeModal();
                 const codeModal = document.getElementById('codeModal');
                 codeModal.classList.remove('hidden');
@@ -448,9 +450,11 @@ def generate_html(projects):
                 }}).join('\\n\\n\\n');
                 
                 document.getElementById('codeTitle').textContent = currentTitle + ' - JavaScript Code (' + allScripts.length + ' script' + (allScripts.length > 1 ? 's' : '') + ')';
-                document.getElementById('codeContent').textContent = jsCode;
-                document.getElementById('codeContent').className = 'language-javascript';
-                hljs.highlightElement(document.getElementById('codeContent'));
+                const codeEl = document.getElementById('codeContent');
+                codeEl.textContent = jsCode;
+                codeEl.className = 'language-javascript';
+                delete codeEl.dataset.highlighted;
+                hljs.highlightElement(codeEl);
                 closeModal();
                 const codeModal = document.getElementById('codeModal');
                 codeModal.classList.remove('hidden');
