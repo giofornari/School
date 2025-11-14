@@ -166,16 +166,6 @@ def generate_html(projects):
             </h1>
             <p class="text-gray-600 text-lg mb-8">Interactive Projects & Coding Exercises</p>
             
-            <div class="flex flex-wrap justify-center gap-4">
-                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-default">
-                    <div class="text-3xl font-bold">{len(projects)}</div>
-                    <div class="text-sm uppercase tracking-wider opacity-90">Categories</div>
-                </div>
-                <div class="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-default">
-                    <div class="text-3xl font-bold">{total_files}</div>
-                    <div class="text-sm uppercase tracking-wider opacity-90">Total Files</div>
-                </div>
-            </div>
         </header>
 
 """
