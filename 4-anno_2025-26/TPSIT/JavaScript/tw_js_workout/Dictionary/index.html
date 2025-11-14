@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="tailwind@1.css" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <script src="script.js"></script>
+        <title>Dictionary</title>
+</head>
+<body class="bg-linear-to-br from-green-400 to-cyan-500 min-h-screen xl:p-8 lg:p-8 xs:p-3 *:p-4 flex justify-center">
+    <div class="flex p-6 flex-col h-[90vh] items-center gap-4 bg-gray-100 rounded-3xl shadow-2xl w-[90vw]">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold p-4 rounded-xl px-7">An italian <span
+                  class="block w-full py-2 text-transparent bg-clip-text leading-12 bg-linear-to-r from-green-400 to-purple-500 lg:inline">dictionary</span>
+        </h1>
+        <div class="flex flex-row gap-5">
+            <div class="flex flex-col items-center justify-center gap-4">
+                <div class="bg-white rounded-lg shadow-md p-6 min-w-md">
+                    <h3 class="text-xl font-bold mb-4">Find the word you're looking for!</h3>
+                    <p class="text-gray-600 hidden">Find a word</p>
+                    <div class="flex items-center gap-5 w-full border border-gray-200 rounded-lg py-3 px-5">
+                        <span class="shrink-0 text-gray-500">
+                            <button type="button" id="searchbtn" class="flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </button>
+                        </span>
+                        <input type="text" id="search_txt" name="Search Input" placeholder="Search for definitions"
+                               class="w-full outline-none bg-transparent">
+                    </div>
+                    <p id="result_output" class="mt-4 text-sm font-semibold text-gray-600"></p>
+                    <button id="toggle_table"
+                            class="inline-flex items-center justify-center w-full px-8 py-3 font-sans font-semibold tracking-wide text-white bg-green-500 rounded-lg hover:bg-green-700">
+                        Mostra tutte le traduzioni
+                    </button>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6 min-w-md">
+                    <h3 class="text-xl font-bold mb-4">Would you add a new word?</h3>
+                    <p class="text-gray-600 hidden">Find a word</p>
+                    <div class="flex items-center gap-5 w-full border border-gray-200 rounded-lg py-3 px-5">
+                        <input type="text" id="word" name="Input word" placeholder="Word"
+                               class="w-full outline-none bg-transparent">
+                    </div>
+                    <div class="flex items-center gap-5 mt-2 w-full border border-gray-200 rounded-lg py-3 px-5">
+                        <textarea id="means" name="Input meaning" placeholder="Meaning"
+                                  class="w-full outline-none bg-transparent resize-none" rows="3"
+                                  oninput="this.style.height = 'auto'; this.style.height = this.scrollHeight + 'px'"></textarea>
+                    </div>
+                    <div class="flex items-center py-5 justify-between">
+                        <button id="add"
+                                class="inline-flex items-center justify-center px-8 py-3 font-sans font-semibold tracking-wide text-white bg-blue-500 rounded-lg hover:bg-blue-700">
+                            Add
+                        </button>
+                        <button id="clear"
+                                class="inline-flex items-center justify-center px-8 py-2.5 font-sans font-semibold tracking-wide text-blue-500 border border-blue-500 rounded-lg hover:text-white hover:bg-red-800 hover:border-red-800 focus:outline-none">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col items-center justify-center gap-4">
+                <div id="dictionary_table_container" class="bg-white rounded-lg shadow-md p-6 min-w-md hidden">
+                    <div class="w-full mt-4 overflow-x-auto">
+                        <table id="dictionary_table"
+                               class="min-w-full divide-y divide-gray-200 bg-white rounded-xl overflow-hidden shadow">
+                            <thead>
+                                <tr class="bg-gray-100 text-left text-gray-600 uppercase text-xs tracking-wider">
+                                    <th class="px-4 py-3">Italiano</th>
+                                    <th class="px-4 py-3">Inglese</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dictionary_table_body" class="divide-y divide-gray-200"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

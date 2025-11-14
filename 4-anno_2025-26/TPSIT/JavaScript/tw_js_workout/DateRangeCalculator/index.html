@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+    <link href="tailwind@1.css" rel="stylesheet">
+    <title>Date and Time</title>
+</head>
+
+<body class="bg-linear-to-br/srgb from-blue-600 from-20% to-green-400">
+    <div class="flex justify-center min-h-screen p-4 place-items-center-safe ">
+        <div class="max-w-md p-6 transition duration-200 ease-out transform rounded-lg shadow-lg min-w-xs bg-amber-50 hover:shadow-2xl hover:scale-3d hover:scale-110 hover:duration-100 hover:ease-in">
+                <h2 class="mb-1 text-xs font-medium tracking-widest text-gray-400 title-font">TOOLS</h2>
+                <h1 class="mb-3 text-xl font-medium text-gray-900 title-font">Date range calculator</h1>
+                <p class="mb-1 text-sm font-medium text-gray-500">Select period range</p>
+                <div class="flex-wrap items-center" id="input">
+                    <div class="pt-3 mb-3">
+                        <label for="data1" class="font-semibold text-gray-800">From:</label>    
+                        <input type="date" id="data1" class="w-full px-3 py-2 text-gray-700 border rounded focus:outline-none transform-none backface-hidden" />
+                    </div>
+                    <div class="mb-2">
+                        <label for="data2" class="font-semibold text-gray-800">To:</label>    
+                        <input type="date" id="data2" class="w-full px-3 py-2 text-gray-700 border rounded focus:outline-none transform-none backface-hidden" />
+                    </div>
+
+                    <div class="flex justify-between pt-4">
+                        <button class="inline-flex px-6 py-2 text-lg text-white transition-colors duration-300 ease-out border-0 rounded bg-lime-700 focus:outline-none hover:bg-lime-600">
+                            Calculate
+                        </button>
+                        <button class="inline-flex px-6 py-2 text-lg text-white transition-colors duration-300 ease-out bg-red-800 border-0 rounded focus:outline-none hover:bg-red-700">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+                <div class="hidden p-4 border border-gray-200 rounded-lg bg-gray-50" id="welcomeMessage">
+                    <p class="mb-0.5 text-sm font-bold text-gray-700 text-center">You selected a period long</p>
+                    <ul class="text-sm text-gray-600">
+                        <li class="font-semibold text-center text-green-700" id="output-delta"></li>
+                        <li class="mt-3" id="output-msg"></li>
+                    </ul>
+                </div>
+                <button class="p-3 mt-2 text-sm font-semibold text-blue-500 underline rounded-lg underline-offset-2 disabled:hidden" id="back" disabled>
+                    Go back
+                </button>
+
+        </div>
+    </div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', e=>{
+        const data1 = document.getElementById('data1');
+        const data2 = document.getElementById('data2');
+        const btSubmit = document.querySelectorAll('button')[0];
+        const btClear = document.querySelectorAll('button')[1];
+        const inputDiv = document.getElementById('input');
+        const messageDiv = document.getElementById('welcomeMessage');
+        const output = document.getElementById('output-delta');
+        const output_msg = document.getElementById('output-msg');
+        const backButton = document.getElementById('back');
+        const pp = document.querySelector('p');
+        
+        
+        backButton.disabled = true;
+        btClear.addEventListener('click', a=>{
+            if (data1.value != null && data2.value != null) {
+                data1.value = data2.value = null;
+            }
+        });
+        btSubmit.addEventListener('click', b=>{
+            pp.classList.add('hidden');
+            inputDiv.classList.add('hidden');
+            pp.classList.add('hidden');
+            let data1d = new Date(data1.value);
+            let data2d = new Date(data2.value);
+            let delta = data2d - data1d;
+            let days = Math.floor(delta/86400000);
+            console.log(days);
+            if (days<=0 || data1.value == '' || data2.value == ''){
+                messageDiv.querySelector('p').textContent = "You selected an invalid period";
+                messageDiv.querySelector('p').classList.replace('text-gray-700', 'text-red-700');
+                messageDiv.querySelector('p').classList.replace('font-semibold', 'font-bold');
+                output.textContent = `Please select a valid date interval`;
+                backButton.disabled = false;
+            } else{
+                output.textContent = `${days} days`;
+                output_msg.textContent = `Almost ${Math.round(days/7)} weeks`;
+                backButton.disabled = false;
+
+            }
+            backButton.addEventListener('click', c=>{
+                inputDiv.classList.remove('hidden');
+                pp.classList.remove('hidden');
+                messageDiv.classList.add('hidden');
+                backButton.disabled = true;
+            
+            });
+            messageDiv.classList.remove('hidden');
+
+        });
+    });
+</script>
+</html>
