@@ -220,7 +220,9 @@ def generate_html(projects):
             
             # Determina se mostrare il menu o link diretto
             if file['is_html']:
-                onclick = f"openModal('{file['path']}', '{file['display_name'].replace("'", "\\'")}')"
+                # Escape delle virgolette nel titolo
+                safe_title = file['display_name'].replace("'", "\\'")
+                onclick = f"openModal('{file['path']}', '{safe_title}')"
                 html += f"""
                 <div onclick="{onclick}" 
                    class="group bg-white hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 rounded-2xl p-5 shadow-md hover:shadow-xl border-2 border-gray-100 hover:border-indigo-300 transition-all duration-300 hover:-translate-y-2 cursor-pointer">
