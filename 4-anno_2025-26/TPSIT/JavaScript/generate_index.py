@@ -385,24 +385,69 @@ def generate_html(projects):
                 const response = await fetch(currentPath);
                 const html = await response.text();
                 
-                // Estrai tutti i <script> tags
-                const scriptRegex = /<script[^>]*>([\\s\\S]*?)<\\/script>/gi;
-                const scripts = [];
+                const allScripts = [];
+                
+                // 1. Estrai script INLINE (senza src)
+                const inlineScriptRegex = /<script(?![^>]*src=)[^>]*>([\\s\\S]*?)<\\/script>/gi;
                 let match;
-                while ((match = scriptRegex.exec(html)) !== null) {{
+                while ((match = inlineScriptRegex.exec(html)) !== null) {{
                     const content = match[1].trim();
-                    if (content && !match[0].includes('src=')) {{
-                        scripts.push(content);
+                    if (content) {{
+                        allScripts.push({{
+                            type: 'inline',
+                            content: content
+                        }});
                     }}
                 }}
                 
-                if (scripts.length === 0) {{
-                    alert('No inline JavaScript found in this page.');
+                // 2. Estrai riferimenti a script ESTERNI nella stessa cartella
+                const srcRegex = /<script[^>]*src=["']([^"']*\\.(?:js|mjs))["'][^>]*>/gi;
+                const externalScripts = [];
+                while ((match = srcRegex.exec(html)) !== null) {{
+                    const src = match[1];
+                    // Solo se è un file locale (non CDN)
+                    if (!src.startsWith('http://') && !src.startsWith('https://') && !src.startsWith('//')) {{
+                        externalScripts.push(src);
+                    }}
+                }}
+                
+                // 3. Carica i file esterni
+                for (const src of externalScripts) {{
+                    try {{
+                        // Calcola il path corretto relativo alla pagina HTML
+                        const htmlDir = currentPath.substring(0, currentPath.lastIndexOf('/'));
+                        const scriptPath = src.startsWith('./') ? src.substring(2) : src;
+                        const fullPath = htmlDir + '/' + scriptPath;
+                        
+                        const scriptResponse = await fetch(fullPath);
+                        if (scriptResponse.ok) {{
+                            const scriptContent = await scriptResponse.text();
+                            allScripts.push({{
+                                type: 'external',
+                                file: src,
+                                content: scriptContent
+                            }});
+                        }}
+                    }} catch(e) {{
+                        console.error('Failed to load script:', src, e);
+                    }}
+                }}
+                
+                if (allScripts.length === 0) {{
+                    alert('No JavaScript found in this page.');
                     return;
                 }}
                 
-                const jsCode = scripts.join('\\n\\n// ========================================\\n\\n');
-                document.getElementById('codeTitle').textContent = currentTitle + ' - JavaScript Code';
+                // 4. Combina tutto con separatori chiari
+                const jsCode = allScripts.map(script => {{
+                    if (script.type === 'inline') {{
+                        return '// ===== INLINE SCRIPT =====\\n\\n' + script.content;
+                    }} else {{
+                        return '// ===== EXTERNAL FILE: ' + script.file + ' =====\\n\\n' + script.content;
+                    }}
+                }}).join('\\n\\n\\n');
+                
+                document.getElementById('codeTitle').textContent = currentTitle + ' - JavaScript Code (' + allScripts.length + ' script' + (allScripts.length > 1 ? 's' : '') + ')';
                 document.getElementById('codeContent').textContent = jsCode;
                 document.getElementById('codeContent').className = 'language-javascript';
                 hljs.highlightElement(document.getElementById('codeContent'));
