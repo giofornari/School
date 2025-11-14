@@ -8,15 +8,59 @@ import os
 import json
 from pathlib import Path
 from datetime import datetime
+import re
+
+# Directories to ignore during scanning
+IGNORED_DIRS = {
+    '.git',
+    '__pycache__',
+    'node_modules',
+    '.vscode',
+    '.idea',
+    'venv',
+    'env',
+    '.pytest_cache',
+    'dist',
+    'build',
+    'sdfiles'
+}
 
 def scan_directory(base_path, dir_name):
-    """Scan a directory for HTML, Python, and JavaScript files."""
+    """Scan a directory recursively for HTML, Python, and JavaScript files."""
     dir_path = base_path / dir_name
     if not dir_path.exists():
         return None
     
     files = []
-    for file_path in sorted(dir_path.glob("*")):
+    js_files_to_hide = set()  # JS files referenziati in HTML
+    
+    # Prima passa: trova tutti i file .js referenziati negli HTML
+    for file_path in dir_path.rglob("*.html"):
+        if any(ignored in file_path.parts for ignored in IGNORED_DIRS):
+            continue
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                # Trova tutti i src="*.js"
+                js_refs = re.findall(r'src=["\']([^"\']*\.(?:js|mjs))["\']', content, re.IGNORECASE)
+                for js_ref in js_refs:
+                    # Risolvi il path relativo
+                    js_file = file_path.parent / js_ref.lstrip('./')
+                    if js_file.exists():
+                        js_files_to_hide.add(js_file)
+        except:
+            pass
+    
+    # Recursively find all files
+    for file_path in sorted(dir_path.rglob("*")):
+        # Skip files in ignored directories
+        if any(ignored in file_path.parts for ignored in IGNORED_DIRS):
+            continue
+        
+        # Skip JS files che sono referenziati in HTML
+        if file_path in js_files_to_hide:
+            continue
+            
         if file_path.is_file():
             ext = file_path.suffix.lower()
             if ext in ['.html', '.htm', '.py', '.js', '.mjs']:
@@ -27,12 +71,25 @@ def scan_directory(base_path, dir_name):
                 # Get modification time
                 mtime = datetime.fromtimestamp(file_path.stat().st_mtime)
                 
+                # Get relative path from the category directory
+                rel_path = file_path.relative_to(dir_path)
+                
+                # Extract title for HTML files
+                display_name = file_path.name
+                if ext in ['.html', '.htm']:
+                    title = extract_html_title(file_path)
+                    if title:
+                        display_name = title
+                
                 files.append({
                     'name': file_path.name,
-                    'path': f"{dir_name}/{file_path.name}",
+                    'display_name': display_name,
+                    'path': f"{dir_name}/{rel_path}",
                     'type': ext[1:].upper(),
                     'size': size_str,
-                    'modified': mtime.strftime('%Y-%m-%d')
+                    'modified': mtime.strftime('%Y-%m-%d'),
+                    'subfolder': str(rel_path.parent) if rel_path.parent != Path('.') else '',
+                    'is_html': ext in ['.html', '.htm']
                 })
     
     return {
@@ -41,8 +98,20 @@ def scan_directory(base_path, dir_name):
         'count': len(files)
     } if files else None
 
+def extract_html_title(file_path):
+    """Extract the <title> tag content from an HTML file."""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read(2000)  # Read first 2KB
+            match = re.search(r'<title[^>]*>([^<]+)</title>', content, re.IGNORECASE)
+            if match:
+                return match.group(1).strip()
+    except:
+        pass
+    return None
+
 def generate_html(projects):
-    """Generate the HTML content for the index page."""
+    """Generate the HTML content for the index page using Tailwind CSS."""
     
     # Count total files
     total_files = sum(p['count'] for p in projects)
@@ -52,566 +121,59 @@ def generate_html(projects):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript homemade - Projects & Exercises</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>JavaScript Homemade - Projects & Exercises</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {{
+            theme: {{
+                extend: {{
+                    animation: {{
+                        'fade-in': 'fadeIn 0.6s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                    }},
+                    keyframes: {{
+                        fadeIn: {{
+                            '0%': {{ opacity: '0' }},
+                            '100%': {{ opacity: '1' }},
+                        }},
+                        slideUp: {{
+                            '0%': {{ opacity: '0', transform: 'translateY(30px)' }},
+                            '100%': {{ opacity: '1', transform: 'translateY(0)' }},
+                        }},
+                    }},
+                }}
+            }}
+        }}
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <style>
-        :root {{
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            --warning-gradient: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-            --card-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
-            --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.15);
-            --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.2);
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-xl: 32px;
-            --spacing-xs: 8px;
-            --spacing-sm: 16px;
-            --spacing-md: 24px;
-            --spacing-lg: 32px;
-            --spacing-xl: 48px;
-        }}
-
-        * {{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }}
-
-        body {{
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--primary-gradient);
-            background-attachment: fixed;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }}
-
-        /* Animated background particles */
-        body::before {{
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }}
-
-        .container {{
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }}
-
-        header {{
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: var(--spacing-xl) var(--spacing-lg);
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            margin-bottom: var(--spacing-xl);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-        }}
-
-        header::before {{
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }}
-
-        @keyframes rotate {{
-            from {{ transform: rotate(0deg); }}
-            to {{ transform: rotate(360deg); }}
-        }}
-
-        h1 {{
-            color: #1a1a2e;
-            font-size: 2.5rem;
-            margin-bottom: var(--spacing-sm);
-            font-weight: 800;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-            z-index: 1;
-            letter-spacing: -0.02em;
-        }}
-
-        .emoji {{
-            font-size: 3rem;
-            margin-bottom: var(--spacing-md);
-            display: inline-block;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 8px 20px rgba(102, 126, 234, 0.4));
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }}
-
-        .emoji:hover {{
-            transform: translateY(-5px) scale(1.1);
-            filter: drop-shadow(0 12px 30px rgba(102, 126, 234, 0.6));
-        }}
-
-        .subtitle {{
-            color: #666;
-            font-size: 1.1rem;
-            margin-bottom: var(--spacing-md);
-            font-weight: 500;
-            position: relative;
-            z-index: 1;
-            line-height: 1.6;
-        }}
-
-        .stats {{
-            display: flex;
-            justify-content: center;
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-lg);
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }}
-
-        .stat {{
-            background: var(--primary-gradient);
-            color: white;
-            padding: 18px 32px;
-            border-radius: var(--radius-lg);
-            font-weight: 600;
-            box-shadow: var(--shadow-md);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            min-width: 140px;
-        }}
-
-        .stat:hover {{
-            transform: translateY(-4px) scale(1.03);
-            box-shadow: var(--shadow-xl);
-            border-color: rgba(255, 255, 255, 0.8);
-        }}
-
-        .stat:active {{
-            transform: translateY(-3px) scale(1.02);
-        }}
-
-        .stat-number {{
-            font-size: 2.2rem;
-            display: block;
-            font-weight: 800;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-            margin-bottom: var(--spacing-xs);
-        }}
-
-        .stat-label {{
-            font-size: 0.85rem;
-            opacity: 0.95;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-        }}
-
-        .project-section {{
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(20px);
-            padding: 28px;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-xl);
-            margin-bottom: 28px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            transition: all 0.4s ease;
-        }}
-
-        .project-section:hover {{
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl), 0 0 40px rgba(102, 126, 234, 0.1);
-        }}
-
-        .project-header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 18px;
-            background: var(--card-gradient);
-            border-radius: var(--radius-md);
-            border-bottom: 3px solid rgba(102, 126, 234, 0.1);
-        }}
-
-        .project-title {{
-            font-size: 1.6rem;
-            color: #1a1a2e;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            letter-spacing: -0.01em;
-        }}
-
-        .project-title::before {{
-            content: '📁';
-            font-size: 1.4rem;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }}
-
-        .project-section:hover .project-title::before {{
-            transform: scale(1.1) rotate(5deg);
-        }}
-
-        .project-count {{
-            background: var(--success-gradient);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            box-shadow: var(--shadow-sm);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }}
-
-        .project-section:hover .project-count {{
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: var(--shadow-md);
-            border-color: rgba(255, 255, 255, 0.8);
-        }}
-
-        .files-grid {{
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-            padding: var(--spacing-sm);
-        }}
-
-        .file-card {{
-            background: white;
-            padding: 20px;
-            border-radius: var(--radius-lg);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            border: 2px solid #f0f0f0;
-            position: relative;
-            box-shadow: var(--shadow-sm);
-        }}
-
-        .file-card::before {{
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: var(--radius-lg);
-            padding: 2px;
-            background: var(--primary-gradient);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }}
-
-        .file-card:hover {{
-            transform: translateY(-6px) scale(1.01);
-            box-shadow: var(--shadow-lg);
-        }}
-
-        .file-card:hover::before {{
-            opacity: 1;
-        }}
-
-        /* Active state */
-        .file-card:active {{
-            transform: translateY(-4px) scale(1.005);
-            transition: all 0.1s ease;
-        }}
-
-        .file-name {{
-            font-size: 1rem;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 12px;
-            word-break: break-word;
-            line-height: 1.4;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s ease;
-            letter-spacing: -0.01em;
-        }}
-
-        .file-card:hover .file-name {{
-            color: #667eea;
-            transform: translateX(3px);
-        }}
-
-        .file-meta {{
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.8rem;
-            color: #666;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 2px solid #f0f0f0;
-            position: relative;
-            z-index: 1;
-            transition: all 0.3s ease;
-        }}
-
-        .file-card:hover .file-meta {{
-            border-top-color: rgba(102, 126, 234, 0.3);
-            color: #555;
-        }}
-
-        .file-meta span {{
-            display: flex;
-            align-items: center;
-            gap: var(--spacing-xs);
-            font-weight: 500;
-        }}
-
-        .file-type {{
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 5px 10px;
-            border-radius: var(--radius-sm);
-            font-size: 0.7rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            box-shadow: var(--shadow-sm);
-            position: relative;
-            z-index: 1;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }}
-
-        .file-card:hover .file-type {{
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: var(--shadow-md);
-        }}
-
-        .file-type.html {{
-            background: linear-gradient(135deg, #e34c26 0%, #f06529 100%);
-        }}
-
-        .file-card:hover .file-type.html {{
-            box-shadow: 0 4px 12px rgba(227, 76, 38, 0.4);
-        }}
-
-        .file-type.py {{
-            background: linear-gradient(135deg, #3776ab 0%, #4b8bbe 100%);
-        }}
-
-        .file-card:hover .file-type.py {{
-            box-shadow: 0 4px 12px rgba(55, 118, 171, 0.4);
-        }}
-
-        .file-type.js {{
-            background: linear-gradient(135deg, #f7df1e 0%, #ffd700 100%);
-            color: #1a1a2e;
-        }}
-
-        .file-card:hover .file-type.js {{
-            box-shadow: 0 4px 12px rgba(247, 223, 30, 0.5);
-        }}
-
-        .file-type.mjs {{
-            background: linear-gradient(135deg, #f7df1e 0%, #ffd700 100%);
-            color: #1a1a2e;
-        }}
-
-        .file-card:hover .file-type.mjs {{
-            box-shadow: 0 4px 12px rgba(247, 223, 30, 0.5);
-        }}
-
-        footer {{
-            text-align: center;
-            color: white;
-            margin-top: var(--spacing-xl);
-            padding: var(--spacing-xl) var(--spacing-md);
-            position: relative;
-            z-index: 1;
-        }}
-
-        .last-updated {{
-            margin-top: var(--spacing-lg);
-            opacity: 0.9;
-            font-size: 1rem;
-            font-weight: 500;
-            color: rgba(255, 255, 255, 0.9);
-        }}
-
-        .github-link {{
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: var(--spacing-sm);
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
-            padding: 16px 28px;
-            border-radius: var(--radius-lg);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            font-size: 1rem;
-            position: relative;
-            box-shadow: var(--shadow-md);
-        }}
-
-        .github-link:hover {{
-            background: rgba(255, 255, 255, 0.35);
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: var(--shadow-lg), 0 12px 36px rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.8);
-        }}
-
-        .github-link:active {{
-            transform: translateY(-2px) scale(1.02);
-        }}
-
-        .github-link span {{
-            font-size: 1.3rem;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }}
-
-        .github-link:hover span {{
-            transform: scale(1.15) rotate(10deg);
-        }}
-
-        @media (max-width: 768px) {{
-            h1 {{
-                font-size: 2rem;
-            }}
-
-            .emoji {{
-                font-size: 2.5rem;
-            }}
-
-            .stats {{
-                gap: 15px;
-            }}
-
-            .stat {{
-                padding: 15px 25px;
-            }}
-
-            .stat-number {{
-                font-size: 2rem;
-            }}
-
-            .files-grid {{
-                grid-template-columns: 1fr;
-            }}
-
-            .project-title {{
-                font-size: 1.5rem;
-            }}
-
-            .project-header {{
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
-            }}
-
-            header {{
-                padding: 35px 25px;
-            }}
-
-            .project-section {{
-                padding: 25px 20px;
-            }}
-        }}
-
-        /* Scroll animations */
-        @keyframes fadeInUp {{
-            from {{
-                opacity: 0;
-                transform: translateY(30px);
-            }}
-            to {{
-                opacity: 1;
-                transform: translateY(0);
-            }}
-        }}
-
-        .project-section {{
-            animation: fadeInUp 0.6s ease-out;
-        }}
-
-        .project-section:nth-child(even) {{
-            animation-delay: 0.1s;
-        }}
-
-        /* Loading state */
-        .file-card {{
-            animation: fadeInUp 0.5s ease-out;
-        }}
-
-        /* Smooth scrolling */
-        html {{
-            scroll-behavior: smooth;
-        }}
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {{
-            width: 12px;
-        }}
-
-        ::-webkit-scrollbar-track {{
-            background: rgba(255, 255, 255, 0.1);
-        }}
-
-        ::-webkit-scrollbar-thumb {{
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 6px;
-        }}
-
-        ::-webkit-scrollbar-thumb:hover {{
-            background: rgba(255, 255, 255, 0.5);
-        }}
+        @keyframes float {{
+            0%, 100% {{ transform: translateY(0px); }}
+            50% {{ transform: translateY(-10px); }}
+        }}
+        .animate-float {{ animation: float 3s ease-in-out infinite; }}
     </style>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="emoji">🚀 💻 🎨</div>
-            <h1>JavaScript Homemade</h1>
-            <p class="subtitle">Interactive Projects & Coding Exercises</p>
-            <div class="stats">
-                <div class="stat">
-                    <span class="stat-number">{len(projects)}</span>
-                    <span class="stat-label">Categories</span>
+<body class="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-12 mb-8 text-center border border-white/20 animate-fade-in">
+            <div class="text-6xl mb-6 animate-float">🚀</div>
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                JavaScript Homemade
+            </h1>
+            <p class="text-gray-600 text-lg mb-8">Interactive Projects & Coding Exercises</p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <div class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-default">
+                    <div class="text-3xl font-bold">{len(projects)}</div>
+                    <div class="text-sm uppercase tracking-wider opacity-90">Categories</div>
                 </div>
-                <div class="stat">
-                    <span class="stat-number">{total_files}</span>
-                    <span class="stat-label">Total Files</span>
+                <div class="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-8 py-4 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-default">
+                    <div class="text-3xl font-bold">{total_files}</div>
+                    <div class="text-sm uppercase tracking-wider opacity-90">Total Files</div>
                 </div>
             </div>
         </header>
@@ -619,25 +181,92 @@ def generate_html(projects):
 """
     
     # Generate project sections
-    for project in projects:
+    for idx, project in enumerate(projects):
+        delay_class = f"animate-slide-up" if idx % 2 == 0 else "animate-slide-up"
         html += f"""
-        <section class="project-section">
-            <div class="project-header">
-                <h2 class="project-title">{project['name']}</h2>
-                <span class="project-count">{project['count']} files</span>
+        <section class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-white/20 hover:shadow-indigo-200/50 hover:-translate-y-1 transition-all duration-300 {delay_class}">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 pb-6 border-b-2 border-gradient-to-r from-indigo-200 to-purple-200">
+                <h2 class="text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-3">
+                    <span class="text-3xl">📁</span>
+                    {project['name']}
+                </h2>
+                <span class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                    {project['count']} files
+                </span>
             </div>
-            <div class="files-grid">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
 """
         
         for file in project['files']:
-            file_type_class = file['type'].lower()
-            html += f"""
-                <a href="{file['path']}" class="file-card">
-                    <span class="file-type {file_type_class}">{file['type']}</span>
-                    <div class="file-name">{file['name']}</div>
-                    <div class="file-meta">
-                        <span>📦 {file['size']}</span>
-                        <span>📅 {file['modified']}</span>
+            # Determine file type colors
+            type_colors = {
+                'HTML': 'from-orange-500 to-red-500',
+                'HTM': 'from-orange-500 to-red-500',
+                'PY': 'from-blue-600 to-blue-800',
+                'JS': 'from-yellow-400 to-yellow-600',
+                'MJS': 'from-yellow-400 to-yellow-600'
+            }
+            color = type_colors.get(file['type'], 'from-gray-500 to-gray-700')
+            
+            subfolder_badge = ""
+            if file['subfolder']:
+                subfolder_badge = f"""
+                    <div class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                        <span>📂</span>
+                        <span>{file['subfolder']}</span>
+                    </div>
+                """
+            
+            # Determina se mostrare il menu o link diretto
+            if file['is_html']:
+                onclick = f"openModal('{file['path']}', '{file['display_name'].replace("'", "\\'")}')"
+                html += f"""
+                <div onclick="{onclick}" 
+                   class="group bg-white hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 rounded-2xl p-5 shadow-md hover:shadow-xl border-2 border-gray-100 hover:border-indigo-300 transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="bg-gradient-to-r {color} text-white text-xs font-bold px-3 py-1 rounded-lg shadow-md uppercase tracking-wide">
+                            {file['type']}
+                        </span>
+                    </div>
+                    <h3 class="font-bold text-gray-800 group-hover:text-indigo-600 mb-2 transition-colors line-clamp-2">
+                        {file['display_name']}
+                    </h3>
+                    {subfolder_badge}
+                    <div class="flex items-center justify-between text-xs text-gray-500 mt-4 pt-3 border-t border-gray-200 group-hover:border-indigo-200 transition-colors">
+                        <span class="flex items-center gap-1">
+                            <span>📦</span>
+                            <span>{file['size']}</span>
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span>📅</span>
+                            <span>{file['modified']}</span>
+                        </span>
+                    </div>
+                </div>
+"""
+            else:
+                html += f"""
+                <a href="{file['path']}" 
+                   class="group bg-white hover:bg-gradient-to-br hover:from-indigo-50 hover:to-purple-50 rounded-2xl p-5 shadow-md hover:shadow-xl border-2 border-gray-100 hover:border-indigo-300 transition-all duration-300 hover:-translate-y-2 cursor-pointer">
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="bg-gradient-to-r {color} text-white text-xs font-bold px-3 py-1 rounded-lg shadow-md uppercase tracking-wide">
+                            {file['type']}
+                        </span>
+                    </div>
+                    <h3 class="font-bold text-gray-800 group-hover:text-indigo-600 mb-2 transition-colors line-clamp-2">
+                        {file['display_name']}
+                    </h3>
+                    {subfolder_badge}
+                    <div class="flex items-center justify-between text-xs text-gray-500 mt-4 pt-3 border-t border-gray-200 group-hover:border-indigo-200 transition-colors">
+                        <span class="flex items-center gap-1">
+                            <span>📦</span>
+                            <span>{file['size']}</span>
+                        </span>
+                        <span class="flex items-center gap-1">
+                            <span>📅</span>
+                            <span>{file['modified']}</span>
+                        </span>
                     </div>
                 </a>
 """
@@ -648,22 +277,152 @@ def generate_html(projects):
 """
     
     html += f"""
-        <footer>
-            <a href="https://github.com/bigBrodyG/DIYJavaScript" class="github-link" target="_blank">
-                <span>⭐</span>
+        <!-- Footer -->
+        <footer class="text-center text-white mt-12 pb-8">
+            <a href="https://github.com/bigBrodyG/DIYJavaScript" 
+               target="_blank"
+               class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-xl hover:bg-white/30 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl border border-white/30 mb-6">
+                <span class="text-2xl">⭐</span>
                 <span>View on GitHub</span>
             </a>
-            <p class="last-updated">Last updated: {datetime.now().strftime('%B %d, %Y at %H:%M UTC')}</p>
+            <p class="text-white/80 text-sm mt-4">
+                Last updated: {datetime.now().strftime('%B %d, %Y at %H:%M UTC')}
+            </p>
         </footer>
     </div>
 
-    <script>
-        // Add some interactivity
-        console.log('🎉 DIY JavaScript - Projects loaded successfully!');
-        console.log('📊 Total categories: {len(projects)}');
-        console.log('📁 Total files: {total_files}');
+    <!-- Modal per selezione visualizzazione -->
+    <div id="viewModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-center justify-center">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full mx-4">
+            <h2 id="modalTitle" class="text-2xl font-bold text-gray-800 mb-6 text-center">Choose View Mode</h2>
+            <div class="space-y-3">
+                <button onclick="viewPage()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-3">
+                    <span class="text-2xl">🌐</span>
+                    <span>View Page</span>
+                </button>
+                <button onclick="viewSource()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-3">
+                    <span class="text-2xl">📝</span>
+                    <span>View Source Code</span>
+                </button>
+                <button onclick="viewJavaScript()" class="w-full bg-gradient-to-r from-yellow-500 to-orange-600 hover:from-yellow-600 hover:to-orange-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl flex items-center justify-center gap-3">
+                    <span class="text-2xl">⚡</span>
+                    <span>View JavaScript</span>
+                </button>
+                <button onclick="closeModal()" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-xl transition-all duration-300">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
 
-        // Scroll reveal animation
+    <!-- Modal per visualizzazione codice -->
+    <div id="codeModal" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm z-50 items-center justify-center">
+        <div class="bg-gray-900 rounded-3xl shadow-2xl p-6 max-w-6xl w-full mx-4 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="codeTitle" class="text-xl font-bold text-white"></h2>
+                <button onclick="closeCodeModal()" class="text-white hover:text-red-400 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="flex-1 overflow-auto rounded-xl">
+                <pre class="!m-0"><code id="codeContent" class="!text-sm"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        console.log('🎉 DIY JavaScript - Projects loaded!');
+        console.log('📊 Categories: {len(projects)} | Files: {total_files}');
+        
+        let currentPath = '';
+        let currentTitle = '';
+
+        function openModal(path, title) {{
+            currentPath = path;
+            currentTitle = title;
+            document.getElementById('modalTitle').textContent = title;
+            const modal = document.getElementById('viewModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }}
+
+        function closeModal() {{
+            const modal = document.getElementById('viewModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }}
+
+        function closeCodeModal() {{
+            const modal = document.getElementById('codeModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }}
+
+        function viewPage() {{
+            window.open(currentPath, '_blank');
+            closeModal();
+        }}
+
+        async function viewSource() {{
+            try {{
+                const response = await fetch(currentPath);
+                const code = await response.text();
+                document.getElementById('codeTitle').textContent = currentTitle + ' - HTML Source';
+                document.getElementById('codeContent').textContent = code;
+                document.getElementById('codeContent').className = 'language-html';
+                hljs.highlightElement(document.getElementById('codeContent'));
+                closeModal();
+                const codeModal = document.getElementById('codeModal');
+                codeModal.classList.remove('hidden');
+                codeModal.classList.add('flex');
+            }} catch(e) {{
+                alert('Error loading source code: ' + e.message);
+            }}
+        }}
+
+        async function viewJavaScript() {{
+            try {{
+                const response = await fetch(currentPath);
+                const html = await response.text();
+                
+                // Estrai tutti i <script> tags
+                const scriptRegex = /<script[^>]*>([\\s\\S]*?)<\\/script>/gi;
+                const scripts = [];
+                let match;
+                while ((match = scriptRegex.exec(html)) !== null) {{
+                    const content = match[1].trim();
+                    if (content && !match[0].includes('src=')) {{
+                        scripts.push(content);
+                    }}
+                }}
+                
+                if (scripts.length === 0) {{
+                    alert('No inline JavaScript found in this page.');
+                    return;
+                }}
+                
+                const jsCode = scripts.join('\\n\\n// ========================================\\n\\n');
+                document.getElementById('codeTitle').textContent = currentTitle + ' - JavaScript Code';
+                document.getElementById('codeContent').textContent = jsCode;
+                document.getElementById('codeContent').className = 'language-javascript';
+                hljs.highlightElement(document.getElementById('codeContent'));
+                closeModal();
+                const codeModal = document.getElementById('codeModal');
+                codeModal.classList.remove('hidden');
+                codeModal.classList.add('flex');
+            }} catch(e) {{
+                alert('Error loading JavaScript: ' + e.message);
+            }}
+        }}
+
+        // Chiudi modal cliccando fuori
+        document.getElementById('viewModal').addEventListener('click', (e) => {{
+            if (e.target.id === 'viewModal') closeModal();
+        }});
+        
+        document.getElementById('codeModal').addEventListener('click', (e) => {{
+            if (e.target.id === 'codeModal') closeCodeModal();
+        }});
+        
+        // Intersection Observer for animations
         const observer = new IntersectionObserver((entries) => {{
             entries.forEach(entry => {{
                 if (entry.isIntersecting) {{
@@ -673,10 +432,10 @@ def generate_html(projects):
             }});
         }}, {{ threshold: 0.1 }});
 
-        document.querySelectorAll('.project-section').forEach(section => {{
+        document.querySelectorAll('section').forEach(section => {{
             section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
-            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'all 0.6s ease-out';
             observer.observe(section);
         }});
     </script>
@@ -690,16 +449,23 @@ def main():
     """Main function to generate the index page."""
     base_path = Path(__file__).parent
     
+    print(f"🔍 Scanning directory: {base_path}")
+    print(f"🚫 Ignoring directories: {', '.join(sorted(IGNORED_DIRS))}\n")
+    
     # Scan all directories (excluding hidden and special ones)
     projects = []
     for item in sorted(base_path.iterdir()):
-        if item.is_dir() and not item.name.startswith('.') and item.name != 'node_modules':
+        if item.is_dir() and not item.name.startswith('.') and item.name not in IGNORED_DIRS:
+            print(f"📂 Scanning {item.name}...")
             project = scan_directory(base_path, item.name)
             if project:
                 projects.append(project)
+                print(f"   ✓ Found {project['count']} files")
+            else:
+                print(f"   ⊘ No valid files found")
     
     if not projects:
-        print("⚠️  No projects found!")
+        print("\n⚠️  No projects found!")
         return
     
     # Generate HTML
@@ -709,7 +475,7 @@ def main():
     output_file = base_path / "index.html"
     output_file.write_text(html_content, encoding='utf-8')
     
-    print(f"✅ Generated index.html successfully!")
+    print(f"\n✅ Generated index.html successfully!")
     print(f"📊 Found {len(projects)} categories with {sum(p['count'] for p in projects)} total files")
     for project in projects:
         print(f"   • {project['name']}: {project['count']} files")
