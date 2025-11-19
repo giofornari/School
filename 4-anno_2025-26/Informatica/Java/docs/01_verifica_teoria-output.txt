@@ -1,0 +1,16 @@
+
+	 SchedaSim 
+ --------------------------- 
+ - num_tel= +39 3348330252
+ - credit=24.35$
+ - PRICEPERMIN=0.45$
+ - tot_min_in=0.0 minutes 
+ - tot_min_out=0.0minutes 
+---------------------------
+
+
+Credito = 20.3
+Credito = 19.3
+Last Call = 3534356467
+In = 12.0 minuti 
+Out = 9.0 minuti

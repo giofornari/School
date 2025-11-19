@@ -1,0 +1,9 @@
+
+Villa: Abitazione con 8 stanze, 240.00 mq, indirizzo: Via delle Rose 10 (Roma), 3 piani, giardino 120.00 mq, piscina presente
+
+Appartamento: Abitazione con 4 stanze, 90.00 mq, indirizzo: Corso Garibaldi 25 (Milano), piano 5, ascensore presente, 2 terrazzi
+
+La villa e la villa gemella sono uguali
+
+La villa e l'appartamento sono diversi
+

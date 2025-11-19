@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01_Verifica_teoria - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #020617;
+            --bg-secondary: rgba(15, 23, 42, 0.82);
+            --bg-tertiary: rgba(30, 41, 68, 0.78);
+            --bg-card: linear-gradient(140deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 68, 0.75) 100%);
+            --bg-code: #0b1220;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5f5;
+            --text-muted: #94a3b8;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #f472b6;
+            --accent-success: #34d399;
+            --accent-warning: #facc15;
+            --accent-error: #f87171;
+            --border-default: rgba(148, 163, 184, 0.28);
+            --border-light: rgba(148, 163, 184, 0.22);
+            --border-strong: rgba(56, 189, 248, 0.45);
+            --border-accent: rgba(56, 189, 248, 0.35);
+            --glow-primary: rgba(56, 189, 248, 0.32);
+            --glow-secondary: rgba(139, 92, 246, 0.32);
+            --shadow-sm: 0 6px 18px rgba(2, 6, 23, 0.35);
+            --shadow-md: 0 16px 32px rgba(2, 6, 23, 0.45);
+            --shadow-lg: 0 32px 60px rgba(2, 6, 23, 0.55);
+            --shadow-glow: 0 0 42px rgba(56, 189, 248, 0.32);
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.16) 0%, transparent 45%),
+                linear-gradient(180deg, #020617 0%, #0f172a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(139, 92, 246, 0.12));
+            filter: blur(140px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 24px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-default);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+        
+        header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        
+        header h1 i {
+            color: var(--accent-primary);
+        }
+        
+        .back-btn {
+            background: rgba(8, 16, 32, 0.85);
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.85), rgba(139, 92, 246, 0.85));
+            color: #020617;
+            border-color: rgba(56, 189, 248, 0.65);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            background: transparent;
+            border-top: 1px solid var(--border-default);
+            border-bottom: 1px solid var(--border-default);
+        }
+        
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 68, 0.72));
+            border-right: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.72);
+            border-bottom: 1px solid var(--border-default);
+            padding: 0 16px;
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border-color: var(--border-accent);
+        }
+        
+        .tab-button.active {
+            color: var(--accent-primary);
+            background: rgba(8, 16, 32, 0.85);
+            border-color: var(--border-strong);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .code-area {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-content pre {
+            margin: 0;
+            height: 100%;
+        }
+        
+        .tab-content pre code {
+            display: block;
+            padding: 24px !important;
+            background: var(--bg-code) !important;
+            height: 100%;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--text-primary) !important;
+        }
+        
+        .right-panel {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(200deg, rgba(15, 23, 42, 0.82), rgba(30, 41, 68, 0.68));
+            border-left: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .run-header {
+            background: rgba(15, 23, 42, 0.65);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .run-header h2 {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .run-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .run-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .run-btn:active {
+            transform: translateY(0);
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .output-area {
+            flex: 1;
+            padding: 24px;
+            overflow: auto;
+            background: rgba(2, 10, 24, 0.6);
+        }
+        
+        .output-box {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 200px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .output-box.error {
+            color: var(--accent-error);
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.45);
+        }
+        
+        .output-box.success {
+            color: var(--accent-success);
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.45);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .status-indicator.success {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-success);
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.28);
+        }
+        
+        .status-indicator.error {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-error);
+            border: 1px solid rgba(248, 113, 113, 0.45);
+            box-shadow: 0 0 18px rgba(248, 113, 113, 0.28);
+        }
+        
+        .status-indicator.running {
+            background: rgba(56, 189, 248, 0.14);
+            color: var(--accent-primary);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .spinner {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 2px solid currentColor;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            background: rgba(139, 92, 246, 0.15);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box i {
+            color: var(--accent-secondary);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-light);
+            }
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .code-area:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            01_Verifica_teoria
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="01_verifica_teoria-tab0">Main.java</button>
+        
+            <button class="tab-button " data-tab="01_verifica_teoria-tab1">SchedaSim.java</button>
+        
+            <button class="tab-button " data-tab="01_verifica_teoria-tab2">Telefonata.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="01_verifica_teoria-tab0" class="tab-content active">
+                <pre><code class="language-java">/**
+ * 
+ */
+
+/**
+ * Classe main di test per la verifica delle corrette funzionalità
+ * @param args
+ * @author giordii.dev
+ */
+public class Main {
+
+	/**
+	 * Entry point del programma
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		SchedaSim mySim = new SchedaSim(&quot;3348330252&quot;, 24.35);
+		System.out.println(mySim.toString());
+		Telefonata call1 = new Telefonata(12.0, &quot;3534356163&quot;, &quot;in&quot;);
+		mySim.addTelefonata(call1);
+		Telefonata call2 = new Telefonata(4.0, &quot;3534356163&quot;, &quot;out&quot;);
+		mySim.addTelefonata(call2);
+		Telefonata call3 = new Telefonata(5.0, &quot;3534356467&quot;, &quot;out&quot;);
+		mySim.addTelefonata(call3);
+		System.out.println(&quot;Credito = &quot; + mySim.getCredit());
+		mySim.addCredit(-1.0);
+		System.out.println(&quot;Credito = &quot; + mySim.getCredit());
+		System.out.println(&quot;Last Call = &quot; + mySim.getLastCall());
+		System.out.println(&quot;In = &quot; + mySim.getTot_min_in() + &quot; minuti \nOut = &quot; + mySim.getTot_min_out() + &quot; minuti&quot;);
+		
+		
+	}
+
+}
+</code></pre>
+            </div>
+        
+            <div id="01_verifica_teoria-tab1" class="tab-content ">
+                <pre><code class="language-java">/**
+ * Classe per la gestione della scheda sim
+ * @author giordii.dev
+ */
+public class SchedaSim {
+	private String num_tel; // numero personale
+	private double credit; // credito a disposizione
+	private final double PRICEPERMIN = 0.45; // costo al minuto
+	private double tot_min_in; // totale dei minuti in entrata
+	private double tot_min_out; // totale minuti in uscita
+	private String lastCall;
+	
+	/**
+	 * Costruttore per la sim
+	 * @param num_tel numero di telefono personale
+	 * @param credit credito iniziale
+	 */
+	public SchedaSim(String num_tel, double credit) {
+		this.num_tel = num_tel;
+		this.credit = credit;
+	}
+		
+	/**
+	 * @return il proprio numero di telefono
+	 */
+	public String getNum_tel() {
+		return num_tel;
+	}
+	/**
+	 * @return il credito rimanente
+	 */
+	public double getCredit() {
+		return credit;
+	}
+
+	/**
+	 * @param credit il credito da aggiungere
+	 */
+	public void addCredit(double credit) {
+		this.credit += credit;
+	}
+	/**
+	 * @return totale minuti in entrata
+	 */
+	public double getTot_min_in() {
+		return tot_min_in;
+	}
+	/**
+	 * @return totale minuti in uscita
+	 */
+	public double getTot_min_out() {
+		return tot_min_out;
+	}
+	/**
+	 * @return il costo fisso al minuto
+	 */
+	public double getPRICEPERMIN() {
+		return PRICEPERMIN;
+	}
+	
+	/**
+	 * @return l&#39;ultima chiamata
+	 */
+	public String getLastCall() {
+		return lastCall;
+	}
+
+	@Override
+	public String toString() {
+		return &quot;\n\t SchedaSim \n --------------------------- \n - num_tel= +39 &quot; + num_tel + &quot;\n - credit=&quot; + credit + &quot;$\n - PRICEPERMIN=&quot; + PRICEPERMIN + &quot;$\n - tot_min_in=&quot;
+				+ tot_min_in + &quot; minutes \n - tot_min_out=&quot; + tot_min_out + &quot;minutes \n---------------------------\n\n&quot;;
+	}
+
+	/**
+	 * Aggiorna i dati della scheda sim in base alle caratteristiche della telefonata
+	 * @param telefonata l&#39;oggetto telefonata (contenente il numero chiamato)
+	 */
+	public void addTelefonata(Telefonata telefonata) {
+		this.lastCall = telefonata.getNum_called();
+		if (telefonata.isIn_or_out()) {
+			this.tot_min_out += telefonata.getDuration();
+			this.credit -= telefonata.getDuration() * PRICEPERMIN;
+		} else {
+			this.tot_min_in += telefonata.getDuration();
+		}
+	}
+
+}
+</code></pre>
+            </div>
+        
+            <div id="01_verifica_teoria-tab2" class="tab-content ">
+                <pre><code class="language-java">/**
+ * Classe per la gestione dellle caratterisitche di ogni telefonata
+ * @author giordii.dev
+ */
+
+public class Telefonata {
+	private double duration;
+	private String num_called;
+	private boolean in_or_out;
+	/**
+	 * @param duration
+	 * @param num_called
+	 * @param in_or_out
+	 */
+	public Telefonata(double duration, String num_called, String in_or_out) {
+		this.duration = duration;
+		this.num_called = num_called;
+		this.in_or_out = &quot;out&quot;.equals(in_or_out) ? true : false;
+	}
+	
+	/**
+	 * @return la durata della chiamata effettuata
+	 */
+	public double getDuration() {
+		return duration;
+	}
+	/**
+	 * Setter per modificare la durata della chiamata
+	 * @param duration nuova durata
+	 */
+	public void setDuration(double duration) {
+		this.duration = duration;
+	}
+	/**
+	 * Getter per ottenere il numero chiamato
+	 * @return the num_called
+	 */
+	public String getNum_called() {
+		return num_called;
+	}
+	/**
+	 * Setter per modificare la durata della chiamata
+	 * @param num_called nuovo numero chiamato
+	 */
+	public void setNum_called(String num_called) {
+		this.num_called = num_called;
+	}
+	/**
+	 * Getter booleano per vedere se è in entrata o in uscita
+	 * @return un valore booleano
+	 */
+	public boolean isIn_or_out() {
+		return in_or_out;
+	}
+	/**
+	 * Setter per scegliere se è in entrata o in uscita
+	 * @param in_or_out &quot;in&quot; oppure &quot;out&quot;
+	 */
+	public void setIn_or_out(String in_or_out) {
+		this.in_or_out = &quot;out&quot;.equals(in_or_out) ? true : false;
+	}
+	
+}</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">
+	 SchedaSim 
+ --------------------------- 
+ - num_tel= +39 3348330252
+ - credit=24.35$
+ - PRICEPERMIN=0.45$
+ - tot_min_in=0.0 minutes 
+ - tot_min_out=0.0minutes 
+---------------------------
+
+
+Credito = 20.3
+Credito = 19.3
+Last Call = 3534356467
+In = 12.0 minuti 
+Out = 9.0 minuti
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["/**\n * \n */\n\n/**\n * Classe main di test per la verifica delle corrette funzionalità\n * @param args\n * @author giordii.dev\n */\npublic class Main {\n\n\t/**\n\t * Entry point del programma\n\t * @param args\n\t */\n\tpublic static void main(String[] args) {\n\t\tSchedaSim mySim = new SchedaSim(\"3348330252\", 24.35);\n\t\tSystem.out.println(mySim.toString());\n\t\tTelefonata call1 = new Telefonata(12.0, \"3534356163\", \"in\");\n\t\tmySim.addTelefonata(call1);\n\t\tTelefonata call2 = new Telefonata(4.0, \"3534356163\", \"out\");\n\t\tmySim.addTelefonata(call2);\n\t\tTelefonata call3 = new Telefonata(5.0, \"3534356467\", \"out\");\n\t\tmySim.addTelefonata(call3);\n\t\tSystem.out.println(\"Credito = \" + mySim.getCredit());\n\t\tmySim.addCredit(-1.0);\n\t\tSystem.out.println(\"Credito = \" + mySim.getCredit());\n\t\tSystem.out.println(\"Last Call = \" + mySim.getLastCall());\n\t\tSystem.out.println(\"In = \" + mySim.getTot_min_in() + \" minuti \\nOut = \" + mySim.getTot_min_out() + \" minuti\");\n\t\t\n\t\t\n\t}\n\n}\n", "/**\n * Classe per la gestione della scheda sim\n * @author giordii.dev\n */\npublic class SchedaSim {\n\tprivate String num_tel; // numero personale\n\tprivate double credit; // credito a disposizione\n\tprivate final double PRICEPERMIN = 0.45; // costo al minuto\n\tprivate double tot_min_in; // totale dei minuti in entrata\n\tprivate double tot_min_out; // totale minuti in uscita\n\tprivate String lastCall;\n\t\n\t/**\n\t * Costruttore per la sim\n\t * @param num_tel numero di telefono personale\n\t * @param credit credito iniziale\n\t */\n\tpublic SchedaSim(String num_tel, double credit) {\n\t\tthis.num_tel = num_tel;\n\t\tthis.credit = credit;\n\t}\n\t\t\n\t/**\n\t * @return il proprio numero di telefono\n\t */\n\tpublic String getNum_tel() {\n\t\treturn num_tel;\n\t}\n\t/**\n\t * @return il credito rimanente\n\t */\n\tpublic double getCredit() {\n\t\treturn credit;\n\t}\n\n\t/**\n\t * @param credit il credito da aggiungere\n\t */\n\tpublic void addCredit(double credit) {\n\t\tthis.credit += credit;\n\t}\n\t/**\n\t * @return totale minuti in entrata\n\t */\n\tpublic double getTot_min_in() {\n\t\treturn tot_min_in;\n\t}\n\t/**\n\t * @return totale minuti in uscita\n\t */\n\tpublic double getTot_min_out() {\n\t\treturn tot_min_out;\n\t}\n\t/**\n\t * @return il costo fisso al minuto\n\t */\n\tpublic double getPRICEPERMIN() {\n\t\treturn PRICEPERMIN;\n\t}\n\t\n\t/**\n\t * @return l'ultima chiamata\n\t */\n\tpublic String getLastCall() {\n\t\treturn lastCall;\n\t}\n\n\t@Override\n\tpublic String toString() {\n\t\treturn \"\\n\\t SchedaSim \\n --------------------------- \\n - num_tel= +39 \" + num_tel + \"\\n - credit=\" + credit + \"$\\n - PRICEPERMIN=\" + PRICEPERMIN + \"$\\n - tot_min_in=\"\n\t\t\t\t+ tot_min_in + \" minutes \\n - tot_min_out=\" + tot_min_out + \"minutes \\n---------------------------\\n\\n\";\n\t}\n\n\t/**\n\t * Aggiorna i dati della scheda sim in base alle caratteristiche della telefonata\n\t * @param telefonata l'oggetto telefonata (contenente il numero chiamato)\n\t */\n\tpublic void addTelefonata(Telefonata telefonata) {\n\t\tthis.lastCall = telefonata.getNum_called();\n\t\tif (telefonata.isIn_or_out()) {\n\t\t\tthis.tot_min_out += telefonata.getDuration();\n\t\t\tthis.credit -= telefonata.getDuration() * PRICEPERMIN;\n\t\t} else {\n\t\t\tthis.tot_min_in += telefonata.getDuration();\n\t\t}\n\t}\n\n}\n", "/**\n * Classe per la gestione dellle caratterisitche di ogni telefonata\n * @author giordii.dev\n */\n\npublic class Telefonata {\n\tprivate double duration;\n\tprivate String num_called;\n\tprivate boolean in_or_out;\n\t/**\n\t * @param duration\n\t * @param num_called\n\t * @param in_or_out\n\t */\n\tpublic Telefonata(double duration, String num_called, String in_or_out) {\n\t\tthis.duration = duration;\n\t\tthis.num_called = num_called;\n\t\tthis.in_or_out = \"out\".equals(in_or_out) ? true : false;\n\t}\n\t\n\t/**\n\t * @return la durata della chiamata effettuata\n\t */\n\tpublic double getDuration() {\n\t\treturn duration;\n\t}\n\t/**\n\t * Setter per modificare la durata della chiamata\n\t * @param duration nuova durata\n\t */\n\tpublic void setDuration(double duration) {\n\t\tthis.duration = duration;\n\t}\n\t/**\n\t * Getter per ottenere il numero chiamato\n\t * @return the num_called\n\t */\n\tpublic String getNum_called() {\n\t\treturn num_called;\n\t}\n\t/**\n\t * Setter per modificare la durata della chiamata\n\t * @param num_called nuovo numero chiamato\n\t */\n\tpublic void setNum_called(String num_called) {\n\t\tthis.num_called = num_called;\n\t}\n\t/**\n\t * Getter booleano per vedere se è in entrata o in uscita\n\t * @return un valore booleano\n\t */\n\tpublic boolean isIn_or_out() {\n\t\treturn in_or_out;\n\t}\n\t/**\n\t * Setter per scegliere se è in entrata o in uscita\n\t * @param in_or_out \"in\" oppure \"out\"\n\t */\n\tpublic void setIn_or_out(String in_or_out) {\n\t\tthis.in_or_out = \"out\".equals(in_or_out) ? true : false;\n\t}\n\t\n}"];
+        const projectName = "01_Verifica_teoria";
+        const buildStatus = "success";
+        const precompiledOutput = "\n\t SchedaSim \n --------------------------- \n - num_tel= +39 3348330252\n - credit=24.35$\n - PRICEPERMIN=0.45$\n - tot_min_in=0.0 minutes \n - tot_min_out=0.0minutes \n---------------------------\n\n\nCredito = 20.3\nCredito = 19.3\nLast Call = 3534356467\nIn = 12.0 minuti \nOut = 9.0 minuti\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

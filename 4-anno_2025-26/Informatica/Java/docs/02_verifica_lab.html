@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_Verifica_lab - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #020617;
+            --bg-secondary: rgba(15, 23, 42, 0.82);
+            --bg-tertiary: rgba(30, 41, 68, 0.78);
+            --bg-card: linear-gradient(140deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 68, 0.75) 100%);
+            --bg-code: #0b1220;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5f5;
+            --text-muted: #94a3b8;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #f472b6;
+            --accent-success: #34d399;
+            --accent-warning: #facc15;
+            --accent-error: #f87171;
+            --border-default: rgba(148, 163, 184, 0.28);
+            --border-light: rgba(148, 163, 184, 0.22);
+            --border-strong: rgba(56, 189, 248, 0.45);
+            --border-accent: rgba(56, 189, 248, 0.35);
+            --glow-primary: rgba(56, 189, 248, 0.32);
+            --glow-secondary: rgba(139, 92, 246, 0.32);
+            --shadow-sm: 0 6px 18px rgba(2, 6, 23, 0.35);
+            --shadow-md: 0 16px 32px rgba(2, 6, 23, 0.45);
+            --shadow-lg: 0 32px 60px rgba(2, 6, 23, 0.55);
+            --shadow-glow: 0 0 42px rgba(56, 189, 248, 0.32);
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.16) 0%, transparent 45%),
+                linear-gradient(180deg, #020617 0%, #0f172a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(139, 92, 246, 0.12));
+            filter: blur(140px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 24px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-default);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+        
+        header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        
+        header h1 i {
+            color: var(--accent-primary);
+        }
+        
+        .back-btn {
+            background: rgba(8, 16, 32, 0.85);
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.85), rgba(139, 92, 246, 0.85));
+            color: #020617;
+            border-color: rgba(56, 189, 248, 0.65);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            background: transparent;
+            border-top: 1px solid var(--border-default);
+            border-bottom: 1px solid var(--border-default);
+        }
+        
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 68, 0.72));
+            border-right: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.72);
+            border-bottom: 1px solid var(--border-default);
+            padding: 0 16px;
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border-color: var(--border-accent);
+        }
+        
+        .tab-button.active {
+            color: var(--accent-primary);
+            background: rgba(8, 16, 32, 0.85);
+            border-color: var(--border-strong);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .code-area {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-content pre {
+            margin: 0;
+            height: 100%;
+        }
+        
+        .tab-content pre code {
+            display: block;
+            padding: 24px !important;
+            background: var(--bg-code) !important;
+            height: 100%;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--text-primary) !important;
+        }
+        
+        .right-panel {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(200deg, rgba(15, 23, 42, 0.82), rgba(30, 41, 68, 0.68));
+            border-left: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .run-header {
+            background: rgba(15, 23, 42, 0.65);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .run-header h2 {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .run-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .run-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .run-btn:active {
+            transform: translateY(0);
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .output-area {
+            flex: 1;
+            padding: 24px;
+            overflow: auto;
+            background: rgba(2, 10, 24, 0.6);
+        }
+        
+        .output-box {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 200px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .output-box.error {
+            color: var(--accent-error);
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.45);
+        }
+        
+        .output-box.success {
+            color: var(--accent-success);
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.45);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .status-indicator.success {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-success);
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.28);
+        }
+        
+        .status-indicator.error {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-error);
+            border: 1px solid rgba(248, 113, 113, 0.45);
+            box-shadow: 0 0 18px rgba(248, 113, 113, 0.28);
+        }
+        
+        .status-indicator.running {
+            background: rgba(56, 189, 248, 0.14);
+            color: var(--accent-primary);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .spinner {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 2px solid currentColor;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            background: rgba(139, 92, 246, 0.15);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box i {
+            color: var(--accent-secondary);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-light);
+            }
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .code-area:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            02_Verifica_lab
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="02_verifica_lab-tab0">MacchinaDistributrice.java</button>
+        
+            <button class="tab-button " data-tab="02_verifica_lab-tab1">Main.java</button>
+        
+            <button class="tab-button " data-tab="02_verifica_lab-tab2">Prodotto.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="02_verifica_lab-tab0" class="tab-content active">
+                <pre><code class="language-java">import java.util.ArrayList;
+
+// TODO: Auto-generated Javadoc
+/**
+ * MacchinaDistributrice.
+ * 
+ * @author giordii.dev
+ */
+
+public class MacchinaDistributrice {
+
+	/** i prodotti. */
+	private ArrayList&lt;Prodotto&gt; prodotti;
+
+	/**
+	 * Crea una nuova macchina distributrice e inizialiazza l&#39;arraylist.
+	 *
+	 */
+	public MacchinaDistributrice() {
+		this.prodotti = new ArrayList&lt;Prodotto&gt;();
+	}
+
+	/**
+	 * Aggingi prodotto.
+	 *
+	 * @param p il p
+	 */
+	public void aggingiProdotto(Prodotto p) {
+		this.prodotti.add(p);
+	}
+
+	/**
+	 * Cerca il prodotto in base al nome.
+	 *
+	 * @param nomeProdotto il nome prodotto
+	 * @return il prodotto
+	 */
+	public Prodotto cercaProdotto(String nomeProdotto) {
+		for (Prodotto p : prodotti) {
+			if (p.getNome().equals(nomeProdotto)) {
+				return p;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Rimuovi prodotto.
+	 *
+	 * @param nomeProdotto il nome del prodotto
+	 */
+	public void rimuoviProdotto(String nomeProdotto) {
+		if (this.cercaProdotto(nomeProdotto) != null) {
+			this.prodotti.remove(this.cercaProdotto(nomeProdotto));
+		}
+	}
+
+	/**
+	 * Acquista prodotto.
+	 *
+	 * @param nomeProdotto nome del prodotto
+	 * @return true, if successful
+	 */
+	public boolean acquistaProdotto(String nomeProdotto) {
+		return this.cercaProdotto(nomeProdotto).reduceQuantita();
+
+	}
+
+	/**
+	 * Totale.
+	 *
+	 * @return il totale degli elementi per il loro prezzo.
+	 */
+	public double totale() {
+		double totaleP = 0;
+		for (Prodotto p : prodotti) {
+			totaleP += p.getPrezzo() * p.getQuantita();
+		}
+		return totaleP;
+	}
+
+	/**
+	 * To string.
+	 *
+	 * @return il string
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(&quot;---- Prodotti rimanenti -------\n&quot;);
+		for (int i = 0; i &lt; prodotti.size(); i++) {
+			Prodotto p = prodotti.get(i);
+			builder.append(i + &quot;) &quot; + p.getNome() + &quot;: &quot; + p.getQuantita() + &quot;\n&quot;);
+		}
+		builder.append(&quot;-------------------------------&quot;);
+		return builder.toString();
+	}
+
+}</code></pre>
+            </div>
+        
+            <div id="02_verifica_lab-tab1" class="tab-content ">
+                <pre><code class="language-java">/**
+ * The Class Main.
+ * 
+ * @author giordii.dev
+ */
+
+public class Main {
+
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
+	public static void main(String[] args) {
+
+		Prodotto acqua = new Prodotto(&quot;acqua&quot;, 100, 0.70);
+		Prodotto spritz = new Prodotto(&quot;spritz&quot;, 100, 1.2);
+		Prodotto snack = new Prodotto(&quot;snack&quot;, 100, 2.50);
+		Prodotto croccantelle = new Prodotto(&quot;croccantelle&quot;, 100, 0.50);
+		Prodotto brioche = new Prodotto(&quot;brioche&quot;, 100, 0.70);
+
+		MacchinaDistributrice Argenta = new MacchinaDistributrice();
+		Argenta.aggingiProdotto(acqua);
+		Argenta.aggingiProdotto(brioche);
+		Argenta.aggingiProdotto(spritz);
+		Argenta.aggingiProdotto(croccantelle);
+		Argenta.aggingiProdotto(snack);
+		System.out.println(&quot;\n\n\t Benvenuto!\n  Macchina Distributrice 1.0.0\n------------------------------------\n&quot;);
+		System.out.println(Argenta.toString());
+		System.out.println(&quot;\n\nAcquistiamo alcuni prodotti....\nmhhh....\nVoglio uno snack!\nControlliamo ci sia!&quot;);
+		System.out.println(snack.toString());
+		Argenta.acquistaProdotto(&quot;snack&quot;);
+		System.out.println(&quot;\nBene!\nSono sicuro che sarà delizioso!\n\n\nManca qualcosa da bere!\nPrendiamo uno sprits!&quot;);
+		Argenta.acquistaProdotto(&quot;spritz&quot;);
+		System.out.println(&quot;\n OH LA!\nAdesso sono a posto&quot;);
+		System.out.println(&quot;\n\n\n\t A FEW MOMENTS LATER...\n&quot;);
+		System.out.println(&quot;Admin: Voglio controllare alcuni dati. Facciamo una query!\n&quot;);
+		System.out.println(Argenta.toString());
+		System.out.println(&quot;Il totale dei prodotti rimanenti è: &quot; + Argenta.totale() + &quot; €&quot;);
+
+	}
+}</code></pre>
+            </div>
+        
+            <div id="02_verifica_lab-tab2" class="tab-content ">
+                <pre><code class="language-java">// TODO: Auto-generated Javadoc
+/**
+ * The Class Prodotto.
+ */
+
+public class Prodotto {
+	
+	/** The nome. */
+	private String nome;
+	
+	/** The quantita. */
+	private int quantita;
+	
+	/** The prezzo. */
+	private double prezzo;
+
+	/**
+	 * Instanzia un nuovo prodotto.
+	 *
+	 * @param nome the nome
+	 * @param quantita the quantita
+	 * @param prezzo the prezzo
+	 */
+	public Prodotto(String nome, int quantita, double prezzo) {
+		this.nome = nome;
+		this.quantita = quantita;
+		this.prezzo = prezzo;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public int getQuantita() {
+		return quantita;
+	}
+
+	/**
+	 * Sets the quantita.
+	 *
+	 * @param quantita the new quantita
+	 */
+	public void setQuantita(int quantita) {
+		this.quantita = quantita;
+	}
+
+	/**
+	 * Riduce la quantita.
+	 *
+	 * @return true, if successful
+	 */
+	public boolean reduceQuantita() {
+		if (this.quantita == 0) {
+			return false;
+		}
+		this.quantita--;
+		return true;
+	}
+
+	public double getPrezzo() {
+		return prezzo;
+	}
+
+	public void setPrezzo(double prezzo) {
+		this.prezzo = prezzo;
+	}
+	/**
+	 * Ritorna tutte le informazioni sul prodotto
+	 * 
+	 * @return a fancy overview
+	 */
+	@Override
+	public String toString() {
+		return &quot;[ &quot;+ nome.toUpperCase() + &quot; - &quot; + prezzo +  &quot;€&quot; + &quot; - &quot; + quantita +&quot; rimanenti ]&quot;;
+	}
+	
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">
+
+	 Benvenuto!
+  Macchina Distributrice 1.0.0
+------------------------------------
+
+---- Prodotti rimanenti -------
+0) acqua: 100
+1) brioche: 100
+2) spritz: 100
+3) croccantelle: 100
+4) snack: 100
+-------------------------------
+
+
+Acquistiamo alcuni prodotti....
+mhhh....
+Voglio uno snack!
+Controlliamo ci sia!
+[ SNACK - 2.5€ - 100 rimanenti ]
+
+Bene!
+Sono sicuro che sarà delizioso!
+
+
+Manca qualcosa da bere!
+Prendiamo uno sprits!
+
+ OH LA!
+Adesso sono a posto
+
+
+
+	 A FEW MOMENTS LATER...
+
+Admin: Voglio controllare alcuni dati. Facciamo una query!
+
+---- Prodotti rimanenti -------
+0) acqua: 100
+1) brioche: 100
+2) spritz: 99
+3) croccantelle: 100
+4) snack: 99
+-------------------------------
+Il totale dei prodotti rimanenti è: 556.3 €
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["import java.util.ArrayList;\n\n// TODO: Auto-generated Javadoc\n/**\n * MacchinaDistributrice.\n * \n * @author giordii.dev\n */\n\npublic class MacchinaDistributrice {\n\n\t/** i prodotti. */\n\tprivate ArrayList<Prodotto> prodotti;\n\n\t/**\n\t * Crea una nuova macchina distributrice e inizialiazza l'arraylist.\n\t *\n\t */\n\tpublic MacchinaDistributrice() {\n\t\tthis.prodotti = new ArrayList<Prodotto>();\n\t}\n\n\t/**\n\t * Aggingi prodotto.\n\t *\n\t * @param p il p\n\t */\n\tpublic void aggingiProdotto(Prodotto p) {\n\t\tthis.prodotti.add(p);\n\t}\n\n\t/**\n\t * Cerca il prodotto in base al nome.\n\t *\n\t * @param nomeProdotto il nome prodotto\n\t * @return il prodotto\n\t */\n\tpublic Prodotto cercaProdotto(String nomeProdotto) {\n\t\tfor (Prodotto p : prodotti) {\n\t\t\tif (p.getNome().equals(nomeProdotto)) {\n\t\t\t\treturn p;\n\t\t\t}\n\t\t}\n\t\treturn null;\n\t}\n\n\t/**\n\t * Rimuovi prodotto.\n\t *\n\t * @param nomeProdotto il nome del prodotto\n\t */\n\tpublic void rimuoviProdotto(String nomeProdotto) {\n\t\tif (this.cercaProdotto(nomeProdotto) != null) {\n\t\t\tthis.prodotti.remove(this.cercaProdotto(nomeProdotto));\n\t\t}\n\t}\n\n\t/**\n\t * Acquista prodotto.\n\t *\n\t * @param nomeProdotto nome del prodotto\n\t * @return true, if successful\n\t */\n\tpublic boolean acquistaProdotto(String nomeProdotto) {\n\t\treturn this.cercaProdotto(nomeProdotto).reduceQuantita();\n\n\t}\n\n\t/**\n\t * Totale.\n\t *\n\t * @return il totale degli elementi per il loro prezzo.\n\t */\n\tpublic double totale() {\n\t\tdouble totaleP = 0;\n\t\tfor (Prodotto p : prodotti) {\n\t\t\ttotaleP += p.getPrezzo() * p.getQuantita();\n\t\t}\n\t\treturn totaleP;\n\t}\n\n\t/**\n\t * To string.\n\t *\n\t * @return il string\n\t */\n\t@Override\n\tpublic String toString() {\n\t\tStringBuilder builder = new StringBuilder();\n\t\tbuilder.append(\"---- Prodotti rimanenti -------\\n\");\n\t\tfor (int i = 0; i < prodotti.size(); i++) {\n\t\t\tProdotto p = prodotti.get(i);\n\t\t\tbuilder.append(i + \") \" + p.getNome() + \": \" + p.getQuantita() + \"\\n\");\n\t\t}\n\t\tbuilder.append(\"-------------------------------\");\n\t\treturn builder.toString();\n\t}\n\n}", "/**\n * The Class Main.\n * \n * @author giordii.dev\n */\n\npublic class Main {\n\n\t/**\n\t * The main method.\n\t *\n\t * @param args the arguments\n\t */\n\tpublic static void main(String[] args) {\n\n\t\tProdotto acqua = new Prodotto(\"acqua\", 100, 0.70);\n\t\tProdotto spritz = new Prodotto(\"spritz\", 100, 1.2);\n\t\tProdotto snack = new Prodotto(\"snack\", 100, 2.50);\n\t\tProdotto croccantelle = new Prodotto(\"croccantelle\", 100, 0.50);\n\t\tProdotto brioche = new Prodotto(\"brioche\", 100, 0.70);\n\n\t\tMacchinaDistributrice Argenta = new MacchinaDistributrice();\n\t\tArgenta.aggingiProdotto(acqua);\n\t\tArgenta.aggingiProdotto(brioche);\n\t\tArgenta.aggingiProdotto(spritz);\n\t\tArgenta.aggingiProdotto(croccantelle);\n\t\tArgenta.aggingiProdotto(snack);\n\t\tSystem.out.println(\"\\n\\n\\t Benvenuto!\\n  Macchina Distributrice 1.0.0\\n------------------------------------\\n\");\n\t\tSystem.out.println(Argenta.toString());\n\t\tSystem.out.println(\"\\n\\nAcquistiamo alcuni prodotti....\\nmhhh....\\nVoglio uno snack!\\nControlliamo ci sia!\");\n\t\tSystem.out.println(snack.toString());\n\t\tArgenta.acquistaProdotto(\"snack\");\n\t\tSystem.out.println(\"\\nBene!\\nSono sicuro che sarà delizioso!\\n\\n\\nManca qualcosa da bere!\\nPrendiamo uno sprits!\");\n\t\tArgenta.acquistaProdotto(\"spritz\");\n\t\tSystem.out.println(\"\\n OH LA!\\nAdesso sono a posto\");\n\t\tSystem.out.println(\"\\n\\n\\n\\t A FEW MOMENTS LATER...\\n\");\n\t\tSystem.out.println(\"Admin: Voglio controllare alcuni dati. Facciamo una query!\\n\");\n\t\tSystem.out.println(Argenta.toString());\n\t\tSystem.out.println(\"Il totale dei prodotti rimanenti è: \" + Argenta.totale() + \" €\");\n\n\t}\n}", "// TODO: Auto-generated Javadoc\n/**\n * The Class Prodotto.\n */\n\npublic class Prodotto {\n\t\n\t/** The nome. */\n\tprivate String nome;\n\t\n\t/** The quantita. */\n\tprivate int quantita;\n\t\n\t/** The prezzo. */\n\tprivate double prezzo;\n\n\t/**\n\t * Instanzia un nuovo prodotto.\n\t *\n\t * @param nome the nome\n\t * @param quantita the quantita\n\t * @param prezzo the prezzo\n\t */\n\tpublic Prodotto(String nome, int quantita, double prezzo) {\n\t\tthis.nome = nome;\n\t\tthis.quantita = quantita;\n\t\tthis.prezzo = prezzo;\n\t}\n\n\tpublic String getNome() {\n\t\treturn nome;\n\t}\n\n\tpublic void setNome(String nome) {\n\t\tthis.nome = nome;\n\t}\n\n\tpublic int getQuantita() {\n\t\treturn quantita;\n\t}\n\n\t/**\n\t * Sets the quantita.\n\t *\n\t * @param quantita the new quantita\n\t */\n\tpublic void setQuantita(int quantita) {\n\t\tthis.quantita = quantita;\n\t}\n\n\t/**\n\t * Riduce la quantita.\n\t *\n\t * @return true, if successful\n\t */\n\tpublic boolean reduceQuantita() {\n\t\tif (this.quantita == 0) {\n\t\t\treturn false;\n\t\t}\n\t\tthis.quantita--;\n\t\treturn true;\n\t}\n\n\tpublic double getPrezzo() {\n\t\treturn prezzo;\n\t}\n\n\tpublic void setPrezzo(double prezzo) {\n\t\tthis.prezzo = prezzo;\n\t}\n\t/**\n\t * Ritorna tutte le informazioni sul prodotto\n\t * \n\t * @return a fancy overview\n\t */\n\t@Override\n\tpublic String toString() {\n\t\treturn \"[ \"+ nome.toUpperCase() + \" - \" + prezzo +  \"€\" + \" - \" + quantita +\" rimanenti ]\";\n\t}\n\t\n}\n"];
+        const projectName = "02_Verifica_lab";
+        const buildStatus = "success";
+        const precompiledOutput = "\n\n\t Benvenuto!\n  Macchina Distributrice 1.0.0\n------------------------------------\n\n---- Prodotti rimanenti -------\n0) acqua: 100\n1) brioche: 100\n2) spritz: 100\n3) croccantelle: 100\n4) snack: 100\n-------------------------------\n\n\nAcquistiamo alcuni prodotti....\nmhhh....\nVoglio uno snack!\nControlliamo ci sia!\n[ SNACK - 2.5€ - 100 rimanenti ]\n\nBene!\nSono sicuro che sarà delizioso!\n\n\nManca qualcosa da bere!\nPrendiamo uno sprits!\n\n OH LA!\nAdesso sono a posto\n\n\n\n\t A FEW MOMENTS LATER...\n\nAdmin: Voglio controllare alcuni dati. Facciamo una query!\n\n---- Prodotti rimanenti -------\n0) acqua: 100\n1) brioche: 100\n2) spritz: 99\n3) croccantelle: 100\n4) snack: 99\n-------------------------------\nIl totale dei prodotti rimanenti è: 556.3 €\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

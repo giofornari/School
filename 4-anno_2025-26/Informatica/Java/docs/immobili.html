@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Immobili - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #020617;
+            --bg-secondary: rgba(15, 23, 42, 0.82);
+            --bg-tertiary: rgba(30, 41, 68, 0.78);
+            --bg-card: linear-gradient(140deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 68, 0.75) 100%);
+            --bg-code: #0b1220;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5f5;
+            --text-muted: #94a3b8;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #f472b6;
+            --accent-success: #34d399;
+            --accent-warning: #facc15;
+            --accent-error: #f87171;
+            --border-default: rgba(148, 163, 184, 0.28);
+            --border-light: rgba(148, 163, 184, 0.22);
+            --border-strong: rgba(56, 189, 248, 0.45);
+            --border-accent: rgba(56, 189, 248, 0.35);
+            --glow-primary: rgba(56, 189, 248, 0.32);
+            --glow-secondary: rgba(139, 92, 246, 0.32);
+            --shadow-sm: 0 6px 18px rgba(2, 6, 23, 0.35);
+            --shadow-md: 0 16px 32px rgba(2, 6, 23, 0.45);
+            --shadow-lg: 0 32px 60px rgba(2, 6, 23, 0.55);
+            --shadow-glow: 0 0 42px rgba(56, 189, 248, 0.32);
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.16) 0%, transparent 45%),
+                linear-gradient(180deg, #020617 0%, #0f172a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(139, 92, 246, 0.12));
+            filter: blur(140px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 24px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-default);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+        
+        header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        
+        header h1 i {
+            color: var(--accent-primary);
+        }
+        
+        .back-btn {
+            background: rgba(8, 16, 32, 0.85);
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.85), rgba(139, 92, 246, 0.85));
+            color: #020617;
+            border-color: rgba(56, 189, 248, 0.65);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            background: transparent;
+            border-top: 1px solid var(--border-default);
+            border-bottom: 1px solid var(--border-default);
+        }
+        
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 68, 0.72));
+            border-right: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.72);
+            border-bottom: 1px solid var(--border-default);
+            padding: 0 16px;
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border-color: var(--border-accent);
+        }
+        
+        .tab-button.active {
+            color: var(--accent-primary);
+            background: rgba(8, 16, 32, 0.85);
+            border-color: var(--border-strong);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .code-area {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-content pre {
+            margin: 0;
+            height: 100%;
+        }
+        
+        .tab-content pre code {
+            display: block;
+            padding: 24px !important;
+            background: var(--bg-code) !important;
+            height: 100%;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--text-primary) !important;
+        }
+        
+        .right-panel {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(200deg, rgba(15, 23, 42, 0.82), rgba(30, 41, 68, 0.68));
+            border-left: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .run-header {
+            background: rgba(15, 23, 42, 0.65);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .run-header h2 {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .run-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .run-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .run-btn:active {
+            transform: translateY(0);
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .output-area {
+            flex: 1;
+            padding: 24px;
+            overflow: auto;
+            background: rgba(2, 10, 24, 0.6);
+        }
+        
+        .output-box {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 200px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .output-box.error {
+            color: var(--accent-error);
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.45);
+        }
+        
+        .output-box.success {
+            color: var(--accent-success);
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.45);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .status-indicator.success {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-success);
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.28);
+        }
+        
+        .status-indicator.error {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-error);
+            border: 1px solid rgba(248, 113, 113, 0.45);
+            box-shadow: 0 0 18px rgba(248, 113, 113, 0.28);
+        }
+        
+        .status-indicator.running {
+            background: rgba(56, 189, 248, 0.14);
+            color: var(--accent-primary);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .spinner {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 2px solid currentColor;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            background: rgba(139, 92, 246, 0.15);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box i {
+            color: var(--accent-secondary);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-light);
+            }
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .code-area:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            Immobili
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="immobili-tab0">Abitazione.java</button>
+        
+            <button class="tab-button " data-tab="immobili-tab1">Appartamento.java</button>
+        
+            <button class="tab-button " data-tab="immobili-tab2">Test.java</button>
+        
+            <button class="tab-button " data-tab="immobili-tab3">Villa.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="immobili-tab0" class="tab-content active">
+                <pre><code class="language-java">import java.util.Objects;
+
+public abstract class Abitazione {
+
+    private final int numStan;
+    private final double sup;
+    private final String indir;
+    private final String citta;
+
+    protected Abitazione(int numStan, double sup, String indir, String citta) {
+        if (numStan &lt;= 0) {
+            throw new IllegalArgumentException(&quot;Il numero di stanze deve essere positivo&quot;);
+        }
+        if (sup &lt;= 0) {
+            throw new IllegalArgumentException(&quot;La superficie deve essere positiva&quot;);
+        }
+        this.numStan = numStan;
+        this.sup = sup;
+        this.indir = Objects.requireNonNull(indir, &quot;L&#39;indirizzo non può essere nullo&quot;);
+        this.citta = Objects.requireNonNull(citta, &quot;La città non può essere nulla&quot;);
+    }
+
+    public int getNumStan() {
+        return numStan;
+    }
+
+    public double getSup() {
+        return sup;
+    }
+
+    public String getIndir() {
+        return indir;
+    }
+
+    public String getCitta() {
+        return citta;
+    }
+
+    public String descrivi() {
+        return toString();
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                &quot;Abitazione con %d stanze, %.2f mq, indirizzo: %s (%s)&quot;,
+                numStan, sup, indir, citta
+        );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Abitazione that = (Abitazione) obj;
+        return numStan == that.numStan
+                &amp;&amp; Double.compare(that.sup, sup) == 0
+                &amp;&amp; indir.equals(that.indir)
+                &amp;&amp; citta.equals(that.citta);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numStan, sup, indir, citta);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="immobili-tab1" class="tab-content ">
+                <pre><code class="language-java">import java.util.Objects;
+
+public class Appartamento extends Abitazione {
+
+    private final int piano;
+    private final boolean asc;
+    private final int numTer;
+
+    public Appartamento(int numStan, double sup, String indir, String citta,
+                        int piano, boolean asc, int numTer) {
+        super(numStan, sup, indir, citta);
+        this.piano = piano;
+        if (numTer &lt; 0) {
+            throw new IllegalArgumentException(&quot;Il numero di terrazzi non può essere negativo&quot;);
+        }
+        this.asc = asc;
+        this.numTer = numTer;
+    }
+
+    public int getPiano() {
+        return piano;
+    }
+
+    public boolean hasAsc() {
+        return asc;
+    }
+
+    public int getNumTer() {
+        return numTer;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                &quot;Appartamento: %s, piano %d, ascensore %s, %d terrazzi&quot;,
+                super.toString(), piano, asc ? &quot;presente&quot; : &quot;assente&quot;, numTer
+        );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        Appartamento that = (Appartamento) obj;
+        return piano == that.piano
+                &amp;&amp; asc == that.asc
+                &amp;&amp; numTer == that.numTer;
+    }
+
+}</code></pre>
+            </div>
+        
+            <div id="immobili-tab2" class="tab-content ">
+                <pre><code class="language-java">
+public class Test {
+
+    public static void main(String[] args) {
+        Villa villa = new Villa(8, 240.0, &quot;Via delle Rose 10&quot;, &quot;Roma&quot;,
+                3, 120.0, true);
+
+        Appartamento appartamento = new Appartamento(4, 90.0, &quot;Corso Garibaldi 25&quot;, &quot;Milano&quot;,
+                5, true, 2);
+
+        Villa sameVilla = new Villa(8, 240.0, &quot;Via delle Rose 10&quot;, &quot;Roma&quot;,
+                3, 120.0, true);
+
+        System.out.println(&quot;\n&quot; + villa.toString());
+
+        System.out.println(&quot;\n&quot; + appartamento.toString());
+
+        System.out.printf(&quot;\nLa villa e la villa gemella sono %s%n\n&quot;, villa.equals(sameVilla) ? &quot;uguali&quot; : &quot;diverse&quot;);
+        System.out.printf(&quot;La villa e l&#39;appartamento sono %s%n\n&quot;, villa.equals(appartamento) ? &quot;uguali&quot; : &quot;diversi&quot;);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="immobili-tab3" class="tab-content ">
+                <pre><code class="language-java">import java.util.Objects;
+
+public class Villa extends Abitazione {
+
+    private final int numPiani;
+    private final double supGiard;
+    private final boolean pisc;
+
+    public Villa(int numStan, double sup, String indir, String citta,
+                 int numPiani, double supGiard, boolean pisc) {
+        super(numStan, sup, indir, citta);
+        if (numPiani &lt;= 0) {
+            throw new IllegalArgumentException(&quot;Il numero di piani deve essere positivo&quot;);
+        }
+        if (supGiard &lt; 0) {
+            throw new IllegalArgumentException(&quot;La superficie del giardino non può essere negativa&quot;);
+        }
+        this.numPiani = numPiani;
+        this.supGiard = supGiard;
+        this.pisc = pisc;
+    }
+
+    public int getNumPiani() {
+        return numPiani;
+    }
+
+    public double getSupGiard() {
+        return supGiard;
+    }
+
+    public boolean hasPisc() {
+        return pisc;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                &quot;Villa: %s, %d piani, giardino %.2f mq, piscina %s&quot;,
+                super.toString(), numPiani, supGiard,
+                pisc ? &quot;presente&quot; : &quot;assente&quot;
+        );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj)) {
+            return false;
+        }
+        Villa villa = (Villa) obj;
+        return numPiani == villa.numPiani
+                &amp;&amp; Double.compare(villa.supGiard, supGiard) == 0
+                &amp;&amp; pisc == villa.pisc;
+    }
+
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">
+Villa: Abitazione con 8 stanze, 240.00 mq, indirizzo: Via delle Rose 10 (Roma), 3 piani, giardino 120.00 mq, piscina presente
+
+Appartamento: Abitazione con 4 stanze, 90.00 mq, indirizzo: Corso Garibaldi 25 (Milano), piano 5, ascensore presente, 2 terrazzi
+
+La villa e la villa gemella sono uguali
+
+La villa e l&#39;appartamento sono diversi
+
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["import java.util.Objects;\n\npublic abstract class Abitazione {\n\n    private final int numStan;\n    private final double sup;\n    private final String indir;\n    private final String citta;\n\n    protected Abitazione(int numStan, double sup, String indir, String citta) {\n        if (numStan <= 0) {\n            throw new IllegalArgumentException(\"Il numero di stanze deve essere positivo\");\n        }\n        if (sup <= 0) {\n            throw new IllegalArgumentException(\"La superficie deve essere positiva\");\n        }\n        this.numStan = numStan;\n        this.sup = sup;\n        this.indir = Objects.requireNonNull(indir, \"L'indirizzo non può essere nullo\");\n        this.citta = Objects.requireNonNull(citta, \"La città non può essere nulla\");\n    }\n\n    public int getNumStan() {\n        return numStan;\n    }\n\n    public double getSup() {\n        return sup;\n    }\n\n    public String getIndir() {\n        return indir;\n    }\n\n    public String getCitta() {\n        return citta;\n    }\n\n    public String descrivi() {\n        return toString();\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\n                \"Abitazione con %d stanze, %.2f mq, indirizzo: %s (%s)\",\n                numStan, sup, indir, citta\n        );\n    }\n\n    @Override\n    public boolean equals(Object obj) {\n        if (this == obj) {\n            return true;\n        }\n        if (obj == null || getClass() != obj.getClass()) {\n            return false;\n        }\n        Abitazione that = (Abitazione) obj;\n        return numStan == that.numStan\n                && Double.compare(that.sup, sup) == 0\n                && indir.equals(that.indir)\n                && citta.equals(that.citta);\n    }\n\n    @Override\n    public int hashCode() {\n        return Objects.hash(numStan, sup, indir, citta);\n    }\n}\n", "import java.util.Objects;\n\npublic class Appartamento extends Abitazione {\n\n    private final int piano;\n    private final boolean asc;\n    private final int numTer;\n\n    public Appartamento(int numStan, double sup, String indir, String citta,\n                        int piano, boolean asc, int numTer) {\n        super(numStan, sup, indir, citta);\n        this.piano = piano;\n        if (numTer < 0) {\n            throw new IllegalArgumentException(\"Il numero di terrazzi non può essere negativo\");\n        }\n        this.asc = asc;\n        this.numTer = numTer;\n    }\n\n    public int getPiano() {\n        return piano;\n    }\n\n    public boolean hasAsc() {\n        return asc;\n    }\n\n    public int getNumTer() {\n        return numTer;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\n                \"Appartamento: %s, piano %d, ascensore %s, %d terrazzi\",\n                super.toString(), piano, asc ? \"presente\" : \"assente\", numTer\n        );\n    }\n\n    @Override\n    public boolean equals(Object obj) {\n        if (!super.equals(obj)) {\n            return false;\n        }\n        Appartamento that = (Appartamento) obj;\n        return piano == that.piano\n                && asc == that.asc\n                && numTer == that.numTer;\n    }\n\n}", "\npublic class Test {\n\n    public static void main(String[] args) {\n        Villa villa = new Villa(8, 240.0, \"Via delle Rose 10\", \"Roma\",\n                3, 120.0, true);\n\n        Appartamento appartamento = new Appartamento(4, 90.0, \"Corso Garibaldi 25\", \"Milano\",\n                5, true, 2);\n\n        Villa sameVilla = new Villa(8, 240.0, \"Via delle Rose 10\", \"Roma\",\n                3, 120.0, true);\n\n        System.out.println(\"\\n\" + villa.toString());\n\n        System.out.println(\"\\n\" + appartamento.toString());\n\n        System.out.printf(\"\\nLa villa e la villa gemella sono %s%n\\n\", villa.equals(sameVilla) ? \"uguali\" : \"diverse\");\n        System.out.printf(\"La villa e l'appartamento sono %s%n\\n\", villa.equals(appartamento) ? \"uguali\" : \"diversi\");\n    }\n}\n", "import java.util.Objects;\n\npublic class Villa extends Abitazione {\n\n    private final int numPiani;\n    private final double supGiard;\n    private final boolean pisc;\n\n    public Villa(int numStan, double sup, String indir, String citta,\n                 int numPiani, double supGiard, boolean pisc) {\n        super(numStan, sup, indir, citta);\n        if (numPiani <= 0) {\n            throw new IllegalArgumentException(\"Il numero di piani deve essere positivo\");\n        }\n        if (supGiard < 0) {\n            throw new IllegalArgumentException(\"La superficie del giardino non può essere negativa\");\n        }\n        this.numPiani = numPiani;\n        this.supGiard = supGiard;\n        this.pisc = pisc;\n    }\n\n    public int getNumPiani() {\n        return numPiani;\n    }\n\n    public double getSupGiard() {\n        return supGiard;\n    }\n\n    public boolean hasPisc() {\n        return pisc;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\n                \"Villa: %s, %d piani, giardino %.2f mq, piscina %s\",\n                super.toString(), numPiani, supGiard,\n                pisc ? \"presente\" : \"assente\"\n        );\n    }\n\n    @Override\n    public boolean equals(Object obj) {\n        if (!super.equals(obj)) {\n            return false;\n        }\n        Villa villa = (Villa) obj;\n        return numPiani == villa.numPiani\n                && Double.compare(villa.supGiard, supGiard) == 0\n                && pisc == villa.pisc;\n    }\n\n}\n"];
+        const projectName = "Immobili";
+        const buildStatus = "success";
+        const precompiledOutput = "\nVilla: Abitazione con 8 stanze, 240.00 mq, indirizzo: Via delle Rose 10 (Roma), 3 piani, giardino 120.00 mq, piscina presente\n\nAppartamento: Abitazione con 4 stanze, 90.00 mq, indirizzo: Corso Garibaldi 25 (Milano), piano 5, ascensore presente, 2 terrazzi\n\nLa villa e la villa gemella sono uguali\n\nLa villa e l'appartamento sono diversi\n\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

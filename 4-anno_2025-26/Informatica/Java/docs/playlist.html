@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #020617;
+            --bg-secondary: rgba(15, 23, 42, 0.82);
+            --bg-tertiary: rgba(30, 41, 68, 0.78);
+            --bg-card: linear-gradient(140deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 68, 0.75) 100%);
+            --bg-code: #0b1220;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5f5;
+            --text-muted: #94a3b8;
+            --accent-primary: #38bdf8;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #f472b6;
+            --accent-success: #34d399;
+            --accent-warning: #facc15;
+            --accent-error: #f87171;
+            --border-default: rgba(148, 163, 184, 0.28);
+            --border-light: rgba(148, 163, 184, 0.22);
+            --border-strong: rgba(56, 189, 248, 0.45);
+            --border-accent: rgba(56, 189, 248, 0.35);
+            --glow-primary: rgba(56, 189, 248, 0.32);
+            --glow-secondary: rgba(139, 92, 246, 0.32);
+            --shadow-sm: 0 6px 18px rgba(2, 6, 23, 0.35);
+            --shadow-md: 0 16px 32px rgba(2, 6, 23, 0.45);
+            --shadow-lg: 0 32px 60px rgba(2, 6, 23, 0.55);
+            --shadow-glow: 0 0 42px rgba(56, 189, 248, 0.32);
+        }
+        
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.18) 0%, transparent 55%),
+                radial-gradient(circle at 100% 0%, rgba(244, 114, 182, 0.16) 0%, transparent 45%),
+                linear-gradient(180deg, #020617 0%, #0f172a 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), rgba(139, 92, 246, 0.12));
+            filter: blur(140px);
+            opacity: 0.6;
+            z-index: -1;
+        }
+        
+        header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 24px 36px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-default);
+            box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(18px);
+        }
+        
+        header h1 {
+            font-size: 1.5em;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-primary);
+        }
+        
+        header h1 i {
+            color: var(--accent-primary);
+        }
+        
+        .back-btn {
+            background: rgba(8, 16, 32, 0.85);
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .back-btn:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.85), rgba(139, 92, 246, 0.85));
+            color: #020617;
+            border-color: rgba(56, 189, 248, 0.65);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            background: transparent;
+            border-top: 1px solid var(--border-default);
+            border-bottom: 1px solid var(--border-default);
+        }
+        
+        .left-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(160deg, rgba(15, 23, 42, 0.88), rgba(30, 41, 68, 0.72));
+            border-right: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.72);
+            border-bottom: 1px solid var(--border-default);
+            padding: 0 16px;
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            font-family: 'Fira Code', monospace;
+            border: 1px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border-color: var(--border-accent);
+        }
+        
+        .tab-button.active {
+            color: var(--accent-primary);
+            background: rgba(8, 16, 32, 0.85);
+            border-color: var(--border-strong);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .code-area {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-content pre {
+            margin: 0;
+            height: 100%;
+        }
+        
+        .tab-content pre code {
+            display: block;
+            padding: 24px !important;
+            background: var(--bg-code) !important;
+            height: 100%;
+            font-size: 14px;
+            line-height: 1.6;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            color: var(--text-primary) !important;
+        }
+        
+        .right-panel {
+            width: 45%;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(200deg, rgba(15, 23, 42, 0.82), rgba(30, 41, 68, 0.68));
+            border-left: 1px solid var(--border-default);
+            backdrop-filter: blur(18px);
+        }
+        
+        .run-header {
+            background: rgba(15, 23, 42, 0.65);
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-default);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .run-header h2 {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .run-btn {
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .run-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .run-btn:active {
+            transform: translateY(0);
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .output-area {
+            flex: 1;
+            padding: 24px;
+            overflow: auto;
+            background: rgba(2, 10, 24, 0.6);
+        }
+        
+        .output-box {
+            background: rgba(15, 23, 42, 0.72);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 200px;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .output-box.error {
+            color: var(--accent-error);
+            background: rgba(248, 113, 113, 0.12);
+            border-color: rgba(248, 113, 113, 0.45);
+        }
+        
+        .output-box.success {
+            color: var(--accent-success);
+            background: rgba(52, 211, 153, 0.12);
+            border-color: rgba(52, 211, 153, 0.45);
+        }
+        
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .status-indicator.success {
+            background: rgba(52, 211, 153, 0.12);
+            color: var(--accent-success);
+            border: 1px solid rgba(52, 211, 153, 0.45);
+            box-shadow: 0 0 18px rgba(52, 211, 153, 0.28);
+        }
+        
+        .status-indicator.error {
+            background: rgba(248, 113, 113, 0.12);
+            color: var(--accent-error);
+            border: 1px solid rgba(248, 113, 113, 0.45);
+            box-shadow: 0 0 18px rgba(248, 113, 113, 0.28);
+        }
+        
+        .status-indicator.running {
+            background: rgba(56, 189, 248, 0.14);
+            color: var(--accent-primary);
+            border: 1px solid rgba(56, 189, 248, 0.45);
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.28);
+        }
+        
+        .spinner {
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 2px solid currentColor;
+            width: 14px;
+            height: 14px;
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            background: rgba(139, 92, 246, 0.15);
+            border-left: 3px solid var(--accent-secondary);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-box i {
+            color: var(--accent-secondary);
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border-light);
+            }
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--accent-primary);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .code-area:hover .copy-btn {
+            opacity: 1;
+        }
+        
+        .copy-btn:hover {
+            background: var(--accent-secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            Playlist
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="playlist-tab0">Brano.java</button>
+        
+            <button class="tab-button " data-tab="playlist-tab1">LibreriaMusicale.java</button>
+        
+            <button class="tab-button " data-tab="playlist-tab2">Main.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="playlist-tab0" class="tab-content active">
+                <pre><code class="language-java">import java.time.LocalDate;
+import java.util.Objects;
+
+public class Brano {
+    private final String titolo;
+    private final String artista;
+    private final String genere;
+    private final int durataSec;
+    private final LocalDate dataUscita;
+    private int ascolti;
+
+    public Brano(String titolo, String artista, String genere, int durataSec, LocalDate dataUscita) {
+        if (titolo == null || titolo.isBlank()) {
+            throw new IllegalArgumentException(&quot;titolo != null &quot;);
+        }
+        if (artista == null || artista.isBlank()) {
+            throw new IllegalArgumentException(&quot;artista != null &quot;);
+        }
+        if (genere == null || genere.isBlank()) {
+            throw new IllegalArgumentException(&quot;genere != null&quot;);
+        }
+        if (durataSec &lt;= 0) {
+            throw new IllegalArgumentException(&quot;durata &gt; 0&quot;);
+        }
+        if (dataUscita == null) {
+            throw new IllegalArgumentException(&quot;data di uscita != null&quot;);
+        }
+        this.titolo = titolo;
+        this.artista = artista;
+        this.genere = genere;
+        this.durataSec = durataSec;
+        this.dataUscita = dataUscita;
+        this.ascolti = 0;
+    }
+
+    public Brano(String titolo, String artista, String genere, int durataSec, LocalDate dataUscita, int ascolti) {
+        this(titolo, artista, genere, durataSec, dataUscita);
+        if (ascolti &lt; 0) {
+            throw new IllegalArgumentException(&quot;Gli ascolti non possono essere negativi&quot;);
+        }
+        this.ascolti = ascolti;
+    }
+
+    public String getTitolo() {
+        return titolo;
+    }
+
+    public String getArtista() {
+        return artista;
+    }
+
+    public String getGenere() {
+        return genere;
+    }
+
+    public int getDurataSec() {
+        return durataSec;
+    }
+
+    public LocalDate getDataUscita() {
+        return dataUscita;
+    }
+
+    public int getAscolti() {
+        return ascolti;
+    }
+
+    public void incrementaAscolti() {
+        ascolti++;
+    }
+
+    public long getSecondiTotaliAscoltati() {
+        return (long) ascolti * durataSec;
+    }
+
+    @Override
+    public String toString() {
+        int minuti = durataSec / 60;
+        int secondi = durataSec % 60;
+        return String.format(&quot;%s - %s (%s, %d:%02d) [%d ascolti]&quot;, 
+                           titolo, artista, genere, minuti, secondi, ascolti);
+    }
+
+}
+</code></pre>
+            </div>
+        
+            <div id="playlist-tab1" class="tab-content ">
+                <pre><code class="language-java">import java.util.ArrayList;
+
+public class LibreriaMusicale {
+    private final String titolo;
+    private final ArrayList&lt;Brano&gt; brani;
+
+    public LibreriaMusicale(String titolo) {
+        if (titolo == null || titolo.isBlank()) {
+            throw new IllegalArgumentException(&quot;title required&quot;);
+        }
+        this.titolo = titolo;
+        this.brani = new ArrayList&lt;&gt;();
+    }
+
+    public String getTitolo() {
+        return titolo;
+    }
+
+    public ArrayList&lt;Brano&gt; getBrani() {
+        return new ArrayList&lt;&gt;(brani);
+    }
+
+    public boolean aggiungiBrano(Brano brano) {
+        if (brano == null) {
+            throw new IllegalArgumentException(&quot;not null song please&quot;);
+        }
+        for (Brano b : brani) {
+            if (b.equals(brano)) {
+                return false;
+            }
+        }
+        return brani.add(brano);
+    }
+
+    public boolean rimuoviBrano(String titolo, String artista) {
+        if (titolo == null || titolo.isBlank() || artista == null || artista.isBlank()) {
+            throw new IllegalArgumentException(&quot;title and artist required&quot;);
+        }
+        boolean del = false;
+        for (int i = 0; i &lt; brani.size(); i++) {
+            Brano b = brani.get(i);
+            if (b.getTitolo().equalsIgnoreCase(titolo)
+                    &amp;&amp; b.getArtista().equalsIgnoreCase(artista)) {
+                brani.remove(i);
+                del = true;
+                i--;
+            }
+        }
+        return del;
+    }
+
+    public int getMinutiAscoltati() {
+        long totSec = 0;
+        for (Brano b : brani) {
+            totSec += b.getSecondiTotaliAscoltati();
+        }
+        return (int) (totSec / 60);
+    }
+
+    public ArrayList&lt;Brano&gt; braniPerGenere(String genere) {
+        if (genere == null || genere.isBlank()) {
+            throw new IllegalArgumentException(&quot;genre required&quot;);
+        }
+        ArrayList&lt;Brano&gt; sel = new ArrayList&lt;&gt;();
+        for (Brano b : brani) {
+            if (b.getGenere().equalsIgnoreCase(genere)) {
+                sel.add(b);
+            }
+        }
+        for (int i = 0; i &lt; sel.size() - 1; i++) {
+            int idxMax = i;
+            for (int j = i + 1; j &lt; sel.size(); j++) {
+                if (sel.get(j).getDataUscita().isAfter(sel.get(idxMax).getDataUscita())) {
+                    idxMax = j;
+                }
+            }
+            if (idxMax != i) {
+                Brano tmp = sel.get(i);
+                sel.set(i, sel.get(idxMax));
+                sel.set(idxMax, tmp);
+            }
+        }
+        return sel;
+    }
+
+    public int contaBraniPerArtista(String artista) {
+        if (artista == null || artista.isBlank()) {
+            throw new IllegalArgumentException(&quot;artist required&quot;);
+        }
+        int cnt = 0;
+        for (Brano b : brani) {
+            if (b.getArtista().equalsIgnoreCase(artista)) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
+    public Brano piuAscoltato() {
+        Brano top = null;
+        long max = -1;
+        for (Brano b : brani) {
+            long ascolti = b.getSecondiTotaliAscoltati();
+            if (ascolti &gt; max) {
+                max = ascolti;
+                top = b;
+            }
+        }
+        return top;
+    }
+
+    public ArrayList&lt;Brano&gt; shuffleConSeed(String genere, int durataMax) {
+        if (durataMax &lt;= 0) {
+            throw new IllegalArgumentException(&quot;max duration must be positive&quot;);
+        }
+        ArrayList&lt;Brano&gt; pool = new ArrayList&lt;&gt;();
+        for (Brano b : brani) {
+            if (b.getGenere().equalsIgnoreCase(genere) &amp;&amp; b.getDurataSec() &lt;= durataMax) {
+                pool.add(b);
+            }
+        }
+        if (pool.isEmpty()) {
+            return new ArrayList&lt;&gt;();
+        }
+        
+        long seed = 17;
+        for (char c : genere.toLowerCase().toCharArray()) {
+            seed = seed * 31 + c;
+        }
+        seed = seed * 31 + durataMax;
+        seed = seed * 31 + pool.size();
+
+        ArrayList&lt;Brano&gt; mix = new ArrayList&lt;&gt;();
+        int totDur = 0;
+        int idx = (int) (Math.abs(seed) % pool.size());
+        
+        while (!pool.isEmpty()) {
+            Brano b = pool.remove(idx);
+            if (totDur + b.getDurataSec() &lt;= durataMax) {
+                mix.add(b);
+                totDur += b.getDurataSec();
+            }
+            if (!pool.isEmpty()) {
+                idx = (int) (Math.abs(idx + seed) % pool.size());
+            }
+        }
+        return mix;
+    }
+    public double getDurataMediaBrani() {
+        if (brani.isEmpty()) {
+            return 0;
+        }
+        int tot = 0;
+        for (Brano b : brani) {
+            tot += b.getDurataSec();
+        }
+        return (double) tot / brani.size();
+    }
+}</code></pre>
+            </div>
+        
+            <div id="playlist-tab2" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+import java.util.ArrayList;
+
+public class Main {
+    public static void main(String[] args) {
+        LibreriaMusicale lb = new LibreriaMusicale(&quot;Smart Shuffle&quot;);
+        lb.aggiungiBrano(new Brano(&quot;AD MAIORA&quot;, &quot;Artie 5ive&quot;, &quot;Trap&quot;, 196, LocalDate.of(2024, 12, 13)));
+        lb.aggiungiBrano(new Brano(&quot;Milano Testarossa&quot;, &quot;Artie 5ive&quot;, &quot;Trap&quot;, 206, LocalDate.of(2024, 7, 19)));
+        lb.aggiungiBrano(new Brano(&quot;PULL UP&quot;, &quot;Mambolosco&quot;, &quot;Trap&quot;, 180, LocalDate.of(2024, 7, 5)));
+        lb.aggiungiBrano(new Brano(&quot;Connessioni&quot;, &quot;Mambolosco&quot;, &quot;Trap&quot;, 179, LocalDate.of(2024, 10, 3)));
+        lb.aggiungiBrano(new Brano(&quot;Ballas 2&quot;, &quot;Diss Gacha&quot;, &quot;Trap&quot;, 132, LocalDate.of(2025, 1, 31)));
+        lb.aggiungiBrano(new Brano(&quot;OUTFIT CHECK&quot;, &quot;Diss Gacha&quot;, &quot;Trap&quot;, 129, LocalDate.of(2025, 6, 4)));
+
+        ArrayList&lt;Brano&gt; brani = lb.getBrani();
+        for (Brano b : brani) {
+            int listndTimes;
+            if (b.getArtista().equals(&quot;Artie 5ive&quot;)) {
+                listndTimes = 6;
+            } else if (b.getArtista().equals(&quot;Mambolosco&quot;)) {
+                listndTimes = 4;
+            } else if (b.getArtista().equals(&quot;Diss Gacha&quot;)) {
+                listndTimes = 5;
+            } else {
+                listndTimes = 2;
+            }
+            for (int i = 0; i &lt; listndTimes; i++) {
+                b.incrementaAscolti();
+            }
+        }
+
+        ArrayList&lt;String&gt; artisti = new ArrayList&lt;&gt;();
+
+        ArrayList&lt;Integer&gt; tot = new ArrayList&lt;&gt;();
+        for (Brano b : brani) {
+            String art = b.getArtista();
+            boolean exist = false;
+            for (int i = 0; i &lt; artisti.size(); i++) {
+                if (artisti.get(i).equalsIgnoreCase(art)) {
+                    tot.set(i, tot.get(i) + 1);
+                    exist = true;
+                    break;
+                }
+            }
+            if (!exist) {
+                artisti.add(art);
+                tot.add(1);
+            }
+        }
+
+        boolean sorted = false;
+        while (!sorted) {
+            sorted = true;
+            for (int i = 0; i &lt; tot.size() - 1; i++) {
+                if (tot.get(i) &lt; tot.get(i + 1)) {
+                    int cntTmp = tot.get(i);
+                    tot.set(i, tot.get(i + 1));
+                    tot.set(i + 1, cntTmp);
+                    String artTmp = artisti.get(i);
+                    artisti.set(i, artisti.get(i + 1));
+                    artisti.set(i + 1, artTmp);
+                    sorted = false;
+                }
+            }
+        }
+
+        System.out.println(&quot;\nTop artisti per numero di brani:&quot;);
+        for (int i = 0; i &lt; artisti.size(); i++) {
+            System.out.println(&quot; - &quot; + artisti.get(i) + &quot;: &quot; + tot.get(i));
+        }
+        String genere = &quot;Trap&quot;;
+        int maxSec = 600;
+        ArrayList&lt;Brano&gt; pl = lb.shuffleConSeed(genere, maxSec);
+        System.out.println(&quot;\nPlaylist &quot; + genere + &quot; shuffle (max &quot; + maxSec + &quot; sec):&quot;);
+        for (Brano b : pl) {
+            System.out.println(&quot; - &quot; + b);
+        }
+    }
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">
+Top artisti per numero di brani:
+ - Artie 5ive: 2
+ - Mambolosco: 2
+ - Diss Gacha: 2
+
+Playlist Trap shuffle (max 600 sec):
+ - AD MAIORA - Artie 5ive (Trap, 3:16) [6 ascolti]
+ - Connessioni - Mambolosco (Trap, 2:59) [4 ascolti]
+ - Ballas 2 - Diss Gacha (Trap, 2:12) [5 ascolti]
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["import java.time.LocalDate;\nimport java.util.Objects;\n\npublic class Brano {\n    private final String titolo;\n    private final String artista;\n    private final String genere;\n    private final int durataSec;\n    private final LocalDate dataUscita;\n    private int ascolti;\n\n    public Brano(String titolo, String artista, String genere, int durataSec, LocalDate dataUscita) {\n        if (titolo == null || titolo.isBlank()) {\n            throw new IllegalArgumentException(\"titolo != null \");\n        }\n        if (artista == null || artista.isBlank()) {\n            throw new IllegalArgumentException(\"artista != null \");\n        }\n        if (genere == null || genere.isBlank()) {\n            throw new IllegalArgumentException(\"genere != null\");\n        }\n        if (durataSec <= 0) {\n            throw new IllegalArgumentException(\"durata > 0\");\n        }\n        if (dataUscita == null) {\n            throw new IllegalArgumentException(\"data di uscita != null\");\n        }\n        this.titolo = titolo;\n        this.artista = artista;\n        this.genere = genere;\n        this.durataSec = durataSec;\n        this.dataUscita = dataUscita;\n        this.ascolti = 0;\n    }\n\n    public Brano(String titolo, String artista, String genere, int durataSec, LocalDate dataUscita, int ascolti) {\n        this(titolo, artista, genere, durataSec, dataUscita);\n        if (ascolti < 0) {\n            throw new IllegalArgumentException(\"Gli ascolti non possono essere negativi\");\n        }\n        this.ascolti = ascolti;\n    }\n\n    public String getTitolo() {\n        return titolo;\n    }\n\n    public String getArtista() {\n        return artista;\n    }\n\n    public String getGenere() {\n        return genere;\n    }\n\n    public int getDurataSec() {\n        return durataSec;\n    }\n\n    public LocalDate getDataUscita() {\n        return dataUscita;\n    }\n\n    public int getAscolti() {\n        return ascolti;\n    }\n\n    public void incrementaAscolti() {\n        ascolti++;\n    }\n\n    public long getSecondiTotaliAscoltati() {\n        return (long) ascolti * durataSec;\n    }\n\n    @Override\n    public String toString() {\n        int minuti = durataSec / 60;\n        int secondi = durataSec % 60;\n        return String.format(\"%s - %s (%s, %d:%02d) [%d ascolti]\", \n                           titolo, artista, genere, minuti, secondi, ascolti);\n    }\n\n}\n", "import java.util.ArrayList;\n\npublic class LibreriaMusicale {\n    private final String titolo;\n    private final ArrayList<Brano> brani;\n\n    public LibreriaMusicale(String titolo) {\n        if (titolo == null || titolo.isBlank()) {\n            throw new IllegalArgumentException(\"title required\");\n        }\n        this.titolo = titolo;\n        this.brani = new ArrayList<>();\n    }\n\n    public String getTitolo() {\n        return titolo;\n    }\n\n    public ArrayList<Brano> getBrani() {\n        return new ArrayList<>(brani);\n    }\n\n    public boolean aggiungiBrano(Brano brano) {\n        if (brano == null) {\n            throw new IllegalArgumentException(\"not null song please\");\n        }\n        for (Brano b : brani) {\n            if (b.equals(brano)) {\n                return false;\n            }\n        }\n        return brani.add(brano);\n    }\n\n    public boolean rimuoviBrano(String titolo, String artista) {\n        if (titolo == null || titolo.isBlank() || artista == null || artista.isBlank()) {\n            throw new IllegalArgumentException(\"title and artist required\");\n        }\n        boolean del = false;\n        for (int i = 0; i < brani.size(); i++) {\n            Brano b = brani.get(i);\n            if (b.getTitolo().equalsIgnoreCase(titolo)\n                    && b.getArtista().equalsIgnoreCase(artista)) {\n                brani.remove(i);\n                del = true;\n                i--;\n            }\n        }\n        return del;\n    }\n\n    public int getMinutiAscoltati() {\n        long totSec = 0;\n        for (Brano b : brani) {\n            totSec += b.getSecondiTotaliAscoltati();\n        }\n        return (int) (totSec / 60);\n    }\n\n    public ArrayList<Brano> braniPerGenere(String genere) {\n        if (genere == null || genere.isBlank()) {\n            throw new IllegalArgumentException(\"genre required\");\n        }\n        ArrayList<Brano> sel = new ArrayList<>();\n        for (Brano b : brani) {\n            if (b.getGenere().equalsIgnoreCase(genere)) {\n                sel.add(b);\n            }\n        }\n        for (int i = 0; i < sel.size() - 1; i++) {\n            int idxMax = i;\n            for (int j = i + 1; j < sel.size(); j++) {\n                if (sel.get(j).getDataUscita().isAfter(sel.get(idxMax).getDataUscita())) {\n                    idxMax = j;\n                }\n            }\n            if (idxMax != i) {\n                Brano tmp = sel.get(i);\n                sel.set(i, sel.get(idxMax));\n                sel.set(idxMax, tmp);\n            }\n        }\n        return sel;\n    }\n\n    public int contaBraniPerArtista(String artista) {\n        if (artista == null || artista.isBlank()) {\n            throw new IllegalArgumentException(\"artist required\");\n        }\n        int cnt = 0;\n        for (Brano b : brani) {\n            if (b.getArtista().equalsIgnoreCase(artista)) {\n                cnt++;\n            }\n        }\n        return cnt;\n    }\n\n    public Brano piuAscoltato() {\n        Brano top = null;\n        long max = -1;\n        for (Brano b : brani) {\n            long ascolti = b.getSecondiTotaliAscoltati();\n            if (ascolti > max) {\n                max = ascolti;\n                top = b;\n            }\n        }\n        return top;\n    }\n\n    public ArrayList<Brano> shuffleConSeed(String genere, int durataMax) {\n        if (durataMax <= 0) {\n            throw new IllegalArgumentException(\"max duration must be positive\");\n        }\n        ArrayList<Brano> pool = new ArrayList<>();\n        for (Brano b : brani) {\n            if (b.getGenere().equalsIgnoreCase(genere) && b.getDurataSec() <= durataMax) {\n                pool.add(b);\n            }\n        }\n        if (pool.isEmpty()) {\n            return new ArrayList<>();\n        }\n        \n        long seed = 17;\n        for (char c : genere.toLowerCase().toCharArray()) {\n            seed = seed * 31 + c;\n        }\n        seed = seed * 31 + durataMax;\n        seed = seed * 31 + pool.size();\n\n        ArrayList<Brano> mix = new ArrayList<>();\n        int totDur = 0;\n        int idx = (int) (Math.abs(seed) % pool.size());\n        \n        while (!pool.isEmpty()) {\n            Brano b = pool.remove(idx);\n            if (totDur + b.getDurataSec() <= durataMax) {\n                mix.add(b);\n                totDur += b.getDurataSec();\n            }\n            if (!pool.isEmpty()) {\n                idx = (int) (Math.abs(idx + seed) % pool.size());\n            }\n        }\n        return mix;\n    }\n    public double getDurataMediaBrani() {\n        if (brani.isEmpty()) {\n            return 0;\n        }\n        int tot = 0;\n        for (Brano b : brani) {\n            tot += b.getDurataSec();\n        }\n        return (double) tot / brani.size();\n    }\n}", "import java.time.LocalDate;\nimport java.util.ArrayList;\n\npublic class Main {\n    public static void main(String[] args) {\n        LibreriaMusicale lb = new LibreriaMusicale(\"Smart Shuffle\");\n        lb.aggiungiBrano(new Brano(\"AD MAIORA\", \"Artie 5ive\", \"Trap\", 196, LocalDate.of(2024, 12, 13)));\n        lb.aggiungiBrano(new Brano(\"Milano Testarossa\", \"Artie 5ive\", \"Trap\", 206, LocalDate.of(2024, 7, 19)));\n        lb.aggiungiBrano(new Brano(\"PULL UP\", \"Mambolosco\", \"Trap\", 180, LocalDate.of(2024, 7, 5)));\n        lb.aggiungiBrano(new Brano(\"Connessioni\", \"Mambolosco\", \"Trap\", 179, LocalDate.of(2024, 10, 3)));\n        lb.aggiungiBrano(new Brano(\"Ballas 2\", \"Diss Gacha\", \"Trap\", 132, LocalDate.of(2025, 1, 31)));\n        lb.aggiungiBrano(new Brano(\"OUTFIT CHECK\", \"Diss Gacha\", \"Trap\", 129, LocalDate.of(2025, 6, 4)));\n\n        ArrayList<Brano> brani = lb.getBrani();\n        for (Brano b : brani) {\n            int listndTimes;\n            if (b.getArtista().equals(\"Artie 5ive\")) {\n                listndTimes = 6;\n            } else if (b.getArtista().equals(\"Mambolosco\")) {\n                listndTimes = 4;\n            } else if (b.getArtista().equals(\"Diss Gacha\")) {\n                listndTimes = 5;\n            } else {\n                listndTimes = 2;\n            }\n            for (int i = 0; i < listndTimes; i++) {\n                b.incrementaAscolti();\n            }\n        }\n\n        ArrayList<String> artisti = new ArrayList<>();\n\n        ArrayList<Integer> tot = new ArrayList<>();\n        for (Brano b : brani) {\n            String art = b.getArtista();\n            boolean exist = false;\n            for (int i = 0; i < artisti.size(); i++) {\n                if (artisti.get(i).equalsIgnoreCase(art)) {\n                    tot.set(i, tot.get(i) + 1);\n                    exist = true;\n                    break;\n                }\n            }\n            if (!exist) {\n                artisti.add(art);\n                tot.add(1);\n            }\n        }\n\n        boolean sorted = false;\n        while (!sorted) {\n            sorted = true;\n            for (int i = 0; i < tot.size() - 1; i++) {\n                if (tot.get(i) < tot.get(i + 1)) {\n                    int cntTmp = tot.get(i);\n                    tot.set(i, tot.get(i + 1));\n                    tot.set(i + 1, cntTmp);\n                    String artTmp = artisti.get(i);\n                    artisti.set(i, artisti.get(i + 1));\n                    artisti.set(i + 1, artTmp);\n                    sorted = false;\n                }\n            }\n        }\n\n        System.out.println(\"\\nTop artisti per numero di brani:\");\n        for (int i = 0; i < artisti.size(); i++) {\n            System.out.println(\" - \" + artisti.get(i) + \": \" + tot.get(i));\n        }\n        String genere = \"Trap\";\n        int maxSec = 600;\n        ArrayList<Brano> pl = lb.shuffleConSeed(genere, maxSec);\n        System.out.println(\"\\nPlaylist \" + genere + \" shuffle (max \" + maxSec + \" sec):\");\n        for (Brano b : pl) {\n            System.out.println(\" - \" + b);\n        }\n    }\n}\n"];
+        const projectName = "Playlist";
+        const buildStatus = "success";
+        const precompiledOutput = "\nTop artisti per numero di brani:\n - Artie 5ive: 2\n - Mambolosco: 2\n - Diss Gacha: 2\n\nPlaylist Trap shuffle (max 600 sec):\n - AD MAIORA - Artie 5ive (Trap, 3:16) [6 ascolti]\n - Connessioni - Mambolosco (Trap, 2:59) [4 ascolti]\n - Ballas 2 - Diss Gacha (Trap, 2:12) [5 ascolti]\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

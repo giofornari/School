@@ -1,0 +1,45 @@
+
+
+	 Benvenuto!
+  Macchina Distributrice 1.0.0
+------------------------------------
+
+---- Prodotti rimanenti -------
+0) acqua: 100
+1) brioche: 100
+2) spritz: 100
+3) croccantelle: 100
+4) snack: 100
+-------------------------------
+
+
+Acquistiamo alcuni prodotti....
+mhhh....
+Voglio uno snack!
+Controlliamo ci sia!
+[ SNACK - 2.5€ - 100 rimanenti ]
+
+Bene!
+Sono sicuro che sarà delizioso!
+
+
+Manca qualcosa da bere!
+Prendiamo uno sprits!
+
+ OH LA!
+Adesso sono a posto
+
+
+
+	 A FEW MOMENTS LATER...
+
+Admin: Voglio controllare alcuni dati. Facciamo una query!
+
+---- Prodotti rimanenti -------
+0) acqua: 100
+1) brioche: 100
+2) spritz: 99
+3) croccantelle: 100
+4) snack: 99
+-------------------------------
+Il totale dei prodotti rimanenti è: 556.3 €
