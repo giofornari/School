@@ -1,54 +1,38 @@
-/**
- * Classe astratta che rappresenta un PC generico.
- * Contiene gli attributi comuni a tutti i tipi di PC.
- * 
- * @author giordii.dev
- */
+// PC base astratto
 public abstract class PC {
-    protected String tipoProcessore;
-    protected int dimensioneRAM; // in GB
-    protected int dimensioneMemoriaMassa; // in GB
+    protected String tipoProc;
+    protected int ramGb;
+    protected int memGb;
     protected String marca;
     protected String modello;
-    protected String sistemaOperativo;
+    protected String sistOp;
 
-    /**
-     * Costruttore completo per un PC.
-     * 
-     * @param tipoProcessore il tipo di processore
-     * @param dimensioneRAM la dimensione della RAM in GB
-     * @param dimensioneMemoriaMassa la dimensione della memoria di massa in GB
-     * @param marca la marca del PC
-     * @param modello il modello del PC
-     * @param sistemaOperativo il sistema operativo installato
-     */
-    public PC(String tipoProcessore, int dimensioneRAM, int dimensioneMemoriaMassa,
-              String marca, String modello, String sistemaOperativo) {
-        if (dimensioneRAM <= 0) {
-            throw new IllegalArgumentException("dimensioneRAM deve essere > 0");
+    public PC(String tipoProc, int ramGb, int memGb,
+              String marca, String modello, String sistOp) {
+        if (ramGb <= 0) {
+            throw new IllegalArgumentException("ramGb deve essere > 0");
         }
-        if (dimensioneMemoriaMassa <= 0) {
-            throw new IllegalArgumentException("dimensioneMemoriaMassa deve essere > 0");
+        if (memGb <= 0) {
+            throw new IllegalArgumentException("memGb deve essere > 0");
         }
-        this.tipoProcessore = tipoProcessore;
-        this.dimensioneRAM = dimensioneRAM;
-        this.dimensioneMemoriaMassa = dimensioneMemoriaMassa;
+        this.tipoProc = tipoProc;
+        this.ramGb = ramGb;
+        this.memGb = memGb;
         this.marca = marca;
         this.modello = modello;
-        this.sistemaOperativo = sistemaOperativo;
+        this.sistOp = sistOp;
     }
 
-    // Getter methods
-    public String getTipoProcessore() {
-        return tipoProcessore;
+    public String getTipoProc() {
+        return tipoProc;
     }
 
-    public int getDimensioneRAM() {
-        return dimensioneRAM;
+    public int getRamGb() {
+        return ramGb;
     }
 
-    public int getDimensioneMemoriaMassa() {
-        return dimensioneMemoriaMassa;
+    public int getMemGb() {
+        return memGb;
     }
 
     public String getMarca() {
@@ -59,14 +43,14 @@ public abstract class PC {
         return modello;
     }
 
-    public String getSistemaOperativo() {
-        return sistemaOperativo;
+    public String getSistOp() {
+        return sistOp;
     }
 
     @Override
     public String toString() {
         return String.format("Marca: %s, Modello: %s, CPU: %s, RAM: %dGB, Memoria: %dGB, OS: %s",
-                marca, modello, tipoProcessore, dimensioneRAM, dimensioneMemoriaMassa, sistemaOperativo);
+                marca, modello, tipoProc, ramGb, memGb, sistOp);
     }
 
     @Override

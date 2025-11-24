@@ -1,53 +1,31 @@
-/**
- * Classe che rappresenta un Palmare.
- * 
- * @author giordii.dev
- */
+// Palmare compatto
 public class Palmare extends PCPortatile {
-    private boolean hasBluetooth;
-    private String tipoEspansioneMemoria; // es. SD, mini-SD, micro-SD
+    private boolean bt;
+    private String slotMem;
 
-    /**
-     * Costruttore completo per un Palmare.
-     * 
-     * @param tipoProcessore il tipo di processore
-     * @param dimensioneRAM la dimensione della RAM in GB
-     * @param dimensioneMemoriaMassa la dimensione della memoria di massa in GB
-     * @param marca la marca del PC
-     * @param modello il modello del PC
-     * @param sistemaOperativo il sistema operativo installato
-     * @param peso il peso in kg
-     * @param altezza l'altezza in cm
-     * @param larghezza la larghezza in cm
-     * @param profondita la profondità in cm
-     * @param dimensioneVideo la dimensione del video in pollici
-     * @param hasWireless presenza di interfaccia wireless
-     * @param hasBluetooth presenza di interfaccia Bluetooth
-     * @param tipoEspansioneMemoria tipo di espansione della memoria
-     */
-    public Palmare(String tipoProcessore, int dimensioneRAM, int dimensioneMemoriaMassa,
-                   String marca, String modello, String sistemaOperativo,
-                   double peso, double altezza, double larghezza, double profondita,
-                   double dimensioneVideo, boolean hasWireless,
-                   boolean hasBluetooth, String tipoEspansioneMemoria) {
-        super(tipoProcessore, dimensioneRAM, dimensioneMemoriaMassa, marca, modello, sistemaOperativo,
-              peso, altezza, larghezza, profondita, dimensioneVideo, hasWireless);
-        this.hasBluetooth = hasBluetooth;
-        this.tipoEspansioneMemoria = tipoEspansioneMemoria;
+    public Palmare(String tipoProc, int ramGb, int memGb,
+                   String marca, String modello, String sistOp,
+                   double pesoKg, double altCm, double largCm, double profCm,
+                   double diagPol, boolean wifi,
+                   boolean bt, String slotMem) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp,
+              pesoKg, altCm, largCm, profCm, diagPol, wifi);
+        this.bt = bt;
+        this.slotMem = slotMem;
     }
 
-    public boolean hasBluetooth() {
-        return hasBluetooth;
+    public boolean hasBt() {
+        return bt;
     }
 
-    public String getTipoEspansioneMemoria() {
-        return tipoEspansioneMemoria;
+    public String getSlotMem() {
+        return slotMem;
     }
 
     @Override
     public String toString() {
-        return "[Palmare] " + super.toString() + 
-               String.format(", Bluetooth: %s, Espansione: %s", 
-                           hasBluetooth ? "Sì" : "No", tipoEspansioneMemoria);
+        return "[Palmare] " + super.toString() +
+               String.format(", Bluetooth: %s, Espansione: %s",
+                           bt ? "Sì" : "No", slotMem);
     }
 }

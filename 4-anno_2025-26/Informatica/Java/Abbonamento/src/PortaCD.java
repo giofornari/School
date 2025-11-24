@@ -44,7 +44,7 @@ public class PortaCD {
 	}
 	
 	public LocalDate calcolaScadenza() {
-		String scadenza
+		String scadenza;
 	}
 }
 

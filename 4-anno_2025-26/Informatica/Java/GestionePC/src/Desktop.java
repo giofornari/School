@@ -1,44 +1,27 @@
-/**
- * Classe che rappresenta un PC Desktop.
- * 
- * @author giordii.dev
- */
+// Desktop fisso
 public class Desktop extends PCFisso {
-    private String tipoSchedaVideo;
-    private String tipoSchedaAudio;
+    private String gpu;
+    private String audio;
 
-    /**
-     * Costruttore completo per un Desktop.
-     * 
-     * @param tipoProcessore il tipo di processore
-     * @param dimensioneRAM la dimensione della RAM in GB
-     * @param dimensioneMemoriaMassa la dimensione della memoria di massa in GB
-     * @param marca la marca del PC
-     * @param modello il modello del PC
-     * @param sistemaOperativo il sistema operativo installato
-     * @param tipoCase il tipo di case
-     * @param tipoSchedaVideo il tipo di scheda video
-     * @param tipoSchedaAudio il tipo di scheda audio
-     */
-    public Desktop(String tipoProcessore, int dimensioneRAM, int dimensioneMemoriaMassa,
-                   String marca, String modello, String sistemaOperativo, String tipoCase,
-                   String tipoSchedaVideo, String tipoSchedaAudio) {
-        super(tipoProcessore, dimensioneRAM, dimensioneMemoriaMassa, marca, modello, sistemaOperativo, tipoCase);
-        this.tipoSchedaVideo = tipoSchedaVideo;
-        this.tipoSchedaAudio = tipoSchedaAudio;
+    public Desktop(String tipoProc, int ramGb, int memGb,
+                   String marca, String modello, String sistOp, String tipoCab,
+                   String gpu, String audio) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp, tipoCab);
+        this.gpu = gpu;
+        this.audio = audio;
     }
 
-    public String getTipoSchedaVideo() {
-        return tipoSchedaVideo;
+    public String getGpu() {
+        return gpu;
     }
 
-    public String getTipoSchedaAudio() {
-        return tipoSchedaAudio;
+    public String getAudio() {
+        return audio;
     }
 
     @Override
     public String toString() {
-        return "[Desktop] " + super.toString() + 
-               String.format(", Scheda Video: %s, Scheda Audio: %s", tipoSchedaVideo, tipoSchedaAudio);
+        return "[Desktop] " + super.toString() +
+               String.format(", Scheda Video: %s, Scheda Audio: %s", gpu, audio);
     }
 }

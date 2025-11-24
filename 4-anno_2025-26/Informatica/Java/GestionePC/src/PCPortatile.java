@@ -1,80 +1,59 @@
-/**
- * Classe astratta che rappresenta un PC portatile.
- * Estende la classe PC aggiungendo peso, dimensioni fisiche, dimensione del video e wireless.
- * 
- * @author giordii.dev
- */
+// Base per portatili
 public abstract class PCPortatile extends PC {
-    protected double peso; // in kg
-    protected double altezza; // in cm
-    protected double larghezza; // in cm
-    protected double profondita; // in cm
-    protected double dimensioneVideo; // in pollici
-    protected boolean hasWireless;
+    protected double pesoKg;
+    protected double altCm;
+    protected double largCm;
+    protected double profCm;
+    protected double diagPol;
+    protected boolean wifi;
 
-    /**
-     * Costruttore per un PC portatile.
-     * 
-     * @param tipoProcessore il tipo di processore
-     * @param dimensioneRAM la dimensione della RAM in GB
-     * @param dimensioneMemoriaMassa la dimensione della memoria di massa in GB
-     * @param marca la marca del PC
-     * @param modello il modello del PC
-     * @param sistemaOperativo il sistema operativo installato
-     * @param peso il peso in kg
-     * @param altezza l'altezza in cm
-     * @param larghezza la larghezza in cm
-     * @param profondita la profondità in cm
-     * @param dimensioneVideo la dimensione del video in pollici
-     * @param hasWireless presenza di interfaccia wireless
-     */
-    public PCPortatile(String tipoProcessore, int dimensioneRAM, int dimensioneMemoriaMassa,
-                       String marca, String modello, String sistemaOperativo,
-                       double peso, double altezza, double larghezza, double profondita,
-                       double dimensioneVideo, boolean hasWireless) {
-        super(tipoProcessore, dimensioneRAM, dimensioneMemoriaMassa, marca, modello, sistemaOperativo);
-        if (peso <= 0) {
-            throw new IllegalArgumentException("peso deve essere > 0");
+    public PCPortatile(String tipoProc, int ramGb, int memGb,
+                       String marca, String modello, String sistOp,
+                       double pesoKg, double altCm, double largCm, double profCm,
+                       double diagPol, boolean wifi) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp);
+        if (pesoKg <= 0) {
+            throw new IllegalArgumentException("pesoKg deve essere > 0");
         }
-        if (dimensioneVideo <= 0) {
-            throw new IllegalArgumentException("dimensioneVideo deve essere > 0");
+        if (diagPol <= 0) {
+            throw new IllegalArgumentException("diagPol deve essere > 0");
         }
-        this.peso = peso;
-        this.altezza = altezza;
-        this.larghezza = larghezza;
-        this.profondita = profondita;
-        this.dimensioneVideo = dimensioneVideo;
-        this.hasWireless = hasWireless;
+        this.pesoKg = pesoKg;
+        this.altCm = altCm;
+        this.largCm = largCm;
+        this.profCm = profCm;
+        this.diagPol = diagPol;
+        this.wifi = wifi;
     }
 
-    public double getPeso() {
-        return peso;
+    public double getPesoKg() {
+        return pesoKg;
     }
 
-    public double getAltezza() {
-        return altezza;
+    public double getAltCm() {
+        return altCm;
     }
 
-    public double getLarghezza() {
-        return larghezza;
+    public double getLargCm() {
+        return largCm;
     }
 
-    public double getProfondita() {
-        return profondita;
+    public double getProfCm() {
+        return profCm;
     }
 
-    public double getDimensioneVideo() {
-        return dimensioneVideo;
+    public double getDiagPol() {
+        return diagPol;
     }
 
-    public boolean hasWireless() {
-        return hasWireless;
+    public boolean hasWifi() {
+        return wifi;
     }
 
     @Override
     public String toString() {
-        return super.toString() + 
+        return super.toString() +
                String.format(", Peso: %.2fkg, Dimensioni: %.1fx%.1fx%.1fcm, Video: %.1f\", WiFi: %s",
-                           peso, altezza, larghezza, profondita, dimensioneVideo, hasWireless ? "Sì" : "No");
+                           pesoKg, altCm, largCm, profCm, diagPol, wifi ? "Sì" : "No");
     }
 }
