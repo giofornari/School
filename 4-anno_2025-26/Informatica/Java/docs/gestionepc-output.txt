@@ -1,0 +1,71 @@
+=== SISTEMA DI GESTIONE INVENTARIO PC ===
+
+Aggiunta PC all'inventario...
+
+=== INVENTARIO PC ===
+Totale PC: 10
+
+1. [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897
+2. [Desktop] Marca: HP, Modello: EliteDesk 800 G9, CPU: AMD Ryzen 9 5950X, RAM: 64GB, Memoria: 2000GB, OS: Windows 11 Pro, Case: medio, Scheda Video: AMD Radeon RX 7600, Scheda Audio: Realtek ALC1220
+3. [Server] Marca: Dell, Modello: PowerEdge R750, CPU: Intel Xeon Gold 6330, RAM: 128GB, Memoria: 4000GB, OS: Ubuntu Server 22.04, Case: grande, Processori: 2, RAID: Sì
+4. [Server] Marca: HPE, Modello: ProLiant DL385 Gen10, CPU: AMD EPYC 7763, RAM: 256GB, Memoria: 8000GB, OS: Red Hat Enterprise Linux 9, Case: grande, Processori: 4, RAID: Sì
+5. [Server] Marca: Lenovo, Modello: ThinkSystem SR250, CPU: Intel Xeon E-2386G, RAM: 64GB, Memoria: 2000GB, OS: Windows Server 2022, Case: medio, Processori: 1, RAID: No
+6. [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0", WiFi: Sì, Webcam: Sì (2.1MP)
+7. [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2", WiFi: Sì, Webcam: Sì (1.0MP)
+8. [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3", WiFi: Sì, Webcam: No
+9. [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0", WiFi: Sì, Bluetooth: Sì, Espansione: microSD
+10. [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3", WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+
+=== TEST: PC CON PIÙ RAM ===
+[Server] Marca: HPE, Modello: ProLiant DL385 Gen10, CPU: AMD EPYC 7763, RAM: 256GB, Memoria: 8000GB, OS: Red Hat Enterprise Linux 9, Case: grande, Processori: 4, RAID: Sì
+
+=== TEST: MEDIA RAM ===
+Media RAM: 62.00 GB
+
+=== TEST: PORTATILI CON WiFi ===
+Numero di portatili con WiFi: 5
+
+=== TEST: SERVER CON RAID ===
+Numero di server con RAID: 2
+
+=== TEST: NOTEBOOK PIÙ LEGGERO ===
+[Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3", WiFi: Sì, Webcam: No
+
+=== TEST: RICERCA PER MARCA (Dell) ===
+PC Dell trovati: 2
+  - [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897
+  - [Server] Marca: Dell, Modello: PowerEdge R750, CPU: Intel Xeon Gold 6330, RAM: 128GB, Memoria: 4000GB, OS: Ubuntu Server 22.04, Case: grande, Processori: 2, RAID: Sì
+
+=== TEST: RICERCA PER SISTEMA OPERATIVO (Windows 11 Pro) ===
+PC con Windows 11 Pro trovati: 3
+  - [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897
+  - [Desktop] Marca: HP, Modello: EliteDesk 800 G9, CPU: AMD Ryzen 9 5950X, RAM: 64GB, Memoria: 2000GB, OS: Windows 11 Pro, Case: medio, Scheda Video: AMD Radeon RX 7600, Scheda Audio: Realtek ALC1220
+  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0", WiFi: Sì, Webcam: Sì (2.1MP)
+
+=== TEST: RICERCA PORTATILI (peso <= 1.5kg, con WiFi) ===
+Portatili trovati: 4
+  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0", WiFi: Sì, Webcam: Sì (2.1MP)
+  - [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3", WiFi: Sì, Webcam: No
+  - [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0", WiFi: Sì, Bluetooth: Sì, Espansione: microSD
+  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3", WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+=== TEST: RICERCA PORTATILI (peso <= 2.5kg, senza filtro WiFi) ===
+Portatili trovati: 5
+  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0", WiFi: Sì, Webcam: Sì (2.1MP)
+  - [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2", WiFi: Sì, Webcam: Sì (1.0MP)
+  - [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3", WiFi: Sì, Webcam: No
+  - [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0", WiFi: Sì, Bluetooth: Sì, Espansione: microSD
+  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3", WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+=== TEST: RIMOZIONE PC ===
+Rimozione del palmare Samsung...
+Rimozione riuscita: Sì
+Nuova dimensione inventario: 9
+
+=== TEST: RICERCA PER MARCA (Apple) ===
+PC Apple trovati: 2
+  - [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2", WiFi: Sì, Webcam: Sì (1.0MP)
+  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3", WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+=== FINE TEST ===
