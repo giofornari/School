@@ -130,7 +130,7 @@ public class LibreriaMusicale {
         seed = seed * 31 + durataMax;
         seed = seed * 31 + pool.size();
 
-        ArrayList<Brano> mix = new ArrayList<>();
+        ArrayList<Brano> mix = new ArrayLisdurataMaxt<>();
         int totDur = 0;
         int idx = (int) (Math.abs(seed) % pool.size());
         

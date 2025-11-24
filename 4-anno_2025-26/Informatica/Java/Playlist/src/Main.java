@@ -15,7 +15,7 @@ public class Main {
         for (Brano b : brani) {
             int listndTimes;
             if (b.getArtista().equals("Artie 5ive")) {
-                listndTimes = 6;
+                listndTimes = 3;
             } else if (b.getArtista().equals("Mambolosco")) {
                 listndTimes = 4;
             } else if (b.getArtista().equals("Diss Gacha")) {
