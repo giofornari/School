@@ -1,0 +1,40 @@
+=== SISTEMA GESTIONE BIBLIOTECA ===
+
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 6
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+
+--- TEST RICERCA PER NUMERO ---
+Trovata: LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+
+--- SOLO LIBRI ---
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+
+--- SOLO RIVISTE ---
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile
+
+--- TEST RIMOZIONE (numero progressivo 2) ---
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 5
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+
+Totale pubblicazioni rimanenti: 5
