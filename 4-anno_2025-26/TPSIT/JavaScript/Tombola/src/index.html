@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tombola Gratis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #EAE2D6 0%, #D8CFC4 100%);
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .logo-text {
+            font-family: 'Pacifico', cursive;
+            color: #FF6B35;
+            font-size: 3.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .number-ball {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.15),
+                -2px -2px 6px rgba(255, 255, 255, 0.7),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
+            color: #D4C5B9;
+            font-weight: 700;
+            font-size: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .number-ball::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .number-ball:hover::before {
+            opacity: 1;
+        }
+        
+        .number-ball:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 
+                6px 6px 12px rgba(0, 0, 0, 0.2),
+                -3px -3px 8px rgba(255, 255, 255, 0.8);
+        }
+        
+        .number-ball.extracted {
+            background: linear-gradient(145deg, #FF8C42, #F7931E);
+            color: white;
+            font-weight: 800;
+            box-shadow: 
+                0 8px 20px rgba(247, 147, 30, 0.5),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 4px rgba(0, 0, 0, 0.2);
+            animation: extractPulse 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @keyframes extractPulse {
+            0% { transform: scale(0.5) rotate(-180deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        .number-ball.extracted::before {
+            opacity: 0.5;
+        }
+        
+        .btn-extract {
+            background: linear-gradient(145deg, #FF8C42, #F7931E);
+            box-shadow: 
+                0 8px 16px rgba(247, 147, 30, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-extract::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn-extract:active::after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn-extract:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 12px 24px rgba(247, 147, 30, 0.5),
+                inset 0 2px 4px rgba(255, 255, 255, 0.4);
+        }
+        
+        .btn-extract:active {
+            transform: translateY(-1px);
+        }
+        
+        .invite-box {
+            background: linear-gradient(145deg, #F5F0E8, #EBE5DC);
+            box-shadow: 
+                8px 8px 16px rgba(0, 0, 0, 0.1),
+                -4px -4px 12px rgba(255, 255, 255, 0.8);
+        }
+        
+        .control-btn {
+            background: white;
+            box-shadow: 
+                4px 4px 8px rgba(0, 0, 0, 0.1),
+                -2px -2px 6px rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn:hover {
+            box-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.15),
+                -1px -1px 3px rgba(255, 255, 255, 1);
+            transform: scale(0.95);
+        }
+        
+        .control-btn:active {
+            box-shadow: 
+                inset 2px 2px 4px rgba(0, 0, 0, 0.2),
+                inset -1px -1px 3px rgba(255, 255, 255, 0.7);
+        }
+        
+        .last-number-card {
+            background: white;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .number-display {
+            animation: numberPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        @keyframes numberPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .gratis-badge {
+            border: 4px solid #FF6B35;
+            color: #FF6B35;
+            background: white;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+        
+        .tombola-icon {
+            filter: drop-shadow(0 2px 4px rgba(255, 107, 53, 0.3));
+        }
+        
+        .stats-counter {
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            box-shadow: 
+                inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+                inset -2px -2px 4px rgba(255, 255, 255, 0.9);
+        }
+
+        @media (max-width: 768px) {
+            .number-ball {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
+            }
+            .logo-text {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Confetti animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #FF6B35;
+            position: fixed;
+            top: -10px;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 1000;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Tabellone Tombola -->
+            <div class="flex-1">
+                <!-- Stats bar -->
+                <div class="mb-6 flex gap-4 flex-wrap">
+                    <div class="stats-counter px-6 py-3 rounded-2xl flex items-center gap-3">
+                        <span class="text-gray-600 font-semibold">Estratti:</span>
+                        <span id="extractedCount" class="text-2xl font-bold text-orange-500">0</span>
+                        <span class="text-gray-400">/90</span>
+                    </div>
+                    <div class="stats-counter px-6 py-3 rounded-2xl flex items-center gap-3">
+                        <span class="text-gray-600 font-semibold">Rimanenti:</span>
+                        <span id="remainingCount" class="text-2xl font-bold text-blue-500">90</span>
+                    </div>
+                    <button onclick="resetGame()" class="px-6 py-3 bg-red-500 text-white rounded-2xl font-semibold hover:bg-red-600 transition shadow-lg">
+                        🔄 Reset
+                    </button>
+                </div>
+
+                <!-- Grid numeri -->
+                <div class="grid grid-cols-10 gap-3 md:gap-4" id="board">
+                    <!-- Generato con JS -->
+                </div>
+
+                <!-- History -->
+                <div class="mt-6 p-6 bg-white rounded-3xl shadow-lg">
+                    <h3 class="text-xl font-bold text-gray-700 mb-4">📜 Ultimi numeri estratti</h3>
+                    <div id="history" class="flex flex-wrap gap-2">
+                        <span class="text-gray-400 italic">Nessun numero estratto ancora</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:w-96 flex flex-col gap-6">
+                <!-- Logo -->
+                <div class="text-center bg-white rounded-3xl p-6 shadow-lg">
+                    <div class="flex justify-center items-center mb-3">
+                        <svg class="w-16 h-16 tombola-icon" viewBox="0 0 100 100" fill="#FF6B35">
+                            <circle cx="50" cy="30" r="22"/>
+                            <ellipse cx="50" cy="70" rx="28" ry="18"/>
+                            <circle cx="42" cy="26" r="5" fill="white" opacity="0.7"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text mb-3">Tombola</div>
+                    <div class="inline-block gratis-badge px-6 py-2 rounded-xl font-bold text-xl">
+                        GRATIS
+                    </div>
+                </div>
+
+                <!-- Numero estratto grande -->
+                <div id="lastNumber" class="last-number-card p-8 rounded-3xl text-center hidden">
+                    <p class="text-gray-500 text-sm font-semibold mb-3 uppercase tracking-wider">Ultimo numero estratto</p>
+                    <div class="relative">
+                        <div class="number-display text-8xl font-black text-orange-500" id="currentNumber">-</div>
+                        <div class="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full animate-ping"></div>
+                    </div>
+                </div>
+
+                <!-- Pulsante Estrai -->
+                <button onclick="extractNumber()" class="btn-extract text-white font-bold py-5 px-8 rounded-full text-2xl shadow-lg w-full relative z-10">
+                    🎲 Estrai numero
+                </button>
+
+                <!-- Auto-extract -->
+                <div class="bg-white rounded-3xl p-6 shadow-lg">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="font-semibold text-gray-700">🤖 Estrazione automatica</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="autoExtract" class="sr-only peer" onchange="toggleAutoExtract()">
+                            <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-orange-500"></div>
+                        </label>
+                    </div>
+                    <div id="autoExtractControls" class="hidden">
+                        <label class="text-sm text-gray-600 mb-2 block">Intervallo (secondi):</label>
+                        <input type="range" id="intervalSlider" min="1" max="10" value="3" class="w-full" oninput="updateInterval(this.value)">
+                        <div class="text-center text-orange-500 font-bold mt-2">
+                            <span id="intervalDisplay">3</span>s
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Box Invito -->
+                <div class="invite-box p-6 text-center rounded-3xl">
+                    <p class="text-gray-600 text-sm mb-2">
+                        Invita i tuoi amici a creare una nuova cartella su
+                    </p>
+                    <p class="text-orange-600 font-bold text-lg mb-2">TombolaGratis.it</p>
+                    <p class="text-gray-500 text-xs leading-relaxed">
+                        da PC, smartphone...<br>
+                        Estrai e buon divertimento!
+                    </p>
+                </div>
+
+                <!-- Controlli -->
+                <div class="flex justify-around items-center bg-white rounded-full p-4 shadow-xl">
+                    <button onclick="toggleTheme()" class="control-btn p-3 rounded-full transition" title="Cambia tema">
+                        <svg id="themeIcon" class="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                        </svg>
+                    </button>
+                    <button onclick="toggleSound()" class="control-btn p-3 rounded-full transition" title="Attiva/Disattiva suono">
+                        <svg id="soundIcon" class="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                        </svg>
+                    </button>
+                    <button onclick="showInfo()" class="control-btn p-3 rounded-full transition" title="Informazioni">
+                        <svg class="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Stato del gioco
+        const gameState = {
+            extracted: new Set(),
+            soundEnabled: true,
+            currentNumber: null,
+            history: [],
+            darkMode: false,
+            autoExtract: false,
+            autoExtractInterval: null,
+            intervalSeconds: 3
+        };
+
+        // Genera il tabellone
+        function initBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            for (let i = 1; i <= 90; i++) {
+                const ball = document.createElement('div');
+                ball.className = 'number-ball flex items-center justify-center rounded-full cursor-pointer';
+                ball.textContent = i;
+                ball.id = `ball-${i}`;
+                ball.onclick = () => toggleNumber(i);
+                board.appendChild(ball);
+            }
+        }
+
+        // Estrai numero casuale
+        function extractNumber() {
+            if (gameState.extracted.size === 90) {
+                createConfetti();
+                alert('🎉 Complimenti! Tutti i numeri sono stati estratti!\n\nPremi Reset per iniziare una nuova partita.');
+                return;
+            }
+
+            let number;
+            do {
+                number = Math.floor(Math.random() * 90) + 1;
+            } while (gameState.extracted.has(number));
+
+            gameState.extracted.add(number);
+            gameState.currentNumber = number;
+            gameState.history.unshift(number);
+
+            // Mantieni solo gli ultimi 10
+            if (gameState.history.length > 10) {
+                gameState.history.pop();
+            }
+
+            // Aggiorna UI
+            const ball = document.getElementById(`ball-${number}`);
+            ball.classList.add('extracted');
+
+            // Mostra numero estratto
+            const lastNumberDiv = document.getElementById('lastNumber');
+            const currentNumberSpan = document.getElementById('currentNumber');
+            lastNumberDiv.classList.remove('hidden');
+            currentNumberSpan.textContent = number;
+            currentNumberSpan.classList.remove('number-display');
+            void currentNumberSpan.offsetWidth; // Force reflow
+            currentNumberSpan.classList.add('number-display');
+
+            // Aggiorna stats
+            updateStats();
+            updateHistory();
+
+            // Suono
+            if (gameState.soundEnabled) {
+                playSound(number);
+            }
+
+            // Annuncio vocale
+            speakNumber(number);
+        }
+
+        // Toggle manuale numero
+        function toggleNumber(number) {
+            const ball = document.getElementById(`ball-${number}`);
+            if (gameState.extracted.has(number)) {
+                gameState.extracted.delete(number);
+                ball.classList.remove('extracted');
+                gameState.history = gameState.history.filter(n => n !== number);
+            } else {
+                gameState.extracted.add(number);
+                ball.classList.add('extracted');
+                gameState.history.unshift(number);
+            }
+            updateStats();
+            updateHistory();
+        }
+
+        // Reset gioco
+        function resetGame() {
+            if (gameState.extracted.size === 0) return;
+            
+            if (confirm('Sei sicuro di voler resettare la partita?')) {
+                gameState.extracted.clear();
+                gameState.history = [];
+                gameState.currentNumber = null;
+                
+                // Reset UI
+                for (let i = 1; i <= 90; i++) {
+                    const ball = document.getElementById(`ball-${i}`);
+                    ball.classList.remove('extracted');
+                }
+                
+                document.getElementById('lastNumber').classList.add('hidden');
+                updateStats();
+                updateHistory();
+                
+                if (gameState.autoExtract) {
+                    toggleAutoExtract();
+                }
+            }
+        }
+
+        // Aggiorna statistiche
+        function updateStats() {
+            document.getElementById('extractedCount').textContent = gameState.extracted.size;
+            document.getElementById('remainingCount').textContent = 90 - gameState.extracted.size;
+        }
+
+        // Aggiorna cronologia
+        function updateHistory() {
+            const historyDiv = document.getElementById('history');
+            if (gameState.history.length === 0) {
+                historyDiv.innerHTML = '<span class="text-gray-400 italic">Nessun numero estratto ancora</span>';
+            } else {
+                historyDiv.innerHTML = gameState.history.map(num => 
+                    `<span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 text-white font-bold text-lg shadow-md">${num}</span>`
+                ).join('');
+            }
+        }
+
+        // Auto extract
+        function toggleAutoExtract() {
+            const checkbox = document.getElementById('autoExtract');
+            const controls = document.getElementById('autoExtractControls');
+            gameState.autoExtract = checkbox.checked;
+            
+            if (gameState.autoExtract) {
+                controls.classList.remove('hidden');
+                gameState.autoExtractInterval = setInterval(() => {
+                    if (gameState.extracted.size < 90) {
+                        extractNumber();
+                    } else {
+                        toggleAutoExtract();
+                        checkbox.checked = false;
+                    }
+                }, gameState.intervalSeconds * 1000);
+            } else {
+                controls.classList.add('hidden');
+                if (gameState.autoExtractInterval) {
+                    clearInterval(gameState.autoExtractInterval);
+                    gameState.autoExtractInterval = null;
+                }
+            }
+        }
+
+        function updateInterval(value) {
+            gameState.intervalSeconds = parseInt(value);
+            document.getElementById('intervalDisplay').textContent = value;
+            
+            if (gameState.autoExtract) {
+                clearInterval(gameState.autoExtractInterval);
+                gameState.autoExtractInterval = setInterval(() => {
+                    if (gameState.extracted.size < 90) {
+                        extractNumber();
+                    }
+                }, gameState.intervalSeconds * 1000);
+            }
+        }
+
+        // Toggle suono
+        function toggleSound() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            const icon = document.getElementById('soundIcon');
+            if (!gameState.soundEnabled) {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"/>';
+            } else {
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>';
+            }
+        }
+
+        // Suono migliorato
+        function playSound(number) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Nota principale
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 600 + (number * 5);
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        // Annuncio vocale
+        function speakNumber(number) {
+            if (gameState.soundEnabled && 'speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(number.toString());
+                utterance.lang = 'it-IT';
+                utterance.rate = 0.9;
+                utterance.pitch = 1.1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Toggle tema
+        function toggleTheme() {
+            gameState.darkMode = !gameState.darkMode;
+            const icon = document.getElementById('themeIcon');
+            
+            if (gameState.darkMode) {
+                document.body.style.background = 'linear-gradient(135deg, #2d3748 0%, #1a202c 100%)';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>';
+            } else {
+                document.body.style.background = 'linear-gradient(135deg, #EAE2D6 0%, #D8CFC4 100%)';
+                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>';
+            }
+        }
+
+        // Confetti
+        function createConfetti() {
+            const colors = ['#FF6B35', '#F7931E', '#FFD700', '#FF1493', '#00CED1'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 2 + 's';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        // Info
+        function showInfo() {
+            alert('🎲 Tombola Gratis - Guida\n\n' +
+                  '✨ FUNZIONALITÀ:\n' +
+                  '• Clicca "Estrai numero" per estrarre\n' +
+                  '• Clicca sui numeri per segnarli manualmente\n' +
+                  '• Attiva estrazione automatica per giocare da solo\n' +
+                  '• Regola velocità di estrazione automatica\n' +
+                  '• Cronologia ultimi 10 numeri estratti\n' +
+                  '• Annuncio vocale dei numeri\n' +
+                  '• Tema chiaro/scuro\n' +
+                  '• Effetti sonori\n\n' +
+                  '🎯 Buon divertimento!');
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                extractNumber();
+            } else if (e.code === 'KeyR' && e.ctrlKey) {
+                e.preventDefault();
+                resetGame();
+            }
+        });
+
+        // Inizializza
+        initBoard();
+        updateStats();
+    </script>
+</body>
+</html>
