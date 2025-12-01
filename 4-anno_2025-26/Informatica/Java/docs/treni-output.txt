@@ -1,0 +1,51 @@
+=== SISTEMA DI GESTIONE TRENI ===
+
+Treno creato: Regionale Express 1234
+
+--- Aggiunta Vagoni Passeggeri ---
+Aggiunto: VAGONE PASSEGGERI - id: VP-001, Peso a vuoto: 45000.00 kg, Costruttore: Alstom, Anno: 2015, Classe: 1, Posti: 45/60, Peso totale: 47925.00 kg
+Aggiunto: VAGONE PASSEGGERI - id: VP-002, Peso a vuoto: 42000.00 kg, Costruttore: Bombardier, Anno: 2018, Classe: 1, Posti: 58/64, Peso totale: 45770.00 kg
+Aggiunto: VAGONE PASSEGGERI - id: VP-003, Peso a vuoto: 40000.00 kg, Costruttore: Siemens, Anno: 2020, Classe: 2, Posti: 72/80, Peso totale: 44680.00 kg
+Aggiunto: VAGONE PASSEGGERI - id: VP-004, Peso a vuoto: 41000.00 kg, Costruttore: Alstom, Anno: 2019, Classe: 2, Posti: 65/80, Peso totale: 45225.00 kg
+
+--- Aggiunta Vagoni Merci ---
+Aggiunto: VAGONE MERCI - id: VM-101, Peso a vuoto: 28000.00 kg, Costruttore: Greenbrier, Anno: 2016, Volume: 120.00 m³, Carico: 42000.00/50000.00 kg, Peso totale: 70000.00 kg
+Aggiunto: VAGONE MERCI - id: VM-102, Peso a vuoto: 30000.00 kg, Costruttore: FreightCar, Anno: 2017, Volume: 140.00 m³, Carico: 55000.00/60000.00 kg, Peso totale: 85000.00 kg
+Aggiunto: VAGONE MERCI - id: VM-103, Peso a vuoto: 26000.00 kg, Costruttore: Greenbrier, Anno: 2021, Volume: 100.00 m³, Carico: 38000.00/45000.00 kg, Peso totale: 64000.00 kg
+
+================================================================================
+
+--- RIEPILOGO COMPOSIZIONE TRENO ---
+Treno 'Regionale Express 1234' - Vagoni: 7 (Passeggeri: 4, Merci: 3), Peso complessivo: 402600.00 kg
+
+--- STATISTICHE DETTAGLIATE ---
+Numero totale di vagoni: 7
+  - Vagoni passeggeri: 4
+  - Vagoni merci: 3
+
+Capacità passeggeri:
+  - Posti totali disponibili: 284
+  - Posti attualmente occupati: 240
+  - Posti liberi: 44
+
+Peso complessivo del treno (escluse motrici): 402600.00 kg (402.60 tonnellate)
+
+--- TEST MODIFICA PESO MEDIO OCCUPANTE ---
+Peso medio occupante attuale: 65.0 kg
+Peso complessivo attuale: 402600.00 kg
+
+Peso medio occupante modificato a: 70.0 kg
+Nuovo peso complessivo: 403800.00 kg
+Differenza: 1200.00 kg
+
+================================================================================
+--- ELENCO COMPLETO VAGONI ---
+1. VAGONE PASSEGGERI - id: VP-001, Peso a vuoto: 45000.00 kg, Costruttore: Alstom, Anno: 2015, Classe: 1, Posti: 45/60, Peso totale: 48150.00 kg
+2. VAGONE PASSEGGERI - id: VP-002, Peso a vuoto: 42000.00 kg, Costruttore: Bombardier, Anno: 2018, Classe: 1, Posti: 58/64, Peso totale: 46060.00 kg
+3. VAGONE PASSEGGERI - id: VP-003, Peso a vuoto: 40000.00 kg, Costruttore: Siemens, Anno: 2020, Classe: 2, Posti: 72/80, Peso totale: 45040.00 kg
+4. VAGONE PASSEGGERI - id: VP-004, Peso a vuoto: 41000.00 kg, Costruttore: Alstom, Anno: 2019, Classe: 2, Posti: 65/80, Peso totale: 45550.00 kg
+5. VAGONE MERCI - id: VM-101, Peso a vuoto: 28000.00 kg, Costruttore: Greenbrier, Anno: 2016, Volume: 120.00 m³, Carico: 42000.00/50000.00 kg, Peso totale: 70000.00 kg
+6. VAGONE MERCI - id: VM-102, Peso a vuoto: 30000.00 kg, Costruttore: FreightCar, Anno: 2017, Volume: 140.00 m³, Carico: 55000.00/60000.00 kg, Peso totale: 85000.00 kg
+7. VAGONE MERCI - id: VM-103, Peso a vuoto: 26000.00 kg, Costruttore: Greenbrier, Anno: 2021, Volume: 100.00 m³, Carico: 38000.00/45000.00 kg, Peso totale: 64000.00 kg
+
+=== FINE PROGRAMMA ===
