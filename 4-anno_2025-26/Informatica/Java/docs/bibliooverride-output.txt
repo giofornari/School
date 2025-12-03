@@ -1,0 +1,70 @@
+=== SISTEMA GESTIONE BIBLIOTECA CON PRESTITI ===
+
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 6
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | DISPONIBILE | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | DISPONIBILE | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | DISPONIBILE | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | DISPONIBILE | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+
+--- INFORMAZIONI DURATE PRESTITI ---
+Durata prestito libri: 30 giorni
+Durata prestito riviste: 7 giorni
+
+--- TEST PRESTITI ---
+
+Prestito libro #1 a Mario Rossi dal 2024-12-01
+Prestito rivista #2 a Luigi Verdi dal 2024-12-01
+Prestito libro #3 a Anna Bianchi dal 2024-12-01
+Prestito rivista #4 a Carlo Neri dal 2024-12-01
+
+=== PUBBLICAZIONI IN PRESTITO ===
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | IN PRESTITO a Mario Rossi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | IN PRESTITO a Luigi Verdi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+==================================
+
+--- CATALOGO AGGIORNATO ---
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 6
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | IN PRESTITO a Mario Rossi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | IN PRESTITO a Luigi Verdi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+
+--- PUBBLICAZIONI DISPONIBILI ---
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
+
+--- TEST RESTITUZIONE ---
+Restituzione libro #1
+Restituzione rivista #2
+
+
+=== PUBBLICAZIONI IN PRESTITO ===
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+==================================
+
+--- VERIFICA OVERRIDE CALCOLO DATA ---
+Data inizio prestito: 2024-12-01
+Libro - Data restituzione (30 giorni): 2024-12-31
+Rivista - Data restituzione (7 giorni): 2024-12-08
+
+--- STATISTICHE FINALI ---
+Totale pubblicazioni: 6
+Pubblicazioni in prestito: 2
+Pubblicazioni disponibili: 4
+Totale libri: 3
+Totale riviste: 3

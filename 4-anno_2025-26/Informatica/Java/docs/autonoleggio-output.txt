@@ -1,0 +1,102 @@
+=== SISTEMA GESTIONE AUTONOLEGGIO ===
+
+--- CREAZIONE FLOTTA ---
+
+Flotta creata con successo!
+
+=== FLOTTA RENTCAR ITALIA ===
+Totale veicoli: 6
+
+[DISPONIBILE] AUTOVETTURA: Matricola: 1001 | Targa: AB123CD | Fiat Panda (1200cc) | Anno: 2020 | Serbatoio: 35.0L | Posti: 5
+[DISPONIBILE] AUTOVETTURA: Matricola: 1002 | Targa: EF456GH | Volkswagen Golf (1600cc) | Anno: 2021 | Serbatoio: 50.0L | Posti: 5
+[DISPONIBILE] AUTOVETTURA: Matricola: 1003 | Targa: IJ789KL | BMW Serie 3 (2000cc) | Anno: 2022 | Serbatoio: 60.0L | Posti: 5
+[DISPONIBILE] FURGONE: Matricola: 2001 | Targa: MN012OP | Fiat Ducato (2300cc) | Anno: 2019 | Serbatoio: 90.0L | Carico: 1200kg
+[DISPONIBILE] FURGONE: Matricola: 2002 | Targa: QR345ST | Mercedes Sprinter (2500cc) | Anno: 2021 | Serbatoio: 100.0L | Carico: 1500kg
+[DISPONIBILE] FURGONE: Matricola: 2003 | Targa: UV678WX | Iveco Daily (3000cc) | Anno: 2020 | Serbatoio: 80.0L | Carico: 1800kg
+================================
+
+--- STATISTICHE FLOTTA ---
+Autovetture: 3
+Furgoni: 3
+Veicoli disponibili: 6
+
+--- AVVIO NOLEGGI ---
+
+Cliente Mario Rossi noleggia Fiat Panda (1001)
+✓ Noleggio avviato
+
+Cliente Luigi Verdi noleggia Fiat Ducato (2001)
+✓ Noleggio avviato
+
+Cliente Anna Bianchi noleggia BMW Serie 3 (1003)
+✓ Noleggio avviato
+
+
+=== NOLEGGI ATTIVI ===
+Noleggio ATTIVO - Cliente: Mario Rossi | Veicolo: AB123CD | Dal: 2025-12-01
+Noleggio ATTIVO - Cliente: Luigi Verdi | Veicolo: MN012OP | Dal: 2025-12-01
+Noleggio ATTIVO - Cliente: Anna Bianchi | Veicolo: IJ789KL | Dal: 2025-12-01
+======================
+
+--- VEICOLI ANCORA DISPONIBILI ---
+AUTOVETTURA: Matricola: 1002 | Targa: EF456GH | Volkswagen Golf (1600cc) | Anno: 2021 | Serbatoio: 50.0L | Posti: 5
+FURGONE: Matricola: 2002 | Targa: QR345ST | Mercedes Sprinter (2500cc) | Anno: 2021 | Serbatoio: 100.0L | Carico: 1500kg
+FURGONE: Matricola: 2003 | Targa: UV678WX | Iveco Daily (3000cc) | Anno: 2020 | Serbatoio: 80.0L | Carico: 1800kg
+
+--- CONCLUSIONE NOLEGGI ---
+
+Restituzione Fiat Panda da Mario Rossi
+Dettaglio costi per AB123CD:
+- Periodo: 2025-12-01 → 2025-12-04 (3 giorni)
+- Km percorsi: 200.00 km
+- Carburante mancante: 5.00 litri
+TOTALE: 168.00 €
+
+Restituzione Fiat Ducato da Luigi Verdi
+Dettaglio costi per MN012OP:
+- Periodo: 2025-12-01 → 2025-12-06 (5 giorni)
+- Km percorsi: 250.00 km
+- Carburante mancante: 10.00 litri
+TOTALE: 375.00 €
+
+Restituzione BMW Serie 3 da Anna Bianchi
+Dettaglio costi per IJ789KL:
+- Periodo: 2025-12-01 → 2025-12-08 (7 giorni)
+- Km percorsi: 500.00 km
+- Carburante mancante: 15.00 litri
+TOTALE: 400.00 €
+
+
+=== STORICO NOLEGGI CONCLUSI ===
+Noleggio CONCLUSO - Cliente: Mario Rossi | Veicolo: AB123CD | 2025-12-01 → 2025-12-04 | Costo: 168.00 €
+Noleggio CONCLUSO - Cliente: Luigi Verdi | Veicolo: MN012OP | 2025-12-01 → 2025-12-06 | Costo: 375.00 €
+Noleggio CONCLUSO - Cliente: Anna Bianchi | Veicolo: IJ789KL | 2025-12-01 → 2025-12-08 | Costo: 400.00 €
+================================
+
+--- TEST CALCOLO COSTI (metodo override) ---
+
+AUTOVETTURA - Esempio: 5 giorni, 300 km, 8 litri mancanti
+Costo autovettura:
+  - Giorni: 5 * 50€ = 250€
+  - Km: 300 / 25 = 12€
+  - Carburante: 8 * 2€ = 16€
+  TOTALE: 278.00 €
+
+FURGONE - Esempio: 5 giorni, 250 km, 12 litri mancanti
+Costo furgone:
+  - Giorni: 5 * 70€ = 350€
+  - Km: (250-100) / 30 = 5€
+  - Carburante: 12 * 2€ = 24€
+  TOTALE: 379.00 €
+
+--- CONFRONTO TARIFFE (1 giorno, 50 km, 0 litri) ---
+Autovettura: 52.00 €
+Furgone: 70.00 € (primi 100km gratis!)
+
+--- STATISTICHE FINALI ---
+Totale veicoli in flotta: 6
+Totale noleggi effettuati: 3
+Noleggi attivi: 0
+Noleggi conclusi: 3
+Veicoli disponibili: 6
+Fatturato totale: 943.00 €
