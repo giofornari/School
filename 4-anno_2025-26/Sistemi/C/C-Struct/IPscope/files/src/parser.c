@@ -1,13 +1,3 @@
-/**
- * parser.c - Parsing degli argomenti da command line
- * 
- * Implementa il parsing di:
- * - Argomenti della command line con getopt()
- * - Notazione CIDR (es. 192.168.1.0/24)
- * - Range di IP (es. 10.0.0.1-10.0.0.255)
- * - Validazione degli input
- */
-
 #include "../include/parser.h"
 #include "../include/ip_utils.h"
 #include <stdio.h>
@@ -15,13 +5,6 @@
 #include <string.h>
 #include <getopt.h>
 #include <ctype.h>
-
-
-
-// ====================== AI BASED DOCUMENTATION ======================
-/**
- * Stampa il messaggio di aiuto con la sintassi del programma
- */
 void print_usage(const char *program_name) {
     printf("Uso: %s [OPZIONI]\n\n", program_name);
     printf("Genera indirizzi IP casuali UNICI con informazioni di classificazione.\n\n");
@@ -52,12 +35,7 @@ void print_usage(const char *program_name) {
     printf("  Classe D: 224.0.0.0 - 239.255.255.255 (Multicast)\n");
     printf("  Classe E: 240.0.0.0 - 255.255.255.255 (Riservato)\n");
 }
-// ====================== END OF AI BASED DOCUMENTATION ======================
 
-/**
- * @brief string to ip num + CIDR
- * 
- */
 bool parse_cidr(const char *cidr_str, uint32_t *network, uint8_t *prefix_len) {
     if (!cidr_str || !network || !prefix_len) return false;
     
@@ -75,7 +53,6 @@ bool parse_cidr(const char *cidr_str, uint32_t *network, uint8_t *prefix_len) {
     const char *ip_part = buffer;
     const char *prefix_part = slash + 1;
     
-    // Parsa l'IP
     uint32_t ip;
     if (!string_to_ip(ip_part, &ip)) {
         fprintf(stderr, "IP non valido in CIDR: %s\n", ip_part);
@@ -129,13 +106,11 @@ bool parse_range(const char *range_str, uint32_t *start_ip, uint32_t *end_ip) {
         return false;
     }
     
-    // Parsa l'IP di fine
     if (!string_to_ip(end_part, end_ip)) {
         fprintf(stderr, "IP fine range non valido: %s\n", end_part);
         return false;
     }
     
-    // Verifica che start <= end
     if (*start_ip > *end_ip) {
         fprintf(stderr, "IP inizio (%s) maggiore di IP fine (%s)\n", start_part, end_part);
         return false;
