@@ -1,0 +1,2 @@
+Test file per openloop
+Questo file verrà aperto ripetutamente fino al limite di file descriptor del sistema.
