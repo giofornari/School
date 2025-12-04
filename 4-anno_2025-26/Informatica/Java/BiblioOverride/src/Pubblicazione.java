@@ -1,36 +1,38 @@
 import java.time.LocalDate;
 
 /**
+ * Classe astratta per pubblicazioni (libri e riviste)
  * @author giordii.dev
  */
 public abstract class Pubblicazione {
-    private static int contatore = 1;
+    private static int contatore = 1;  // auto-increment per ID univoco
     
-    private final int numeroProgressivo;
+    private final int numProgressivo;  // ID generato automaticamente
     private final String titolo;
-    private final LocalDate dataPubblicazione;
-    private final int numeroPagine;
+    private final LocalDate dataPubbl;  // quando è uscita
+    private final int numPagine;  // spessore del mattone
     
-    private boolean inPrestito;
-    private LocalDate dataInizioPrestitoAttuale;
-    private String utentePrestito;
+    // stato del prestito
+    private boolean inPrestito;  // true se qualcuno se l'è presa
+    private LocalDate dataInizioPrestitoAttuale;  // quando è stata prestata
+    private String utentePrestito;  // chi l'ha in questo momento
     
-    public Pubblicazione(String titolo, LocalDate dataPubblicazione, int numeroPagine) {
+    public Pubblicazione(String titolo, LocalDate dataPubbl, int numPagine) {
         if (titolo == null || titolo.trim().isEmpty()) {
-            throw new IllegalArgumentException("Il titolo non può essere vuoto");
+            throw new IllegalArgumentException("titolo != null");
         }
-        if (dataPubblicazione == null) {
-            throw new IllegalArgumentException("La data di pubblicazione non può essere null");
+        if (dataPubbl == null) {
+            throw new IllegalArgumentException("data pubblicazione != null");
         }
-        if (numeroPagine <= 0) {
-            throw new IllegalArgumentException("Il numero di pagine deve essere > 0");
+        if (numPagine <= 0) {
+            throw new IllegalArgumentException("numero pagine > 0");
         }
         
-        this.numeroProgressivo = contatore++;
+        this.numProgressivo = contatore++;
         this.titolo = titolo;
-        this.dataPubblicazione = dataPubblicazione;
-        this.numeroPagine = numeroPagine;
-        this.inPrestito = false;
+        this.dataPubbl = dataPubbl;
+        this.numPagine = numPagine;
+        this.inPrestito = false;  // inizialmente disponibile
         this.dataInizioPrestitoAttuale = null;
         this.utentePrestito = null;
     }
@@ -87,7 +89,7 @@ public abstract class Pubblicazione {
     }
     
     public int getNumeroProgressivo() {
-        return numeroProgressivo;
+        return numProgressivo;
     }
     
     public String getTitolo() {
@@ -95,23 +97,23 @@ public abstract class Pubblicazione {
     }
     
     public LocalDate getDataPubblicazione() {
-        return dataPubblicazione;
+        return dataPubbl;
     }
     
     public int getNumeroPagine() {
-        return numeroPagine;
+        return numPagine;
     }
     
     @Override
     public String toString() {
         String base = String.format("[#%d] %s - %s - %d pagine", 
-            numeroProgressivo, titolo, dataPubblicazione, numeroPagine);
+            numProgressivo, titolo, dataPubbl, numPagine);
         
         if (inPrestito) {
             base += String.format(" | IN PRESTITO a %s (dal %s, rientro previsto: %s)",
                 utentePrestito, dataInizioPrestitoAttuale, getDataRestituzioneAttesa());
         } else {
-            base += " | DISPONIBILE";
+            base += " | DISPONIBILE";  // sullo scaffale pronta per essere presa
         }
         
         return base;

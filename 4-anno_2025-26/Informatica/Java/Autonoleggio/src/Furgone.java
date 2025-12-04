@@ -12,13 +12,13 @@
  */
 public class Furgone extends Veicolo {
 
-    private final double capacitaCarico;
+    private final double capCarico;  // kg max che può trasportare
 
-    // Costanti per il calcolo del costo
-    private static final double COSTO_AL_GIORNO = 70.0;
-    private static final double KM_GRATUITI = 100.0;
-    private static final double KM_PER_EURO = 30.0;
-    private static final double COSTO_LITRO_MANCANTE = 2.0;
+    // tariffe per i furgoni (più care delle auto)
+    private static final double COSTO_AL_GIORNO = 70.0;  // 70€/giorno
+    private static final double KM_GRATUITI = 100.0;  // primi 100km gratis!
+    private static final double KM_PER_EURO = 30.0;  // 1€ ogni 30km dopo i 100
+    private static final double COSTO_LITRO_MANCANTE = 2.0;  // 2€/litro come le auto
 
     /**
      * Costruttore della classe Furgone
@@ -32,15 +32,15 @@ public class Furgone extends Veicolo {
      * @param capacitaSerbatoio capacità del serbatoio in litri
      * @param capacitaCarico capacità di carico del furgone in kg
      */
-    public Furgone(String targa, int numeroMatricola, String marca, String modello,
-            int cilindrata, int annoAcquisto, double capacitaSerbatoio, double capacitaCarico) {
-        super(targa, numeroMatricola, marca, modello, cilindrata, annoAcquisto, capacitaSerbatoio);
+    public Furgone(String targa, int numMatr, String marca, String modello,
+            int cilindrata, int annoAcq, double capSerbatoio, double capCarico) {
+        super(targa, numMatr, marca, modello, cilindrata, annoAcq, capSerbatoio);
 
-        if (capacitaCarico <= 0) {
-            throw new IllegalArgumentException("La capacità di carico deve essere > 0");
+        if (capCarico <= 0) {
+            throw new IllegalArgumentException("capacita carico > 0");
         }
 
-        this.capacitaCarico = capacitaCarico;
+        this.capCarico = capCarico;
     }
 
     /**
@@ -57,36 +57,36 @@ public class Furgone extends Veicolo {
     @Override
     public double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti) {
         if (giorni <= 0) {
-            throw new IllegalArgumentException("Il numero di giorni deve essere > 0");
+            throw new IllegalArgumentException("giorni > 0");
         }
         if (kmPercorsi < 0) {
-            throw new IllegalArgumentException("I km percorsi non possono essere negativi");
+            throw new IllegalArgumentException("km >= 0");
         }
         if (litriMancanti < 0) {
-            throw new IllegalArgumentException("I litri mancanti non possono essere negativi");
+            throw new IllegalArgumentException("litri mancanti >= 0");
         }
         if (litriMancanti > getCapacitaSerbatoio()) {
-            throw new IllegalArgumentException("I litri mancanti non possono superare la capacità del serbatoio");
+            throw new IllegalArgumentException("litri mancanti <= capacita serbatoio");
         }
 
-        double costoGiorni = COSTO_AL_GIORNO * giorni;
+        double costoGiorni = COSTO_AL_GIORNO * giorni;  // tot giorni
 
-        // Calcolo costo km: i primi 100 km sono gratuiti
+        // i primi 100 km sono in omaggio, poi si paga
         double kmOltreFranchigia = Math.max(0, kmPercorsi - KM_GRATUITI);
-        double costoKm = kmOltreFranchigia / KM_PER_EURO;
+        double costoKm = kmOltreFranchigia / KM_PER_EURO;  // solo km extra
 
-        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;
+        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;  // gasolio consumato
 
         return costoGiorni + costoKm + costoCarburante;
     }
 
     public double getCapacitaCarico() {
-        return capacitaCarico;
+        return capCarico;
     }
 
     @Override
     public String toString() {
         return "FURGONE: " + super.toString()
-                + String.format(" | Carico: %.0fkg", capacitaCarico);
+                + String.format(" | Carico: %.0fkg", capCarico);
     }
 }

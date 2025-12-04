@@ -12,12 +12,12 @@
  */
 public class Autovettura extends Veicolo {
 
-    private final int numeroPosti;
+    private final int numPosti;  // quante persone ci stanno
 
-    // Costanti per il calcolo del costo
-    private static final double COSTO_AL_GIORNO = 50.0;
-    private static final double KM_PER_EURO = 25.0;
-    private static final double COSTO_LITRO_MANCANTE = 2.0;
+    // tariffe per le auto
+    private static final double COSTO_AL_GIORNO = 50.0;  // 50€/giorno
+    private static final double KM_PER_EURO = 25.0;  // 1€ ogni 25km
+    private static final double COSTO_LITRO_MANCANTE = 2.0;  // 2€/litro mancante
 
     /**
      * Costruttore della classe Autovettura
@@ -31,15 +31,15 @@ public class Autovettura extends Veicolo {
      * @param capacitaSerbatoio capacità del serbatoio in litri
      * @param numeroPosti numero di posti dell'autovettura
      */
-    public Autovettura(String targa, int numeroMatricola, String marca, String modello,
-            int cilindrata, int annoAcquisto, double capacitaSerbatoio, int numeroPosti) {
-        super(targa, numeroMatricola, marca, modello, cilindrata, annoAcquisto, capacitaSerbatoio);
+    public Autovettura(String targa, int numMatr, String marca, String modello,
+            int cilindrata, int annoAcq, double capSerbatoio, int numPosti) {
+        super(targa, numMatr, marca, modello, cilindrata, annoAcq, capSerbatoio);
 
-        if (numeroPosti <= 0) {
-            throw new IllegalArgumentException("Il numero di posti deve essere > 0");
+        if (numPosti <= 0) {
+            throw new IllegalArgumentException("numero posti > 0");
         }
 
-        this.numeroPosti = numeroPosti;
+        this.numPosti = numPosti;
     }
 
     /**
@@ -55,32 +55,32 @@ public class Autovettura extends Veicolo {
     @Override
     public double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti) {
         if (giorni <= 0) {
-            throw new IllegalArgumentException("Il numero di giorni deve essere > 0");
+            throw new IllegalArgumentException("giorni > 0");
         }
         if (kmPercorsi < 0) {
-            throw new IllegalArgumentException("I km percorsi non possono essere negativi");
+            throw new IllegalArgumentException("km >= 0");
         }
         if (litriMancanti < 0) {
-            throw new IllegalArgumentException("I litri mancanti non possono essere negativi");
+            throw new IllegalArgumentException("litri mancanti >= 0");
         }
         if (litriMancanti > getCapacitaSerbatoio()) {
-            throw new IllegalArgumentException("I litri mancanti non possono superare la capacità del serbatoio");
+            throw new IllegalArgumentException("litri mancanti <= capacita serbatoio");
         }
 
-        double costoGiorni = COSTO_AL_GIORNO * giorni;
-        double costoKm = (kmPercorsi / KM_PER_EURO);
-        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;
+        double costoGiorni = COSTO_AL_GIORNO * giorni;  // tot giorni
+        double costoKm = (kmPercorsi / KM_PER_EURO);  // tot km
+        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;  // benzina consumata
 
         return costoGiorni + costoKm + costoCarburante;
     }
 
     public int getNumeroPosti() {
-        return numeroPosti;
+        return numPosti;
     }
 
     @Override
     public String toString() {
         return "AUTOVETTURA: " + super.toString()
-                + String.format(" | Posti: %d", numeroPosti);
+                + String.format(" | Posti: %d", numPosti);
     }
 }

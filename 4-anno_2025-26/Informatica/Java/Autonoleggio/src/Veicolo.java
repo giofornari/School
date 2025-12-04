@@ -8,13 +8,13 @@
  */
 public abstract class Veicolo {
 
-    private final String targa;
-    private final int numeroMatricola;
-    private final String marca;
-    private final String modello;
-    private final int cilindrata;
-    private final int annoAcquisto;
-    private final double capacitaSerbatoio;
+    private final String targa;  // targhe italiane tipo AB123CD
+    private final int numMatr;  // ID univoco del veicolo
+    private final String marca;  // Fiat, BMW, Mercedes...
+    private final String modello;  // Panda, Golf, Ducato...
+    private final int cilindrata;  // cc del motore
+    private final int annoAcq;  // quando è stato comprato
+    private final double capSerbatoio;  // litri max del serbatoio
 
     /**
      * Costruttore della classe Veicolo
@@ -27,37 +27,37 @@ public abstract class Veicolo {
      * @param annoAcquisto anno di acquisto del veicolo
      * @param capacitaSerbatoio capacità del serbatoio in litri
      */
-    protected Veicolo(String targa, int numeroMatricola, String marca, String modello,
-            int cilindrata, int annoAcquisto, double capacitaSerbatoio) {
+    protected Veicolo(String targa, int numMatr, String marca, String modello,
+            int cilindrata, int annoAcq, double capSerbatoio) {
         if (targa == null || targa.trim().isEmpty()) {
-            throw new IllegalArgumentException("La targa non può essere vuota");
+            throw new IllegalArgumentException("targa != null");
         }
-        if (numeroMatricola <= 0) {
-            throw new IllegalArgumentException("Il numero di matricola deve essere > 0");
+        if (numMatr <= 0) {
+            throw new IllegalArgumentException("numero matricola > 0");
         }
         if (marca == null || marca.trim().isEmpty()) {
-            throw new IllegalArgumentException("La marca non può essere vuota");
+            throw new IllegalArgumentException("marca != null");
         }
         if (modello == null || modello.trim().isEmpty()) {
-            throw new IllegalArgumentException("Il modello non può essere vuoto");
+            throw new IllegalArgumentException("modello != null");
         }
         if (cilindrata <= 0) {
-            throw new IllegalArgumentException("La cilindrata deve essere > 0");
+            throw new IllegalArgumentException("cilindrata > 0");
         }
-        if (annoAcquisto <= 0) {
-            throw new IllegalArgumentException("L'anno di acquisto deve essere > 0");
+        if (annoAcq <= 0) {
+            throw new IllegalArgumentException("anno acquisto > 0");
         }
-        if (capacitaSerbatoio <= 0) {
-            throw new IllegalArgumentException("La capacità del serbatoio deve essere > 0");
+        if (capSerbatoio <= 0) {
+            throw new IllegalArgumentException("capacita serbatoio > 0");
         }
 
         this.targa = targa;
-        this.numeroMatricola = numeroMatricola;
+        this.numMatr = numMatr;
         this.marca = marca;
         this.modello = modello;
         this.cilindrata = cilindrata;
-        this.annoAcquisto = annoAcquisto;
-        this.capacitaSerbatoio = capacitaSerbatoio;
+        this.annoAcq = annoAcq;
+        this.capSerbatoio = capSerbatoio;
     }
 
     /**
@@ -72,13 +72,13 @@ public abstract class Veicolo {
      */
     public abstract double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti);
 
-    // Getters
+    // getters standard
     public String getTarga() {
         return targa;
     }
 
     public int getNumeroMatricola() {
-        return numeroMatricola;
+        return numMatr;
     }
 
     public String getMarca() {
@@ -94,16 +94,16 @@ public abstract class Veicolo {
     }
 
     public int getAnnoAcquisto() {
-        return annoAcquisto;
+        return annoAcq;
     }
 
     public double getCapacitaSerbatoio() {
-        return capacitaSerbatoio;
+        return capSerbatoio;
     }
 
     @Override
     public String toString() {
         return String.format("Matricola: %d | Targa: %s | %s %s (%dcc) | Anno: %d | Serbatoio: %.1fL",
-                numeroMatricola, targa, marca, modello, cilindrata, annoAcquisto, capacitaSerbatoio);
+                numMatr, targa, marca, modello, cilindrata, annoAcq, capSerbatoio);
     }
 }

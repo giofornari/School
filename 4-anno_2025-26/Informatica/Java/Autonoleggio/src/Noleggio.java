@@ -26,22 +26,22 @@ public class Noleggio {
      */
     public Noleggio(Veicolo veicolo, String nomeCliente, LocalDate dataInizio) {
         if (veicolo == null) {
-            throw new IllegalArgumentException("Il veicolo non può essere null");
+            throw new IllegalArgumentException("veicolo != null");
         }
         if (nomeCliente == null || nomeCliente.trim().isEmpty()) {
-            throw new IllegalArgumentException("Il nome del cliente non può essere vuoto");
+            throw new IllegalArgumentException("nome cliente != null");
         }
         if (dataInizio == null) {
-            throw new IllegalArgumentException("La data di inizio non può essere null");
+            throw new IllegalArgumentException("data inizio != null");
         }
 
         this.veicolo = veicolo;
         this.nomeCliente = nomeCliente;
         this.dataInizio = dataInizio;
-        this.dataFine = null;
-        this.kmPercorsi = 0;
-        this.litriMancanti = 0;
-        this.concluso = false;
+        this.dataFine = null;  // ancora in corso
+        this.kmPercorsi = 0;  // ancora non lo sanno
+        this.litriMancanti = 0;  // si vedrà alla fine
+        this.concluso = false;  // appena iniziato
     }
 
     /**
@@ -53,25 +53,25 @@ public class Noleggio {
      */
     public void concludiNoleggio(LocalDate dataFine, double kmPercorsi, double litriMancanti) {
         if (concluso) {
-            throw new IllegalStateException("Il noleggio è già stato concluso");
+            throw new IllegalStateException("noleggio gia concluso");
         }
         if (dataFine == null) {
-            throw new IllegalArgumentException("La data di fine non può essere null");
+            throw new IllegalArgumentException("data fine != null");
         }
         if (dataFine.isBefore(dataInizio)) {
-            throw new IllegalArgumentException("La data di fine non può essere precedente alla data di inizio");
+            throw new IllegalArgumentException("data fine >= data inizio");
         }
         if (kmPercorsi < 0) {
-            throw new IllegalArgumentException("I km percorsi non possono essere negativi");
+            throw new IllegalArgumentException("km >= 0");
         }
         if (litriMancanti < 0) {
-            throw new IllegalArgumentException("I litri mancanti non possono essere negativi");
+            throw new IllegalArgumentException("litri mancanti >= 0");
         }
 
         this.dataFine = dataFine;
         this.kmPercorsi = kmPercorsi;
         this.litriMancanti = litriMancanti;
-        this.concluso = true;
+        this.concluso = true;  // finalmente restituito
     }
 
     /**
@@ -81,11 +81,11 @@ public class Noleggio {
      */
     public int calcolaGiorniNoleggio() {
         if (!concluso || dataFine == null) {
-            throw new IllegalStateException("Il noleggio non è ancora stato concluso");
+            throw new IllegalStateException("noleggio non ancora concluso");
         }
 
         long giorni = java.time.temporal.ChronoUnit.DAYS.between(dataInizio, dataFine);
-        // Se riconsegna lo stesso giorno, almeno 1 giorno
+        // se lo riporta lo stesso giorno, minimo 1 giorno si paga
         return (int) Math.max(1, giorni);
     }
 

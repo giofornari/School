@@ -1,24 +1,25 @@
 import java.time.LocalDate;
 
 /**
+ * Libro con ISBN e autore, prestabile per 30 giorni
  * @author giordii.dev
  */
 public class Libro extends Pubblicazione {
-    private final String isbn;
-    private final String autore;
+    private final String isbn;    // codice identificativo internazionale
+    private final String autore;  // chi ha scritto questo capolavoro (o mattone)
     
     // Durata standard del prestito per i libri: 30 giorni
-    private static final int DURATA_PRESTITO_GIORNI = 30;
+    private static final int DURATA_PRESTITO_GIORNI = 30;  // un mese pieno per leggerlo con calma
     
-    public Libro(String titolo, LocalDate dataPubblicazione, int numeroPagine, 
+    public Libro(String titolo, LocalDate dataPubbl, int numPagine, 
                  String isbn, String autore) {
-        super(titolo, dataPubblicazione, numeroPagine);
+        super(titolo, dataPubbl, numPagine);
         
         if (isbn == null || isbn.trim().isEmpty()) {
-            throw new IllegalArgumentException("L'ISBN non può essere vuoto");
+            throw new IllegalArgumentException("isbn != null");
         }
         if (autore == null || autore.trim().isEmpty()) {
-            throw new IllegalArgumentException("L'autore non può essere vuoto");
+            throw new IllegalArgumentException("autore != null");
         }
         
         this.isbn = isbn;

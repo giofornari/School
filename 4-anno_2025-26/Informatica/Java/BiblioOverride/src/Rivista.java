@@ -1,27 +1,28 @@
 import java.time.LocalDate;
 
 /**
+ * Rivista periodica, prestabile solo per 7 giorni
  * @author giordii.dev
  */
 public class Rivista extends Pubblicazione {
-    private final String numeroVolume;
-    private final String periodicita;
+    private final String numVol;  // numero/volume della rivista
+    private final String periodicita;  // quanto spesso esce (settimanale, mensile...)
     
     // Durata standard del prestito per le riviste: 7 giorni
-    private static final int DURATA_PRESTITO_GIORNI = 7;
+    private static final int DURATA_PRESTITO_GIORNI = 7;  // una settimana, si leggono veloci
     
-    public Rivista(String titolo, LocalDate dataPubblicazione, int numeroPagine,
-                   String numeroVolume, String periodicita) {
-        super(titolo, dataPubblicazione, numeroPagine);
+    public Rivista(String titolo, LocalDate dataPubbl, int numPagine,
+                   String numVol, String periodicita) {
+        super(titolo, dataPubbl, numPagine);
         
-        if (numeroVolume == null || numeroVolume.trim().isEmpty()) {
-            throw new IllegalArgumentException("Il numero/volume non può essere vuoto");
+        if (numVol == null || numVol.trim().isEmpty()) {
+            throw new IllegalArgumentException("numero/volume != null");
         }
         if (periodicita == null || periodicita.trim().isEmpty()) {
-            throw new IllegalArgumentException("La periodicità non può essere vuota");
+            throw new IllegalArgumentException("periodicita != null");
         }
         
-        this.numeroVolume = numeroVolume;
+        this.numVol = numVol;
         this.periodicita = periodicita;
     }
     
@@ -37,7 +38,7 @@ public class Rivista extends Pubblicazione {
     }
     
     public String getNumeroVolume() {
-        return numeroVolume;
+        return numVol;
     }
     
     public String getPeriodicita() {
@@ -51,6 +52,6 @@ public class Rivista extends Pubblicazione {
     @Override
     public String toString() {
         return "RIVISTA: " + super.toString() + 
-               String.format(" | N/Vol: %s | Periodicità: %s", numeroVolume, periodicita);
+               String.format(" | N/Vol: %s | Periodicità: %s", numVol, periodicita);
     }
 }
