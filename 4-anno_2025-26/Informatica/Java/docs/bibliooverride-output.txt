@@ -11,7 +11,6 @@ RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Per
 LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | DISPONIBILE | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
 RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
 ==========================================
-
 --- INFORMAZIONI DURATE PRESTITI ---
 Durata prestito libri: 30 giorni
 Durata prestito riviste: 7 giorni
@@ -42,7 +41,6 @@ RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Per
 LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
 RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
 ==========================================
-
 --- PUBBLICAZIONI DISPONIBILI ---
 RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile
 RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
