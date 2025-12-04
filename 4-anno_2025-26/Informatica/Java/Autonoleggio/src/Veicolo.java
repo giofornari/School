@@ -8,13 +8,13 @@
  */
 public abstract class Veicolo {
 
-    private final String targa;  // targhe italiane tipo AB123CD
-    private final int numMatr;  // ID univoco del veicolo
-    private final String marca;  // Fiat, BMW, Mercedes...
-    private final String modello;  // Panda, Golf, Ducato...
-    private final int cilindrata;  // cc del motore
-    private final int annoAcq;  // quando è stato comprato
-    private final double capSerbatoio;  // litri max del serbatoio
+    private final String targa;
+    private final int numMatr;
+    private final String marca;
+    private final String modello;
+    private final int cilindrata;
+    private final int annoAcq;
+    private final double capSerbatoio;
 
     /**
      * Costruttore della classe Veicolo
@@ -72,7 +72,7 @@ public abstract class Veicolo {
      */
     public abstract double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti);
 
-    // getters standard
+    // Getters
     public String getTarga() {
         return targa;
     }

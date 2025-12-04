@@ -26,8 +26,8 @@ public class GestioneAutonoleggio {
         }
 
         this.nomeAzienda = nomeAzienda;
-        this.flotta = new ArrayList<>();  // inizia vuota
-        this.noleggi = new ArrayList<>();  // nessun noleggio ancora
+        this.flotta = new ArrayList<>();
+        this.noleggi = new ArrayList<>();
     }
 
     /**
@@ -40,14 +40,14 @@ public class GestioneAutonoleggio {
             throw new IllegalArgumentException("veicolo != null");
         }
 
-        // controllo che la targa non sia già nel sistema
+        // Verifica che non esista già un veicolo con la stessa targa
         for (Veicolo v : flotta) {
             if (v.getTarga().equals(veicolo.getTarga())) {
                 throw new IllegalArgumentException("targa " + veicolo.getTarga() + " gia presente");
             }
         }
 
-        flotta.add(veicolo);  // aggiunto alla flotta
+        flotta.add(veicolo);
     }
 
     /**
@@ -59,10 +59,10 @@ public class GestioneAutonoleggio {
     public Veicolo cercaVeicolo(int numeroMatricola) {
         for (Veicolo v : flotta) {
             if (v.getNumeroMatricola() == numeroMatricola) {
-                return v;  // trovato!
+                return v;
             }
         }
-        return null;  // non esiste
+        return null;
     }
 
     /**
@@ -73,7 +73,7 @@ public class GestioneAutonoleggio {
      */
     public Veicolo cercaVeicoloPerTarga(String targa) {
         if (targa == null) {
-            return null;  // targa invalida
+            return null;
         }
 
         for (Veicolo v : flotta) {

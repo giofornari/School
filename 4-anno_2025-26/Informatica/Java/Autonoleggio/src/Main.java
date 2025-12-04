@@ -12,17 +12,17 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("=== SISTEMA GESTIONE AUTONOLEGGIO ===\n");
 
-        // autonoleggio italiano classico
+        // Creazione autonoleggio
         GestioneAutonoleggio autonoleggio = new GestioneAutonoleggio("RentCar Italia");
 
         System.out.println("--- CREAZIONE FLOTTA ---\n");
 
-        // auto economiche per tutti
+        // Aggiunta autovetture
         Autovettura auto1 = new Autovettura(
                 "AB123CD",
                 1001,
                 "Fiat",
-                "Panda",  // la regina delle citycar italiane
+                "Panda",
                 1200,
                 2020,
                 35.0,
@@ -33,7 +33,7 @@ public class Main {
                 "EF456GH",
                 1002,
                 "Volkswagen",
-                "Golf",  // tedesca affidabile
+                "Golf",
                 1600,
                 2021,
                 50.0,
@@ -44,19 +44,19 @@ public class Main {
                 "IJ789KL",
                 1003,
                 "BMW",
-                "Serie 3",  // per chi vuole fare bella figura
+                "Serie 3", // per fare bella figura
                 2000,
                 2022,
                 60.0,
                 5
         );
 
-        // furgoni per traslochi e corrieri
+        // Aggiunta furgoni
         Furgone furgone1 = new Furgone(
                 "MN012OP",
                 2001,
                 "Fiat",
-                "Ducato",  // il più venduto in Italia
+                "Ducato",
                 2300,
                 2019,
                 90.0,
@@ -67,7 +67,7 @@ public class Main {
                 "QR345ST",
                 2002,
                 "Mercedes",
-                "Sprinter",  // il top di gamma
+                "Sprinter", // costa un patrimonio
                 2500,
                 2021,
                 100.0,
@@ -78,7 +78,7 @@ public class Main {
                 "UV678WX",
                 2003,
                 "Iveco",
-                "Daily",  // marchio italiano, sempre affidabile
+                "Daily",
                 3000,
                 2020,
                 80.0,
@@ -106,17 +106,17 @@ public class Main {
 
         LocalDate oggi = LocalDate.of(2025, 12, 1);
 
-        // weekend fuori con la Panda
+        // Noleggio 1: Weekend con la Panda
         System.out.println("Cliente Mario Rossi noleggia Fiat Panda (1001)");
         Noleggio noleggio1 = autonoleggio.avviaNoleggio(1001, "Mario Rossi", oggi);
         System.out.println("✓ Noleggio avviato\n");
 
-        // trasloco con il furgone
+        // Noleggio 2: Trasloco
         System.out.println("Cliente Luigi Verdi noleggia Fiat Ducato (2001)");
-        Noleggio noleggio2 = autonoleggio.avviaNoleggio(2001, "Luigi Verdi", oggi);
+        Noleggio noleggio2 = autonoleggio.avviaNoleggio(2001, "Luigi Verdi", oggi);  // trasloco
         System.out.println("✓ Noleggio avviato\n");
 
-        // settimana di lusso con la BMW
+        // Noleggio 3: Settimana di lusso
         System.out.println("Cliente Anna Bianchi noleggia BMW Serie 3 (1003)");
         Noleggio noleggio3 = autonoleggio.avviaNoleggio(1003, "Anna Bianchi", oggi);
         System.out.println("✓ Noleggio avviato\n");
@@ -132,21 +132,21 @@ public class Main {
         // Conclusione noleggi
         System.out.println("--- CONCLUSIONE NOLEGGI ---\n");
 
-        // Mario torna dopo 3 giorni, ha fatto 200km
+        // Restituzione 1: 3 giorni, 200 km, serbatoio mezzo vuoto
         System.out.println("Restituzione Fiat Panda da Mario Rossi");
         LocalDate dataFine1 = oggi.plusDays(3);
         noleggio1.concludiNoleggio(dataFine1, 200.0, 5.0);
         System.out.println(noleggio1.getDettaglioCosti());
         System.out.println();
 
-        // Luigi ha fatto il trasloco, 250km totali
+        // Restituzione 2: 5 giorni, 250 km
         System.out.println("Restituzione Fiat Ducato da Luigi Verdi");
         LocalDate dataFine2 = oggi.plusDays(5);
-        noleggio2.concludiNoleggio(dataFine2, 250.0, 10.0);  // 150km oltre franchigia
+        noleggio2.concludiNoleggio(dataFine2, 250.0, 10.0);  // consumo folle
         System.out.println(noleggio2.getDettaglioCosti());
         System.out.println();
 
-        // Anna ha girato mezza Italia con la BMW
+        // Restituzione 3: Ha girato tutta Italia
         System.out.println("Restituzione BMW Serie 3 da Anna Bianchi");
         LocalDate dataFine3 = oggi.plusDays(7);
         noleggio3.concludiNoleggio(dataFine3, 500.0, 15.0);
@@ -197,6 +197,6 @@ public class Main {
         for (Noleggio n : autonoleggio.getNoleggiConclusi()) {
             fatturatoTotale += n.calcolaCostoTotale();
         }
-        System.out.println("Fatturato totale: " + String.format("%.2f", fatturatoTotale) + " €");  // soldi in cassa
+        System.out.println("Fatturato totale: " + String.format("%.2f", fatturatoTotale) + " €");
     }
 }

@@ -12,12 +12,12 @@
  */
 public class Autovettura extends Veicolo {
 
-    private final int numPosti;  // quante persone ci stanno
+    private final int numPosti;
 
-    // tariffe per le auto
-    private static final double COSTO_AL_GIORNO = 50.0;  // 50€/giorno
-    private static final double KM_PER_EURO = 25.0;  // 1€ ogni 25km
-    private static final double COSTO_LITRO_MANCANTE = 2.0;  // 2€/litro mancante
+    // Costanti per il calcolo del costo
+    private static final double COSTO_AL_GIORNO = 50.0;
+    private static final double KM_PER_EURO = 25.0;
+    private static final double COSTO_LITRO_MANCANTE = 2.0;
 
     /**
      * Costruttore della classe Autovettura
@@ -67,9 +67,9 @@ public class Autovettura extends Veicolo {
             throw new IllegalArgumentException("litri mancanti <= capacita serbatoio");
         }
 
-        double costoGiorni = COSTO_AL_GIORNO * giorni;  // tot giorni
-        double costoKm = (kmPercorsi / KM_PER_EURO);  // tot km
-        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;  // benzina consumata
+        double costoGiorni = COSTO_AL_GIORNO * giorni;
+        double costoKm = (kmPercorsi / KM_PER_EURO);
+        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;
 
         return costoGiorni + costoKm + costoCarburante;
     }

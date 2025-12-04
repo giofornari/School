@@ -12,13 +12,13 @@
  */
 public class Furgone extends Veicolo {
 
-    private final double capCarico;  // kg max che può trasportare
+    private final double capCarico;
 
-    // tariffe per i furgoni (più care delle auto)
-    private static final double COSTO_AL_GIORNO = 70.0;  // 70€/giorno
-    private static final double KM_GRATUITI = 100.0;  // primi 100km gratis!
-    private static final double KM_PER_EURO = 30.0;  // 1€ ogni 30km dopo i 100
-    private static final double COSTO_LITRO_MANCANTE = 2.0;  // 2€/litro come le auto
+    // Costanti per il calcolo del costo
+    private static final double COSTO_AL_GIORNO = 70.0;
+    private static final double KM_GRATUITI = 100.0;
+    private static final double KM_PER_EURO = 30.0;
+    private static final double COSTO_LITRO_MANCANTE = 2.0;
 
     /**
      * Costruttore della classe Furgone
@@ -69,13 +69,13 @@ public class Furgone extends Veicolo {
             throw new IllegalArgumentException("litri mancanti <= capacita serbatoio");
         }
 
-        double costoGiorni = COSTO_AL_GIORNO * giorni;  // tot giorni
+        double costoGiorni = COSTO_AL_GIORNO * giorni;
 
-        // i primi 100 km sono in omaggio, poi si paga
+        // Calcolo costo km: i primi 100 km sono gratuiti
         double kmOltreFranchigia = Math.max(0, kmPercorsi - KM_GRATUITI);
-        double costoKm = kmOltreFranchigia / KM_PER_EURO;  // solo km extra
+        double costoKm = kmOltreFranchigia / KM_PER_EURO;
 
-        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;  // gasolio consumato
+        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;
 
         return costoGiorni + costoKm + costoCarburante;
     }

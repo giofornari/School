@@ -38,10 +38,10 @@ public class Noleggio {
         this.veicolo = veicolo;
         this.nomeCliente = nomeCliente;
         this.dataInizio = dataInizio;
-        this.dataFine = null;  // ancora in corso
-        this.kmPercorsi = 0;  // ancora non lo sanno
-        this.litriMancanti = 0;  // si vedrà alla fine
-        this.concluso = false;  // appena iniziato
+        this.dataFine = null;
+        this.kmPercorsi = 0;
+        this.litriMancanti = 0;
+        this.concluso = false;
     }
 
     /**
@@ -71,7 +71,7 @@ public class Noleggio {
         this.dataFine = dataFine;
         this.kmPercorsi = kmPercorsi;
         this.litriMancanti = litriMancanti;
-        this.concluso = true;  // finalmente restituito
+        this.concluso = true;
     }
 
     /**
