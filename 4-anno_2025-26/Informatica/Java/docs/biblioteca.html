@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg: #03060f;
+            --panel: #0a101f;
+            --panel-alt: #121a30;
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f5f6ff;
+            --muted: #9aa4c6;
+            --accent: #6bb8ff;
+            --accent-strong: #4a92ff;
+            --success: #38d98a;
+            --error: #f48b9c;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        header {
+            flex-shrink: 0;
+            background: rgba(10, 16, 31, 0.96);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        header h1 i {
+            color: var(--accent);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            border-top: 1px solid var(--border);
+            min-height: 0;
+            overflow: hidden;
+        }
+        
+        .left-panel {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+        }
+        
+        .tabs {
+            display: flex;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            border: none;
+            background: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 10px 12px;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text);
+        }
+        
+        .tab-button.active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .code-area {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--panel-alt);
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        
+        pre {
+            height: 100%;
+            margin: 0;
+        }
+        
+        pre code {
+            display: block;
+            height: 100%;
+            padding: 16px !important;
+            background: #060a17 !important;
+            color: #eaf0ff !important;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: 1px solid var(--border);
+            background: rgba(3, 6, 15, 0.85);
+            color: var(--text);
+            border-radius: 4px;
+            padding: 4px 9px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        
+        .copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .right-panel {
+            width: 32%;
+            min-width: 280px;
+            min-height: 0;
+            background: var(--panel);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .run-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .run-header h2 {
+            font-size: 0.9rem;
+        }
+        
+        .run-btn {
+            border: none;
+            background: linear-gradient(120deg, var(--accent-strong), var(--accent));
+            color: #fff;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        
+        .output-area {
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: var(--panel-alt);
+        }
+        
+        .output-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 130px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            background: rgba(4, 8, 20, 0.92);
+            color: var(--muted);
+        }
+        
+        .output-box.success {
+            border-color: rgba(56, 217, 138, 0.45);
+            color: var(--success);
+        }
+        
+        .output-box.error {
+            border-color: rgba(244, 139, 156, 0.45);
+            color: var(--error);
+        }
+        
+        .status-indicator {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            padding: 6px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            color: var(--muted);
+        }
+        
+        .status-indicator.success {
+            color: var(--success);
+            border-color: rgba(56, 217, 138, 0.35);
+        }
+        
+        .status-indicator.error {
+            color: var(--error);
+            border-color: rgba(244, 139, 156, 0.35);
+        }
+        
+        .status-indicator.running {
+            color: var(--accent);
+            border-color: rgba(107, 184, 255, 0.35);
+        }
+        
+        .spinner {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 999px;
+            border: 2px solid rgba(107, 184, 255, 0.2);
+            border-top-color: var(--accent);
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            border-left: 3px solid var(--accent);
+            padding: 7px 10px;
+            background: rgba(107, 184, 255, 0.08);
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 960px) {
+            body {
+                overflow: auto;
+            }
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            header {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .tabs {
+                padding: 0 8px;
+            }
+            .tab-button {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            Biblioteca
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="biblioteca-tab0">Main.java</button>
+        
+            <button class="tab-button " data-tab="biblioteca-tab1">Pubblicazione.java</button>
+        
+            <button class="tab-button " data-tab="biblioteca-tab2">Libro.java</button>
+        
+            <button class="tab-button " data-tab="biblioteca-tab3">Rivista.java</button>
+        
+            <button class="tab-button " data-tab="biblioteca-tab4">Biblioteca.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="biblioteca-tab0" class="tab-content active">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * @author giordii.dev
+ */
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(&quot;=== SISTEMA GESTIONE BIBLIOTECA ===\n&quot;);
+        
+        // Creazione biblioteca
+        Biblioteca biblioteca = new Biblioteca(&quot;Biblioteca Comunale&quot;);
+        
+        // Aggiunta libri
+        Libro libro1 = new Libro(
+            &quot;Il Signore degli Anelli&quot;,
+            LocalDate.of(1954, 7, 29),
+            1216,
+            &quot;978-88-452-3232-8&quot;,
+            &quot;J.R.R. Tolkien&quot;
+        );
+        
+        Libro libro2 = new Libro(
+            &quot;1984&quot;,
+            LocalDate.of(1949, 6, 8),
+            328,
+            &quot;978-88-04-68012-1&quot;,
+            &quot;George Orwell&quot;
+        );
+        
+        Libro libro3 = new Libro(
+            &quot;Il Nome della Rosa&quot;,
+            LocalDate.of(1980, 9, 1),
+            503,
+            &quot;978-88-452-6647-7&quot;,
+            &quot;Umberto Eco&quot;
+        );
+        
+        Rivista rivista1 = new Rivista(
+            &quot;National Geographic Italia&quot;,
+            LocalDate.of(2024, 11, 1),
+            120,
+            &quot;Vol. 35, N. 11&quot;,
+            &quot;Mensile&quot;
+        );
+        
+        Rivista rivista2 = new Rivista(
+            &quot;Focus&quot;,
+            LocalDate.of(2024, 10, 15),
+            98,
+            &quot;N. 385&quot;,
+            &quot;Mensile&quot;
+        );
+        
+        Rivista rivista3 = new Rivista(
+            &quot;Le Scienze&quot;,
+            LocalDate.of(2024, 11, 20),
+            88,
+            &quot;N. 655&quot;,
+            &quot;Mensile&quot;
+        );
+        
+        biblioteca.aggiungiPubblicazione(libro1);
+        biblioteca.aggiungiPubblicazione(rivista1);
+        biblioteca.aggiungiPubblicazione(libro2);
+        biblioteca.aggiungiPubblicazione(rivista2);
+        biblioteca.aggiungiPubblicazione(libro3);
+        biblioteca.aggiungiPubblicazione(rivista3);
+        
+        biblioteca.stampaCatalogo();
+        
+        System.out.println(&quot;--- TEST RICERCA PER NUMERO ---&quot;);
+        Pubblicazione trovata = biblioteca.cercaPerNumero(3);
+        if (trovata != null) {
+            System.out.println(&quot;Trovata: &quot; + trovata);
+        }
+        System.out.println();
+        
+        System.out.println(&quot;--- SOLO LIBRI ---&quot;);
+        for (Libro l : biblioteca.getLibri()) {
+            System.out.println(l);
+        }
+        System.out.println();
+        
+        System.out.println(&quot;--- SOLO RIVISTE ---&quot;);
+        for (Rivista r : biblioteca.getRiviste()) {
+            System.out.println(r);
+        }
+        System.out.println();
+        
+        System.out.println(&quot;--- TEST RIMOZIONE (numero progressivo 2) ---&quot;);
+        biblioteca.rimuoviPubblicazione(2);
+        biblioteca.stampaCatalogo();
+        
+        System.out.println(&quot;Totale pubblicazioni rimanenti: &quot; + biblioteca.contaPubblicazioni());
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="biblioteca-tab1" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * @author giordii.dev
+ */
+public abstract class Pubblicazione {
+    private static int contatore = 1;
+    
+    private final int numeroProgressivo;
+    private final String titolo;
+    private final LocalDate dataPubblicazione;
+    private final int numeroPagine;
+    
+    public Pubblicazione(String titolo, LocalDate dataPubblicazione, int numeroPagine) {
+        if (titolo == null || titolo.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;Il titolo non può essere vuoto&quot;);
+        }
+        if (dataPubblicazione == null) {
+            throw new IllegalArgumentException(&quot;La data di pubblicazione non può essere null&quot;);
+        }
+        if (numeroPagine &lt;= 0) {
+            throw new IllegalArgumentException(&quot;Il numero di pagine deve essere &gt; 0&quot;);
+        }
+        
+        this.numeroProgressivo = contatore++;
+        this.titolo = titolo;
+        this.dataPubblicazione = dataPubblicazione;
+        this.numeroPagine = numeroPagine;
+    }
+    
+    public int getNumeroProgressivo() {
+        return numeroProgressivo;
+    }
+    
+    public String getTitolo() {
+        return titolo;
+    }
+    
+    public LocalDate getDataPubblicazione() {
+        return dataPubblicazione;
+    }
+    
+    public int getNumeroPagine() {
+        return numeroPagine;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format(&quot;[#%d] %s - %s - %d pagine&quot;, 
+            numeroProgressivo, titolo, dataPubblicazione, numeroPagine);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="biblioteca-tab2" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * @author giordii.dev
+ */
+public class Libro extends Pubblicazione {
+    private final String isbn;
+    private final String autore;
+    
+    public Libro(String titolo, LocalDate dataPubblicazione, int numeroPagine, 
+                 String isbn, String autore) {
+        super(titolo, dataPubblicazione, numeroPagine);
+        
+        if (isbn == null || isbn.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;L&#39;ISBN non può essere vuoto&quot;);
+        }
+        if (autore == null || autore.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;L&#39;autore non può essere vuoto&quot;);
+        }
+        
+        this.isbn = isbn;
+        this.autore = autore;
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getAutore() {
+        return autore;
+    }
+    
+    @Override
+    public String toString() {
+        return &quot;LIBRO: &quot; + super.toString() + 
+               String.format(&quot; | ISBN: %s | Autore: %s&quot;, isbn, autore);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="biblioteca-tab3" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * @author giordii.dev
+ */
+public class Rivista extends Pubblicazione {
+    private final String numeroVolume;
+    private final String periodicita;
+    
+    public Rivista(String titolo, LocalDate dataPubblicazione, int numeroPagine,
+                   String numeroVolume, String periodicita) {
+        super(titolo, dataPubblicazione, numeroPagine);
+        
+        if (numeroVolume == null || numeroVolume.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;Il numero/volume non può essere vuoto&quot;);
+        }
+        if (periodicita == null || periodicita.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;La periodicità non può essere vuota&quot;);
+        }
+        
+        this.numeroVolume = numeroVolume;
+        this.periodicita = periodicita;
+    }
+    
+    public String getNumeroVolume() {
+        return numeroVolume;
+    }
+    
+    public String getPeriodicita() {
+        return periodicita;
+    }
+    
+    @Override
+    public String toString() {
+        return &quot;RIVISTA: &quot; + super.toString() + 
+               String.format(&quot; | N/Vol: %s | Periodicità: %s&quot;, numeroVolume, periodicita);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="biblioteca-tab4" class="tab-content ">
+                <pre><code class="language-java">import java.util.ArrayList;
+
+/**
+ * @author giordii.dev
+ */
+public class Biblioteca {
+    private final String nome;
+    private final ArrayList&lt;Pubblicazione&gt; pubblicazioni;
+    
+    public Biblioteca(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;Il nome della biblioteca non può essere vuoto&quot;);
+        }
+        this.nome = nome;
+        this.pubblicazioni = new ArrayList&lt;&gt;();
+    }
+    
+    public void aggiungiPubblicazione(Pubblicazione p) {
+        if (p == null) {
+            throw new IllegalArgumentException(&quot;La pubblicazione non può essere null&quot;);
+        }
+        pubblicazioni.add(p);
+    }
+    
+    public void rimuoviPubblicazione(int numeroProgressivo) {
+        pubblicazioni.removeIf(p -&gt; p.getNumeroProgressivo() == numeroProgressivo);
+    }
+    
+    public Pubblicazione cercaPerNumero(int numeroProgressivo) {
+        for (Pubblicazione p : pubblicazioni) {
+            if (p.getNumeroProgressivo() == numeroProgressivo) {
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList&lt;Libro&gt; getLibri() {
+        ArrayList&lt;Libro&gt; libri = new ArrayList&lt;&gt;();
+        for (Pubblicazione p : pubblicazioni) {
+            if (p instanceof Libro) {
+                libri.add((Libro) p);
+            }
+        }
+        return libri;
+    }
+    
+    public ArrayList&lt;Rivista&gt; getRiviste() {
+        ArrayList&lt;Rivista&gt; riviste = new ArrayList&lt;&gt;();
+        for (Pubblicazione p : pubblicazioni) {
+            if (p instanceof Rivista) {
+                riviste.add((Rivista) p);
+            }
+        }
+        return riviste;
+    }
+    
+    public int contaPubblicazioni() {
+        return pubblicazioni.size();
+    }
+    
+    public void stampaCatalogo() {
+        System.out.println(&quot;\n=== CATALOGO BIBLIOTECA: &quot; + nome + &quot; ===&quot;);
+        System.out.println(&quot;Totale pubblicazioni: &quot; + pubblicazioni.size());
+        System.out.println();
+        
+        if (pubblicazioni.isEmpty()) {
+            System.out.println(&quot;Nessuna pubblicazione presente.&quot;);
+        } else {
+            for (Pubblicazione p : pubblicazioni) {
+                System.out.println(p);
+            }
+        }
+        System.out.println(&quot;==========================================\n&quot;);
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">=== SISTEMA GESTIONE BIBLIOTECA ===
+
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 6
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+
+--- TEST RICERCA PER NUMERO ---
+Trovata: LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+
+--- SOLO LIBRI ---
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+
+--- SOLO RIVISTE ---
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile
+
+--- TEST RIMOZIONE (numero progressivo 2) ---
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 5
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+
+Totale pubblicazioni rimanenti: 5
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["import java.time.LocalDate;\n\n/**\n * @author giordii.dev\n */\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== SISTEMA GESTIONE BIBLIOTECA ===\\n\");\n        \n        // Creazione biblioteca\n        Biblioteca biblioteca = new Biblioteca(\"Biblioteca Comunale\");\n        \n        // Aggiunta libri\n        Libro libro1 = new Libro(\n            \"Il Signore degli Anelli\",\n            LocalDate.of(1954, 7, 29),\n            1216,\n            \"978-88-452-3232-8\",\n            \"J.R.R. Tolkien\"\n        );\n        \n        Libro libro2 = new Libro(\n            \"1984\",\n            LocalDate.of(1949, 6, 8),\n            328,\n            \"978-88-04-68012-1\",\n            \"George Orwell\"\n        );\n        \n        Libro libro3 = new Libro(\n            \"Il Nome della Rosa\",\n            LocalDate.of(1980, 9, 1),\n            503,\n            \"978-88-452-6647-7\",\n            \"Umberto Eco\"\n        );\n        \n        Rivista rivista1 = new Rivista(\n            \"National Geographic Italia\",\n            LocalDate.of(2024, 11, 1),\n            120,\n            \"Vol. 35, N. 11\",\n            \"Mensile\"\n        );\n        \n        Rivista rivista2 = new Rivista(\n            \"Focus\",\n            LocalDate.of(2024, 10, 15),\n            98,\n            \"N. 385\",\n            \"Mensile\"\n        );\n        \n        Rivista rivista3 = new Rivista(\n            \"Le Scienze\",\n            LocalDate.of(2024, 11, 20),\n            88,\n            \"N. 655\",\n            \"Mensile\"\n        );\n        \n        biblioteca.aggiungiPubblicazione(libro1);\n        biblioteca.aggiungiPubblicazione(rivista1);\n        biblioteca.aggiungiPubblicazione(libro2);\n        biblioteca.aggiungiPubblicazione(rivista2);\n        biblioteca.aggiungiPubblicazione(libro3);\n        biblioteca.aggiungiPubblicazione(rivista3);\n        \n        biblioteca.stampaCatalogo();\n        \n        System.out.println(\"--- TEST RICERCA PER NUMERO ---\");\n        Pubblicazione trovata = biblioteca.cercaPerNumero(3);\n        if (trovata != null) {\n            System.out.println(\"Trovata: \" + trovata);\n        }\n        System.out.println();\n        \n        System.out.println(\"--- SOLO LIBRI ---\");\n        for (Libro l : biblioteca.getLibri()) {\n            System.out.println(l);\n        }\n        System.out.println();\n        \n        System.out.println(\"--- SOLO RIVISTE ---\");\n        for (Rivista r : biblioteca.getRiviste()) {\n            System.out.println(r);\n        }\n        System.out.println();\n        \n        System.out.println(\"--- TEST RIMOZIONE (numero progressivo 2) ---\");\n        biblioteca.rimuoviPubblicazione(2);\n        biblioteca.stampaCatalogo();\n        \n        System.out.println(\"Totale pubblicazioni rimanenti: \" + biblioteca.contaPubblicazioni());\n    }\n}\n", "import java.time.LocalDate;\n\n/**\n * @author giordii.dev\n */\npublic abstract class Pubblicazione {\n    private static int contatore = 1;\n    \n    private final int numeroProgressivo;\n    private final String titolo;\n    private final LocalDate dataPubblicazione;\n    private final int numeroPagine;\n    \n    public Pubblicazione(String titolo, LocalDate dataPubblicazione, int numeroPagine) {\n        if (titolo == null || titolo.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"Il titolo non può essere vuoto\");\n        }\n        if (dataPubblicazione == null) {\n            throw new IllegalArgumentException(\"La data di pubblicazione non può essere null\");\n        }\n        if (numeroPagine <= 0) {\n            throw new IllegalArgumentException(\"Il numero di pagine deve essere > 0\");\n        }\n        \n        this.numeroProgressivo = contatore++;\n        this.titolo = titolo;\n        this.dataPubblicazione = dataPubblicazione;\n        this.numeroPagine = numeroPagine;\n    }\n    \n    public int getNumeroProgressivo() {\n        return numeroProgressivo;\n    }\n    \n    public String getTitolo() {\n        return titolo;\n    }\n    \n    public LocalDate getDataPubblicazione() {\n        return dataPubblicazione;\n    }\n    \n    public int getNumeroPagine() {\n        return numeroPagine;\n    }\n    \n    @Override\n    public String toString() {\n        return String.format(\"[#%d] %s - %s - %d pagine\", \n            numeroProgressivo, titolo, dataPubblicazione, numeroPagine);\n    }\n}\n", "import java.time.LocalDate;\n\n/**\n * @author giordii.dev\n */\npublic class Libro extends Pubblicazione {\n    private final String isbn;\n    private final String autore;\n    \n    public Libro(String titolo, LocalDate dataPubblicazione, int numeroPagine, \n                 String isbn, String autore) {\n        super(titolo, dataPubblicazione, numeroPagine);\n        \n        if (isbn == null || isbn.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"L'ISBN non può essere vuoto\");\n        }\n        if (autore == null || autore.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"L'autore non può essere vuoto\");\n        }\n        \n        this.isbn = isbn;\n        this.autore = autore;\n    }\n    \n    public String getIsbn() {\n        return isbn;\n    }\n    \n    public String getAutore() {\n        return autore;\n    }\n    \n    @Override\n    public String toString() {\n        return \"LIBRO: \" + super.toString() + \n               String.format(\" | ISBN: %s | Autore: %s\", isbn, autore);\n    }\n}\n", "import java.time.LocalDate;\n\n/**\n * @author giordii.dev\n */\npublic class Rivista extends Pubblicazione {\n    private final String numeroVolume;\n    private final String periodicita;\n    \n    public Rivista(String titolo, LocalDate dataPubblicazione, int numeroPagine,\n                   String numeroVolume, String periodicita) {\n        super(titolo, dataPubblicazione, numeroPagine);\n        \n        if (numeroVolume == null || numeroVolume.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"Il numero/volume non può essere vuoto\");\n        }\n        if (periodicita == null || periodicita.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"La periodicità non può essere vuota\");\n        }\n        \n        this.numeroVolume = numeroVolume;\n        this.periodicita = periodicita;\n    }\n    \n    public String getNumeroVolume() {\n        return numeroVolume;\n    }\n    \n    public String getPeriodicita() {\n        return periodicita;\n    }\n    \n    @Override\n    public String toString() {\n        return \"RIVISTA: \" + super.toString() + \n               String.format(\" | N/Vol: %s | Periodicità: %s\", numeroVolume, periodicita);\n    }\n}\n", "import java.util.ArrayList;\n\n/**\n * @author giordii.dev\n */\npublic class Biblioteca {\n    private final String nome;\n    private final ArrayList<Pubblicazione> pubblicazioni;\n    \n    public Biblioteca(String nome) {\n        if (nome == null || nome.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"Il nome della biblioteca non può essere vuoto\");\n        }\n        this.nome = nome;\n        this.pubblicazioni = new ArrayList<>();\n    }\n    \n    public void aggiungiPubblicazione(Pubblicazione p) {\n        if (p == null) {\n            throw new IllegalArgumentException(\"La pubblicazione non può essere null\");\n        }\n        pubblicazioni.add(p);\n    }\n    \n    public void rimuoviPubblicazione(int numeroProgressivo) {\n        pubblicazioni.removeIf(p -> p.getNumeroProgressivo() == numeroProgressivo);\n    }\n    \n    public Pubblicazione cercaPerNumero(int numeroProgressivo) {\n        for (Pubblicazione p : pubblicazioni) {\n            if (p.getNumeroProgressivo() == numeroProgressivo) {\n                return p;\n            }\n        }\n        return null;\n    }\n    \n    public ArrayList<Libro> getLibri() {\n        ArrayList<Libro> libri = new ArrayList<>();\n        for (Pubblicazione p : pubblicazioni) {\n            if (p instanceof Libro) {\n                libri.add((Libro) p);\n            }\n        }\n        return libri;\n    }\n    \n    public ArrayList<Rivista> getRiviste() {\n        ArrayList<Rivista> riviste = new ArrayList<>();\n        for (Pubblicazione p : pubblicazioni) {\n            if (p instanceof Rivista) {\n                riviste.add((Rivista) p);\n            }\n        }\n        return riviste;\n    }\n    \n    public int contaPubblicazioni() {\n        return pubblicazioni.size();\n    }\n    \n    public void stampaCatalogo() {\n        System.out.println(\"\\n=== CATALOGO BIBLIOTECA: \" + nome + \" ===\");\n        System.out.println(\"Totale pubblicazioni: \" + pubblicazioni.size());\n        System.out.println();\n        \n        if (pubblicazioni.isEmpty()) {\n            System.out.println(\"Nessuna pubblicazione presente.\");\n        } else {\n            for (Pubblicazione p : pubblicazioni) {\n                System.out.println(p);\n            }\n        }\n        System.out.println(\"==========================================\\n\");\n    }\n    \n    public String getNome() {\n        return nome;\n    }\n}\n"];
+        const projectName = "Biblioteca";
+        const buildStatus = "success";
+        const precompiledOutput = "=== SISTEMA GESTIONE BIBLIOTECA ===\n\n\n=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===\nTotale pubblicazioni: 6\n\nLIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien\nRIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile\nLIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | ISBN: 978-88-04-68012-1 | Autore: George Orwell\nRIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile\nLIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\nRIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile\n==========================================\n\n--- TEST RICERCA PER NUMERO ---\nTrovata: LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\n\n--- SOLO LIBRI ---\nLIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien\nLIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | ISBN: 978-88-04-68012-1 | Autore: George Orwell\nLIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\n\n--- SOLO RIVISTE ---\nRIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile\nRIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile\nRIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile\n\n--- TEST RIMOZIONE (numero progressivo 2) ---\n\n=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===\nTotale pubblicazioni: 5\n\nLIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien\nRIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile\nRIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | N/Vol: N. 385 | Periodicità: Mensile\nLIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\nRIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | N/Vol: N. 655 | Periodicità: Mensile\n==========================================\n\nTotale pubblicazioni rimanenti: 5\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>
