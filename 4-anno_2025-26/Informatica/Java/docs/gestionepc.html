@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GestionePC - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg: #03060f;
+            --panel: #0a101f;
+            --panel-alt: #121a30;
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f5f6ff;
+            --muted: #9aa4c6;
+            --accent: #6bb8ff;
+            --accent-strong: #4a92ff;
+            --success: #38d98a;
+            --error: #f48b9c;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        header {
+            flex-shrink: 0;
+            background: rgba(10, 16, 31, 0.96);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        header h1 i {
+            color: var(--accent);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            border-top: 1px solid var(--border);
+            min-height: 0;
+            overflow: hidden;
+        }
+        
+        .left-panel {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+        }
+        
+        .tabs {
+            display: flex;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            border: none;
+            background: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 10px 12px;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text);
+        }
+        
+        .tab-button.active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .code-area {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--panel-alt);
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        
+        pre {
+            height: 100%;
+            margin: 0;
+        }
+        
+        pre code {
+            display: block;
+            height: 100%;
+            padding: 16px !important;
+            background: #060a17 !important;
+            color: #eaf0ff !important;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: 1px solid var(--border);
+            background: rgba(3, 6, 15, 0.85);
+            color: var(--text);
+            border-radius: 4px;
+            padding: 4px 9px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        
+        .copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .right-panel {
+            width: 32%;
+            min-width: 280px;
+            min-height: 0;
+            background: var(--panel);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .run-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .run-header h2 {
+            font-size: 0.9rem;
+        }
+        
+        .run-btn {
+            border: none;
+            background: linear-gradient(120deg, var(--accent-strong), var(--accent));
+            color: #fff;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        
+        .output-area {
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: var(--panel-alt);
+        }
+        
+        .output-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 130px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            background: rgba(4, 8, 20, 0.92);
+            color: var(--muted);
+        }
+        
+        .output-box.success {
+            border-color: rgba(56, 217, 138, 0.45);
+            color: var(--success);
+        }
+        
+        .output-box.error {
+            border-color: rgba(244, 139, 156, 0.45);
+            color: var(--error);
+        }
+        
+        .status-indicator {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            padding: 6px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            color: var(--muted);
+        }
+        
+        .status-indicator.success {
+            color: var(--success);
+            border-color: rgba(56, 217, 138, 0.35);
+        }
+        
+        .status-indicator.error {
+            color: var(--error);
+            border-color: rgba(244, 139, 156, 0.35);
+        }
+        
+        .status-indicator.running {
+            color: var(--accent);
+            border-color: rgba(107, 184, 255, 0.35);
+        }
+        
+        .spinner {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 999px;
+            border: 2px solid rgba(107, 184, 255, 0.2);
+            border-top-color: var(--accent);
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            border-left: 3px solid var(--accent);
+            padding: 7px 10px;
+            background: rgba(107, 184, 255, 0.08);
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 960px) {
+            body {
+                overflow: auto;
+            }
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            header {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .tabs {
+                padding: 0 8px;
+            }
+            .tab-button {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            GestionePC
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="gestionepc-tab0">Main.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab1">PC.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab2">Desktop.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab3">Notebook.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab4">Server.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab5">Palmare.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab6">PCFisso.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab7">PCPortatile.java</button>
+        
+            <button class="tab-button " data-tab="gestionepc-tab8">InventarioPC.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="gestionepc-tab0" class="tab-content active">
+                <pre><code class="language-java">import java.util.List;
+
+// Entry point test inventario
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(&quot;=== SISTEMA DI GESTIONE INVENTARIO PC ===\n&quot;);
+
+        InventarioPC inv = new InventarioPC();
+
+        // desktop
+        Desktop desk1 = new Desktop(
+            &quot;Intel Core i7-13700K&quot;, 32, 1000,
+            &quot;Dell&quot;, &quot;Optiplex 7090&quot;, &quot;Windows 11 Pro&quot;,
+            &quot;grande&quot;, &quot;NVIDIA RTX 4070&quot;, &quot;Realtek ALC897&quot;
+        );
+        Desktop desk2 = new Desktop(
+            &quot;AMD Ryzen 9 5950X&quot;, 64, 2000,
+            &quot;HP&quot;, &quot;EliteDesk 800 G9&quot;, &quot;Windows 11 Pro&quot;,
+            &quot;medio&quot;, &quot;AMD Radeon RX 7600&quot;, &quot;Realtek ALC1220&quot;
+        );
+
+        // server
+        Server srv1 = new Server(
+            &quot;Intel Xeon Gold 6330&quot;, 128, 4000,
+            &quot;Dell&quot;, &quot;PowerEdge R750&quot;, &quot;Ubuntu Server 22.04&quot;,
+            &quot;grande&quot;, 2, true
+        );
+        Server srv2 = new Server(
+            &quot;AMD EPYC 7763&quot;, 256, 8000,
+            &quot;HPE&quot;, &quot;ProLiant DL385 Gen10&quot;, &quot;Red Hat Enterprise Linux 9&quot;,
+            &quot;grande&quot;, 4, true
+        );
+        Server srv3 = new Server(
+            &quot;Intel Xeon E-2386G&quot;, 64, 2000,
+            &quot;Lenovo&quot;, &quot;ThinkSystem SR250&quot;, &quot;Windows Server 2022&quot;,
+            &quot;medio&quot;, 1, false
+        );
+
+        // notebook
+        Notebook nb1 = new Notebook(
+            &quot;Intel Core i5-1235U&quot;, 16, 512,
+            &quot;Lenovo&quot;, &quot;ThinkPad X1 Carbon Gen 10&quot;, &quot;Windows 11 Pro&quot;,
+            1.12, 2.2, 31.5, 21.7, 14.0, true,
+            true, 2.1
+        );
+        Notebook nb2 = new Notebook(
+            &quot;Apple M2 Pro&quot;, 32, 1000,
+            &quot;Apple&quot;, &quot;MacBook Pro 16&quot;, &quot;macOS Ventura&quot;,
+            2.15, 2.49, 35.57, 24.81, 16.2, true,
+            true, 1.0
+        );
+        Notebook nb3 = new Notebook(
+            &quot;AMD Ryzen 7 6800U&quot;, 16, 512,
+            &quot;ASUS&quot;, &quot;Zenbook S 13&quot;, &quot;Windows 11 Home&quot;,
+            1.0, 1.69, 29.67, 21.04, 13.3, true,
+            false, 0
+        );
+
+        // palmari
+        Palmare palm1 = new Palmare(
+            &quot;Qualcomm Snapdragon 8 Gen 2&quot;, 8, 256,
+            &quot;Samsung&quot;, &quot;Galaxy Tab S9&quot;, &quot;Android 13&quot;,
+            0.498, 0.57, 16.54, 25.45, 11.0, true,
+            true, &quot;microSD&quot;
+        );
+        Palmare palm2 = new Palmare(
+            &quot;Apple A15 Bionic&quot;, 4, 128,
+            &quot;Apple&quot;, &quot;iPad Mini 6&quot;, &quot;iPadOS 16&quot;,
+            0.293, 0.63, 13.48, 19.53, 8.3, true,
+            true, &quot;none&quot;
+        );
+
+        System.out.println(&quot;Aggiunta PC all&#39;inventario...\n&quot;);
+        inv.aggiungiPC(desk1);
+        inv.aggiungiPC(desk2);
+        inv.aggiungiPC(srv1);
+        inv.aggiungiPC(srv2);
+        inv.aggiungiPC(srv3);
+        inv.aggiungiPC(nb1);
+        inv.aggiungiPC(nb2);
+        inv.aggiungiPC(nb3);
+        inv.aggiungiPC(palm1);
+        inv.aggiungiPC(palm2);
+
+        System.out.println(inv);
+
+        System.out.println(&quot;\n=== TEST: PC CON PIÙ RAM ===&quot;);
+        PC pcMaxRam = inv.trovaPCConPiuRAM();
+        if (pcMaxRam != null) {
+            System.out.println(pcMaxRam);
+        }
+
+        System.out.println(&quot;\n=== TEST: MEDIA RAM ===&quot;);
+        double mediaRam = inv.calcolaMediaRAM();
+        System.out.printf(&quot;Media RAM: %.2f GB\n&quot;, mediaRam);
+
+        System.out.println(&quot;\n=== TEST: PORTATILI CON WiFi ===&quot;);
+        int portWifi = inv.contaPortatiliConWifi();
+        System.out.println(&quot;Numero di portatili con WiFi: &quot; + portWifi);
+
+        System.out.println(&quot;\n=== TEST: SERVER CON RAID ===&quot;);
+        int srvRaid = inv.contaServerConRaid();
+        System.out.println(&quot;Numero di server con RAID: &quot; + srvRaid);
+
+        System.out.println(&quot;\n=== TEST: NOTEBOOK PIÙ LEGGERO ===&quot;);
+        Notebook nbLeggero = inv.trovaNotebookPiuLeggero();
+        if (nbLeggero != null) {
+            System.out.println(nbLeggero);
+        }
+
+        System.out.println(&quot;\n=== TEST: RICERCA PER MARCA (Dell) ===&quot;);
+        List&lt;PC&gt; pcDell = inv.cercaPerMarca(&quot;Dell&quot;);
+        System.out.println(&quot;PC Dell trovati: &quot; + pcDell.size());
+        for (PC pc : pcDell) {
+            System.out.println(&quot;  - &quot; + pc);
+        }
+
+        System.out.println(&quot;\n=== TEST: RICERCA PER SISTEMA OPERATIVO (Windows 11 Pro) ===&quot;);
+        List&lt;PC&gt; pcWin11 = inv.cercaPerSistemaOperativo(&quot;Windows 11 Pro&quot;);
+        System.out.println(&quot;PC con Windows 11 Pro trovati: &quot; + pcWin11.size());
+        for (PC pc : pcWin11) {
+            System.out.println(&quot;  - &quot; + pc);
+        }
+
+        System.out.println(&quot;\n=== TEST: RICERCA PORTATILI (peso &lt;= 1.5kg, con WiFi) ===&quot;);
+        List&lt;PC&gt; portLeggeri = inv.cercaPortatili(1.5, true);
+        System.out.println(&quot;Portatili trovati: &quot; + portLeggeri.size());
+        for (PC pc : portLeggeri) {
+            System.out.println(&quot;  - &quot; + pc);
+        }
+
+        System.out.println(&quot;\n=== TEST: RICERCA PORTATILI (peso &lt;= 2.5kg, senza filtro WiFi) ===&quot;);
+        List&lt;PC&gt; portMedi = inv.cercaPortatili(2.5, false);
+        System.out.println(&quot;Portatili trovati: &quot; + portMedi.size());
+        for (PC pc : portMedi) {
+            System.out.println(&quot;  - &quot; + pc);
+        }
+
+        System.out.println(&quot;\n=== TEST: RIMOZIONE PC ===&quot;);
+        System.out.println(&quot;Rimozione del palmare Samsung...&quot;);
+        boolean okRemove = inv.rimuoviPC(palm1);
+        System.out.println(&quot;Rimozione riuscita: &quot; + (okRemove ? &quot;Sì&quot; : &quot;No&quot;));
+        System.out.println(&quot;Nuova dimensione inventario: &quot; + inv.size());
+
+        System.out.println(&quot;\n=== TEST: RICERCA PER MARCA (Apple) ===&quot;);
+        List&lt;PC&gt; pcApple = inv.cercaPerMarca(&quot;Apple&quot;);
+        System.out.println(&quot;PC Apple trovati: &quot; + pcApple.size());
+        for (PC pc : pcApple) {
+            System.out.println(&quot;  - &quot; + pc);
+        }
+
+        System.out.println(&quot;\n=== FINE TEST ===&quot;);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab1" class="tab-content ">
+                <pre><code class="language-java">// PC base astratto
+public abstract class PC {
+    protected String tipoProc;
+    protected int ramGb;
+    protected int memGb;
+    protected String marca;
+    protected String modello;
+    protected String sistOp;
+
+    public PC(String tipoProc, int ramGb, int memGb,
+              String marca, String modello, String sistOp) {
+        if (ramGb &lt;= 0) {
+            throw new IllegalArgumentException(&quot;ramGb deve essere &gt; 0&quot;);
+        }
+        if (memGb &lt;= 0) {
+            throw new IllegalArgumentException(&quot;memGb deve essere &gt; 0&quot;);
+        }
+        this.tipoProc = tipoProc;
+        this.ramGb = ramGb;
+        this.memGb = memGb;
+        this.marca = marca;
+        this.modello = modello;
+        this.sistOp = sistOp;
+    }
+
+    public String getTipoProc() {
+        return tipoProc;
+    }
+
+    public int getRamGb() {
+        return ramGb;
+    }
+
+    public int getMemGb() {
+        return memGb;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getModello() {
+        return modello;
+    }
+
+    public String getSistOp() {
+        return sistOp;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(&quot;Marca: %s, Modello: %s, CPU: %s, RAM: %dGB, Memoria: %dGB, OS: %s&quot;,
+                marca, modello, tipoProc, ramGb, memGb, sistOp);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PC pc = (PC) o;
+        return marca.equals(pc.marca) &amp;&amp; modello.equals(pc.modello);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab2" class="tab-content ">
+                <pre><code class="language-java">// Desktop fisso
+public class Desktop extends PCFisso {
+    private String gpu;
+    private String audio;
+
+    public Desktop(String tipoProc, int ramGb, int memGb,
+                   String marca, String modello, String sistOp, String tipoCab,
+                   String gpu, String audio) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp, tipoCab);
+        this.gpu = gpu;
+        this.audio = audio;
+    }
+
+    public String getGpu() {
+        return gpu;
+    }
+
+    public String getAudio() {
+        return audio;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;[Desktop] &quot; + super.toString() +
+               String.format(&quot;, Scheda Video: %s, Scheda Audio: %s&quot;, gpu, audio);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab3" class="tab-content ">
+                <pre><code class="language-java">// Notebook classico
+public class Notebook extends PCPortatile {
+    private boolean webcam;
+    private double resWebcam;
+
+    public Notebook(String tipoProc, int ramGb, int memGb,
+                    String marca, String modello, String sistOp,
+                    double pesoKg, double altCm, double largCm, double profCm,
+                    double diagPol, boolean wifi,
+                    boolean webcam, double resWebcam) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp,
+              pesoKg, altCm, largCm, profCm, diagPol, wifi);
+        this.webcam = webcam;
+        this.resWebcam = webcam ? resWebcam : 0;
+    }
+
+    public boolean hasWebcam() {
+        return webcam;
+    }
+
+    public double getResWebcam() {
+        return resWebcam;
+    }
+
+    @Override
+    public String toString() {
+        String info = webcam ?
+            String.format(&quot;Webcam: Sì (%.1fMP)&quot;, resWebcam) : &quot;Webcam: No&quot;;
+        return &quot;[Notebook] &quot; + super.toString() + &quot;, &quot; + info;
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab4" class="tab-content ">
+                <pre><code class="language-java">// Server rack / tower
+public class Server extends PCFisso {
+    private int numProc;
+    private boolean raid;
+
+    public Server(String tipoProc, int ramGb, int memGb,
+                  String marca, String modello, String sistOp, String tipoCab,
+                  int numProc, boolean raid) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp, tipoCab);
+        if (numProc &lt;= 0) {
+            throw new IllegalArgumentException(&quot;numProc deve essere &gt; 0&quot;);
+        }
+        this.numProc = numProc;
+        this.raid = raid;
+    }
+
+    public int getNumProc() {
+        return numProc;
+    }
+
+    public boolean hasRaid() {
+        return raid;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;[Server] &quot; + super.toString() +
+               String.format(&quot;, Processori: %d, RAID: %s&quot;, numProc, raid ? &quot;Sì&quot; : &quot;No&quot;);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab5" class="tab-content ">
+                <pre><code class="language-java">// Palmare compatto
+public class Palmare extends PCPortatile {
+    private boolean bt;
+    private String slotMem;
+
+    public Palmare(String tipoProc, int ramGb, int memGb,
+                   String marca, String modello, String sistOp,
+                   double pesoKg, double altCm, double largCm, double profCm,
+                   double diagPol, boolean wifi,
+                   boolean bt, String slotMem) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp,
+              pesoKg, altCm, largCm, profCm, diagPol, wifi);
+        this.bt = bt;
+        this.slotMem = slotMem;
+    }
+
+    public boolean hasBt() {
+        return bt;
+    }
+
+    public String getSlotMem() {
+        return slotMem;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;[Palmare] &quot; + super.toString() +
+               String.format(&quot;, Bluetooth: %s, Espansione: %s&quot;,
+                           bt ? &quot;Sì&quot; : &quot;No&quot;, slotMem);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab6" class="tab-content ">
+                <pre><code class="language-java">// Base per PC fissi
+public abstract class PCFisso extends PC {
+    protected String tipoCab;
+
+    public PCFisso(String tipoProc, int ramGb, int memGb,
+                   String marca, String modello, String sistOp, String tipoCab) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp);
+        this.tipoCab = tipoCab;
+    }
+
+    public String getTipoCab() {
+        return tipoCab;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + String.format(&quot;, Case: %s&quot;, tipoCab);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab7" class="tab-content ">
+                <pre><code class="language-java">// Base per portatili
+public abstract class PCPortatile extends PC {
+    protected double pesoKg;
+    protected double altCm;
+    protected double largCm;
+    protected double profCm;
+    protected double diagPol;
+    protected boolean wifi;
+
+    public PCPortatile(String tipoProc, int ramGb, int memGb,
+                       String marca, String modello, String sistOp,
+                       double pesoKg, double altCm, double largCm, double profCm,
+                       double diagPol, boolean wifi) {
+        super(tipoProc, ramGb, memGb, marca, modello, sistOp);
+        if (pesoKg &lt;= 0) {
+            throw new IllegalArgumentException(&quot;pesoKg deve essere &gt; 0&quot;);
+        }
+        if (diagPol &lt;= 0) {
+            throw new IllegalArgumentException(&quot;diagPol deve essere &gt; 0&quot;);
+        }
+        this.pesoKg = pesoKg;
+        this.altCm = altCm;
+        this.largCm = largCm;
+        this.profCm = profCm;
+        this.diagPol = diagPol;
+        this.wifi = wifi;
+    }
+
+    public double getPesoKg() {
+        return pesoKg;
+    }
+
+    public double getAltCm() {
+        return altCm;
+    }
+
+    public double getLargCm() {
+        return largCm;
+    }
+
+    public double getProfCm() {
+        return profCm;
+    }
+
+    public double getDiagPol() {
+        return diagPol;
+    }
+
+    public boolean hasWifi() {
+        return wifi;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+               String.format(&quot;, Peso: %.2fkg, Dimensioni: %.1fx%.1fx%.1fcm, Video: %.1f\&quot;, WiFi: %s&quot;,
+                           pesoKg, altCm, largCm, profCm, diagPol, wifi ? &quot;Sì&quot; : &quot;No&quot;);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="gestionepc-tab8" class="tab-content ">
+                <pre><code class="language-java">import java.util.ArrayList;
+import java.util.List;
+
+// Gestione semplice dell&#39;inventario PC
+public class InventarioPC {
+    private ArrayList&lt;PC&gt; pcs;
+
+    public InventarioPC() {
+        this.pcs = new ArrayList&lt;&gt;();
+    }
+
+    public void aggiungiPC(PC pc) {
+        pcs.add(pc);
+    }
+
+    public boolean rimuoviPC(PC pc) {
+        return pcs.remove(pc);
+    }
+
+    public List&lt;PC&gt; cercaPerMarca(String marca) {
+        List&lt;PC&gt; match = new ArrayList&lt;&gt;();
+        for (PC pc : pcs) {
+            if (pc.getMarca().equalsIgnoreCase(marca)) {
+                match.add(pc);
+            }
+        }
+        return match;
+    }
+
+    public List&lt;PC&gt; cercaPerSistemaOperativo(String sistOp) {
+        List&lt;PC&gt; match = new ArrayList&lt;&gt;();
+        for (PC pc : pcs) {
+            if (pc.getSistOp().equalsIgnoreCase(sistOp)) {
+                match.add(pc);
+            }
+        }
+        return match;
+    }
+
+    public PC trovaPCConPiuRAM() {
+        if (pcs.isEmpty()) {
+            return null;
+        }
+        PC pcTop = pcs.get(0);
+        for (PC pc : pcs) {
+            if (pc.getRamGb() &gt; pcTop.getRamGb()) {
+                pcTop = pc;
+            }
+        }
+        return pcTop;
+    }
+
+    public double calcolaMediaRAM() {
+        if (pcs.isEmpty()) {
+            return 0.0;
+        }
+        int sumRam = 0;
+        for (PC pc : pcs) {
+            sumRam += pc.getRamGb();
+        }
+        return (double) sumRam / pcs.size();
+    }
+
+    public int contaPortatiliConWifi() {
+        int cnt = 0;
+        for (PC pc : pcs) {
+            if (pc instanceof PCPortatile) {
+                PCPortatile portatile = (PCPortatile) pc;
+                if (portatile.hasWifi()) {
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+
+    public int contaServerConRaid() {
+        int cnt = 0;
+        for (PC pc : pcs) {
+            if (pc instanceof Server) {
+                Server server = (Server) pc;
+                if (server.hasRaid()) {
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+
+    public Notebook trovaNotebookPiuLeggero() {
+        Notebook leggero = null;
+        for (PC pc : pcs) {
+            if (pc instanceof Notebook) {
+                Notebook nb = (Notebook) pc;
+                if (leggero == null || nb.getPesoKg() &lt; leggero.getPesoKg()) {
+                    leggero = nb;
+                }
+            }
+        }
+        return leggero;
+    }
+
+    public List&lt;PC&gt; cercaPortatili(double pesoMax, boolean richiedeWifi) {
+        List&lt;PC&gt; match = new ArrayList&lt;&gt;();
+        for (PC pc : pcs) {
+            if (pc instanceof PCPortatile) {
+                PCPortatile portatile = (PCPortatile) pc;
+                if (portatile.getPesoKg() &lt;= pesoMax) {
+                    if (!richiedeWifi || portatile.hasWifi()) {
+                        match.add(pc);
+                    }
+                }
+            }
+        }
+        return match;
+    }
+
+    public int size() {
+        return pcs.size();
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(&quot;=== INVENTARIO PC ===\n&quot;);
+        sb.append(&quot;Totale PC: &quot;).append(pcs.size()).append(&quot;\n\n&quot;);
+        for (int i = 0; i &lt; pcs.size(); i++) {
+            sb.append((i + 1)).append(&quot;. &quot;).append(pcs.get(i).toString()).append(&quot;\n&quot;);
+        }
+        return sb.toString();
+    }
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">=== SISTEMA DI GESTIONE INVENTARIO PC ===
+
+Aggiunta PC all&#39;inventario...
+
+=== INVENTARIO PC ===
+Totale PC: 10
+
+1. [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897
+2. [Desktop] Marca: HP, Modello: EliteDesk 800 G9, CPU: AMD Ryzen 9 5950X, RAM: 64GB, Memoria: 2000GB, OS: Windows 11 Pro, Case: medio, Scheda Video: AMD Radeon RX 7600, Scheda Audio: Realtek ALC1220
+3. [Server] Marca: Dell, Modello: PowerEdge R750, CPU: Intel Xeon Gold 6330, RAM: 128GB, Memoria: 4000GB, OS: Ubuntu Server 22.04, Case: grande, Processori: 2, RAID: Sì
+4. [Server] Marca: HPE, Modello: ProLiant DL385 Gen10, CPU: AMD EPYC 7763, RAM: 256GB, Memoria: 8000GB, OS: Red Hat Enterprise Linux 9, Case: grande, Processori: 4, RAID: Sì
+5. [Server] Marca: Lenovo, Modello: ThinkSystem SR250, CPU: Intel Xeon E-2386G, RAM: 64GB, Memoria: 2000GB, OS: Windows Server 2022, Case: medio, Processori: 1, RAID: No
+6. [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0&quot;, WiFi: Sì, Webcam: Sì (2.1MP)
+7. [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2&quot;, WiFi: Sì, Webcam: Sì (1.0MP)
+8. [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3&quot;, WiFi: Sì, Webcam: No
+9. [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0&quot;, WiFi: Sì, Bluetooth: Sì, Espansione: microSD
+10. [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3&quot;, WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+
+=== TEST: PC CON PIÙ RAM ===
+[Server] Marca: HPE, Modello: ProLiant DL385 Gen10, CPU: AMD EPYC 7763, RAM: 256GB, Memoria: 8000GB, OS: Red Hat Enterprise Linux 9, Case: grande, Processori: 4, RAID: Sì
+
+=== TEST: MEDIA RAM ===
+Media RAM: 62.00 GB
+
+=== TEST: PORTATILI CON WiFi ===
+Numero di portatili con WiFi: 5
+
+=== TEST: SERVER CON RAID ===
+Numero di server con RAID: 2
+
+=== TEST: NOTEBOOK PIÙ LEGGERO ===
+[Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3&quot;, WiFi: Sì, Webcam: No
+
+=== TEST: RICERCA PER MARCA (Dell) ===
+PC Dell trovati: 2
+  - [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897
+  - [Server] Marca: Dell, Modello: PowerEdge R750, CPU: Intel Xeon Gold 6330, RAM: 128GB, Memoria: 4000GB, OS: Ubuntu Server 22.04, Case: grande, Processori: 2, RAID: Sì
+
+=== TEST: RICERCA PER SISTEMA OPERATIVO (Windows 11 Pro) ===
+PC con Windows 11 Pro trovati: 3
+  - [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897
+  - [Desktop] Marca: HP, Modello: EliteDesk 800 G9, CPU: AMD Ryzen 9 5950X, RAM: 64GB, Memoria: 2000GB, OS: Windows 11 Pro, Case: medio, Scheda Video: AMD Radeon RX 7600, Scheda Audio: Realtek ALC1220
+  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0&quot;, WiFi: Sì, Webcam: Sì (2.1MP)
+
+=== TEST: RICERCA PORTATILI (peso &lt;= 1.5kg, con WiFi) ===
+Portatili trovati: 4
+  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0&quot;, WiFi: Sì, Webcam: Sì (2.1MP)
+  - [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3&quot;, WiFi: Sì, Webcam: No
+  - [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0&quot;, WiFi: Sì, Bluetooth: Sì, Espansione: microSD
+  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3&quot;, WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+=== TEST: RICERCA PORTATILI (peso &lt;= 2.5kg, senza filtro WiFi) ===
+Portatili trovati: 5
+  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0&quot;, WiFi: Sì, Webcam: Sì (2.1MP)
+  - [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2&quot;, WiFi: Sì, Webcam: Sì (1.0MP)
+  - [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3&quot;, WiFi: Sì, Webcam: No
+  - [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0&quot;, WiFi: Sì, Bluetooth: Sì, Espansione: microSD
+  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3&quot;, WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+=== TEST: RIMOZIONE PC ===
+Rimozione del palmare Samsung...
+Rimozione riuscita: Sì
+Nuova dimensione inventario: 9
+
+=== TEST: RICERCA PER MARCA (Apple) ===
+PC Apple trovati: 2
+  - [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2&quot;, WiFi: Sì, Webcam: Sì (1.0MP)
+  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3&quot;, WiFi: Sì, Bluetooth: Sì, Espansione: none
+
+=== FINE TEST ===
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["import java.util.List;\n\n// Entry point test inventario\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== SISTEMA DI GESTIONE INVENTARIO PC ===\\n\");\n\n        InventarioPC inv = new InventarioPC();\n\n        // desktop\n        Desktop desk1 = new Desktop(\n            \"Intel Core i7-13700K\", 32, 1000,\n            \"Dell\", \"Optiplex 7090\", \"Windows 11 Pro\",\n            \"grande\", \"NVIDIA RTX 4070\", \"Realtek ALC897\"\n        );\n        Desktop desk2 = new Desktop(\n            \"AMD Ryzen 9 5950X\", 64, 2000,\n            \"HP\", \"EliteDesk 800 G9\", \"Windows 11 Pro\",\n            \"medio\", \"AMD Radeon RX 7600\", \"Realtek ALC1220\"\n        );\n\n        // server\n        Server srv1 = new Server(\n            \"Intel Xeon Gold 6330\", 128, 4000,\n            \"Dell\", \"PowerEdge R750\", \"Ubuntu Server 22.04\",\n            \"grande\", 2, true\n        );\n        Server srv2 = new Server(\n            \"AMD EPYC 7763\", 256, 8000,\n            \"HPE\", \"ProLiant DL385 Gen10\", \"Red Hat Enterprise Linux 9\",\n            \"grande\", 4, true\n        );\n        Server srv3 = new Server(\n            \"Intel Xeon E-2386G\", 64, 2000,\n            \"Lenovo\", \"ThinkSystem SR250\", \"Windows Server 2022\",\n            \"medio\", 1, false\n        );\n\n        // notebook\n        Notebook nb1 = new Notebook(\n            \"Intel Core i5-1235U\", 16, 512,\n            \"Lenovo\", \"ThinkPad X1 Carbon Gen 10\", \"Windows 11 Pro\",\n            1.12, 2.2, 31.5, 21.7, 14.0, true,\n            true, 2.1\n        );\n        Notebook nb2 = new Notebook(\n            \"Apple M2 Pro\", 32, 1000,\n            \"Apple\", \"MacBook Pro 16\", \"macOS Ventura\",\n            2.15, 2.49, 35.57, 24.81, 16.2, true,\n            true, 1.0\n        );\n        Notebook nb3 = new Notebook(\n            \"AMD Ryzen 7 6800U\", 16, 512,\n            \"ASUS\", \"Zenbook S 13\", \"Windows 11 Home\",\n            1.0, 1.69, 29.67, 21.04, 13.3, true,\n            false, 0\n        );\n\n        // palmari\n        Palmare palm1 = new Palmare(\n            \"Qualcomm Snapdragon 8 Gen 2\", 8, 256,\n            \"Samsung\", \"Galaxy Tab S9\", \"Android 13\",\n            0.498, 0.57, 16.54, 25.45, 11.0, true,\n            true, \"microSD\"\n        );\n        Palmare palm2 = new Palmare(\n            \"Apple A15 Bionic\", 4, 128,\n            \"Apple\", \"iPad Mini 6\", \"iPadOS 16\",\n            0.293, 0.63, 13.48, 19.53, 8.3, true,\n            true, \"none\"\n        );\n\n        System.out.println(\"Aggiunta PC all'inventario...\\n\");\n        inv.aggiungiPC(desk1);\n        inv.aggiungiPC(desk2);\n        inv.aggiungiPC(srv1);\n        inv.aggiungiPC(srv2);\n        inv.aggiungiPC(srv3);\n        inv.aggiungiPC(nb1);\n        inv.aggiungiPC(nb2);\n        inv.aggiungiPC(nb3);\n        inv.aggiungiPC(palm1);\n        inv.aggiungiPC(palm2);\n\n        System.out.println(inv);\n\n        System.out.println(\"\\n=== TEST: PC CON PIÙ RAM ===\");\n        PC pcMaxRam = inv.trovaPCConPiuRAM();\n        if (pcMaxRam != null) {\n            System.out.println(pcMaxRam);\n        }\n\n        System.out.println(\"\\n=== TEST: MEDIA RAM ===\");\n        double mediaRam = inv.calcolaMediaRAM();\n        System.out.printf(\"Media RAM: %.2f GB\\n\", mediaRam);\n\n        System.out.println(\"\\n=== TEST: PORTATILI CON WiFi ===\");\n        int portWifi = inv.contaPortatiliConWifi();\n        System.out.println(\"Numero di portatili con WiFi: \" + portWifi);\n\n        System.out.println(\"\\n=== TEST: SERVER CON RAID ===\");\n        int srvRaid = inv.contaServerConRaid();\n        System.out.println(\"Numero di server con RAID: \" + srvRaid);\n\n        System.out.println(\"\\n=== TEST: NOTEBOOK PIÙ LEGGERO ===\");\n        Notebook nbLeggero = inv.trovaNotebookPiuLeggero();\n        if (nbLeggero != null) {\n            System.out.println(nbLeggero);\n        }\n\n        System.out.println(\"\\n=== TEST: RICERCA PER MARCA (Dell) ===\");\n        List<PC> pcDell = inv.cercaPerMarca(\"Dell\");\n        System.out.println(\"PC Dell trovati: \" + pcDell.size());\n        for (PC pc : pcDell) {\n            System.out.println(\"  - \" + pc);\n        }\n\n        System.out.println(\"\\n=== TEST: RICERCA PER SISTEMA OPERATIVO (Windows 11 Pro) ===\");\n        List<PC> pcWin11 = inv.cercaPerSistemaOperativo(\"Windows 11 Pro\");\n        System.out.println(\"PC con Windows 11 Pro trovati: \" + pcWin11.size());\n        for (PC pc : pcWin11) {\n            System.out.println(\"  - \" + pc);\n        }\n\n        System.out.println(\"\\n=== TEST: RICERCA PORTATILI (peso <= 1.5kg, con WiFi) ===\");\n        List<PC> portLeggeri = inv.cercaPortatili(1.5, true);\n        System.out.println(\"Portatili trovati: \" + portLeggeri.size());\n        for (PC pc : portLeggeri) {\n            System.out.println(\"  - \" + pc);\n        }\n\n        System.out.println(\"\\n=== TEST: RICERCA PORTATILI (peso <= 2.5kg, senza filtro WiFi) ===\");\n        List<PC> portMedi = inv.cercaPortatili(2.5, false);\n        System.out.println(\"Portatili trovati: \" + portMedi.size());\n        for (PC pc : portMedi) {\n            System.out.println(\"  - \" + pc);\n        }\n\n        System.out.println(\"\\n=== TEST: RIMOZIONE PC ===\");\n        System.out.println(\"Rimozione del palmare Samsung...\");\n        boolean okRemove = inv.rimuoviPC(palm1);\n        System.out.println(\"Rimozione riuscita: \" + (okRemove ? \"Sì\" : \"No\"));\n        System.out.println(\"Nuova dimensione inventario: \" + inv.size());\n\n        System.out.println(\"\\n=== TEST: RICERCA PER MARCA (Apple) ===\");\n        List<PC> pcApple = inv.cercaPerMarca(\"Apple\");\n        System.out.println(\"PC Apple trovati: \" + pcApple.size());\n        for (PC pc : pcApple) {\n            System.out.println(\"  - \" + pc);\n        }\n\n        System.out.println(\"\\n=== FINE TEST ===\");\n    }\n}\n", "// PC base astratto\npublic abstract class PC {\n    protected String tipoProc;\n    protected int ramGb;\n    protected int memGb;\n    protected String marca;\n    protected String modello;\n    protected String sistOp;\n\n    public PC(String tipoProc, int ramGb, int memGb,\n              String marca, String modello, String sistOp) {\n        if (ramGb <= 0) {\n            throw new IllegalArgumentException(\"ramGb deve essere > 0\");\n        }\n        if (memGb <= 0) {\n            throw new IllegalArgumentException(\"memGb deve essere > 0\");\n        }\n        this.tipoProc = tipoProc;\n        this.ramGb = ramGb;\n        this.memGb = memGb;\n        this.marca = marca;\n        this.modello = modello;\n        this.sistOp = sistOp;\n    }\n\n    public String getTipoProc() {\n        return tipoProc;\n    }\n\n    public int getRamGb() {\n        return ramGb;\n    }\n\n    public int getMemGb() {\n        return memGb;\n    }\n\n    public String getMarca() {\n        return marca;\n    }\n\n    public String getModello() {\n        return modello;\n    }\n\n    public String getSistOp() {\n        return sistOp;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"Marca: %s, Modello: %s, CPU: %s, RAM: %dGB, Memoria: %dGB, OS: %s\",\n                marca, modello, tipoProc, ramGb, memGb, sistOp);\n    }\n\n    @Override\n    public boolean equals(Object o) {\n        if (this == o) return true;\n        if (o == null || getClass() != o.getClass()) return false;\n        PC pc = (PC) o;\n        return marca.equals(pc.marca) && modello.equals(pc.modello);\n    }\n}\n", "// Desktop fisso\npublic class Desktop extends PCFisso {\n    private String gpu;\n    private String audio;\n\n    public Desktop(String tipoProc, int ramGb, int memGb,\n                   String marca, String modello, String sistOp, String tipoCab,\n                   String gpu, String audio) {\n        super(tipoProc, ramGb, memGb, marca, modello, sistOp, tipoCab);\n        this.gpu = gpu;\n        this.audio = audio;\n    }\n\n    public String getGpu() {\n        return gpu;\n    }\n\n    public String getAudio() {\n        return audio;\n    }\n\n    @Override\n    public String toString() {\n        return \"[Desktop] \" + super.toString() +\n               String.format(\", Scheda Video: %s, Scheda Audio: %s\", gpu, audio);\n    }\n}\n", "// Notebook classico\npublic class Notebook extends PCPortatile {\n    private boolean webcam;\n    private double resWebcam;\n\n    public Notebook(String tipoProc, int ramGb, int memGb,\n                    String marca, String modello, String sistOp,\n                    double pesoKg, double altCm, double largCm, double profCm,\n                    double diagPol, boolean wifi,\n                    boolean webcam, double resWebcam) {\n        super(tipoProc, ramGb, memGb, marca, modello, sistOp,\n              pesoKg, altCm, largCm, profCm, diagPol, wifi);\n        this.webcam = webcam;\n        this.resWebcam = webcam ? resWebcam : 0;\n    }\n\n    public boolean hasWebcam() {\n        return webcam;\n    }\n\n    public double getResWebcam() {\n        return resWebcam;\n    }\n\n    @Override\n    public String toString() {\n        String info = webcam ?\n            String.format(\"Webcam: Sì (%.1fMP)\", resWebcam) : \"Webcam: No\";\n        return \"[Notebook] \" + super.toString() + \", \" + info;\n    }\n}\n", "// Server rack / tower\npublic class Server extends PCFisso {\n    private int numProc;\n    private boolean raid;\n\n    public Server(String tipoProc, int ramGb, int memGb,\n                  String marca, String modello, String sistOp, String tipoCab,\n                  int numProc, boolean raid) {\n        super(tipoProc, ramGb, memGb, marca, modello, sistOp, tipoCab);\n        if (numProc <= 0) {\n            throw new IllegalArgumentException(\"numProc deve essere > 0\");\n        }\n        this.numProc = numProc;\n        this.raid = raid;\n    }\n\n    public int getNumProc() {\n        return numProc;\n    }\n\n    public boolean hasRaid() {\n        return raid;\n    }\n\n    @Override\n    public String toString() {\n        return \"[Server] \" + super.toString() +\n               String.format(\", Processori: %d, RAID: %s\", numProc, raid ? \"Sì\" : \"No\");\n    }\n}\n", "// Palmare compatto\npublic class Palmare extends PCPortatile {\n    private boolean bt;\n    private String slotMem;\n\n    public Palmare(String tipoProc, int ramGb, int memGb,\n                   String marca, String modello, String sistOp,\n                   double pesoKg, double altCm, double largCm, double profCm,\n                   double diagPol, boolean wifi,\n                   boolean bt, String slotMem) {\n        super(tipoProc, ramGb, memGb, marca, modello, sistOp,\n              pesoKg, altCm, largCm, profCm, diagPol, wifi);\n        this.bt = bt;\n        this.slotMem = slotMem;\n    }\n\n    public boolean hasBt() {\n        return bt;\n    }\n\n    public String getSlotMem() {\n        return slotMem;\n    }\n\n    @Override\n    public String toString() {\n        return \"[Palmare] \" + super.toString() +\n               String.format(\", Bluetooth: %s, Espansione: %s\",\n                           bt ? \"Sì\" : \"No\", slotMem);\n    }\n}\n", "// Base per PC fissi\npublic abstract class PCFisso extends PC {\n    protected String tipoCab;\n\n    public PCFisso(String tipoProc, int ramGb, int memGb,\n                   String marca, String modello, String sistOp, String tipoCab) {\n        super(tipoProc, ramGb, memGb, marca, modello, sistOp);\n        this.tipoCab = tipoCab;\n    }\n\n    public String getTipoCab() {\n        return tipoCab;\n    }\n\n    @Override\n    public String toString() {\n        return super.toString() + String.format(\", Case: %s\", tipoCab);\n    }\n}\n", "// Base per portatili\npublic abstract class PCPortatile extends PC {\n    protected double pesoKg;\n    protected double altCm;\n    protected double largCm;\n    protected double profCm;\n    protected double diagPol;\n    protected boolean wifi;\n\n    public PCPortatile(String tipoProc, int ramGb, int memGb,\n                       String marca, String modello, String sistOp,\n                       double pesoKg, double altCm, double largCm, double profCm,\n                       double diagPol, boolean wifi) {\n        super(tipoProc, ramGb, memGb, marca, modello, sistOp);\n        if (pesoKg <= 0) {\n            throw new IllegalArgumentException(\"pesoKg deve essere > 0\");\n        }\n        if (diagPol <= 0) {\n            throw new IllegalArgumentException(\"diagPol deve essere > 0\");\n        }\n        this.pesoKg = pesoKg;\n        this.altCm = altCm;\n        this.largCm = largCm;\n        this.profCm = profCm;\n        this.diagPol = diagPol;\n        this.wifi = wifi;\n    }\n\n    public double getPesoKg() {\n        return pesoKg;\n    }\n\n    public double getAltCm() {\n        return altCm;\n    }\n\n    public double getLargCm() {\n        return largCm;\n    }\n\n    public double getProfCm() {\n        return profCm;\n    }\n\n    public double getDiagPol() {\n        return diagPol;\n    }\n\n    public boolean hasWifi() {\n        return wifi;\n    }\n\n    @Override\n    public String toString() {\n        return super.toString() +\n               String.format(\", Peso: %.2fkg, Dimensioni: %.1fx%.1fx%.1fcm, Video: %.1f\\\", WiFi: %s\",\n                           pesoKg, altCm, largCm, profCm, diagPol, wifi ? \"Sì\" : \"No\");\n    }\n}\n", "import java.util.ArrayList;\nimport java.util.List;\n\n// Gestione semplice dell'inventario PC\npublic class InventarioPC {\n    private ArrayList<PC> pcs;\n\n    public InventarioPC() {\n        this.pcs = new ArrayList<>();\n    }\n\n    public void aggiungiPC(PC pc) {\n        pcs.add(pc);\n    }\n\n    public boolean rimuoviPC(PC pc) {\n        return pcs.remove(pc);\n    }\n\n    public List<PC> cercaPerMarca(String marca) {\n        List<PC> match = new ArrayList<>();\n        for (PC pc : pcs) {\n            if (pc.getMarca().equalsIgnoreCase(marca)) {\n                match.add(pc);\n            }\n        }\n        return match;\n    }\n\n    public List<PC> cercaPerSistemaOperativo(String sistOp) {\n        List<PC> match = new ArrayList<>();\n        for (PC pc : pcs) {\n            if (pc.getSistOp().equalsIgnoreCase(sistOp)) {\n                match.add(pc);\n            }\n        }\n        return match;\n    }\n\n    public PC trovaPCConPiuRAM() {\n        if (pcs.isEmpty()) {\n            return null;\n        }\n        PC pcTop = pcs.get(0);\n        for (PC pc : pcs) {\n            if (pc.getRamGb() > pcTop.getRamGb()) {\n                pcTop = pc;\n            }\n        }\n        return pcTop;\n    }\n\n    public double calcolaMediaRAM() {\n        if (pcs.isEmpty()) {\n            return 0.0;\n        }\n        int sumRam = 0;\n        for (PC pc : pcs) {\n            sumRam += pc.getRamGb();\n        }\n        return (double) sumRam / pcs.size();\n    }\n\n    public int contaPortatiliConWifi() {\n        int cnt = 0;\n        for (PC pc : pcs) {\n            if (pc instanceof PCPortatile) {\n                PCPortatile portatile = (PCPortatile) pc;\n                if (portatile.hasWifi()) {\n                    cnt++;\n                }\n            }\n        }\n        return cnt;\n    }\n\n    public int contaServerConRaid() {\n        int cnt = 0;\n        for (PC pc : pcs) {\n            if (pc instanceof Server) {\n                Server server = (Server) pc;\n                if (server.hasRaid()) {\n                    cnt++;\n                }\n            }\n        }\n        return cnt;\n    }\n\n    public Notebook trovaNotebookPiuLeggero() {\n        Notebook leggero = null;\n        for (PC pc : pcs) {\n            if (pc instanceof Notebook) {\n                Notebook nb = (Notebook) pc;\n                if (leggero == null || nb.getPesoKg() < leggero.getPesoKg()) {\n                    leggero = nb;\n                }\n            }\n        }\n        return leggero;\n    }\n\n    public List<PC> cercaPortatili(double pesoMax, boolean richiedeWifi) {\n        List<PC> match = new ArrayList<>();\n        for (PC pc : pcs) {\n            if (pc instanceof PCPortatile) {\n                PCPortatile portatile = (PCPortatile) pc;\n                if (portatile.getPesoKg() <= pesoMax) {\n                    if (!richiedeWifi || portatile.hasWifi()) {\n                        match.add(pc);\n                    }\n                }\n            }\n        }\n        return match;\n    }\n\n    public int size() {\n        return pcs.size();\n    }\n\n    public String toString() {\n        StringBuilder sb = new StringBuilder();\n        sb.append(\"=== INVENTARIO PC ===\\n\");\n        sb.append(\"Totale PC: \").append(pcs.size()).append(\"\\n\\n\");\n        for (int i = 0; i < pcs.size(); i++) {\n            sb.append((i + 1)).append(\". \").append(pcs.get(i).toString()).append(\"\\n\");\n        }\n        return sb.toString();\n    }\n}\n"];
+        const projectName = "GestionePC";
+        const buildStatus = "success";
+        const precompiledOutput = "=== SISTEMA DI GESTIONE INVENTARIO PC ===\n\nAggiunta PC all'inventario...\n\n=== INVENTARIO PC ===\nTotale PC: 10\n\n1. [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897\n2. [Desktop] Marca: HP, Modello: EliteDesk 800 G9, CPU: AMD Ryzen 9 5950X, RAM: 64GB, Memoria: 2000GB, OS: Windows 11 Pro, Case: medio, Scheda Video: AMD Radeon RX 7600, Scheda Audio: Realtek ALC1220\n3. [Server] Marca: Dell, Modello: PowerEdge R750, CPU: Intel Xeon Gold 6330, RAM: 128GB, Memoria: 4000GB, OS: Ubuntu Server 22.04, Case: grande, Processori: 2, RAID: Sì\n4. [Server] Marca: HPE, Modello: ProLiant DL385 Gen10, CPU: AMD EPYC 7763, RAM: 256GB, Memoria: 8000GB, OS: Red Hat Enterprise Linux 9, Case: grande, Processori: 4, RAID: Sì\n5. [Server] Marca: Lenovo, Modello: ThinkSystem SR250, CPU: Intel Xeon E-2386G, RAM: 64GB, Memoria: 2000GB, OS: Windows Server 2022, Case: medio, Processori: 1, RAID: No\n6. [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0\", WiFi: Sì, Webcam: Sì (2.1MP)\n7. [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2\", WiFi: Sì, Webcam: Sì (1.0MP)\n8. [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3\", WiFi: Sì, Webcam: No\n9. [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0\", WiFi: Sì, Bluetooth: Sì, Espansione: microSD\n10. [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3\", WiFi: Sì, Bluetooth: Sì, Espansione: none\n\n\n=== TEST: PC CON PIÙ RAM ===\n[Server] Marca: HPE, Modello: ProLiant DL385 Gen10, CPU: AMD EPYC 7763, RAM: 256GB, Memoria: 8000GB, OS: Red Hat Enterprise Linux 9, Case: grande, Processori: 4, RAID: Sì\n\n=== TEST: MEDIA RAM ===\nMedia RAM: 62.00 GB\n\n=== TEST: PORTATILI CON WiFi ===\nNumero di portatili con WiFi: 5\n\n=== TEST: SERVER CON RAID ===\nNumero di server con RAID: 2\n\n=== TEST: NOTEBOOK PIÙ LEGGERO ===\n[Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3\", WiFi: Sì, Webcam: No\n\n=== TEST: RICERCA PER MARCA (Dell) ===\nPC Dell trovati: 2\n  - [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897\n  - [Server] Marca: Dell, Modello: PowerEdge R750, CPU: Intel Xeon Gold 6330, RAM: 128GB, Memoria: 4000GB, OS: Ubuntu Server 22.04, Case: grande, Processori: 2, RAID: Sì\n\n=== TEST: RICERCA PER SISTEMA OPERATIVO (Windows 11 Pro) ===\nPC con Windows 11 Pro trovati: 3\n  - [Desktop] Marca: Dell, Modello: Optiplex 7090, CPU: Intel Core i7-13700K, RAM: 32GB, Memoria: 1000GB, OS: Windows 11 Pro, Case: grande, Scheda Video: NVIDIA RTX 4070, Scheda Audio: Realtek ALC897\n  - [Desktop] Marca: HP, Modello: EliteDesk 800 G9, CPU: AMD Ryzen 9 5950X, RAM: 64GB, Memoria: 2000GB, OS: Windows 11 Pro, Case: medio, Scheda Video: AMD Radeon RX 7600, Scheda Audio: Realtek ALC1220\n  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0\", WiFi: Sì, Webcam: Sì (2.1MP)\n\n=== TEST: RICERCA PORTATILI (peso <= 1.5kg, con WiFi) ===\nPortatili trovati: 4\n  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0\", WiFi: Sì, Webcam: Sì (2.1MP)\n  - [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3\", WiFi: Sì, Webcam: No\n  - [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0\", WiFi: Sì, Bluetooth: Sì, Espansione: microSD\n  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3\", WiFi: Sì, Bluetooth: Sì, Espansione: none\n\n=== TEST: RICERCA PORTATILI (peso <= 2.5kg, senza filtro WiFi) ===\nPortatili trovati: 5\n  - [Notebook] Marca: Lenovo, Modello: ThinkPad X1 Carbon Gen 10, CPU: Intel Core i5-1235U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Pro, Peso: 1.12kg, Dimensioni: 2.2x31.5x21.7cm, Video: 14.0\", WiFi: Sì, Webcam: Sì (2.1MP)\n  - [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2\", WiFi: Sì, Webcam: Sì (1.0MP)\n  - [Notebook] Marca: ASUS, Modello: Zenbook S 13, CPU: AMD Ryzen 7 6800U, RAM: 16GB, Memoria: 512GB, OS: Windows 11 Home, Peso: 1.00kg, Dimensioni: 1.7x29.7x21.0cm, Video: 13.3\", WiFi: Sì, Webcam: No\n  - [Palmare] Marca: Samsung, Modello: Galaxy Tab S9, CPU: Qualcomm Snapdragon 8 Gen 2, RAM: 8GB, Memoria: 256GB, OS: Android 13, Peso: 0.50kg, Dimensioni: 0.6x16.5x25.5cm, Video: 11.0\", WiFi: Sì, Bluetooth: Sì, Espansione: microSD\n  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3\", WiFi: Sì, Bluetooth: Sì, Espansione: none\n\n=== TEST: RIMOZIONE PC ===\nRimozione del palmare Samsung...\nRimozione riuscita: Sì\nNuova dimensione inventario: 9\n\n=== TEST: RICERCA PER MARCA (Apple) ===\nPC Apple trovati: 2\n  - [Notebook] Marca: Apple, Modello: MacBook Pro 16, CPU: Apple M2 Pro, RAM: 32GB, Memoria: 1000GB, OS: macOS Ventura, Peso: 2.15kg, Dimensioni: 2.5x35.6x24.8cm, Video: 16.2\", WiFi: Sì, Webcam: Sì (1.0MP)\n  - [Palmare] Marca: Apple, Modello: iPad Mini 6, CPU: Apple A15 Bionic, RAM: 4GB, Memoria: 128GB, OS: iPadOS 16, Peso: 0.29kg, Dimensioni: 0.6x13.5x19.5cm, Video: 8.3\", WiFi: Sì, Bluetooth: Sì, Espansione: none\n\n=== FINE TEST ===\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>
