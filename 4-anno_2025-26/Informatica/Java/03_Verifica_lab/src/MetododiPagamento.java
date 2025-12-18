@@ -1,36 +1,46 @@
-
 public abstract class MetododiPagamento {
 
-    protected String id;
-    protected double amt;
+    protected int id;
+    protected double imp;
 
-    public MetododiPagamento(String id) {
+    public MetododiPagamento(int id) {
         this.id = id;
-        this.amt = 0.0;
+        this.imp = 0.0;
     }
 
-    public void setImporto(double amt) {
-        this.amt = amt;
+    public void setImporto(double imp) {
+        this.imp = imp;
     }
 
     public double getImporto() {
-        return amt;
+        return imp;
     }
 
-    public String getIdentificativo() {
+    public int getId() {
         return id;
     }
-
+    /**
+     * se importo > 0 >> print ok
+     * @return true se ok
+     */
     public boolean autorizzaTransazione() {
-        return amt > 0;
+        if (imp > 0) {
+            System.out.println("OK per importo: " + imp);
+            return true;
+        }
+        return false;
     }
 
     public abstract double calcolaCommissione();
 
+    /**
+     * print dei dettagli su pagamento
+     * @return info su tranzxazione
+     */
     @Override
     public String toString() {
-        var comm = calcolaCommissione();
-        var tot = amt + comm;
-        return String.format("ID: %s | Amt: %.2f | Comm: %.2f | Tot: %.2f", id, amt, comm, tot);
+        double fee = calcolaCommissione();
+        double tot = imp + fee;
+        return String.format("\n\tID: %s \n\t importo: %.2f \n\t commissioni: %.2f \n\t totale: %.2f\n\n", id, imp, fee, tot);
     }
 }

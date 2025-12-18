@@ -2,29 +2,31 @@
 import java.util.ArrayList;
 
 public class Transazioni {
-
-    private final ArrayList<Utente> usr;
+    // godo vsxcode che mi dice quando usare final
+    private final ArrayList<Utente> user;
 
     public Transazioni() {
-        this.usr = new ArrayList<>();
+        this.user = new ArrayList<>();
     }
 
     public void aggiungiUtente(Utente u) {
-        usr.add(u);
+        user.add(u);
     }
 
     public void rimuoviUtente(Utente u) {
-        usr.remove(u);
+        user.remove(u);
     }
 
-    public void effettuaPagamentoPerTutti(double amt) {
-        usr.forEach(u -> u.effettuaPagamento(amt, null));
+    public void effettuaPagamentoPerTutti(double imp) {
+        user.forEach(u -> u.effettuaPagamento(imp, null));
     }
-
+    /**
+     * funct per info su utenti
+     */
     public void mostraUtenti() {
-        usr.forEach(u -> {
-            var mp = u.getMetodoPagamentoPreferito();
-            System.out.println(u + " | " + (mp != null ? mp.getClass().getSimpleName() : "None"));
+        user.forEach(u -> {
+            MetododiPagamento mp = u.getPreferito();
+            System.out.println(u + " >> " + (mp.getClass().getSimpleName()) + "\n"); // posso usare il nome dellla classe invece di fare una funzione apposta
         });
     }
 }

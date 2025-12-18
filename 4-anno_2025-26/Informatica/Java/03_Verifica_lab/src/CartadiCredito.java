@@ -4,23 +4,23 @@ public class CartadiCredito extends MetododiPagamento {
     private final String num;
     private final String exp;
 
-    public CartadiCredito(String id, String num, String exp) {
+    public CartadiCredito(int id, String num, String exp) {
         super(id);
         this.num = num;
         this.exp = exp;
     }
 
-    public String getNumeroCarta() {
+    public String getNCarta() {
         return num;
     }
 
-    public String getDataScadenza() {
+    public String getScadenza() {
         return exp;
     }
 
     @Override
     public double calcolaCommissione() {
-        return amt * 0.02;
+        return imp * 0.02;
     }
 
     @Override

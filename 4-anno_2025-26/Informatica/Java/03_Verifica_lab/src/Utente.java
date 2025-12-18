@@ -1,46 +1,45 @@
 
 public class Utente {
 
-    private final String nm;
+    private final String nome;
     private final int uid;
-    private MetododiPagamento pref;
+    private MetododiPagamento favol;
 
-    public Utente(String nm, int uid) {
-        this.nm = nm;
+    public Utente(String nome, int uid) {
+        this.nome = nome;
         this.uid = uid;
-        this.pref = null;
+        this.favol = null;
     }
 
     public String getNome() {
-        return nm;
+        return nome;
     }
 
-    public int getIdUtente() {
+    public int getIdUser() {
         return uid;
     }
 
-    public MetododiPagamento getMetodoPagamentoPreferito() {
-        return pref;
+    public MetododiPagamento getPreferito() {
+        return favol;
     }
 
     public void setMetodoPagamentoPreferito(MetododiPagamento mp) {
-        this.pref = mp;
+        this.favol = mp;
     }
-
-    public void effettuaPagamento(double amt, MetododiPagamento mp) {
-        var m = mp != null ? mp : pref;
+    public void effettuaPagamento(double imp, MetododiPagamento mp) {
+        MetododiPagamento m = mp;
         if (m == null) {
             return;
         }
 
-        m.setImporto(amt);
+        m.setImporto(imp);
         if (m.autorizzaTransazione()) {
-            System.out.println(nm + " -> " + m);
+            System.out.println(nome + " >> " + m);
         }
     }
 
     @Override
     public String toString() {
-        return nm + " (ID:" + uid + ")";
+        return nome + " (ID:" + uid + ")";
     }
 }

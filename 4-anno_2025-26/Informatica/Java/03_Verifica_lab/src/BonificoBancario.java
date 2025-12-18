@@ -3,12 +3,12 @@ public class BonificoBancario extends MetododiPagamento {
 
     private final String iban;
 
-    public BonificoBancario(String id, String iban) {
+    public BonificoBancario(int id, String iban) {
         super(id);
         this.iban = iban;
     }
 
-    public String getIbanBeneficiario() {
+    public String getIban() {
         return iban;
     }
 

@@ -1,20 +1,21 @@
 
 public class CartaPremium extends CartadiCredito {
 
-    public CartaPremium(String id, String num, String exp) {
+    public CartaPremium(int id, String num, String exp) {
         super(id, num, exp);
     }
 
     @Override
     public double calcolaCommissione() {
-        return amt * 0.015;
+        return imp * 0.015;
     }
 
     @Override
     public String toString() {
-        var comm = calcolaCommissione();
-        var tot = amt + comm;
-        return String.format("CP [%s %s] ID: %s | Amt: %.2f | Comm: %.2f | Tot: %.2f",
-                getNumeroCarta(), getDataScadenza(), id, amt, comm, tot);
+        double fee = calcolaCommissione();
+        double tot = imp + fee;
+        return String.format("CP [%s %s] ID: %s \n\t Importo: %.2f \n\t Commissione: %.2f \n\t Totale: %.2f\n\n",
+                getNCarta(), getScadenza(), id, imp, fee, tot);
     }
+
 }
