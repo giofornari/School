@@ -28,6 +28,7 @@ public class MacchinaDistributrice {
 	public void aggingiProdotto(Prodotto p) {
 		this.prodotti.add(p);
 	}
+	
 
 	/**
 	 * Cerca il prodotto in base al nome.
