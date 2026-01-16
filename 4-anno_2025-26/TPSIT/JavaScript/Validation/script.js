@@ -6,156 +6,108 @@ const password = document.getElementById('password');
 const erroriGlobali = document.getElementById('errori-globali');
 const messaggio = document.getElementById('messaggio');
 
-function controllaNominativo(valore) {
-    return /^[a-zA-Z\s]+$/.test(valore) && valore.trim() !== '';
-}
-
-function controllaEta(valore) {
-    const numero = parseInt(valore);
-    return numero >= 18 && numero <= 100;
-}
-
-function controllaPassword(valore) {
-    if (valore.length < 8 || valore.length > 20) return false;
-    if (!/[A-Z]/.test(valore)) return false;
-    if (!/[a-z]/.test(valore)) return false;
-    if (!/[0-9]/.test(valore)) return false;
-    if (!/[!@#$%^&*]/.test(valore)) return false;
-    return true;
-}
-
-function mostraErrore(campo, testo) {
-    const divErrore = document.getElementById('errore-' + campo);
-    divErrore.textContent = testo;
-    divErrore.classList.remove('hidden');
-    document.getElementById(campo).classList.add('border-red-500');
-}
-
-function nascondiErrore(campo) {
-    const divErrore = document.getElementById('errore-' + campo);
-    divErrore.classList.add('hidden');
-    document.getElementById(campo).classList.remove('border-red-500');
-    document.getElementById(campo).classList.add('border-green-500');
-}
-
 function validaCampo(campo) {
     let valido = false;
-    let testoErrore = '';
+    let errore = '';
     
     if (campo === 'nominativo') {
-        valido = controllaNominativo(nominativo.value);
-        testoErrore = 'Deve contenere solo lettere e spazi';
+        valido = /^[a-zA-Z\s]+$/.test(nominativo.value) && nominativo.value !== '';
+        errore = 'Solo lettere e spazi';
     } else if (campo === 'eta') {
-        valido = controllaEta(eta.value);
-        testoErrore = 'Deve essere tra 18 e 100';
+        const num = parseInt(eta.value);
+        valido = num >= 18 && num <= 100;
+        errore = 'Età tra 18 e 100';
     } else if (campo === 'consenso') {
         valido = consenso.checked;
-        testoErrore = 'Devi accettare il consenso';
+        errore = 'Accetta il consenso';
     } else if (campo === 'password') {
-        valido = controllaPassword(password.value);
-        testoErrore = 'Deve avere 8-20 caratteri, maiuscola, minuscola, numero e carattere speciale';
+        valido = password.value.length >= 8 && password.value.length <= 20 && 
+                 /[A-Z]/.test(password.value) && /[a-z]/.test(password.value) && 
+                 /[0-9]/.test(password.value) && /[!@#$%^&*]/.test(password.value);
+        errore = '8-20 caratteri, maiuscola, minuscola, numero e speciale';
     }
     
+    const divErrore = document.getElementById('errore-' + campo);
     if (valido) {
-        nascondiErrore(campo);
+        divErrore.classList.add('hidden');
     } else {
-        mostraErrore(campo, testoErrore);
+        divErrore.textContent = errore;
+        divErrore.classList.remove('hidden');
     }
-    
     return valido;
 }
 
-function pulisciErrori() {
+function pulisci() {
     document.getElementById('errore-nominativo').classList.add('hidden');
     document.getElementById('errore-eta').classList.add('hidden');
     document.getElementById('errore-consenso').classList.add('hidden');
     document.getElementById('errore-password').classList.add('hidden');
     erroriGlobali.classList.add('hidden');
     messaggio.classList.add('hidden');
-    
-    nominativo.classList.remove('border-red-500', 'border-green-500');
-    eta.classList.remove('border-red-500', 'border-green-500');
-    password.classList.remove('border-red-500', 'border-green-500');
 }
 
 nominativo.addEventListener('input', function() {
     const modalita = document.querySelector('input[name="modalita"]:checked').value;
-    if (modalita === 'interattiva') {
-        validaCampo('nominativo');
-    }
+    if (modalita === 'interattiva') validaCampo('nominativo');
 });
 
 eta.addEventListener('input', function() {
     const modalita = document.querySelector('input[name="modalita"]:checked').value;
-    if (modalita === 'interattiva') {
-        validaCampo('eta');
-    }
+    if (modalita === 'interattiva') validaCampo('eta');
 });
 
 consenso.addEventListener('change', function() {
     const modalita = document.querySelector('input[name="modalita"]:checked').value;
-    if (modalita === 'interattiva') {
-        validaCampo('consenso');
-    }
+    if (modalita === 'interattiva') validaCampo('consenso');
 });
 
 password.addEventListener('input', function() {
     const modalita = document.querySelector('input[name="modalita"]:checked').value;
-    if (modalita === 'interattiva') {
-        validaCampo('password');
-    }
+    if (modalita === 'interattiva') validaCampo('password');
 });
 
-const radioModalita = document.querySelectorAll('input[name="modalita"]');
-for (let i = 0; i < radioModalita.length; i++) {
-    radioModalita[i].addEventListener('change', pulisciErrori);
-}
+document.querySelectorAll('input[name="modalita"]').forEach(function(radio) {
+    radio.addEventListener('change', pulisci);
+});
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
-    
     const modalita = document.querySelector('input[name="modalita"]:checked').value;
     
     if (modalita === 'interattiva') {
-        const nomeValido = validaCampo('nominativo');
-        const etaValida = validaCampo('eta');
-        const consensoValido = validaCampo('consenso');
-        const passwordValida = validaCampo('password');
+        const v1 = validaCampo('nominativo');
+        const v2 = validaCampo('eta');
+        const v3 = validaCampo('consenso');
+        const v4 = validaCampo('password');
         
-        erroriGlobali.classList.add('hidden');
-        
-        if (nomeValido && etaValida && consensoValido && passwordValida) {
+        if (v1 && v2 && v3 && v4) {
             messaggio.className = 'mt-4 p-3 rounded-lg text-center font-semibold bg-green-100 text-green-700';
             messaggio.textContent = 'Dati corretti';
             messaggio.classList.remove('hidden');
-        } else {
-            messaggio.classList.add('hidden');
         }
-        
     } else {
-        pulisciErrori();
+        pulisci();
+        const errori = [];
         
-        const listaErrori = [];
-        
-        if (!controllaNominativo(nominativo.value)) {
-            listaErrori.push('Nominativo: deve contenere solo lettere e spazi');
+        if (!/^[a-zA-Z\s]+$/.test(nominativo.value) || nominativo.value === '') {
+            errori.push('Nominativo: solo lettere e spazi');
         }
-        if (!controllaEta(eta.value)) {
-            listaErrori.push('Età: deve essere tra 18 e 100');
+        if (parseInt(eta.value) < 18 || parseInt(eta.value) > 100) {
+            errori.push('Età: tra 18 e 100');
         }
         if (!consenso.checked) {
-            listaErrori.push('Consenso: devi accettarlo');
+            errori.push('Consenso: devi accettarlo');
         }
-        if (!controllaPassword(password.value)) {
-            listaErrori.push('Password: 8-20 caratteri, maiuscola, minuscola, numero e carattere speciale');
+        const pwd = password.value;
+        if (pwd.length < 8 || pwd.length > 20 || !/[A-Z]/.test(pwd) || !/[a-z]/.test(pwd) || 
+            !/[0-9]/.test(pwd) || !/[!@#$%^&*]/.test(pwd)) {
+            errori.push('Password: requisiti non soddisfatti');
         }
         
-        if (listaErrori.length > 0) {
-            erroriGlobali.innerHTML = '<strong>Errori:</strong><br>' + listaErrori.join('<br>');
+        if (errori.length > 0) {
+            erroriGlobali.innerHTML = '<strong>Errori:</strong><br>' + errori.join('<br>');
             erroriGlobali.classList.remove('hidden');
-            messaggio.classList.add('hidden');
         } else {
-            erroriGlobali.classList.add('hidden');
             messaggio.className = 'mt-4 p-3 rounded-lg text-center font-semibold bg-green-100 text-green-700';
             messaggio.textContent = 'Dati corretti';
             messaggio.classList.remove('hidden');
