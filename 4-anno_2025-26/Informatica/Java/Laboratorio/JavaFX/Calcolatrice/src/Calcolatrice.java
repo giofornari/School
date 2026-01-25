@@ -65,7 +65,7 @@ public class Calcolatrice extends Application {
         // btn C - cancella tt
         Button btnCancella = new Button("C");
         btnCancella.setPrefSize(50, 50);
-        btnCancella.setOnAction(e -> rmrf());  // lol come rm -rf
+        btnCancella.setOnAction(e -> rmrf());  // rm -rf
 
         // metto i btn nella griglia (col, riga)
         // riga 0
