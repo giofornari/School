@@ -1,0 +1,53 @@
+Un negozio online consente ai clienti di effettuare pagamenti utilizzando diversi metodi di pagamento (carta di credito, PayPal, buono regalo). Il software deve essere progettato in
+
+modo flessibile, così da permettere l'aggiunta di nuovi metodi di pagamento senza modificare il codice esistente.
+
+Parte 1
+
+Tutti i metodi di pagamento condividono alcune caratteristiche comuni:
+
+- permettono di pagare un importo
+
+- restituiscono un esito dell'operazione (successo o fallimento)
+
+Individua il comportamento comune che può essere rappresentato tramite un'interfaccia.
+
+Parte 2-Definizione dell'interfaccia
+
+Crea un'interfaccia chiamata MetodoPagamento che dichiari il seguente metodo:
+
+boolean paga(double importo);
+
+Parte 3
+
+Implementa almeno tre classi che rappresentano diversi metodi di pagamento:
+
+- CartaDiCredito
+
+- PayPal
+
+- BuonoRegalo
+
+Ogni classe deve implementare l'interfaccia MetodoPagamento e definire il metodo paga.
+
+Il metodo deve stampare a console il tipo di pagamento utilizzato e l'importo.
+
+Parte 4
+
+Crea una classe Cassa contenente il metodo main.
+
+Nel main:
+
+- dichiara una variabile di tipo MetodoPagamento
+
+- utilizzala per effettuare pagamenti con oggetti diversi
+
+- richiama il metodo paga senza conoscere il tipo concreto dell'oggetto
+
+Parte 5- Estensione
+
+- Aggiungi un nuovo metodo di pagamento senza modificare il codice esistente
+
+- Gestisci il fallimento di un pagamento (es. importo non valido)
+
+- Utilizza una lista di MetodoPagamento per effettuare più pagamenti
