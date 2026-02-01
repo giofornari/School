@@ -4,8 +4,8 @@ public class Tecnico extends Personale {
         ELETTRONICA_AUTOMAZIONE
     }
 
-    private Area area;
-    private boolean interno;
+    private final Area area;
+    private final boolean interno;
 
     public Tecnico(String codice, String cognome, String nome, int annoAssunzione, Area area, boolean interno) {
         super(codice, cognome, nome, annoAssunzione);
@@ -15,12 +15,12 @@ public class Tecnico extends Personale {
 
     @Override
     public double getCostoOrario(int annoCorrente) {
-        if (!interno) {
+        if (!this.interno) {
             return 0; // Solo tecnici interni hanno costo orario
         }
 
         double costoBase;
-        if (area == Area.INFORMATICA_TELECOMUNICAZIONI) {
+        if (this.area == Area.INFORMATICA_TELECOMUNICAZIONI) {
             costoBase = 50.0;
         } else {
             costoBase = 60.0;
@@ -32,8 +32,8 @@ public class Tecnico extends Personale {
 
     @Override
     public String toString() {
-        String areaStr = (area == Area.INFORMATICA_TELECOMUNICAZIONI) ? "Informatica/Telecomunicazioni" : "Elettronica/Automazione";
-        String tipoStr = interno ? "interno" : "esterno";
+        String areaStr = (this.area == Area.INFORMATICA_TELECOMUNICAZIONI) ? "Informatica/Telecomunicazioni" : "Elettronica/Automazione";
+        String tipoStr = this.interno ? "interno" : "esterno";
         return super.toString() + " - Tecnico " + areaStr + " (" + tipoStr + ")";
     }
 }

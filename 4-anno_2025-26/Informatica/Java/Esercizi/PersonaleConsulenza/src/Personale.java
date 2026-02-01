@@ -1,8 +1,8 @@
 public abstract class Personale {
-    private String codice;
-    private String cognome;
-    private String nome;
-    private int annoAssunzione;
+    private final String codice;
+    private final String cognome;
+    private final String nome;
+    private final int annoAssunzione;
 
     public Personale(String codice, String cognome, String nome, int annoAssunzione) {
         this.codice = codice;
@@ -12,23 +12,23 @@ public abstract class Personale {
     }
 
     public String getCodice() {
-        return codice;
+        return this.codice;
     }
 
     public String getCognome() {
-        return cognome;
+        return this.cognome;
     }
 
     public String getNome() {
-        return nome;
+        return this.nome;
     }
 
     public int getAnnoAssunzione() {
-        return annoAssunzione;
+        return this.annoAssunzione;
     }
 
     public int getAnniServizio(int annoCorrente) {
-        return annoCorrente - annoAssunzione;
+        return annoCorrente - this.annoAssunzione;
     }
 
     // Metodo astratto per calcolare il costo orario
@@ -36,6 +36,6 @@ public abstract class Personale {
 
     @Override
     public String toString() {
-        return codice + " - " + cognome + " " + nome + " (assunto nel " + annoAssunzione + ")";
+        return this.codice + " - " + this.cognome + " " + this.nome + " (assunto nel " + this.annoAssunzione + ")";
     }
 }

@@ -1,5 +1,5 @@
 public class Main {
-    public static void main(String[] args) {
+    static void main() {
         Progetto progetto = new Progetto("Progetto Test", 2026);
 
         progetto.aggiungiMembro(new Dirigente("D001", "Rossi", "Mario", 2010), 50);
