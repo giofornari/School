@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Progetto {
-    private String nomeProgetto;
-    private List<Personale> membri;
-    private Map<String, Integer> oreAssegnate; // Mappa codice -> ore di attività
-    private int annoCorrente;
+    private final String nomeProgetto;
+    private final List<Personale> membri;
+    private final Map<String, Integer> oreAssegnate; // Mappa codice -> ore di attività
+    private final int annoCorrente;
 
     public Progetto(String nomeProgetto, int annoCorrente) {
         this.nomeProgetto = nomeProgetto;
@@ -18,17 +18,17 @@ public class Progetto {
 
     // Aggiunge un membro al progetto con le ore previste
     public void aggiungiMembro(Personale membro, int ore) {
-        membri.add(membro);
-        oreAssegnate.put(membro.getCodice(), ore);
+        this.membri.add(membro);
+        this.oreAssegnate.put(membro.getCodice(), ore);
     }
 
     // Calcola il costo complessivo del progetto
     public double calcolaCostoComplessivo() {
         double costoTotale = 0.0;
 
-        for (Personale membro : membri) {
-            int ore = oreAssegnate.get(membro.getCodice());
-            double costoOrario = membro.getCostoOrario(annoCorrente);
+        for (Personale membro : this.membri) {
+            int ore = this.oreAssegnate.get(membro.getCodice());
+            double costoOrario = membro.getCostoOrario(this.annoCorrente);
             double costoMembro = ore * costoOrario;
             costoTotale += costoMembro;
         }
@@ -38,15 +38,15 @@ public class Progetto {
 
     // Restituisce i dettagli del costo per ogni membro
     public void stampaDettagliCosti() {
-        System.out.println("Progetto: " + nomeProgetto);
-        System.out.println("Anno: " + annoCorrente);
+        System.out.println("Progetto: " + this.nomeProgetto);
+        System.out.println("Anno: " + this.annoCorrente);
         System.out.println();
 
         double costoTotale = 0.0;
 
-        for (Personale membro : membri) {
-            int ore = oreAssegnate.get(membro.getCodice());
-            double costoOrario = membro.getCostoOrario(annoCorrente);
+        for (Personale membro : this.membri) {
+            int ore = this.oreAssegnate.get(membro.getCodice());
+            double costoOrario = membro.getCostoOrario(this.annoCorrente);
             double costoMembro = ore * costoOrario;
 
             System.out.println(membro);
@@ -62,10 +62,10 @@ public class Progetto {
     }
 
     public String getNomeProgetto() {
-        return nomeProgetto;
+        return this.nomeProgetto;
     }
 
     public List<Personale> getMembri() {
-        return new ArrayList<>(membri);
+        return new ArrayList<>(this.membri);
     }
 }
