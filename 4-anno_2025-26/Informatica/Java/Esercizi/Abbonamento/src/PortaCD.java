@@ -44,7 +44,8 @@ public class PortaCD {
 	}
 	
 	public LocalDate calcolaScadenza() {
-		String scadenza;
+		// TODO implementare la logica di calcolo della data di scadenza
+		throw new UnsupportedOperationException("calcolaScadenza not yet implemented");
 	}
 }
 
