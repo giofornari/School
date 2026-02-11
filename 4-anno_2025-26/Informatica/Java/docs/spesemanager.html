@@ -354,7 +354,6 @@
             <div id="spesemanager-tab0" class="tab-content active">
                 <pre><code class="language-java">import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
 
@@ -377,7 +376,7 @@ public class Main {
                 &quot;%d) %s - %.2f (%s) | %s%n&quot;,
                 i + 1,
                 spesa.getCategory(),
-                spesa.getMoneyyy(),
+                spesa.getAmount(),
                 spesa.getPayMethod(),
                 spesa.getDate() == null ? &quot;data non disponibile&quot; : spesa.getDate()
             );
@@ -392,7 +391,7 @@ public class Main {
         double min = Double.POSITIVE_INFINITY;
 
         for (Spese spesa : spese) {
-            double importo = spesa.getMoneyyy();
+            double importo = spesa.getAmount();
             totale += importo;
             max = Math.max(max, importo);
             min = Math.min(min, importo);
@@ -421,7 +420,7 @@ public class Main {
         int count = 0;
         for (Spese spesa : spese) {
             if (spesa.getCategory().equals(categoria)) {
-                totale += spesa.getMoneyyy();
+                totale += spesa.getAmount();
                 count++;
             }
         }
@@ -432,7 +431,7 @@ public class Main {
         double totale = 0;
         for (Spese spesa : spese) {
             if (spesa.getPayMethod().equals(metodo)) {
-                totale += spesa.getMoneyyy();
+                totale += spesa.getAmount();
             }
         }
         return totale;
@@ -462,7 +461,7 @@ public class SpesaManager {
 	public double spesaTotale() {
 		double totale = 0;
 		for (Spese spesa : spese) {
-			totale += spesa.getMoneyyy();
+			totale += spesa.getAmount();
 		}
 		return totale;
 	}
@@ -475,10 +474,10 @@ public class SpesaManager {
 		if (spese.isEmpty()) {
 			return 0;
 		}
-		double max = spese.get(0).getMoneyyy();
+		double max = spese.get(0).getAmount();
 		for (Spese spesa : spese) {
-			if (spesa.getMoneyyy() &gt; max) {
-				max = spesa.getMoneyyy();
+			if (spesa.getAmount() &gt; max) {
+				max = spesa.getAmount();
 			}
 		}
 		return max;
@@ -488,10 +487,10 @@ public class SpesaManager {
 		if (spese.isEmpty()) {
 			return 0;
 		}
-		double min = spese.get(0).getMoneyyy();
+		double min = spese.get(0).getAmount();
 		for (Spese spesa : spese) {
-			if (spesa.getMoneyyy() &lt; min) {
-				min = spesa.getMoneyyy();
+			if (spesa.getAmount() &lt; min) {
+				min = spesa.getAmount();
 			}
 		}
 		return min;
@@ -524,7 +523,7 @@ public class SpesaManager {
 		int count = 0;
 		for (Spese spesa : spese) {
 			if (spesa.getCategory().equals(categoria)) {
-				totale += spesa.getMoneyyy();
+				totale += spesa.getAmount();
 				count++;
 			}
 		}
@@ -535,7 +534,7 @@ public class SpesaManager {
 		double totale = 0;
 		for (Spese spesa : spese) {
 			if (spesa.getPayMethod().equals(method)) {
-				totale += spesa.getMoneyyy();
+				totale += spesa.getAmount();
 			}
 		}
 		return totale;
@@ -623,34 +622,35 @@ import java.time.LocalDate;
  */
 public class Spese {
     private LocalDate date;
-    private double Moneyyy;
-    private String Category;
-    private String PayMethod;
+    private double amount;
+    private String category;
+    private String payMethod;
 
     /**
      * Costruttore completo per l&#39;inizializzazione completa degli oggetti.
+     * @param category categoria della spesa
      * @param date data della spesa
+     * @param amount importo della spesa
+     * @param payMethod metodo di pagamento
      */
-
-    public Spese(String Category, LocalDate date, double Moneyyy, String PayMethod) {
-        this.Category = Category;
+    public Spese(String category, LocalDate date, double amount, String payMethod) {
+        this.category = category;
         this.date = date;
-        this.Moneyyy = Moneyyy;
-        this.PayMethod = PayMethod;
+        this.amount = amount;
+        this.payMethod = payMethod;
     }
-
 
     /**
      * Costruttore senza Date per spese incognite
-     * @hidden per i soldi in nero :|
+     * @param amount importo della spesa
+     * @param category categoria della spesa
+     * @param payMethod metodo di pagamento
      */
-
-    public Spese(double moneyyy, String category, String payMethod) {
-		this.Moneyyy = moneyyy;
-		this.Category = category;
-		this.PayMethod = payMethod;
+    public Spese(double amount, String category, String payMethod) {
+		this.amount = amount;
+		this.category = category;
+		this.payMethod = payMethod;
 	}
-
 
 	// getter e setter
     public void setDate(LocalDate date) {
@@ -661,44 +661,45 @@ public class Spese {
         return date;
     }
 
-    public void setMoneyyy(double Moneyyy) {
-        this.Moneyyy = Moneyyy;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public void setCategory(String Category) {
-        this.Category = Category;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setPayMethod(String PayMethod) {
-        this.PayMethod = PayMethod;
+    public void setPayMethod(String payMethod) {
+        this.payMethod = payMethod;
     }
 
-    public double getMoneyyy() {
-        return Moneyyy;
+    public double getAmount() {
+        return amount;
     }
 
     public String getCategory() {
-        return Category;
+        return category;
     }
 
     public String getPayMethod() {
-        return PayMethod;
+        return payMethod;
     }
 
     @Override
 	public String toString() {
-		return &quot;Spese [date=&quot; + date + &quot;, Moneyyy=&quot; + Moneyyy + &quot;, Category=&quot; + Category + &quot;, PayMethod=&quot; + PayMethod
+		return &quot;Spese [date=&quot; + date + &quot;, amount=&quot; + amount + &quot;, category=&quot; + category + &quot;, payMethod=&quot; + payMethod
 				+ &quot;]&quot;;
 	}
 
     /**
-     * Metodo per applcare l&#39;iva alle spese con scontrino
+     * Metodo per applicare l&#39;iva alle spese con scontrino
      * @return Spesa+iva 22%
      */
     public double applicaIva() {
-        return this.Moneyyy * 1.22;
+        return this.amount * 1.22;
     }
-}</code></pre>
+}
+</code></pre>
             </div>
         
                 <button class="copy-btn" onclick="copyCode()">
@@ -740,7 +741,7 @@ Metodo con totale piu alto: Bonifico (120.00)
     
     <script>
         // Project data
-        const sourceCode = ["import java.time.LocalDate;\nimport java.util.List;\nimport java.util.Scanner;\n\npublic class Main {\n\n    public static void main(String[] args) {\n        SpesaManager revolut = new SpesaManager();\n        revolut.addSpesa(new Spese(\"Trasporto\", LocalDate.of(2024, 5, 10), 12.80, \"Carta\")); // maledetto carnet 8 corse\n        revolut.addSpesa(new Spese(\"Alimentari\", LocalDate.of(2024, 5, 12), 42.30, \"Contanti\")); // in nero sotto casa...\n        revolut.addSpesa(new Spese(7.50, \"Bar\", \"Contanti\")); // uno sprits...\n        revolut.addSpesa(new Spese(120.00, \"Tecnologia\", \"Bonifico\")); // questa era una truffa\n\n        stampaElenco(revolut.getSpese());\n        stampaStatistiche(revolut);\n    }\n\n    private static void stampaElenco(List<Spese> spese) {\n        System.out.println(\"Spese inserite:\");\n        for (int i = 0; i < spese.size(); i++) {\n            Spese spesa = spese.get(i);\n            System.out.printf(\n                \"%d) %s - %.2f (%s) | %s%n\",\n                i + 1,\n                spesa.getCategory(),\n                spesa.getMoneyyy(),\n                spesa.getPayMethod(),\n                spesa.getDate() == null ? \"data non disponibile\" : spesa.getDate()\n            );\n        }\n        System.out.println();\n    }\n\n    private static void stampaStatistiche(SpesaManager manager) {\n        List<Spese> spese = manager.getSpese();\n        double totale = 0;\n        double max = Double.NEGATIVE_INFINITY;\n        double min = Double.POSITIVE_INFINITY;\n\n        for (Spese spesa : spese) {\n            double importo = spesa.getMoneyyy();\n            totale += importo;\n            max = Math.max(max, importo);\n            min = Math.min(min, importo);\n        }\n        \n        double media = spese.isEmpty() ? 0 : totale / spese.size();\n\n        System.out.printf(\"Totale: %.2f%n\", totale);\n        System.out.printf(\"Media: %.2f%n\", media);\n        System.out.printf(\"Massimo: %.2f%n\", max);\n        System.out.printf(\"Minimo: %.2f%n\", min);\n\n        String categoriaTop = manager.calcolaCategoriaMaggiore();\n        String metodoTop = manager.calcolaPayMethodMaggiore();\n\n        double mediaCategoriaTop = categoriaTop.isEmpty() ? 0 : mediaPerCategoria(spese, categoriaTop);\n        double totaleMetodoTop = metodoTop.isEmpty() ? 0 : totalePerMetodo(spese, metodoTop);\n\n        System.out.println();\n        System.out.printf(\"Categoria con media piu alta: %s (%.2f)%n\", categoriaTop, mediaCategoriaTop);\n        System.out.printf(\"Metodo con totale piu alto: %s (%.2f)%n\", metodoTop, totaleMetodoTop);\n    }\n\n    private static double mediaPerCategoria(List<Spese> spese, String categoria) {\n        double totale = 0;\n        int count = 0;\n        for (Spese spesa : spese) {\n            if (spesa.getCategory().equals(categoria)) {\n                totale += spesa.getMoneyyy();\n                count++;\n            }\n        }\n        return count == 0 ? 0 : totale / count;\n    }\n\n    private static double totalePerMetodo(List<Spese> spese, String metodo) {\n        double totale = 0;\n        for (Spese spesa : spese) {\n            if (spesa.getPayMethod().equals(metodo)) {\n                totale += spesa.getMoneyyy();\n            }\n        }\n        return totale;\n    }\n}\n", "import java.util.ArrayList;\n\npublic class SpesaManager {\n\tprivate final ArrayList<Spese> spese;\n\n\tpublic SpesaManager() {\n\t\tspese = new ArrayList<>();\n\t}\n\n\tpublic void addSpesa(Spese spesa) {\n\t\tspese.add(spesa);\n\t}\n\n\tpublic ArrayList<Spese> getSpese() {\n\t\treturn spese;\n\t}\n\n\tpublic double spesaTotale() {\n\t\tdouble totale = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\ttotale += spesa.getMoneyyy();\n\t\t}\n\t\treturn totale;\n\t}\n\n\tpublic double spesaMedia() {\n\t\treturn spese.isEmpty() ? 0 : spesaTotale() / spese.size();\n\t}\n\n\tpublic double spesaMax() {\n\t\tif (spese.isEmpty()) {\n\t\t\treturn 0;\n\t\t}\n\t\tdouble max = spese.get(0).getMoneyyy();\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getMoneyyy() > max) {\n\t\t\t\tmax = spesa.getMoneyyy();\n\t\t\t}\n\t\t}\n\t\treturn max;\n\t}\n\n\tpublic double spesaMin() {\n\t\tif (spese.isEmpty()) {\n\t\t\treturn 0;\n\t\t}\n\t\tdouble min = spese.get(0).getMoneyyy();\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getMoneyyy() < min) {\n\t\t\t\tmin = spesa.getMoneyyy();\n\t\t\t}\n\t\t}\n\t\treturn min;\n\t}\n\n\tprivate ArrayList<String> getCategory() {\n\t\tArrayList<String> categories = new ArrayList<>();\n\t\tfor (Spese spesa : spese) {\n\t\t\tString category = spesa.getCategory();\n\t\t\tif (!categories.contains(category)) {\n\t\t\t\tcategories.add(category);\n\t\t\t}\n\t\t}\n\t\treturn categories;\n\t}\n\n\tprivate ArrayList<String> getPayMethod() {\n\t\tArrayList<String> methods = new ArrayList<>();\n\t\tfor (Spese spesa : spese) {\n\t\t\tString method = spesa.getPayMethod();\n\t\t\tif (!methods.contains(method)) {\n\t\t\t\tmethods.add(method);\n\t\t\t}\n\t\t}\n\t\treturn methods;\n\t}\n\n\tprivate double spesaMediaPerCategoria(String categoria) {\n\t\tdouble totale = 0;\n\t\tint count = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getCategory().equals(categoria)) {\n\t\t\t\ttotale += spesa.getMoneyyy();\n\t\t\t\tcount++;\n\t\t\t}\n\t\t}\n\t\treturn count == 0 ? 0 : totale / count;\n\t}\n\n\tprivate double spesaTotPerPayMethod(String method) {\n\t\tdouble totale = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getPayMethod().equals(method)) {\n\t\t\t\ttotale += spesa.getMoneyyy();\n\t\t\t}\n\t\t}\n\t\treturn totale;\n\t}\n\n\tpublic String calcolaPayMethodMaggiore() {\n\t\tArrayList<String> methods = this.getPayMethod();\n\t\tif (methods.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString migliore = methods.get(0);\n\t\tdouble totaleMigliore = this.spesaTotPerPayMethod(migliore);\n\t\tfor (String metodo : methods) {\n\t\t\tdouble totaleMetodo = this.spesaTotPerPayMethod(metodo);\n\t\t\tif (totaleMetodo > totaleMigliore) {\n\t\t\t\tmigliore = metodo;\n\t\t\t\ttotaleMigliore = totaleMetodo;\n\t\t\t}\n\t\t}\n\t\treturn migliore;\n\t}\n\n\tpublic String calcolaPayMethodMinore() {\n\t\tArrayList<String> methods = this.getPayMethod();\n\t\tif (methods.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString peggiore = methods.get(0);\n\t\tdouble totalePeggiore = this.spesaTotPerPayMethod(peggiore);\n\t\tfor (String metodo : methods) {\n\t\t\tdouble totaleMetodo = this.spesaTotPerPayMethod(metodo);\n\t\t\tif (totaleMetodo < totalePeggiore) {\n\t\t\t\tpeggiore = metodo;\n\t\t\t\ttotalePeggiore = totaleMetodo;\n\t\t\t}\n\t\t}\n\t\treturn peggiore;\n\t}\n\n\tpublic String calcolaCategoriaMaggiore() {\n\t\tArrayList<String> categorie = this.getCategory();\n\t\tif (categorie.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString migliore = categorie.get(0);\n\t\tdouble mediaMigliore = this.spesaMediaPerCategoria(migliore);\n\t\tfor (String categoria : categorie) {\n\t\t\tdouble mediaCategoria = this.spesaMediaPerCategoria(categoria);\n\t\t\tif (mediaCategoria > mediaMigliore) {\n\t\t\t\tmigliore = categoria;\n\t\t\t\tmediaMigliore = mediaCategoria;\n\t\t\t}\n\t\t}\n\t\treturn migliore;\n\t}\n\n\tpublic String calcolaCategoriaMinore() {\n\t\tArrayList<String> categorie = this.getCategory();\n\t\tif (categorie.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString peggiore = categorie.get(0);\n\t\tdouble mediaPeggiore = this.spesaMediaPerCategoria(peggiore);\n\t\tfor (String categoria : categorie) {\n\t\t\tdouble mediaCategoria = this.spesaMediaPerCategoria(categoria);\n\t\t\tif (mediaCategoria < mediaPeggiore) {\n\t\t\t\tpeggiore = categoria;\n\t\t\t\tmediaPeggiore = mediaCategoria;\n\t\t\t}\n\t\t}\n\t\treturn peggiore;\n\t}\n}\n", "\nimport java.time.LocalDate;\n\n/**\n * La classe {@code Spese} rappresenta una singola spesa con attributi relativi alla data,\n * importo, categoria e metodo di pagamento.\n * @author giordii.dev\n */\npublic class Spese {\n    private LocalDate date;\n    private double Moneyyy;\n    private String Category;\n    private String PayMethod;\n\n    /**\n     * Costruttore completo per l'inizializzazione completa degli oggetti.\n     * @param date data della spesa\n     */\n\n    public Spese(String Category, LocalDate date, double Moneyyy, String PayMethod) {\n        this.Category = Category;\n        this.date = date;\n        this.Moneyyy = Moneyyy;\n        this.PayMethod = PayMethod;\n    }\n\n\n    /**\n     * Costruttore senza Date per spese incognite\n     * @hidden per i soldi in nero :|\n     */\n\n    public Spese(double moneyyy, String category, String payMethod) {\n\t\tthis.Moneyyy = moneyyy;\n\t\tthis.Category = category;\n\t\tthis.PayMethod = payMethod;\n\t}\n\n\n\t// getter e setter\n    public void setDate(LocalDate date) {\n        this.date = date;\n    }\n\n    public LocalDate getDate() {\n        return date;\n    }\n\n    public void setMoneyyy(double Moneyyy) {\n        this.Moneyyy = Moneyyy;\n    }\n\n    public void setCategory(String Category) {\n        this.Category = Category;\n    }\n\n    public void setPayMethod(String PayMethod) {\n        this.PayMethod = PayMethod;\n    }\n\n    public double getMoneyyy() {\n        return Moneyyy;\n    }\n\n    public String getCategory() {\n        return Category;\n    }\n\n    public String getPayMethod() {\n        return PayMethod;\n    }\n\n    @Override\n\tpublic String toString() {\n\t\treturn \"Spese [date=\" + date + \", Moneyyy=\" + Moneyyy + \", Category=\" + Category + \", PayMethod=\" + PayMethod\n\t\t\t\t+ \"]\";\n\t}\n\n    /**\n     * Metodo per applcare l'iva alle spese con scontrino\n     * @return Spesa+iva 22%\n     */\n    public double applicaIva() {\n        return this.Moneyyy * 1.22;\n    }\n}"];
+        const sourceCode = ["import java.time.LocalDate;\nimport java.util.List;\n\npublic class Main {\n\n    public static void main(String[] args) {\n        SpesaManager revolut = new SpesaManager();\n        revolut.addSpesa(new Spese(\"Trasporto\", LocalDate.of(2024, 5, 10), 12.80, \"Carta\")); // maledetto carnet 8 corse\n        revolut.addSpesa(new Spese(\"Alimentari\", LocalDate.of(2024, 5, 12), 42.30, \"Contanti\")); // in nero sotto casa...\n        revolut.addSpesa(new Spese(7.50, \"Bar\", \"Contanti\")); // uno sprits...\n        revolut.addSpesa(new Spese(120.00, \"Tecnologia\", \"Bonifico\")); // questa era una truffa\n\n        stampaElenco(revolut.getSpese());\n        stampaStatistiche(revolut);\n    }\n\n    private static void stampaElenco(List<Spese> spese) {\n        System.out.println(\"Spese inserite:\");\n        for (int i = 0; i < spese.size(); i++) {\n            Spese spesa = spese.get(i);\n            System.out.printf(\n                \"%d) %s - %.2f (%s) | %s%n\",\n                i + 1,\n                spesa.getCategory(),\n                spesa.getAmount(),\n                spesa.getPayMethod(),\n                spesa.getDate() == null ? \"data non disponibile\" : spesa.getDate()\n            );\n        }\n        System.out.println();\n    }\n\n    private static void stampaStatistiche(SpesaManager manager) {\n        List<Spese> spese = manager.getSpese();\n        double totale = 0;\n        double max = Double.NEGATIVE_INFINITY;\n        double min = Double.POSITIVE_INFINITY;\n\n        for (Spese spesa : spese) {\n            double importo = spesa.getAmount();\n            totale += importo;\n            max = Math.max(max, importo);\n            min = Math.min(min, importo);\n        }\n        \n        double media = spese.isEmpty() ? 0 : totale / spese.size();\n\n        System.out.printf(\"Totale: %.2f%n\", totale);\n        System.out.printf(\"Media: %.2f%n\", media);\n        System.out.printf(\"Massimo: %.2f%n\", max);\n        System.out.printf(\"Minimo: %.2f%n\", min);\n\n        String categoriaTop = manager.calcolaCategoriaMaggiore();\n        String metodoTop = manager.calcolaPayMethodMaggiore();\n\n        double mediaCategoriaTop = categoriaTop.isEmpty() ? 0 : mediaPerCategoria(spese, categoriaTop);\n        double totaleMetodoTop = metodoTop.isEmpty() ? 0 : totalePerMetodo(spese, metodoTop);\n\n        System.out.println();\n        System.out.printf(\"Categoria con media piu alta: %s (%.2f)%n\", categoriaTop, mediaCategoriaTop);\n        System.out.printf(\"Metodo con totale piu alto: %s (%.2f)%n\", metodoTop, totaleMetodoTop);\n    }\n\n    private static double mediaPerCategoria(List<Spese> spese, String categoria) {\n        double totale = 0;\n        int count = 0;\n        for (Spese spesa : spese) {\n            if (spesa.getCategory().equals(categoria)) {\n                totale += spesa.getAmount();\n                count++;\n            }\n        }\n        return count == 0 ? 0 : totale / count;\n    }\n\n    private static double totalePerMetodo(List<Spese> spese, String metodo) {\n        double totale = 0;\n        for (Spese spesa : spese) {\n            if (spesa.getPayMethod().equals(metodo)) {\n                totale += spesa.getAmount();\n            }\n        }\n        return totale;\n    }\n}\n", "import java.util.ArrayList;\n\npublic class SpesaManager {\n\tprivate final ArrayList<Spese> spese;\n\n\tpublic SpesaManager() {\n\t\tspese = new ArrayList<>();\n\t}\n\n\tpublic void addSpesa(Spese spesa) {\n\t\tspese.add(spesa);\n\t}\n\n\tpublic ArrayList<Spese> getSpese() {\n\t\treturn spese;\n\t}\n\n\tpublic double spesaTotale() {\n\t\tdouble totale = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\ttotale += spesa.getAmount();\n\t\t}\n\t\treturn totale;\n\t}\n\n\tpublic double spesaMedia() {\n\t\treturn spese.isEmpty() ? 0 : spesaTotale() / spese.size();\n\t}\n\n\tpublic double spesaMax() {\n\t\tif (spese.isEmpty()) {\n\t\t\treturn 0;\n\t\t}\n\t\tdouble max = spese.get(0).getAmount();\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getAmount() > max) {\n\t\t\t\tmax = spesa.getAmount();\n\t\t\t}\n\t\t}\n\t\treturn max;\n\t}\n\n\tpublic double spesaMin() {\n\t\tif (spese.isEmpty()) {\n\t\t\treturn 0;\n\t\t}\n\t\tdouble min = spese.get(0).getAmount();\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getAmount() < min) {\n\t\t\t\tmin = spesa.getAmount();\n\t\t\t}\n\t\t}\n\t\treturn min;\n\t}\n\n\tprivate ArrayList<String> getCategory() {\n\t\tArrayList<String> categories = new ArrayList<>();\n\t\tfor (Spese spesa : spese) {\n\t\t\tString category = spesa.getCategory();\n\t\t\tif (!categories.contains(category)) {\n\t\t\t\tcategories.add(category);\n\t\t\t}\n\t\t}\n\t\treturn categories;\n\t}\n\n\tprivate ArrayList<String> getPayMethod() {\n\t\tArrayList<String> methods = new ArrayList<>();\n\t\tfor (Spese spesa : spese) {\n\t\t\tString method = spesa.getPayMethod();\n\t\t\tif (!methods.contains(method)) {\n\t\t\t\tmethods.add(method);\n\t\t\t}\n\t\t}\n\t\treturn methods;\n\t}\n\n\tprivate double spesaMediaPerCategoria(String categoria) {\n\t\tdouble totale = 0;\n\t\tint count = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getCategory().equals(categoria)) {\n\t\t\t\ttotale += spesa.getAmount();\n\t\t\t\tcount++;\n\t\t\t}\n\t\t}\n\t\treturn count == 0 ? 0 : totale / count;\n\t}\n\n\tprivate double spesaTotPerPayMethod(String method) {\n\t\tdouble totale = 0;\n\t\tfor (Spese spesa : spese) {\n\t\t\tif (spesa.getPayMethod().equals(method)) {\n\t\t\t\ttotale += spesa.getAmount();\n\t\t\t}\n\t\t}\n\t\treturn totale;\n\t}\n\n\tpublic String calcolaPayMethodMaggiore() {\n\t\tArrayList<String> methods = this.getPayMethod();\n\t\tif (methods.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString migliore = methods.get(0);\n\t\tdouble totaleMigliore = this.spesaTotPerPayMethod(migliore);\n\t\tfor (String metodo : methods) {\n\t\t\tdouble totaleMetodo = this.spesaTotPerPayMethod(metodo);\n\t\t\tif (totaleMetodo > totaleMigliore) {\n\t\t\t\tmigliore = metodo;\n\t\t\t\ttotaleMigliore = totaleMetodo;\n\t\t\t}\n\t\t}\n\t\treturn migliore;\n\t}\n\n\tpublic String calcolaPayMethodMinore() {\n\t\tArrayList<String> methods = this.getPayMethod();\n\t\tif (methods.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString peggiore = methods.get(0);\n\t\tdouble totalePeggiore = this.spesaTotPerPayMethod(peggiore);\n\t\tfor (String metodo : methods) {\n\t\t\tdouble totaleMetodo = this.spesaTotPerPayMethod(metodo);\n\t\t\tif (totaleMetodo < totalePeggiore) {\n\t\t\t\tpeggiore = metodo;\n\t\t\t\ttotalePeggiore = totaleMetodo;\n\t\t\t}\n\t\t}\n\t\treturn peggiore;\n\t}\n\n\tpublic String calcolaCategoriaMaggiore() {\n\t\tArrayList<String> categorie = this.getCategory();\n\t\tif (categorie.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString migliore = categorie.get(0);\n\t\tdouble mediaMigliore = this.spesaMediaPerCategoria(migliore);\n\t\tfor (String categoria : categorie) {\n\t\t\tdouble mediaCategoria = this.spesaMediaPerCategoria(categoria);\n\t\t\tif (mediaCategoria > mediaMigliore) {\n\t\t\t\tmigliore = categoria;\n\t\t\t\tmediaMigliore = mediaCategoria;\n\t\t\t}\n\t\t}\n\t\treturn migliore;\n\t}\n\n\tpublic String calcolaCategoriaMinore() {\n\t\tArrayList<String> categorie = this.getCategory();\n\t\tif (categorie.isEmpty()) {\n\t\t\treturn \"\";\n\t\t}\n\t\tString peggiore = categorie.get(0);\n\t\tdouble mediaPeggiore = this.spesaMediaPerCategoria(peggiore);\n\t\tfor (String categoria : categorie) {\n\t\t\tdouble mediaCategoria = this.spesaMediaPerCategoria(categoria);\n\t\t\tif (mediaCategoria < mediaPeggiore) {\n\t\t\t\tpeggiore = categoria;\n\t\t\t\tmediaPeggiore = mediaCategoria;\n\t\t\t}\n\t\t}\n\t\treturn peggiore;\n\t}\n}\n", "\nimport java.time.LocalDate;\n\n/**\n * La classe {@code Spese} rappresenta una singola spesa con attributi relativi alla data,\n * importo, categoria e metodo di pagamento.\n * @author giordii.dev\n */\npublic class Spese {\n    private LocalDate date;\n    private double amount;\n    private String category;\n    private String payMethod;\n\n    /**\n     * Costruttore completo per l'inizializzazione completa degli oggetti.\n     * @param category categoria della spesa\n     * @param date data della spesa\n     * @param amount importo della spesa\n     * @param payMethod metodo di pagamento\n     */\n    public Spese(String category, LocalDate date, double amount, String payMethod) {\n        this.category = category;\n        this.date = date;\n        this.amount = amount;\n        this.payMethod = payMethod;\n    }\n\n    /**\n     * Costruttore senza Date per spese incognite\n     * @param amount importo della spesa\n     * @param category categoria della spesa\n     * @param payMethod metodo di pagamento\n     */\n    public Spese(double amount, String category, String payMethod) {\n\t\tthis.amount = amount;\n\t\tthis.category = category;\n\t\tthis.payMethod = payMethod;\n\t}\n\n\t// getter e setter\n    public void setDate(LocalDate date) {\n        this.date = date;\n    }\n\n    public LocalDate getDate() {\n        return date;\n    }\n\n    public void setAmount(double amount) {\n        this.amount = amount;\n    }\n\n    public void setCategory(String category) {\n        this.category = category;\n    }\n\n    public void setPayMethod(String payMethod) {\n        this.payMethod = payMethod;\n    }\n\n    public double getAmount() {\n        return amount;\n    }\n\n    public String getCategory() {\n        return category;\n    }\n\n    public String getPayMethod() {\n        return payMethod;\n    }\n\n    @Override\n\tpublic String toString() {\n\t\treturn \"Spese [date=\" + date + \", amount=\" + amount + \", category=\" + category + \", payMethod=\" + payMethod\n\t\t\t\t+ \"]\";\n\t}\n\n    /**\n     * Metodo per applicare l'iva alle spese con scontrino\n     * @return Spesa+iva 22%\n     */\n    public double applicaIva() {\n        return this.amount * 1.22;\n    }\n}\n"];
         const projectName = "SpeseManager";
         const buildStatus = "success";
         const precompiledOutput = "Spese inserite:\n1) Trasporto - 12.80 (Carta) | 2024-05-10\n2) Alimentari - 42.30 (Contanti) | 2024-05-12\n3) Bar - 7.50 (Contanti) | data non disponibile\n4) Tecnologia - 120.00 (Bonifico) | data non disponibile\n\nTotale: 182.60\nMedia: 45.65\nMassimo: 120.00\nMinimo: 7.50\n\nCategoria con media piu alta: Tecnologia (120.00)\nMetodo con totale piu alto: Bonifico (120.00)\n";

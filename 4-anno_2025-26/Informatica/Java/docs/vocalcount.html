@@ -342,13 +342,13 @@
         <div class="left-panel">
             <div class="tabs">
                 
-            <button class="tab-button active" data-tab="vocalcount-tab0">voc_count.java</button>
+            <button class="tab-button active" data-tab="vocalcount-tab0">VocalCount.java</button>
         
             </div>
             <div class="code-area" id="codeArea">
                 
             <div id="vocalcount-tab0" class="tab-content active">
-                <pre><code class="language-java">public class voc_count {
+                <pre><code class="language-java">public class VocalCount {
     public static void main(String[] args) {
         char[] chars = {&#39;p&#39;,&#39;r&#39;,&#39;e&#39;,&#39;f&#39;,&#39;e&#39;,&#39;r&#39;,&#39;i&#39;,&#39;s&#39;,&#39;c&#39;,&#39;o&#39;,&#39; &#39;,&#39;p&#39;,&#39;y&#39;,&#39;t&#39;,&#39;h&#39;,&#39;o&#39;,&#39;n&#39;};
         int[] vowelCount = new int[5];
@@ -408,7 +408,7 @@ vowel num: 5
     
     <script>
         // Project data
-        const sourceCode = ["public class voc_count {\n    public static void main(String[] args) {\n        char[] chars = {'p','r','e','f','e','r','i','s','c','o',' ','p','y','t','h','o','n'};\n        int[] vowelCount = new int[5];\n        char[] vowels = {'a', 'e', 'i', 'o', 'u'};\n\n        for (char c : chars) {\n            char lower = Character.toLowerCase(c);\n            for (int i = 0; i < vowels.length; i++) {\n                if (lower == vowels[i]) {\n                    vowelCount[i]++;\n                    break;\n                }\n            }\n        }\n\n        for (int i = 0; i < vowels.length; i++) {\n            System.out.println(vowels[i] + \": \" + vowelCount[i]);\n        }       \n        int total = 0;\n        for (int count : vowelCount) {\n            total += count;\n        }\n        System.out.println(\"vowel num: \" + total);\n    }\n}"];
+        const sourceCode = ["public class VocalCount {\n    public static void main(String[] args) {\n        char[] chars = {'p','r','e','f','e','r','i','s','c','o',' ','p','y','t','h','o','n'};\n        int[] vowelCount = new int[5];\n        char[] vowels = {'a', 'e', 'i', 'o', 'u'};\n\n        for (char c : chars) {\n            char lower = Character.toLowerCase(c);\n            for (int i = 0; i < vowels.length; i++) {\n                if (lower == vowels[i]) {\n                    vowelCount[i]++;\n                    break;\n                }\n            }\n        }\n\n        for (int i = 0; i < vowels.length; i++) {\n            System.out.println(vowels[i] + \": \" + vowelCount[i]);\n        }       \n        int total = 0;\n        for (int count : vowelCount) {\n            total += count;\n        }\n        System.out.println(\"vowel num: \" + total);\n    }\n}"];
         const projectName = "vocalcount";
         const buildStatus = "success";
         const precompiledOutput = "a: 0\ne: 2\ni: 1\no: 2\nu: 0\nvowel num: 5\n";

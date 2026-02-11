@@ -342,7 +342,7 @@
         <div class="left-panel">
             <div class="tabs">
                 
-            <button class="tab-button active" data-tab="mergearray-tab0">mergeArrays.java</button>
+            <button class="tab-button active" data-tab="mergearray-tab0">MergeArrays.java</button>
         
             </div>
             <div class="code-area" id="codeArea">
@@ -350,7 +350,7 @@
             <div id="mergearray-tab0" class="tab-content active">
                 <pre><code class="language-java">import java.util.Arrays;
 
-public class mergeArrays {
+public class MergeArrays {
     public static void main(String[] args) {
         int[] first = {1, 4, 9};
         int[] secnd = {2, 3, 7, 11};
@@ -403,7 +403,7 @@ public class mergeArrays {
     
     <script>
         // Project data
-        const sourceCode = ["import java.util.Arrays;\n\npublic class mergeArrays {\n    public static void main(String[] args) {\n        int[] first = {1, 4, 9};\n        int[] secnd = {2, 3, 7, 11};\n        int[] res = new int[first.length + secnd.length];\n        int i = 0;\n        int j = 0;\n        int k = 0;\n        while (i < first.length && j < secnd.length) {\n            if (first[i] <= secnd[j]) {\n                res[k++] = first[i++];\n            } else {\n                res[k++] = secnd[j++];\n            }\n        }\n        while (i < first.length) {\n            res[k++] = first[i++];\n        }\n        while (j < secnd.length) {\n            res[k++] = secnd[j++];\n        }\n        System.out.println(Arrays.toString(res));\n    }\n}"];
+        const sourceCode = ["import java.util.Arrays;\n\npublic class MergeArrays {\n    public static void main(String[] args) {\n        int[] first = {1, 4, 9};\n        int[] secnd = {2, 3, 7, 11};\n        int[] res = new int[first.length + secnd.length];\n        int i = 0;\n        int j = 0;\n        int k = 0;\n        while (i < first.length && j < secnd.length) {\n            if (first[i] <= secnd[j]) {\n                res[k++] = first[i++];\n            } else {\n                res[k++] = secnd[j++];\n            }\n        }\n        while (i < first.length) {\n            res[k++] = first[i++];\n        }\n        while (j < secnd.length) {\n            res[k++] = secnd[j++];\n        }\n        System.out.println(Arrays.toString(res));\n    }\n}"];
         const projectName = "mergeArray";
         const buildStatus = "success";
         const precompiledOutput = "[1, 2, 3, 4, 7, 9, 11]\n";
