@@ -4,7 +4,6 @@
 
 /**
  * Classe main di test per la verifica delle corrette funzionalità
- * @param args
  * @author giordii.dev
  */
 public class Main {

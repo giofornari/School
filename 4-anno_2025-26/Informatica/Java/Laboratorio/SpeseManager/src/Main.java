@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
 
@@ -23,7 +22,7 @@ public class Main {
                 "%d) %s - %.2f (%s) | %s%n",
                 i + 1,
                 spesa.getCategory(),
-                spesa.getMoneyyy(),
+                spesa.getAmount(),
                 spesa.getPayMethod(),
                 spesa.getDate() == null ? "data non disponibile" : spesa.getDate()
             );
@@ -38,7 +37,7 @@ public class Main {
         double min = Double.POSITIVE_INFINITY;
 
         for (Spese spesa : spese) {
-            double importo = spesa.getMoneyyy();
+            double importo = spesa.getAmount();
             totale += importo;
             max = Math.max(max, importo);
             min = Math.min(min, importo);
@@ -67,7 +66,7 @@ public class Main {
         int count = 0;
         for (Spese spesa : spese) {
             if (spesa.getCategory().equals(categoria)) {
-                totale += spesa.getMoneyyy();
+                totale += spesa.getAmount();
                 count++;
             }
         }
@@ -78,7 +77,7 @@ public class Main {
         double totale = 0;
         for (Spese spesa : spese) {
             if (spesa.getPayMethod().equals(metodo)) {
-                totale += spesa.getMoneyyy();
+                totale += spesa.getAmount();
             }
         }
         return totale;

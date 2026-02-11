@@ -1,4 +1,4 @@
-public class voc_count {
+public class VocalCount {
     public static void main(String[] args) {
         char[] chars = {'p','r','e','f','e','r','i','s','c','o',' ','p','y','t','h','o','n'};
         int[] vowelCount = new int[5];
