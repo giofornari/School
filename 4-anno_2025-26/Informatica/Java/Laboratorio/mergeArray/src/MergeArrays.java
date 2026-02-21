@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public class mergeArrays {
+public class MergeArrays {
     public static void main(String[] args) {
         int[] first = {1, 4, 9};
         int[] secnd = {2, 3, 7, 11};

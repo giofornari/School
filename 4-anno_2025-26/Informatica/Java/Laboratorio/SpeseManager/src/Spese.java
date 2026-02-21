@@ -8,34 +8,35 @@ import java.time.LocalDate;
  */
 public class Spese {
     private LocalDate date;
-    private double Moneyyy;
-    private String Category;
-    private String PayMethod;
+    private double amount;
+    private String category;
+    private String payMethod;
 
     /**
      * Costruttore completo per l'inizializzazione completa degli oggetti.
+     * @param category categoria della spesa
      * @param date data della spesa
+     * @param amount importo della spesa
+     * @param payMethod metodo di pagamento
      */
-
-    public Spese(String Category, LocalDate date, double Moneyyy, String PayMethod) {
-        this.Category = Category;
+    public Spese(String category, LocalDate date, double amount, String payMethod) {
+        this.category = category;
         this.date = date;
-        this.Moneyyy = Moneyyy;
-        this.PayMethod = PayMethod;
+        this.amount = amount;
+        this.payMethod = payMethod;
     }
-
 
     /**
      * Costruttore senza Date per spese incognite
-     * @hidden per i soldi in nero :|
+     * @param amount importo della spesa
+     * @param category categoria della spesa
+     * @param payMethod metodo di pagamento
      */
-
-    public Spese(double moneyyy, String category, String payMethod) {
-		this.Moneyyy = moneyyy;
-		this.Category = category;
-		this.PayMethod = payMethod;
+    public Spese(double amount, String category, String payMethod) {
+		this.amount = amount;
+		this.category = category;
+		this.payMethod = payMethod;
 	}
-
 
 	// getter e setter
     public void setDate(LocalDate date) {
@@ -46,41 +47,41 @@ public class Spese {
         return date;
     }
 
-    public void setMoneyyy(double Moneyyy) {
-        this.Moneyyy = Moneyyy;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
-    public void setCategory(String Category) {
-        this.Category = Category;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setPayMethod(String PayMethod) {
-        this.PayMethod = PayMethod;
+    public void setPayMethod(String payMethod) {
+        this.payMethod = payMethod;
     }
 
-    public double getMoneyyy() {
-        return Moneyyy;
+    public double getAmount() {
+        return amount;
     }
 
     public String getCategory() {
-        return Category;
+        return category;
     }
 
     public String getPayMethod() {
-        return PayMethod;
+        return payMethod;
     }
 
     @Override
 	public String toString() {
-		return "Spese [date=" + date + ", Moneyyy=" + Moneyyy + ", Category=" + Category + ", PayMethod=" + PayMethod
+		return "Spese [date=" + date + ", amount=" + amount + ", category=" + category + ", payMethod=" + payMethod
 				+ "]";
 	}
 
     /**
-     * Metodo per applcare l'iva alle spese con scontrino
+     * Metodo per applicare l'iva alle spese con scontrino
      * @return Spesa+iva 22%
      */
     public double applicaIva() {
-        return this.Moneyyy * 1.22;
+        return this.amount * 1.22;
     }
 }

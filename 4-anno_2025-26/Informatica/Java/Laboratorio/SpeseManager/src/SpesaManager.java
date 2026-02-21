@@ -18,7 +18,7 @@ public class SpesaManager {
 	public double spesaTotale() {
 		double totale = 0;
 		for (Spese spesa : spese) {
-			totale += spesa.getMoneyyy();
+			totale += spesa.getAmount();
 		}
 		return totale;
 	}
@@ -31,10 +31,10 @@ public class SpesaManager {
 		if (spese.isEmpty()) {
 			return 0;
 		}
-		double max = spese.get(0).getMoneyyy();
+		double max = spese.get(0).getAmount();
 		for (Spese spesa : spese) {
-			if (spesa.getMoneyyy() > max) {
-				max = spesa.getMoneyyy();
+			if (spesa.getAmount() > max) {
+				max = spesa.getAmount();
 			}
 		}
 		return max;
@@ -44,10 +44,10 @@ public class SpesaManager {
 		if (spese.isEmpty()) {
 			return 0;
 		}
-		double min = spese.get(0).getMoneyyy();
+		double min = spese.get(0).getAmount();
 		for (Spese spesa : spese) {
-			if (spesa.getMoneyyy() < min) {
-				min = spesa.getMoneyyy();
+			if (spesa.getAmount() < min) {
+				min = spesa.getAmount();
 			}
 		}
 		return min;
@@ -80,7 +80,7 @@ public class SpesaManager {
 		int count = 0;
 		for (Spese spesa : spese) {
 			if (spesa.getCategory().equals(categoria)) {
-				totale += spesa.getMoneyyy();
+				totale += spesa.getAmount();
 				count++;
 			}
 		}
@@ -91,7 +91,7 @@ public class SpesaManager {
 		double totale = 0;
 		for (Spese spesa : spese) {
 			if (spesa.getPayMethod().equals(method)) {
-				totale += spesa.getMoneyyy();
+				totale += spesa.getAmount();
 			}
 		}
 		return totale;

@@ -1,4 +1,6 @@
 
+import java.util.Objects;
+
 public class PortaCD {
     private final Cd[] slots;
     private int count;
@@ -90,5 +92,11 @@ public class PortaCD {
             && Objects.equals(first.getAutore(), second.getAutore())
             && first.getNumBrani() == second.getNumBrani()
             && Double.compare(first.getDurata(), second.getDurata()) == 0;
+    }
+
+    private void validateIndex(int position) {
+        if (position < 0 || position >= slots.length) {
+            throw new IndexOutOfBoundsException("Invalid position: " + position);
+        }
     }
 }
