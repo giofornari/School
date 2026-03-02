@@ -8,6 +8,9 @@ public class SpesaManager {
 	}
 
 	public void addSpesa(Spese spesa) {
+		if (spesa == null) {
+			throw new IllegalArgumentException("Spesa non può essere null");
+		}
 		spese.add(spesa);
 	}
 

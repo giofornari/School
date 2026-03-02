@@ -4,7 +4,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class convertitoreFXML extends Application {
+public class ConvertitoreFXML extends Application {
 
     @Override
     public void start(Stage terminal) throws Exception {
@@ -15,6 +15,6 @@ public class convertitoreFXML extends Application {
     }
 
     public static void main(String[] args) {
-        Application.launch(convertitoreFXML.class, args);
+        Application.launch(ConvertitoreFXML.class, args);
     }
 }

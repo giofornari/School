@@ -40,22 +40,22 @@ public class Calcolatrice extends Application {
         grid.setPadding(new Insets(10));  // margine esterno
 
         // bottoni numeri 0-9
-        Button btn0 = BtnNum("0");
-        Button btn1 = BtnNum("1");
-        Button btn2 = BtnNum("2");
-        Button btn3 = BtnNum("3");
-        Button btn4 = BtnNum("4");
-        Button btn5 = BtnNum("5");
-        Button btn6 = BtnNum("6");
-        Button btn7 = BtnNum("7");
-        Button btn8 = BtnNum("8");
-        Button btn9 = BtnNum("9");
+        Button btn0 = btnNum("0");
+        Button btn1 = btnNum("1");
+        Button btn2 = btnNum("2");
+        Button btn3 = btnNum("3");
+        Button btn4 = btnNum("4");
+        Button btn5 = btnNum("5");
+        Button btn6 = btnNum("6");
+        Button btn7 = btnNum("7");
+        Button btn8 = btnNum("8");
+        Button btn9 = btnNum("9");
 
         // bottoni operazioni
-        Button btnPiu = BtnOp("+");
-        Button btnMeno = BtnOp("-");
-        Button btnPer = BtnOp("*");
-        Button btnDiviso = BtnOp("/");
+        Button btnPiu = btnOp("+");
+        Button btnMeno = btnOp("-");
+        Button btnPer = btnOp("*");
+        Button btnDiviso = btnOp("/");
 
         // btn uguale - calcola tutto
         Button btnUguale = new Button("=");
@@ -105,7 +105,7 @@ public class Calcolatrice extends Application {
     }
 
     // crea btn x i numeri
-    private Button BtnNum(String numero) {
+    private Button btnNum(String numero) {
         Button btn = new Button(numero);
         btn.setPrefSize(50, 50);
         btn.setOnAction(e -> addNum(numero));
@@ -113,7 +113,7 @@ public class Calcolatrice extends Application {
     }
 
     // crea btn x le operazioni
-    private Button BtnOp(String op) {
+    private Button btnOp(String op) {
         Button btn = new Button(op);
         btn.setPrefSize(50, 50);
         btn.setOnAction(e -> setOpt(op));
