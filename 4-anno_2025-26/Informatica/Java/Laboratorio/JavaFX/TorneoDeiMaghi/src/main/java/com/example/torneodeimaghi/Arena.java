@@ -1,71 +1,87 @@
 package com.example.torneodeimaghi;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
 
 public class Arena {
-    private List<Wizard> wizards;
-    private Random random = new Random();
-    private int turn = 0;
+    private List<Wizard> maghi;
+    private int turno = 0;
 
-    public Arena(List<Wizard> wizards) {
-        this.wizards = wizards;
+    public Arena(List<Wizard> maghi) {
+        this.maghi = maghi;
     }
 
-    public void playMatch() {
-        while (getAliveWizards().size() > 1) {
-            playTurn();
-        }
-        System.out.println("\n" + getWinner().getName() + " is the winner!");
-    }
-
-    public void playTurn() {
-        turn++;
-        System.out.println("\n----- Turn " + turn + " -----");
-        List<Wizard> aliveWizards = getAliveWizards();
-        aliveWizards.sort(Comparator.comparingInt(Wizard::getSpeed).reversed());
-
-        for (Wizard currentWizard : aliveWizards) {
-            if (currentWizard.isAlive()) {
-                System.out.println("\nIt's " + currentWizard.getName() + "'s turn. " + currentWizard);
-                // AI Logic
-                List<Wizard> possibleTargets = getAliveWizards().stream()
-                        .filter(w -> !w.equals(currentWizard))
-                        .collect(Collectors.toList());
-
-                if (possibleTargets.isEmpty()) {
-                    break;
-                }
-
-                // Simple AI: If HP is low, heal. Otherwise, attack a random target.
-                if (currentWizard.getHp() < currentWizard.getHpMax() * 0.3 && currentWizard.canCast(getHealSpell(currentWizard))) {
-                    currentWizard.cast(getHealSpell(currentWizard), currentWizard);
-                } else if (currentWizard.canCast(getAttackSpell(currentWizard))) {
-                    Wizard target = possibleTargets.get(random.nextInt(possibleTargets.size()));
-                    currentWizard.cast(getAttackSpell(currentWizard), target);
-                } else {
-                    currentWizard.rest();
-                }
+    public List<Wizard> getMaghiVivi() {
+        List<Wizard> vivi = new ArrayList<>();
+        for (Wizard m : maghi) {
+            if (m.isAlive()) {
+                vivi.add(m);
             }
         }
+        return vivi;
     }
 
-    private Spell getAttackSpell(Wizard wizard) {
-        return wizard.getSpellBook().stream().filter(s -> "ATTACK".equals(s.getType())).findFirst().orElse(null);
+    public boolean isFinita() {
+        return getMaghiVivi().size() <= 1;
     }
 
-    private Spell getHealSpell(Wizard wizard) {
-        return wizard.getSpellBook().stream().filter(s -> "HEAL".equals(s.getType())).findFirst().orElse(null);
+    public Wizard getVincitore() {
+        List<Wizard> vivi = getMaghiVivi();
+        if (vivi.size() == 1) return vivi.get(0);
+        return null;
     }
 
-    public List<Wizard> getAliveWizards() {
-        return wizards.stream().filter(Wizard::isAlive).collect(Collectors.toList());
+    public int getTurno() { return turno; }
+
+    public List<String> giocaTurno() {
+        List<String> logTurno = new ArrayList<>();
+        if (isFinita()) return logTurno;
+
+        turno++;
+        logTurno.add("--- INIZIO LEAK " + turno + " ---");
+
+        List<Wizard> ordinati = getMaghiVivi();
+        // ordine decrescente di velocità
+        ordinati.sort((m1, m2) -> Integer.compare(m2.getSpd(), m1.getSpd()));
+
+        for (Wizard mago : ordinati) {
+            if (!mago.isAlive() || isFinita()) continue;
+
+            List<Wizard> bersagli = getMaghiVivi();
+            bersagli.remove(mago);
+
+            if (bersagli.isEmpty()) break;
+
+            String logAzione = faiAzioneAI(mago, bersagli);
+            logTurno.add(logAzione);
+        }
+
+        return logTurno;
     }
 
-    public Wizard getWinner() {
-        return getAliveWizards().get(0);
+    private String faiAzioneAI(Wizard mago, List<Wizard> bersagli) {
+        // Se HP < 30% e ha mana per curarsi -> Cura
+        // Altrimenti se ha mana per attaccare -> Attacca il bersaglio con HP più alti
+        // Altrimenti -> Riposa
+        
+        Spell attacco = mago.getBruhlist().get(0);
+        Spell cura = mago.getBruhlist().get(1);
+
+        if (mago.getHp() < mago.getHpMax() * 0.3 && mago.haManaPer(cura)) {
+            return mago.lanciaBruh(cura, mago);
+        }
+
+        if (mago.haManaPer(attacco)) {
+            // Cerca il bersaglio con più HP
+            Wizard bersaglioForte = bersagli.get(0);
+            for (Wizard b : bersagli) {
+                if (b.getHp() > bersaglioForte.getHp()) {
+                    bersaglioForte = b;
+                }
+            }
+            return mago.lanciaBruh(attacco, bersaglioForte);
+        }
+
+        return mago.sleep();
     }
 }

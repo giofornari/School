@@ -3,119 +3,80 @@ package com.example.torneodeimaghi;
 import java.util.List;
 
 public class Wizard {
-    private String name;
-    private String alias;
+    private String nome;
+    private String spritePath;
     private int hp;
     private int hpMax;
     private int mana;
     private int manaMax;
-    private int magicPower;
-    private int defense;
-    private int speed;
-    private List<Spell> spellBook;
+    private int power;
+    private int def;
+    private int spd;
+    private List<Spell> bruhlist;
 
-    public Wizard(String name, String alias, int hp, int mana, int magicPower, int defense, int speed, List<Spell> spellBook) {
-        this.name = name;
-        this.alias = alias;
-        this.hp = hp;
+    public Wizard(String nome, String spritePath, int hp, int mana, int power, int def, int spd, List<Spell> bruhlist) {
+        this.nome = nome;
+        this.spritePath = spritePath;
         this.hpMax = hp;
-        this.mana = mana;
+        this.hp = hp;
         this.manaMax = mana;
-        this.magicPower = magicPower;
-        this.defense = defense;
-        this.speed = speed;
-        this.spellBook = spellBook;
+        this.mana = mana;
+        this.power = power;
+        this.def = def;
+        this.spd = spd;
+        this.bruhlist = bruhlist;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getAlias() {
-        return alias;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public int getHpMax() {
-        return hpMax;
-    }
-
-    public int getMana() {
-        return mana;
-    }
-
-    public int getManaMax() {
-        return manaMax;
-    }
-
-    public int getMagicPower() {
-        return magicPower;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public List<Spell> getSpellBook() {
-        return spellBook;
-    }
+    public String getNome() { return nome; }
+    public String getSpritePath() { return spritePath; }
+    public int getHp() { return hp; }
+    public int getHpMax() { return hpMax; }
+    public int getMana() { return mana; }
+    public int getManaMax() { return manaMax; }
+    public int getPower() { return power; }
+    public int getDef() { return def; }
+    public int getSpd() { return spd; }
+    public List<Spell> getBruhlist() { return bruhlist; }
 
     public boolean isAlive() {
-        return this.hp > 0;
+        return hp > 0;
     }
 
-    public void takeDamage(int damage) {
-        this.hp -= damage;
-        if (this.hp < 0) {
-            this.hp = 0;
-        }
+    public void riceviDanno(int danno) {
+        hp -= danno;
+        if (hp < 0) hp = 0;
     }
 
-    public void heal(int amount) {
-        this.hp += amount;
-        if (this.hp > this.hpMax) {
-            this.hp = this.hpMax;
-        }
+    public void leef(int q) {
+        hp += q;
+        if (hp > hpMax) hp = hpMax;
     }
 
-    public boolean canCast(Spell s) {
-        return this.mana >= s.getManaCost();
+    public boolean haManaPer(Spell s) {
+        return mana >= s.getManaCost();
     }
 
-    public void cast(Spell s, Wizard target) {
-        if (isAlive() && canCast(s)) {
-            this.mana -= s.getManaCost();
-            if ("ATTACK".equals(s.getType())) {
-                int damage = s.getBaseValue() + this.magicPower - target.getDefense();
-                if (damage < 1) {
-                    damage = 1;
-                }
-                target.takeDamage(damage);
-                System.out.println(this.name + " attacks " + target.getName() + " with " + s.getName() + " for " + damage + " damage!");
-            } else if ("HEAL".equals(s.getType())) {
-                this.heal(s.getBaseValue());
-                System.out.println(this.name + " heals for " + s.getBaseValue() + " HP.");
+    public String lanciaBruh(Spell s, Wizard tohit) {
+        if (!isAlive()) return "";
+        
+        if (haManaPer(s)) {
+            mana -= s.getManaCost();
+            if (s.getType().equals("ATTACK")) {
+                int danno = s.getBaseValue() + power - tohit.getDef();
+                if (danno < 1) danno = 1;
+                tohit.riceviDanno(danno);
+                return nome + " colpisce " + tohit.getNome() + " con " + s.getName() + " (" + danno + " danni)!";
+            } else if (s.getType().equals("HEAL")) {
+                leef(s.getBaseValue());
+                return nome + " si cura di " + s.getBaseValue() + " HP con " + s.getName() + ".";
             }
         }
+        return nome + " prova a usare " + s.getName() + " ma fallisce.";
     }
 
-    public void rest() {
-        this.mana += 5;
-        if (this.mana > this.manaMax) {
-            this.mana = this.manaMax;
-        }
-        System.out.println(this.name + " rests and recovers 5 mana.");
-    }
-
-    @Override
-    public String toString() {
-        return name + " (" + alias + ") - HP: " + hp + "/" + hpMax + ", Mana: " + mana + "/" + manaMax;
+    public String sleep() {
+        mana += 5;
+        if (mana > manaMax) mana = manaMax;
+        return nome + " si riposa e recupera 5 mana.";
     }
 }
