@@ -13,6 +13,13 @@ dati_personaggi = [
     {"nome": "Nikola Tesla", "professione": "scienziato", "nazionalita": "serba", "epoca": "XIX secolo", "genere": "maschio"},
     {"nome": "Coco Chanel", "professione": "artista", "nazionalita": "francese", "epoca": "XX secolo", "genere": "femmina"},
     {"nome": "Galileo Galilei", "professione": "scienziato", "nazionalita": "italiana", "epoca": "XVI secolo", "genere": "maschio"},
+    # nuovi personaggi (estensione)
+    {"nome": "Giulio Cesare", "professione": "politico", "nazionalita": "romana", "epoca": "I secolo a.C.", "genere": "maschio"},
+    {"nome": "Vincent van Gogh", "professione": "artista", "nazionalita": "olandese", "epoca": "XIX secolo", "genere": "maschio"},
+    {"nome": "Ada Lovelace", "professione": "scienziato", "nazionalita": "britannica", "epoca": "XIX secolo", "genere": "femmina"},
+    {"nome": "Pablo Picasso", "professione": "artista", "nazionalita": "spagnola", "epoca": "XX secolo", "genere": "maschio"},
+    {"nome": "Winston Churchill", "professione": "politico", "nazionalita": "britannica", "epoca": "XX secolo", "genere": "maschio"},
+    {"nome": "William Shakespeare", "professione": "artista", "nazionalita": "britannica", "epoca": "XVI secolo", "genere": "maschio"},
 ]
 
 # lista di domande disponibili
@@ -24,8 +31,13 @@ dati_domande = [
     {"testo": "È francese?", "attributo": "nazionalita", "valore_atteso": "francese"},
     {"testo": "È tedesco?", "attributo": "nazionalita", "valore_atteso": "tedesca"},
     {"testo": "È britannico?", "attributo": "nazionalita", "valore_atteso": "britannica"},
+    {"testo": "È spagnolo?", "attributo": "nazionalita", "valore_atteso": "spagnola"},
+    {"testo": "È olandese?", "attributo": "nazionalita", "valore_atteso": "olandese"},
+    {"testo": "È romano?", "attributo": "nazionalita", "valore_atteso": "romana"},
     {"testo": "È vissuto nel XX secolo?", "attributo": "epoca", "valore_atteso": "XX secolo"},
     {"testo": "È vissuto nel XIX secolo?", "attributo": "epoca", "valore_atteso": "XIX secolo"},
     {"testo": "È vissuto nel XVII secolo?", "attributo": "epoca", "valore_atteso": "XVII secolo"},
+    {"testo": "È vissuto nel XVI secolo?", "attributo": "epoca", "valore_atteso": "XVI secolo"},
+    {"testo": "È vissuto nel I secolo a.C.?", "attributo": "epoca", "valore_atteso": "I secolo a.C."},
     {"testo": "È di genere femminile?", "attributo": "genere", "valore_atteso": "femmina"},
 ]

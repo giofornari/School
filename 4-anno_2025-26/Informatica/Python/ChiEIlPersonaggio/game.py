@@ -4,111 +4,90 @@ from domanda import Domanda
 from data import dati_personaggi, dati_domande
 
 class Game:
-    # inizializza il gioco
+    # costruttore classe
     def __init__(self):
-        # lista vuota personaggi
         self.lista_personaggi = []
-        # lista vuota domande
         self.lista_domande = []
-        # personaggio da indovinare
-        self.personaggio_segreto = None
-        # contatore delle domande
+        self.secrett = None
         self.numero_domanda = 0
+        self.tentativi = 3 # max tentativi
+        self.punteggio = 100 # punti base
         
-        # carica i personaggi
         for d in dati_personaggi:
-            # crea oggetto personaggio
             p = Personaggio(d["nome"], d["professione"], d["nazionalita"], d["epoca"], d["genere"])
-            # aggiungi alla lista
             self.lista_personaggi.append(p)
             
-        # carica le domande
         for d in dati_domande:
-            # crea oggetto domanda
             dom = Domanda(d["testo"], d["attributo"], d["valore_atteso"])
-            # aggiungi alla lista
             self.lista_domande.append(dom)
             
-    # scegli personaggio casuale
+    # sceglie casualmente
     def scegli_personaggio(self):
-        # usa modulo random
-        self.personaggio_segreto = random.choice(self.lista_personaggi)
+        self.secrett = random.choice(self.lista_personaggi)
 
-    # mostra menu domande
+    # mostra e seleziona
     def next_question(self):
-        # scegli 3 domande
-        domande_scelte = random.sample(self.lista_domande, 3)
-        # stampa istruzioni
-        print("scegli una domanda (0 per indovinare):")
+        # penalizza ogni domanda
+        if self.numero_domanda > 0:
+            self.punteggio -= 5
+            
+        # indizio progressivo
+        if self.numero_domanda == 5:
+            print("indizio: è " + self.secrett.genere)
+            
+        scelte = random.sample(self.lista_domande, 3)
+        print("scegli domanda (0 indovina):")
         
-        # indice per ciclo
         i = 0
-        # stampa le opzioni
-        while i < len(domande_scelte):
-            # stampa numero e testo
-            print(str(i + 1) + ". " + domande_scelte[i].testo)
-            # incrementa indice
+        while i < len(scelte):
+            print(str(i + 1) + ". " + scelte[i].testo)
             i += 1
             
-        # input dell'utente
-        scelta = int(input("> "))
+        s = int(input("> "))
         
-        # se sceglie zero
-        if scelta == 0:
+        if s == 0:
             return None
         else:
-            # ritorna domanda scelta
-            return domande_scelte[scelta - 1]
+            return scelte[s - 1]
 
-    # controlla la domanda
-    def check_answer(self, risposta, domanda):
-        # usa metodo controlla
-        esito = domanda.controlla(self.personaggio_segreto)
+    # controlla e stampa
+    def check_answer(self, r, dom):
+        esito = dom.controlla(self.secrett)
         
-        # stampa la risposta
-        if esito == True:
+        if esito:
             print("risposta: sì")
         else:
             print("risposta: no")
 
-    # utente prova indovinare
+    # tentativo finale
     def guess_personaggio(self):
-        # stampa la domanda
-        print("chi pensi che sia?")
-        # prendi input utente
-        nome = input("> ")
+        print("chi pensi sia? (tentativi: " + str(self.tentativi) + ")")
+        n = input("> ")
         
-        # controlla se uguale
-        if nome.lower() == self.personaggio_segreto.nome.lower():
-            # indovinato
-            print("corretto! hai indovinato il personaggio!")
+        if n.lower() == self.secrett.nome.lower():
+            print("esatto! hai indovinato!")
+            print("punteggio finale: " + str(self.punteggio))
+            return True
         else:
-            # sbagliato
-            print("sbagliato! era " + self.personaggio_segreto.nome)
+            self.tentativi -= 1
+            self.punteggio -= 20
+            print("errore!")
+            if self.tentativi == 0:
+                print("perso! era " + self.secrett.nome)
+            return False
 
-    # avvia il gioco
+    # ciclo principale
     def play(self):
-        # stampa benvenuto
-        print("benvenuto al gioco \"chi è il personaggio?\"")
-        # stampa messaggio
-        print("ho scelto un personaggio segreto. cerca di indovinare chi è!")
-        
-        # scegli il personaggio
+        print("benvenuto al gioco")
         self.scegli_personaggio()
         
-        # ciclo di gioco
-        while True:
-            # prendi la domanda
-            domanda = self.next_question()
+        while self.tentativi > 0:
+            dom = self.next_question()
             
-            # controlla se indovina
-            if domanda == None:
-                # chiama guess
-                self.guess_personaggio()
-                # termina il ciclo
-                break
+            if dom == None:
+                vinto = self.guess_personaggio()
+                if vinto or self.tentativi == 0:
+                    break
             else:
-                # controlla e rispondi
-                self.check_answer("", domanda)
-                # incrementa contatore
+                self.check_answer("", dom)
                 self.numero_domanda += 1
