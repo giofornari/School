@@ -20,7 +20,6 @@ class Game:
         for d in dati_domande:
             dom = Domanda(d["testo"], d["attributo"], d["valore_atteso"])
             self.lista_domande.append(dom)
-            
     # sceglie casualmente
     def scegli_personaggio(self):
         self.secrett = random.choice(self.lista_personaggi)
