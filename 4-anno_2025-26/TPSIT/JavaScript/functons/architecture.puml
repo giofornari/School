@@ -1,0 +1,54 @@
+@startuml FunctionVisualizer
+
+class FunctionVisualizer {
+  - selectedFunction: string
+  - rangeMin: number
+  - rangeMax: number
+  - parameters: Map
+  - chart: google.visualization.LineChart
+  - data: google.visualization.DataTable
+  + init(): void
+  + updateGraph(): void
+  + onFunctionChange(name: string): void
+  + onParameterChange(name: string, value: number): void
+  + onRangeChange(min: number, max: number): void
+  - generateDataPoints(): Array
+  - initializeChart(): void
+  - attachEventListeners(): void
+}
+
+class Function {
+  # name: string
+  # parameters: Map
+  + getName(): string
+  + getParameters(): Map
+  + calculate(x: number): number
+  + setParameter(name: string, value: number): void
+  {abstract} + evaluate(x: number): number
+}
+
+class LinearFunction {
+  - m: number
+  - b: number
+  + evaluate(x: number): number
+}
+
+class ParabolaFunction {
+  - a: number
+  - b: number
+  - c: number
+  + evaluate(x: number): number
+}
+
+class ExponentialFunction {
+  - base: number
+  - exponent: number
+  + evaluate(x: number): number
+}
+
+FunctionVisualizer --> Function
+Function <|-- LinearFunction
+Function <|-- ParabolaFunction
+Function <|-- ExponentialFunction
+
+@enduml
