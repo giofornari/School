@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ＮＥＯ－ＶＡＰＯＲ　ＤＡＴＥＳ 🌴</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vpPink: '#ff71ce',
+                        vpBlue: '#01cdfe',
+                        vpGreen: '#05ffa1',
+                        vpPurple: '#b967ff',
+                        vpYellow: '#fffb96',
+                    },
+                    boxShadow: {
+                        'brutal': '12px 12px 0px 0px rgba(0,0,0,1)',
+                        'brutal-sm': '6px 6px 0px 0px rgba(0,0,0,1)',
+                        'brutal-hover': '2px 2px 0px 0px rgba(0,0,0,1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: #ff71ce;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        body.grid-bg {
+            background-image: 
+                linear-gradient(to right, #000 3px, transparent 3px),
+                linear-gradient(to bottom, #000 3px, transparent 3px);
+            background-size: 60px 60px;
+            animation: scrollGrid 15s linear infinite;
+        }
+
+        @keyframes scrollGrid {
+            0% { background-position: 0 0; }
+            100% { background-position: 60px 60px; }
+        }
+
+        .crt::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999;
+            pointer-events: none;
+            background-size: 100% 3px, 6px 100%;
+            animation: flicker 0.12s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.95; }
+            50% { opacity: 0.85; }
+            100% { opacity: 0.95; }
+        }
+
+        /* Glitch Effect */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch {
+            position: relative;
+            color: black;
+            font-weight: 900;
+            text-transform: uppercase;
+            text-shadow: 4px 4px 0px #fff;
+            display: inline-block;
+        }
+
+        .glitch::before, .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fffb96;
+            white-space: nowrap;
+        }
+
+        .glitch::before {
+            left: 6px;
+            text-shadow: -3px 0 #ff71ce;
+            clip: rect(44px, 800px, 56px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+            z-index: -1;
+        }
+
+        .glitch::after {
+            left: -6px;
+            text-shadow: -3px 0 #01cdfe;
+            clip: rect(44px, 800px, 56px, 0);
+            animation: glitch-anim2 3s infinite linear alternate-reverse;
+            z-index: -2;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(15px, 9999px, 90px, 0); }
+            5% { clip: rect(60px, 9999px, 15px, 0); }
+            10% { clip: rect(35px, 9999px, 100px, 0); }
+            15% { clip: rect(90px, 9999px, 25px, 0); }
+            20% { clip: rect(5px, 9999px, 50px, 0); }
+            25% { clip: rect(70px, 9999px, 80px, 0); }
+            30% { clip: rect(45px, 9999px, 15px, 0); }
+            100% { clip: rect(45px, 9999px, 15px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(25px, 9999px, 55px, 0); }
+            5% { clip: rect(15px, 9999px, 90px, 0); }
+            10% { clip: rect(70px, 9999px, 35px, 0); }
+            15% { clip: rect(45px, 9999px, 80px, 0); }
+            20% { clip: rect(100px, 9999px, 25px, 0); }
+            25% { clip: rect(15px, 9999px, 45px, 0); }
+            30% { clip: rect(90px, 9999px, 55px, 0); }
+            100% { clip: rect(90px, 9999px, 55px, 0); }
+        }
+
+        /* Marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+            border-bottom: 6px solid black;
+            background: #05ffa1;
+            padding: 12px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            box-shadow: 0px 8px 0px 0px rgba(0,0,0,1);
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+            font-weight: 900;
+            font-size: 1.4rem;
+            color: black;
+            text-transform: uppercase;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Brutalist Elements */
+        .brutal-input {
+            @apply w-full bg-white border-4 border-black p-4 text-black font-bold outline-none shadow-brutal-sm transition-all focus:translate-x-[6px] focus:translate-y-[6px] focus:shadow-none focus:bg-vpYellow;
+        }
+        
+        .brutal-btn {
+            @apply w-full relative overflow-hidden bg-black text-white border-4 border-black p-4 font-black uppercase tracking-widest shadow-brutal-sm transition-all hover:bg-white hover:text-black hover:-translate-y-1 hover:shadow-brutal active:translate-x-[6px] active:translate-y-[6px] active:shadow-none cursor-pointer;
+        }
+
+        .brutal-btn::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);
+            transition: left 0.3s ease;
+        }
+
+        .brutal-btn:hover::before {
+            left: 0;
+        }
+
+        .brutal-card {
+            @apply border-8 border-black p-8 relative shadow-brutal transition-all duration-300 hover:-translate-y-2 hover:-translate-x-2 hover:shadow-[20px_20px_0px_0px_rgba(0,0,0,1)];
+            opacity: 0;
+            transform: translateY(40px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .window-header {
+            @apply border-b-8 border-black p-3 flex justify-between items-center font-black text-sm md:text-base bg-white text-black absolute top-0 left-0 right-0 z-10;
+        }
+
+        .floating-icon {
+            animation: floatBrutal 4s steps(5) infinite;
+        }
+
+        @keyframes floatBrutal {
+            0% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(8deg) scale(1.1); }
+            50% { transform: translateY(0) rotate(0deg) scale(1); }
+            75% { transform: translateY(15px) rotate(-8deg) scale(0.9); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 16px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #ff71ce;
+            border-left: 6px solid black;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: black;
+            border: 3px solid #ff71ce;
+        }
+
+        /* Error state animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px) rotate(-1deg); }
+            75% { transform: translateX(5px) rotate(1deg); }
+        }
+        .error-shake {
+            animation: shake 0.2s ease-in-out 3;
+            background-color: #ff4757 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="crt grid-bg min-h-screen text-black pt-24 pb-16 px-4 md:px-8">
+
+    <!-- MARQUEE -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            // NEO-BRUTALISM ✖ VAPORWAVE // システムエラー // NOSTALGIA LOOP // AESTHETIC CALCULATIONS // 時間の無駄 // DATA_CORRUPTED // NEO-BRUTALISM ✖ VAPORWAVE // システムエラー // NOSTALGIA LOOP // AESTHETIC CALCULATIONS // 時間の無駄 // DATA_CORRUPTED // 
+        </div>
+    </div>
+
+    <!-- BACKGROUND DECORATIONS -->
+    <div class="fixed top-32 left-5 md:left-10 text-7xl md:text-9xl floating-icon opacity-80 select-none z-0 mix-blend-hard-light drop-shadow-[8px_8px_0_rgba(0,0,0,1)]">🗿</div>
+    <div class="fixed bottom-20 right-5 md:right-10 text-7xl md:text-9xl floating-icon opacity-80 select-none z-0 mix-blend-hard-light drop-shadow-[8px_8px_0_rgba(0,0,0,1)]" style="animation-delay: -1.5s">🌴</div>
+    <div class="fixed bottom-40 left-10 md:left-20 text-5xl md:text-7xl floating-icon opacity-80 select-none z-0 mix-blend-hard-light drop-shadow-[8px_8px_0_rgba(0,0,0,1)]" style="animation-delay: -0.5s">💾</div>
+    <div class="fixed top-40 right-10 md:right-20 text-5xl md:text-7xl floating-icon opacity-80 select-none z-0 mix-blend-hard-light drop-shadow-[8px_8px_0_rgba(0,0,0,1)]" style="animation-delay: -2s">🌐</div>
+
+    <div class="max-w-5xl mx-auto space-y-16 relative z-10">
+        
+        <header class="text-center mt-12 mb-24 brutal-card bg-vpYellow pt-20 pb-12" style="animation-delay: 0s;">
+            <div class="window-header">
+                <span>SYSTEM_OVERRIDE.EXE</span>
+                <div class="flex space-x-3">
+                    <div class="w-5 h-5 border-4 border-black bg-vpPink hover:bg-black cursor-pointer transition-colors"></div>
+                    <div class="w-5 h-5 border-4 border-black bg-vpGreen hover:bg-black cursor-pointer transition-colors"></div>
+                    <div class="w-5 h-5 border-4 border-black bg-vpBlue hover:bg-black cursor-pointer transition-colors"></div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="glitch-wrapper mb-6">
+                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-black italic tracking-tighter glitch" data-text="ＤＡＴＥ　ＳＰＡＣＥ">
+                        ＤＡＴＥ　ＳＰＡＣＥ
+                    </h1>
+                </div>
+                <br>
+                <p class="text-xl md:text-2xl font-black tracking-widest mt-8 bg-black text-vpGreen inline-block px-6 py-3 border-4 border-black shadow-brutal-sm hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-crosshair">
+                    [ NEO-BRUTAL // 1994 // 仮想 ]
+                </p>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            <!-- EXERCISE 1 -->
+            <div class="brutal-card bg-vpBlue pt-20" style="animation-delay: 0.1s;">
+                <div class="window-header bg-vpYellow">
+                    <span>C:\EXERCISE_01.BAT</span>
+                    <span class="text-xs md:text-sm bg-black text-white px-2 py-1">距離 [GAP]</span>
+                </div>
+                <h2 class="text-4xl font-black mb-8 uppercase text-white" style="-webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px #000;">TIME GAP</h2>
+                <div class="space-y-6">
+                    <div class="relative">
+                        <label class="absolute -top-3 left-3 bg-black text-white px-2 text-xs font-bold">START_POINT</label>
+                        <input type="date" id="d1_1" class="brutal-input">
+                    </div>
+                    <div class="relative">
+                        <label class="absolute -top-3 left-3 bg-black text-white px-2 text-xs font-bold">END_POINT</label>
+                        <input type="date" id="d1_2" class="brutal-input">
+                    </div>
+                    <button onclick="calc1()" class="brutal-btn mt-4 hover:bg-vpPink hover:text-black">
+                        / EXECUTE _CALC
+                    </button>
+                    <div id="r1" class="text-2xl md:text-3xl text-center font-black bg-white border-4 border-black p-4 min-h-[80px] flex items-center justify-center shadow-brutal-sm hidden transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- EXERCISE 2 -->
+            <div class="brutal-card bg-vpGreen pt-20" style="animation-delay: 0.2s;">
+                <div class="window-header bg-vpPink">
+                    <span>C:\EXERCISE_02.BAT</span>
+                    <span class="text-xs md:text-sm bg-black text-white px-2 py-1">未来 [DRIFT]</span>
+                </div>
+                <h2 class="text-4xl font-black mb-8 uppercase text-white" style="-webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px #000;">FUTURE DRIFT</h2>
+                <div class="space-y-6">
+                    <div class="relative">
+                        <label class="absolute -top-3 left-3 bg-black text-white px-2 text-xs font-bold">SHIFT_DAYS</label>
+                        <input type="number" id="n2" placeholder="DAYS TO DRIFT..." class="brutal-input">
+                    </div>
+                    <button onclick="calc2()" class="brutal-btn mt-4 hover:bg-vpBlue hover:text-black">
+                        / INITIATE _TRAVEL
+                    </button>
+                    <div id="r2" class="text-2xl md:text-3xl text-center font-black bg-white border-4 border-black p-4 min-h-[80px] flex items-center justify-center shadow-brutal-sm hidden transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- EXERCISE 3 -->
+            <div class="brutal-card bg-vpPurple pt-20 lg:col-span-2" style="animation-delay: 0.3s;">
+                <div class="window-header bg-black text-vpGreen">
+                    <span>C:\EXERCISE_03.BAT</span>
+                    <span class="text-xs md:text-sm bg-vpGreen text-black px-2 py-1">月末 [HORIZON]</span>
+                </div>
+                <div class="flex flex-col lg:flex-row gap-12 items-center">
+                    <div class="w-full lg:w-1/2 space-y-6">
+                        <h2 class="text-4xl font-black mb-6 uppercase text-vpYellow" style="-webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px #000;">END OF MONTH</h2>
+                        <div class="relative">
+                            <label class="absolute -top-3 left-3 bg-white text-black px-2 text-xs font-bold border-2 border-black">JUMP_VAR</label>
+                            <input type="number" id="n3" placeholder="INPUT DAYS..." class="brutal-input border-4 border-black shadow-brutal-sm">
+                        </div>
+                        <button onclick="calc3()" class="brutal-btn hover:bg-vpYellow hover:text-black">
+                            / SEE_THE_HORIZON
+                        </button>
+                    </div>
+                    <div class="w-full lg:w-1/2">
+                        <div id="r3" class="text-2xl md:text-3xl font-black bg-black text-vpGreen border-8 border-black p-8 w-full min-h-[160px] shadow-brutal flex-col justify-center items-center gap-4 hidden uppercase relative overflow-hidden group">
+                            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0JyBoZWlnaHQ9JzQnPjxyZWN0IHdpZHRoPSc0JyBoZWlnaHQ9JzQnIGZpbGw9JyMwMDAnIGZpbGwtb3BhY2l0eT0nMC40Jy8+PC9zdmc+')] opacity-50 z-0 mix-blend-overlay pointer-events-none group-hover:opacity-100 transition-opacity"></div>
+                            <div class="z-10 relative text-center w-full result-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXERCISE 4 -->
+            <div class="brutal-card bg-white pt-20" style="animation-delay: 0.4s;">
+                <div class="window-header bg-vpGreen">
+                    <span>C:\EXERCISE_04.BAT</span>
+                    <span class="text-xs md:text-sm bg-black text-white px-2 py-1">誕生 [ECHO]</span>
+                </div>
+                <h2 class="text-4xl font-black mb-8 uppercase text-vpPink" style="-webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px #000;">BIRTH ECHO</h2>
+                <div class="space-y-6">
+                    <div class="relative">
+                        <label class="absolute -top-3 left-3 bg-black text-white px-2 text-xs font-bold">ORIGIN_DATE</label>
+                        <input type="date" id="nascita" class="brutal-input">
+                    </div>
+                    <button onclick="calc4()" class="brutal-btn bg-vpPink text-black hover:bg-black hover:text-vpPink">
+                        / RECALL _MEMORY
+                    </button>
+                    <div id="r4" class="text-xl md:text-2xl font-black bg-vpYellow border-4 border-black p-6 min-h-[120px] shadow-brutal-sm hidden flex-col justify-center gap-2 relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl opacity-20">🎂</div>
+                        <div class="z-10 relative result-content flex flex-col gap-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXERCISE 5 -->
+            <div class="brutal-card bg-vpPink pt-20" style="animation-delay: 0.5s;">
+                <div class="window-header bg-black text-white">
+                    <span>C:\EXERCISE_05.BAT</span>
+                    <span class="text-xs md:text-sm bg-white text-black px-2 py-1 font-bold">労働 [CYCLE]</span>
+                </div>
+                <h2 class="text-4xl font-black mb-8 uppercase text-vpYellow" style="-webkit-text-stroke: 2px black; text-shadow: 4px 4px 0px #000;">WORK CYCLE</h2>
+                <div class="space-y-6">
+                    <div class="relative">
+                        <label class="absolute -top-3 left-3 bg-black text-white px-2 text-xs font-bold">START_CYCLE</label>
+                        <input type="date" id="start5" class="brutal-input">
+                    </div>
+                    <div class="relative">
+                        <label class="absolute -top-3 left-3 bg-black text-white px-2 text-xs font-bold">ITERATIONS</label>
+                        <input type="number" id="n5" placeholder="WORK DAYS..." class="brutal-input">
+                    </div>
+                    <button onclick="calc5()" class="brutal-btn bg-vpYellow text-black hover:bg-black hover:text-vpYellow">
+                        / ESCAPE _MALL
+                    </button>
+                    <div id="r5" class="text-2xl md:text-3xl text-center font-black bg-white border-4 border-black p-4 min-h-[80px] flex items-center justify-center shadow-brutal-sm hidden transition-all duration-300"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="text-center font-black text-xl md:text-2xl text-black border-8 border-black bg-white p-8 shadow-brutal mt-16 mb-8 uppercase hover:bg-vpBlue transition-colors duration-500 cursor-help">
+            © 1994 // NEO-AESTHETIC CORP // END OF FILE 
+            <br>
+            <span class="text-sm tracking-widest bg-black text-white px-2 py-1 mt-4 inline-block">SYSTEM HALTED</span>
+        </footer>
+    </div>
+
+    <script>
+        let oggi = new Date();
+
+        // Glitchy sound effect simulation (visual only)
+        function triggerGlitchEffect(elementId) {
+            const el = document.getElementById(elementId);
+            el.style.transform = `translate(${Math.random() * 10 - 5}px, ${Math.random() * 10 - 5}px)`;
+            setTimeout(() => {
+                el.style.transform = 'translate(0, 0)';
+            }, 50);
+        }
+
+        function triggerError(inputId) {
+            const input = document.getElementById(inputId);
+            input.classList.add('error-shake');
+            setTimeout(() => input.classList.remove('error-shake'), 600);
+        }
+
+        function showResult(id, content, bgColor = '#fff') {
+            const container = document.getElementById(id);
+            container.classList.remove('hidden');
+            
+            // Complex Entrance Animation
+            container.animate([
+                { transform: 'scale(0.8) skewX(20deg)', backgroundColor: '#000', color: '#fff' },
+                { transform: 'scale(1.1) skewX(-10deg)', backgroundColor: 'var(--tw-colors-vpPink)' },
+                { transform: 'scale(1) skewX(0)', backgroundColor: bgColor }
+            ], { duration: 400, easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
+            
+            if(container.querySelector('.result-content')) {
+                container.querySelector('.result-content').innerHTML = content;
+            } else {
+                container.innerHTML = content;
+            }
+            triggerGlitchEffect(id);
+        }
+
+        function calc1() {
+            let val1 = document.getElementById('d1_1').value;
+            let val2 = document.getElementById('d1_2').value;
+            if(!val1) { triggerError('d1_1'); return; }
+            if(!val2) { triggerError('d1_2'); return; }
+            
+            let data1 = new Date(val1);
+            let data2 = new Date(val2);
+            let diff = Math.abs(data2 - data1);
+            let giorni = diff / (1000 * 60 * 60 * 24);
+            showResult('r1', `ERROR_LOG: ${giorni} DAYS`);
+        }
+
+        function calc2() {
+            let val = document.getElementById('n2').value;
+            if(!val) { triggerError('n2'); return; }
+            
+            let n = parseInt(val);
+            let futuro = new Date(oggi);
+            futuro.setDate(oggi.getDate() + n);
+            showResult('r2', `> ${futuro.toLocaleDateString('it-IT')}`, 'var(--tw-colors-vpYellow)');
+        }
+
+        function calc3() {
+            let val = document.getElementById('n3').value;
+            if(!val) { triggerError('n3'); return; }
+            
+            let n = parseInt(val);
+            let futuro = new Date(oggi);
+            futuro.setDate(oggi.getDate() + n);
+            let fineMese = new Date(futuro.getFullYear(), futuro.getMonth() + 1, 0);
+            
+            const content = `
+                <div class="w-full flex justify-between border-b-4 border-vpGreen pb-2">
+                    <span class="text-white">ARRIVAL:</span> 
+                    <span>${futuro.toLocaleDateString('it-IT')}</span>
+                </div>
+                <div class="w-full flex justify-between pt-2">
+                    <span class="text-white">END:</span> 
+                    <span>${fineMese.toLocaleDateString('it-IT')}</span>
+                </div>
+            `;
+            const container = document.getElementById('r3');
+            container.classList.remove('hidden');
+            container.style.display = 'flex';
+            container.querySelector('.result-content').innerHTML = content;
+            
+            container.animate([
+                { clipPath: 'inset(100% 0 0 0)' },
+                { clipPath: 'inset(0 0 0 0)' }
+            ], { duration: 300, easing: 'steps(5)' });
+            triggerGlitchEffect('r3');
+        }
+
+        function calc4() {
+            let val = document.getElementById('nascita').value;
+            if(!val) { triggerError('nascita'); return; }
+            
+            let nascita = new Date(val);
+            let eta = oggi.getFullYear() - nascita.getFullYear();
+            let compl = new Date(oggi.getFullYear(), nascita.getMonth(), nascita.getDate());
+            if (oggi < compl) eta--;
+            if (oggi > compl) compl.setFullYear(oggi.getFullYear() + 1);
+            let diff = Math.ceil((compl - oggi) / (1000 * 60 * 60 * 24));
+            let giorno = compl.toLocaleDateString('it-IT', { weekday: 'long' });
+            
+            const content = `
+                <div class="flex items-center justify-between border-b-4 border-black pb-1">
+                    <span class="bg-black text-white px-2">LVL</span> 
+                    <span class="text-3xl">${eta}</span>
+                </div>
+                <div class="flex items-center justify-between border-b-4 border-black pb-1">
+                    <span class="bg-black text-white px-2">WAIT</span> 
+                    <span class="text-2xl">${diff} D</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="bg-black text-white px-2">DAY</span> 
+                    <span class="text-xl">${giorno.toUpperCase()}</span>
+                </div>
+            `;
+            
+            const container = document.getElementById('r4');
+            container.classList.remove('hidden');
+            container.style.display = 'flex';
+            container.querySelector('.result-content').innerHTML = content;
+            
+            container.animate([
+                { transform: 'rotate(-5deg) scale(0.9)' },
+                { transform: 'rotate(2deg) scale(1.05)' },
+                { transform: 'rotate(0) scale(1)' }
+            ], { duration: 400, easing: 'ease-out' });
+        }
+
+        function calc5() {
+            let val1 = document.getElementById('start5').value;
+            let val2 = document.getElementById('n5').value;
+            if(!val1) { triggerError('start5'); return; }
+            if(!val2) { triggerError('n5'); return; }
+            
+            let data = new Date(val1);
+            let n = parseInt(val2);
+            let cont = 0;
+            while (cont < n) {
+                data.setDate(data.getDate() + 1);
+                if (data.getDay() != 0 && data.getDay() != 6) cont++;
+            }
+            showResult('r5', `DEST: ${data.toLocaleDateString('it-IT').toUpperCase()}`, 'var(--tw-colors-vpGreen)');
+        }
+    </script>
+</body>
+</html>
