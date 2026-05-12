@@ -1,54 +1,21 @@
-@startuml FunctionVisualizer
+@startuml VisualizzatoreFunzioni
 
-class FunctionVisualizer {
-  - selectedFunction: string
-  - rangeMin: number
-  - rangeMax: number
-  - parameters: Map
-  - chart: google.visualization.LineChart
-  - data: google.visualization.DataTable
-  + init(): void
-  + updateGraph(): void
-  + onFunctionChange(name: string): void
-  + onParameterChange(name: string, value: number): void
-  + onRangeChange(min: number, max: number): void
-  - generateDataPoints(): Array
-  - initializeChart(): void
-  - attachEventListeners(): void
+class Retta {
+  + m: number
+  + b: number
+  + calcola(x: number): number
 }
 
-class Function {
-  # name: string
-  # parameters: Map
-  + getName(): string
-  + getParameters(): Map
-  + calculate(x: number): number
-  + setParameter(name: string, value: number): void
-  {abstract} + evaluate(x: number): number
+class Parabola {
+  + a: number
+  + b: number
+  + c: number
+  + calcola(x: number): number
 }
 
-class LinearFunction {
-  - m: number
-  - b: number
-  + evaluate(x: number): number
-}
+note "funzioneCorrente punta\na Retta o Parabola" as N1
 
-class ParabolaFunction {
-  - a: number
-  - b: number
-  - c: number
-  + evaluate(x: number): number
-}
-
-class ExponentialFunction {
-  - base: number
-  - exponent: number
-  + evaluate(x: number): number
-}
-
-FunctionVisualizer --> Function
-Function <|-- LinearFunction
-Function <|-- ParabolaFunction
-Function <|-- ExponentialFunction
+Retta .. N1
+Parabola .. N1
 
 @enduml
