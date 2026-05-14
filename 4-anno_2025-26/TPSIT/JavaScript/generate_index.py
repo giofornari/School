@@ -143,10 +143,11 @@ def render_page(
     categories = sorted({p['category'] for p in projects})
     has_output_count = sum(1 for p in projects if p['has_output'])
 
-    nav_items = '\n'.join(
-        f'    <li><a href="{url}"{"class=\"active\"" if label == active_nav else ""}>{label}</a></li>'
-        for label, url in NAV_LINKS
-    )
+    nav_items_parts = []
+    for label, url in NAV_LINKS:
+        active_attr = ' class="active"' if label == active_nav else ''
+        nav_items_parts.append(f'    <li><a href="{url}"{active_attr}>{label}</a></li>')
+    nav_items = '\n'.join(nav_items_parts)
 
     tab_all = f'<div class="tab active" onclick="setTab(this,\'all\')">All <span class="tab-count">{len(projects)}</span></div>'
     tab_cats = '\n'.join(
