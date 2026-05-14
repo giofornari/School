@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAppProjects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#141414;--surface:#1d1d1d;--surface-hi:#252525;
+    --border:#2c2c2c;--border-hi:#3c3c3c;
+    --text-1:#ededed;--text-2:#a5a5a5;--text-3:#717171;--text-4:#565656;
+    --green:#22c55e;--green-dim:rgba(34,197,94,.07);--green-border:rgba(34,197,94,.20);
+    --blue:#60a5fa;--blue-dim:rgba(96,165,250,.08);--blue-border:rgba(96,165,250,.22);
+    --font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --font-mono:'JetBrains Mono','Fira Code',monospace;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text-1);font-family:var(--font-sans);min-height:100vh;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+  nav{border-bottom:1px solid var(--border);padding:0 56px;height:50px;display:flex;align-items:center;justify-content:flex-end;position:sticky;top:0;background:rgba(20,20,20,.92);backdrop-filter:blur(16px);z-index:10}
+  .nav-links{display:flex;gap:2px;list-style:none}
+  .nav-links a{font-size:12px;color:var(--text-3);text-decoration:none;font-weight:500;padding:5px 11px;border-radius:5px;transition:color .12s,background .12s}
+  .nav-links a:hover{color:var(--text-2);background:var(--surface)}
+  .nav-links a.active{color:var(--text-1);background:var(--surface-hi)}
+  .hero{padding:72px 56px 44px;border-bottom:1px solid var(--border)}
+  .hero-eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.13em;color:var(--text-3);margin-bottom:22px}
+  .hero-eyebrow-dot{width:4px;height:4px;border-radius:50%;background:var(--green);flex-shrink:0}
+  .hero-title{font-size:64px;font-weight:800;letter-spacing:-2.5px;line-height:1;color:#fff;margin-bottom:20px}
+  .hero-desc{font-size:14px;color:var(--text-2);max-width:440px;line-height:1.75;margin-bottom:32px}
+  .hero-meta{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .meta-stat{font-size:12px;color:var(--text-3)}
+  .meta-stat strong{color:var(--text-2);font-weight:600}
+  .meta-divider{width:1px;height:12px;background:var(--border-hi);flex-shrink:0}
+  .content{padding:0 56px}
+  .filter-row{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:1px solid var(--border);margin-bottom:20px}
+  .tabs{display:flex;gap:2px}
+  .tab{font-size:12px;font-weight:500;padding:5px 12px;border-radius:5px;color:var(--text-3);cursor:pointer;transition:color .12s,background .12s;user-select:none}
+  .tab:hover{color:var(--text-2);background:var(--surface)}
+  .tab.active{color:var(--text-1);background:var(--surface-hi)}
+  .tab-count{display:inline-block;font-size:10px;color:var(--text-4);margin-left:4px;font-variant-numeric:tabular-nums}
+  .tab.active .tab-count{color:var(--text-3)}
+  .filter-right{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:6px;font-weight:500}
+  .filter-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+  .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .projects.panel-open{border-radius:8px 8px 0 0;border-bottom-color:transparent}
+  .project-card{background:var(--bg);padding:22px 24px 20px;cursor:pointer;transition:background .1s;position:relative;min-height:100px}
+  .project-card[data-category]{display:block}
+  .project-card.hidden{display:none}
+  .project-card:hover{background:var(--surface)}
+  .project-card.active{background:var(--surface-hi);border-top:2px solid var(--border-hi);padding-top:20px}
+  .expand-icon{position:absolute;top:22px;right:18px;font-size:11px;color:var(--text-4);transition:color .1s,transform .15s;line-height:1}
+  .project-card:hover .expand-icon{color:var(--text-3)}
+  .project-card.active .expand-icon{color:var(--text-3);transform:rotate(180deg)}
+  .project-name{font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:5px;padding-right:28px;letter-spacing:-.1px}
+  .project-path{font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:14px}
+  .output-pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--font-mono);font-size:10px;color:var(--green);background:var(--green-dim);border:1px solid var(--green-border);padding:3px 8px;border-radius:3px;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .output-pill::before{content:'▶';font-size:7px;flex-shrink:0}
+  .source-link{font-size:10px;font-weight:500;color:var(--text-3);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color .1s}
+  .source-link:hover{color:var(--text-2)}
+  .detail-panel{border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;overflow:hidden;margin-bottom:52px;display:none}
+  .detail-panel.visible{display:block}
+  .detail-header{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between}
+  .detail-filename{font-family:var(--font-mono);font-size:11.5px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px}
+  .detail-filename::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0;opacity:.8}
+  .detail-close{font-size:11px;color:var(--text-4);cursor:pointer;padding:3px 8px;border-radius:4px;transition:color .12s,background .12s;font-weight:500}
+  .detail-close:hover{color:var(--text-1);background:var(--surface-hi)}
+  .detail-body{display:grid}
+  .pane{padding:24px 26px}
+  .pane:first-child{border-right:1px solid var(--border)}
+  .pane-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--text-4);margin-bottom:16px}
+  pre{font-family:var(--font-mono);font-size:11.5px;color:var(--text-2);line-height:1.9;white-space:pre-wrap}
+  pre .kw{color:#93c5fd}pre .cl{color:#f9a8d4}pre .cm{color:var(--text-3);font-style:italic}pre .str{color:#86efac}
+  .output-block{font-family:var(--font-mono);font-size:12px;color:var(--green);background:#101d14;border:1px solid var(--green-border);border-radius:6px;padding:18px 20px;line-height:2.1;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<nav>
+  <ul class="nav-links">
+    <li><a href="https://bigbrodyg.github.io/JavaProjects/">Java</a></li>
+    <li><a href="https://bigbrodyg.github.io/DIYJavaScript/">JavaScript</a></li>
+    <li><a href="https://bigbrodyg.github.io/PythonAlmostSelfLearned/">Python</a></li>
+    <li><a href="https://bigbrodyg.github.io/GAppProjects/"class="active">GApps</a></li>
+  </ul>
+</nav>
+<div class="hero">
+  <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>School projects · Giordano Fornari</div>
+  <h1 class="hero-title">GAppProjects</h1>
+  <p class="hero-desc">Flutter and Dart school projects.</p>
+  <div class="hero-meta">
+    <span class="meta-stat"><strong>6</strong> projects</span>
+    <span class="meta-divider"></span>
+    <span class="meta-stat"><strong>0</strong> with output</span>
+  </div>
+</div>
+<div class="content">
+  <div class="filter-row">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this,'all')">All <span class="tab-count">6</span></div>
+      <div class="tab" onclick="setTab(this,'Dart')">Dart <span class="tab-count">2</span></div>
+<div class="tab" onclick="setTab(this,'Flutter')">Flutter <span class="tab-count">4</span></div>
+    </div>
+    <div class="filter-right"><span class="filter-dot"></span>0 with live output</div>
+  </div>
+  <div class="projects panel-open" id="grid">
+
+    <div class="project-card active" data-category="Dart" onclick="toggleDetail(this,'es1')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">Es1</div>
+      <div class="project-path">Dart/Es1/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+
+    <div class="project-card " data-category="Dart" onclick="toggleDetail(this,'es2')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">Es2</div>
+      <div class="project-path">Dart/Es2/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+
+    <div class="project-card " data-category="Flutter" onclick="toggleDetail(this,'conv')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">conv</div>
+      <div class="project-path">Flutter/conv/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+
+    <div class="project-card " data-category="Flutter" onclick="toggleDetail(this,'es1')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">es1</div>
+      <div class="project-path">Flutter/es1/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+
+    <div class="project-card " data-category="Flutter" onclick="toggleDetail(this,'es2')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">es2</div>
+      <div class="project-path">Flutter/es2/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+
+    <div class="project-card " data-category="Flutter" onclick="toggleDetail(this,'trix')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">trix</div>
+      <div class="project-path">Flutter/trix/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+  </div>
+
+  <div class="detail-panel visible" id="detail-es1">
+    <div class="detail-header">
+      <span class="detail-filename">main.dart</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body" style="grid-template-columns: 1fr">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+        <pre><span class="kw">import</span> <span class="str">&#x27;dipendente.dart&#x27;</span>;
+<span class="kw">import</span> <span class="str">&#x27;docente.dart&#x27;</span>;
+<span class="kw">import</span> <span class="str">&#x27;impiegato.dart&#x27;</span>;
+<span class="kw">import</span> <span class="str">&#x27;impiegato_straordinari.dart&#x27;</span>;
+
+<span class="kw">void</span> _printDipendente(<span class="kw">int</span> idx, <span class="cl">Dipendente</span> d) {
+  print(<span class="str">&#x27;$idx. ${d.runtimeType}:&#x27;</span>);
+  print(<span class="str">&#x27;   $d&#x27;</span>);
+}
+
+<span class="kw">void</span> main() {
+  <span class="kw">final</span> doc1 = <span class="cl">Docente</span>(<span class="str">&#x27;<span class="cl">Marco</span> <span class="cl">Rossi</span>&#x27;</span>, <span class="str">&#x27;M&#x27;</span>, <span class="cl">DateTime</span>(1980, 5, 15), 18.0, 2000.0);
+  <span class="kw">final</span> imp1 = <span class="cl">Impiegato</span>(<span class="str">&#x27;<span class="cl">Anna</span> <span class="cl">Bianchi</span>&#x27;</span>, <span class="str">&#x27;F&#x27;</span>, <span class="cl">DateTime</span>(1985, 8, 22), 3, 1500.0);
+  <span class="kw">final</span> impstr1 = <span class="cl">ImpiegatoStraordinari</span>(
+    <span class="str">&#x27;<span class="cl">Luigi</span> <span class="cl">Verdi</span>&#x27;</span>,
+    <span class="str">&#x27;M&#x27;</span>,
+    <span class="cl">DateTime</span>(1990, 3, 10),
+    2,
+    1800.0,
+    8.5,
+  );
+  <span class="kw">final</span> impstr2 = <span class="cl">ImpiegatoStraordinari</span>(
+    <span class="str">&#x27;<span class="cl">Giovanna</span> <span class="cl">Rossi</span>&#x27;</span>,
+    <span class="str">&#x27;F&#x27;</span>,
+    <span class="cl">DateTime</span>(1995, 12, 5),
+    1,
+    1600.0,
+    5.0,
+  );
+
+  _printDipendente(1, doc1);
+  _printDipendente(2, imp1);
+  _printDipendente(3, impstr1);
+
+  <span class="cl">ImpiegatoStraordinari</span>.setTariffaOraria(18.0);
+  print(<span class="str">&#x27;\n3B nuova tariffa 18.0: ${impstr1.calcolStipEffettivo()}\n&#x27;</span>);
+
+  _printDipendente(4, impstr2);
+
+  print(<span class="str">&#x27;\nstipendi:&#x27;</span>);
+  [doc1, imp1, impstr1, impstr2].forEach(
+    (d) =&gt; print(<span class="str">&#x27;${d.nome} ${d.calcolStipEffettivo().toStringAsFixed(2)}&#x27;</span>),
+  );
+}
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-panel " id="detail-es2">
+    <div class="detail-header">
+      <span class="detail-filename">main.dart</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body" style="grid-template-columns: 1fr">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+        <pre><span class="kw">import</span> <span class="str">&#x27;dart:convert&#x27;</span>;
+
+<span class="cl"><span class="kw">String</span></span> vulnerabilitaJson = <span class="str">&#x27;&#x27;</span>&#x27;{
+    <span class="str">&quot;<span class="cl">Nome</span>&quot;</span>: <span class="str">&quot;<span class="cl">SQL</span> <span class="cl">Injection</span>&quot;</span>,
+    <span class="str">&quot;<span class="cl">Categoria</span>&quot;</span>: <span class="str">&quot;<span class="cl">Injection</span>&quot;</span>,
+    <span class="str">&quot;<span class="cl">Severita</span>&quot;</span>: <span class="str">&quot;<span class="cl">Alta</span>&quot;</span>,
+    <span class="str">&quot;<span class="cl">Descrizione</span>&quot;</span>: &quot;<span class="cl">Consente</span> l&#x27;esecuzione di query <span class="cl">SQL</span> malevole<span class="str">&quot;
+  },
+  {
+    &quot;</span><span class="cl">Nome</span><span class="str">&quot;: &quot;</span><span class="cl">Cross</span>-<span class="cl">Site</span> <span class="cl">Scripting</span> (<span class="cl">XSS</span>)<span class="str">&quot;,
+    &quot;</span><span class="cl">Categoria</span><span class="str">&quot;: &quot;</span><span class="cl">Client</span>-side<span class="str">&quot;,
+    &quot;</span><span class="cl">Severita</span><span class="str">&quot;: &quot;</span><span class="cl">Media</span><span class="str">&quot;,
+    &quot;</span><span class="cl">Descrizione</span><span class="str">&quot;: &quot;</span><span class="cl">Permette</span> l&#x27;iniezione di script nel browser della vittima<span class="str">&quot;
+  },
+  {
+    &quot;</span><span class="cl">Nome</span><span class="str">&quot;: &quot;</span><span class="cl">Cross</span>-<span class="cl">Site</span> <span class="cl">Request</span> <span class="cl">Forgery</span> (<span class="cl">CSRF</span>)<span class="str">&quot;,
+    &quot;</span><span class="cl">Categoria</span><span class="str">&quot;: &quot;</span><span class="cl">Session</span> <span class="cl">Management</span><span class="str">&quot;,
+    &quot;</span><span class="cl">Severita</span><span class="str">&quot;: &quot;</span><span class="cl">Media</span><span class="str">&quot;,
+    &quot;</span><span class="cl">Descrizione</span><span class="str">&quot;: &quot;</span><span class="cl">Induce</span> l&#x27;utente autenticato a eseguire richieste non volute<span class="str">&quot;
+  },
+  {
+    &quot;</span><span class="cl">Nome</span><span class="str">&quot;: &quot;</span><span class="cl">Broken</span> <span class="cl">Authentication</span><span class="str">&quot;,
+    &quot;</span><span class="cl">Categoria</span><span class="str">&quot;: &quot;</span><span class="cl">Authentication</span><span class="str">&quot;,
+    &quot;</span><span class="cl">Severita</span><span class="str">&quot;: &quot;</span><span class="cl">Alta</span><span class="str">&quot;,
+    &quot;</span><span class="cl">Descrizione</span><span class="str">&quot;: &quot;</span><span class="cl">Debolezze</span> nei meccanismi di login e gestione sessione&quot;
+  }
+<span class="str">&#x27;&#x27;</span>&#x27;;
+
+<span class="kw">class</span> <span class="cl">Vulnerabilita</span> {
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> nome;
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> categoria;
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> severita;
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> descrizione;
+
+  <span class="cl">Vulnerabilita</span>(<span class="kw">this</span>.nome, <span class="kw">this</span>.categoria, <span class="kw">this</span>.severita, <span class="kw">this</span>.descrizione);
+  <span class="cl">Vulnerabilita</span>.fromJson(<span class="cl"><span class="kw">Map</span></span>&lt;<span class="cl"><span class="kw">String</span></span>, <span class="kw">dynamic</span>&gt; json)
+    : nome = json[<span class="str">&#x27;<span class="cl">Nome</span>&#x27;</span>],
+      categoria = json[<span class="str">&#x27;<span class="cl">Categoria</span>&#x27;</span>],
+      severita = json[<span class="str">&#x27;<span class="cl">Severita</span>&#x27;</span>],
+      descrizione = json[<span class="str">&#x27;<span class="cl">Descrizione</span>&#x27;</span>];
+}
+
+<span class="kw">class</span> <span class="cl">ListaVulnerabilita</span> {
+  <span class="kw">final</span> <span class="cl"><span class="kw">List</span></span>&lt;<span class="cl">Vulnerabilita</span>&gt; lista;
+  <span class="cl">ListaVulnerabilita</span>({<span class="kw">required</span> <span class="kw">this</span>.lista});
+
+  factory <span class="cl">ListaVulnerabilita</span>.fromJson(<span class="cl"><span class="kw">List</span></span>&lt;<span class="kw">dynamic</span>&gt; parsedJson) {
+    <span class="cl"><span class="kw">List</span></span>&lt;<span class="cl">Vulnerabilita</span>&gt; lista = parsedJson
+        .map((vuln) =&gt; <span class="cl">Vulnerabilita</span>.fromJson(vuln))
+        .toList();
+    <span class="kw">return</span> <span class="cl">ListaVulnerabilita</span>(lista: lista);
+  }
+}
+
+<span class="kw">void</span> main(<span class="cl"><span class="kw">List</span></span>&lt;<span class="cl"><span class="kw">String</span></span>&gt; args) {
+  print(<span class="str">&quot;<span class="cl">Trasforma</span> <span class="kw">in</span> lista di classe <span class="cl">Vulnerabilita</span> da stringa json&quot;</span>);
+  <span class="cl"><span class="kw">List</span></span>&lt;<span class="kw">dynamic</span>&gt; vulnerabilitaMap = jsonDecode(<span class="str">&#x27;[$vulnerabilitaJson]&#x27;</span>);
+  <span class="cl"><span class="kw">List</span></span>&lt;<span class="cl">Vulnerabilita</span>&gt; vulnerabilita = <span class="cl">ListaVulnerabilita</span>.fromJson(vulnerabilitaMap).lista;
+
+  <span class="kw">for</span> (<span class="kw">final</span> v <span class="kw">in</span> vulnerabilita) {
+    print(<span class="str">&#x27;${v.nome}, ${v.categoria}, ${v.severita}, ${v.descrizione}&#x27;</span>);
+  }
+}
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-panel " id="detail-conv">
+    <div class="detail-header">
+      <span class="detail-filename">main.dart</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body" style="grid-template-columns: 1fr">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+        <pre><span class="kw">import</span> <span class="str">&#x27;package:flutter/material.dart&#x27;</span>;
+
+<span class="cm">/// <span class="cl">Semplice</span> <span class="cl"><span class="kw">Widget</span></span> che riscrive su un <span class="cl">Text</span> <span class="kw">in</span> valore di un <span class="cl">TextField</span> con evento</span>
+<span class="cm">/// onPressed su <span class="cl">Bottone</span>.</span>
+<span class="cm">/// <span class="cl">Introduce</span> l<span class="str">&#x27;uso di <span class="cl">TextEditingController</span>() che produce un oggetto relativo</span>
+<span class="cm">/// da assegnare alla proprietà controller dei <span class="cl"><span class="kw">Widget</span></span> <span class="cl">TextField</span> a cui ci si può</span>
+<span class="cm">/// accedere al di fuori del widget stesso per ottenerne il testo editato,</span>
+<span class="cm">/// es. nell&#x27;</span>ascoltatore di un <span class="cl">Button</span>.</span>
+
+<span class="kw">void</span> main() {
+  runApp(<span class="cl">MyApp</span>());
+}
+
+<span class="kw">class</span> <span class="cl">MyApp</span> <span class="kw">extends</span> <span class="cl">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="cl">MyApp</span>({<span class="kw">super</span>.key});
+
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="kw">return</span> <span class="cl">MaterialApp</span>(
+      title: <span class="str">&#x27;<span class="cl">Convertitore</span> euro-dollari&#x27;</span>,
+      theme: <span class="cl">ThemeData</span>(
+        useMaterial3: <span class="kw">true</span>,
+        colorScheme: <span class="cl">ColorScheme</span>.fromSeed(
+          seedColor: <span class="cl">Colors</span>.red.shade900,
+          brightness: <span class="cl">Brightness</span>.light,
+        ),
+        inputDecorationTheme: <span class="cl">InputDecorationTheme</span>(
+          border: <span class="cl">OutlineInputBorder</span>(borderRadius: <span class="cl">BorderRadius</span>.circular(12)),
+          filled: <span class="kw">true</span>,
+          fillColor: <span class="cl">Colors</span>.red.withAlpha(25),
+        ),
+        elevatedButtonTheme: <span class="cl">ElevatedButtonThemeData</span>(
+          style: <span class="cl">ElevatedButton</span>.styleFrom(
+            padding: <span class="kw">const</span> <span class="cl">EdgeInsets</span>.symmetric(horizontal: 32, vertical: 16),
+            shape: <span class="cl">RoundedRectangleBorder</span>(
+              borderRadius: <span class="cl">BorderRadius</span>.circular(12),
+            ),
+          ),
+        ),
+      ),
+      darkTheme: <span class="cl">ThemeData</span>(
+        useMaterial3: <span class="kw">true</span>,
+        colorScheme: <span class="cl">ColorScheme</span>.fromSeed(
+          seedColor: <span class="cl">Colors</span>.red.shade900,
+          brightness: <span class="cl">Brightness</span>.dark,
+        ),
+        inputDecorationTheme: <span class="cl">InputDecorationTheme</span>(
+          border: <span class="cl">OutlineInputBorder</span>(borderRadius: <span class="cl">BorderRadius</span>.circular(12)),
+          filled: <span class="kw">true</span>,
+          fillColor: <span class="cl">Colors</span>.white.withAlpha(25),
+        ),
+        elevatedButtonTheme: <span class="cl">ElevatedButtonThemeData</span>(
+          style: <span class="cl">ElevatedButton</span>.styleFrom(
+            padding: <span class="kw">const</span> <span class="cl">EdgeInsets</span>.symmetric(horizontal: 32, vertical: 16),
+            shape: <span class="cl">RoundedRectangleBorder</span>(
+              borderRadius: <span class="cl">BorderRadius</span>.circular(12),
+            ),
+          ),
+        ),
+      ),
+      home: <span class="kw">const</span> <span class="cl">HomePageProva</span>(title: <span class="str">&#x27;<span class="cl">Convertitore</span> euro-dollari&#x27;</span>),
+    );
+  }
+}
+
+<span class="kw">class</span> <span class="cl">HomePageProva</span> <span class="kw">extends</span> <span class="cl">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cl">HomePageProva</span>({<span class="kw">super</span>.key, <span class="kw">required</span> <span class="kw">this</span>.title});
+
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> title;
+
+  @<span class="kw">override</span>
+  _HomePageProvaState createState() =&gt; _HomePageProvaState();
+}
+
+<span class="kw">class</span> _HomePageProvaState <span class="kw">extends</span> <span class="cl">State</span>&lt;<span class="cl">HomePageProva</span>&gt; {
+  <span class="cl"><span class="kw">String</span></span> _msg = <span class="str">&quot;&quot;</span>;
+  <span class="cm">// servirà per accedere dinamicamente (runtime) al widget <span class="cl">TextField</span></span>
+  <span class="kw">final</span> _controller = <span class="cl">TextEditingController</span>();
+
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="kw">return</span> <span class="cl">Scaffold</span>(
+      appBar: <span class="cl">AppBar</span>(title: <span class="cl">Text</span>(widget.title)),
+      body: <span class="cl">Center</span>(
+        child: <span class="cl">Padding</span>(
+          padding: <span class="kw">const</span> <span class="cl">EdgeInsets</span>.all(24.0),
+          child: <span class="cl">Column</span>(
+            mainAxisAlignment: <span class="cl">MainAxisAlignment</span>.center,
+            children: &lt;<span class="cl"><span class="kw">Widget</span></span>&gt;[
+              <span class="cl">Text</span>(
+                <span class="str">&#x27;<span class="cl">Inserisci</span> la cifra <span class="kw">in</span> euro:&#x27;</span>,
+                style: <span class="cl">Theme</span>.of(context).textTheme.titleLarge,
+              ),
+              <span class="kw">const</span> <span class="cl">SizedBox</span>(height: 16),
+              <span class="cl">TextField</span>(
+                controller: _controller,
+                keyboardType: <span class="kw">const</span> <span class="cl">TextInputType</span>.numberWithOptions(
+                  decimal: <span class="kw">true</span>,
+                ),
+                textAlign: <span class="cl">TextAlign</span>.center,
+                decoration: <span class="kw">const</span> <span class="cl">InputDecoration</span>(
+                  hintText: <span class="str">&#x27;0.00&#x27;</span>,
+                  suffixText: <span class="str">&#x27;€&#x27;</span>,
+                ),
+              ),
+              <span class="kw">const</span> <span class="cl">SizedBox</span>(height: 24),
+              <span class="cl">ElevatedButton</span>.icon(
+                icon: <span class="kw">const</span> <span class="cl">Icon</span>(<span class="cl">Icons</span>.currency_exchange),
+                label: <span class="kw">const</span> <span class="cl">Text</span>(<span class="str">&#x27;<span class="cl">Converti</span>&#x27;</span>),
+                onPressed: () {
+                  setState(() {
+                    <span class="kw">final</span> text = _controller.text;
+                    <span class="kw">if</span> (text.isEmpty) {
+                      _msg = <span class="str">&quot;0.00&quot;</span>;
+                      <span class="kw">return</span>;
+                    }
+                    <span class="kw">final</span> euro = <span class="kw">double</span>.tryParse(text.replaceAll(<span class="str">&#x27;,&#x27;</span>, <span class="str">&#x27;.&#x27;</span>));
+                    <span class="kw">if</span> (euro != <span class="kw">null</span>) {
+                      _msg = (euro * 1.09).toStringAsFixed(2);
+                    } <span class="kw">else</span> {
+                      _msg = <span class="str">&quot;<span class="cl">Errore</span>&quot;</span>;
+                    }
+                  });
+                },
+              ),
+              <span class="cl">Padding</span>(
+                padding: <span class="kw">const</span> <span class="cl">EdgeInsets</span>.only(top: 20),
+                child: <span class="cl">Text</span>(
+                  <span class="str">&#x27;<span class="cl">La</span> cifra corrisponde a: $_msg \$&#x27;</span>,
+                  style: <span class="cl">Theme</span>.of(context).textTheme.headlineSmall,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-panel " id="detail-es1">
+    <div class="detail-header">
+      <span class="detail-filename">main.dart</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body" style="grid-template-columns: 1fr">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+        <pre><span class="kw">import</span> <span class="str">&#x27;package:flutter/material.dart&#x27;</span>;
+
+<span class="kw">void</span> main() {
+  runApp(<span class="kw">const</span> <span class="cl">MyApp</span>());
+}
+
+<span class="kw">class</span> <span class="cl">MyApp</span> <span class="kw">extends</span> <span class="cl">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="cl">MyApp</span>({<span class="kw">super</span>.key});
+
+  <span class="cm">// <span class="cl">This</span> widget <span class="kw">is</span> the root of your application.</span>
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="kw">return</span> <span class="cl">MaterialApp</span>(
+      title: <span class="str">&#x27;<span class="cl">Flutter</span> <span class="cl">Demo</span>&#x27;</span>,
+      theme: <span class="cl">ThemeData</span>(
+        <span class="cm">// <span class="cl">This</span> <span class="kw">is</span> the theme of your application.</span>
+        <span class="cm">//</span>
+        <span class="cm">// <span class="cl">TRY</span> <span class="cl">THIS</span>: <span class="cl">Try</span> running your application with <span class="str">&quot;flutter run&quot;</span>. <span class="cl">You</span>&#x27;ll see</span>
+        <span class="cm">// the application has a purple toolbar. <span class="cl">Then</span>, without quitting the app,</span>
+        <span class="cm">// <span class="kw">try</span> changing the seedColor <span class="kw">in</span> the colorScheme below to <span class="cl">Colors</span>.green</span>
+        <span class="cm">// and then invoke <span class="str">&quot;hot reload&quot;</span> (save your changes or press the <span class="str">&quot;hot</span>
+        <span class="cm">// reload&quot;</span> button <span class="kw">in</span> a <span class="cl">Flutter</span>-supported <span class="cl">IDE</span>, or press <span class="str">&quot;r&quot;</span> <span class="kw">if</span> you used</span>
+        <span class="cm">// the command line to start the app).</span>
+        <span class="cm">//</span>
+        <span class="cm">// <span class="cl">Notice</span> that the counter didn<span class="str">&#x27;t reset back to zero; the application</span>
+        <span class="cm">// state <span class="kw">is</span> not lost during the reload. <span class="cl">To</span> reset the state, use hot</span>
+        <span class="cm">// restart instead.</span>
+        <span class="cm">//</span>
+        <span class="cm">// <span class="cl">This</span> works <span class="kw">for</span> code too, not just values: <span class="cl">Most</span> code changes can be</span>
+        <span class="cm">// tested with just a hot reload.</span>
+        colorScheme: .fromSeed(seedColor: <span class="cl">Colors</span>.deepPurple),
+      ),
+      home: <span class="kw">const</span> <span class="cl">MyHomePage</span>(title: &#x27;</span><span class="cl">Flutter</span> <span class="cl">Demo</span> <span class="cl">Home</span> <span class="cl">Page</span>&#x27;),
+    );
+  }
+}
+
+<span class="kw">class</span> <span class="cl">MyHomePage</span> <span class="kw">extends</span> <span class="cl">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cl">MyHomePage</span>({<span class="kw">super</span>.key, <span class="kw">required</span> <span class="kw">this</span>.title});
+
+  <span class="cm">// <span class="cl">This</span> widget <span class="kw">is</span> the home page of your application. <span class="cl">It</span> <span class="kw">is</span> stateful, meaning</span>
+  <span class="cm">// that it has a <span class="cl">State</span> object (defined below) that contains fields that affect</span>
+  <span class="cm">// how it looks.</span>
+
+  <span class="cm">// <span class="cl">This</span> <span class="kw">class</span> <span class="kw">is</span> the configuration <span class="kw">for</span> the state. <span class="cl">It</span> holds the values (<span class="kw">in</span> <span class="kw">this</span></span>
+  <span class="cm">// case the title) provided by the parent (<span class="kw">in</span> <span class="kw">this</span> case the <span class="cl">App</span> widget) and</span>
+  <span class="cm">// used by the build method of the <span class="cl">State</span>. <span class="cl">Fields</span> <span class="kw">in</span> a <span class="cl"><span class="kw">Widget</span></span> subclass are</span>
+  <span class="cm">// always marked <span class="str">&quot;<span class="kw">final</span>&quot;</span>.</span>
+
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> title;
+
+  @<span class="kw">override</span>
+  <span class="cl">State</span>&lt;<span class="cl">MyHomePage</span>&gt; createState() =&gt; _MyHomePageState();
+}
+
+<span class="kw">class</span> _MyHomePageState <span class="kw">extends</span> <span class="cl">State</span>&lt;<span class="cl">MyHomePage</span>&gt; {
+  <span class="kw">int</span> _counter = 0;
+
+  <span class="kw">void</span> _incrementCounter() {
+    setState(() {
+      <span class="cm">// <span class="cl">This</span> call to setState tells the <span class="cl">Flutter</span> framework that something has</span>
+      <span class="cm">// changed <span class="kw">in</span> <span class="kw">this</span> <span class="cl">State</span>, which causes it to rerun the build method below</span>
+      <span class="cm">// so that the display can reflect the updated values. <span class="cl">If</span> we changed</span>
+      <span class="cm">// _counter without calling setState(), then the build method would not be</span>
+      <span class="cm">// called again, and so nothing would appear to happen.</span>
+      _counter++;
+    });
+  }
+
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="cm">// <span class="cl">This</span> method <span class="kw">is</span> rerun every time setState <span class="kw">is</span> called, <span class="kw">for</span> instance <span class="kw">as</span> done</span>
+    <span class="cm">// by the _incrementCounter method above.</span>
+    <span class="cm">//</span>
+    <span class="cm">// <span class="cl">The</span> <span class="cl">Flutter</span> framework has been optimized to make rerunning build methods</span>
+    <span class="cm">// fast, so that you can just rebuild anything that needs updating rather</span>
+    <span class="cm">// than having to individually change instances of widgets.</span>
+    <span class="kw">return</span> <span class="cl">Scaffold</span>(
+      appBar: <span class="cl">AppBar</span>(
+        <span class="cm">// <span class="cl">TRY</span> <span class="cl">THIS</span>: <span class="cl">Try</span> changing the color here to a specific color (to</span>
+        <span class="cm">// <span class="cl">Colors</span>.amber, perhaps?) and trigger a hot reload to see the <span class="cl">AppBar</span></span>
+        <span class="cm">// change color <span class="kw">while</span> the other colors stay the same.</span>
+        backgroundColor: <span class="cl">Theme</span>.of(context).colorScheme.inversePrimary,
+        <span class="cm">// <span class="cl">Here</span> we take the value from the <span class="cl">MyHomePage</span> object that was created by</span>
+        <span class="cm">// the <span class="cl">App</span>.build method, and use it to set our appbar title.</span>
+        title: <span class="cl">Text</span>(widget.title),
+      ),
+      body: <span class="cl">Center</span>(
+        <span class="cm">// <span class="cl">Center</span> <span class="kw">is</span> a layout widget. <span class="cl">It</span> takes a single child and positions it</span>
+        <span class="cm">// <span class="kw">in</span> the middle of the parent.</span>
+        child: <span class="cl">Column</span>(
+          <span class="cm">// <span class="cl">Column</span> <span class="kw">is</span> also a layout widget. <span class="cl">It</span> takes a list of children and</span>
+          <span class="cm">// arranges them vertically. <span class="cl">By</span> default, it sizes itself to fit its</span>
+          <span class="cm">// children horizontally, and tries to be <span class="kw">as</span> tall <span class="kw">as</span> its parent.</span>
+          <span class="cm">//</span>
+          <span class="cm">// <span class="cl">Column</span> has various properties to control how it sizes itself and</span>
+          <span class="cm">// how it positions its children. <span class="cl">Here</span> we use mainAxisAlignment to</span>
+          <span class="cm">// center the children vertically; the main axis here <span class="kw">is</span> the vertical</span>
+          <span class="cm">// axis because <span class="cl">Columns</span> are vertical (the cross axis would be</span>
+          <span class="cm">// horizontal).</span>
+          <span class="cm">//</span>
+          <span class="cm">// <span class="cl">TRY</span> <span class="cl">THIS</span>: <span class="cl">Invoke</span> <span class="str">&quot;debug painting&quot;</span> (choose the <span class="str">&quot;<span class="cl">Toggle</span> <span class="cl">Debug</span> <span class="cl">Paint</span>&quot;</span></span>
+          <span class="cm">// action <span class="kw">in</span> the <span class="cl">IDE</span>, or press <span class="str">&quot;p&quot;</span> <span class="kw">in</span> the console), to see the</span>
+          <span class="cm">// wireframe <span class="kw">for</span> each widget.</span>
+          mainAxisAlignment: .center,
+          children: [
+            <span class="kw">const</span> <span class="cl">Text</span>(<span class="str">&#x27;<span class="cl">You</span> have pushed the button <span class="kw">this</span> many times:&#x27;</span>),
+            <span class="cl">Text</span>(
+              <span class="str">&#x27;$_counter&#x27;</span>,
+              style: <span class="cl">Theme</span>.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: <span class="cl">FloatingActionButton</span>(
+        onPressed: _incrementCounter,
+        tooltip: <span class="str">&#x27;<span class="cl">Increment</span>&#x27;</span>,
+        child: <span class="kw">const</span> <span class="cl">Icon</span>(<span class="cl">Icons</span>.add),
+      ),
+    );
+  }
+}
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-panel " id="detail-es2">
+    <div class="detail-header">
+      <span class="detail-filename">gridView_builder.dart</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body" style="grid-template-columns: 1fr">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+        <pre><span class="kw">import</span> <span class="str">&#x27;package:flutter/material.dart&#x27;</span>;
+
+<span class="kw">void</span> main() {
+  runApp(<span class="kw">const</span> <span class="cl">AuraBuilder</span>());
+}
+
+<span class="kw">class</span> <span class="cl">AuraBuilder</span> <span class="kw">extends</span> <span class="cl">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="cl">AuraBuilder</span>({<span class="kw">super</span>.key});
+
+  <span class="kw">static</span> <span class="kw">const</span> <span class="cl"><span class="kw">List</span></span>&lt;<span class="cl"><span class="kw">String</span></span>&gt; _immagini = &lt;<span class="cl"><span class="kw">String</span></span>&gt;[
+    <span class="str">&#x27;lib/aura/aura7.png&#x27;</span>,
+    <span class="str">&#x27;lib/aura/aura8.png&#x27;</span>,
+    <span class="str">&#x27;lib/aura/aura9.png&#x27;</span>,
+    <span class="str">&#x27;lib/aura/aura10.png&#x27;</span>,
+    <span class="str">&#x27;lib/aura/aura11.png&#x27;</span>,
+    <span class="str">&#x27;lib/aura/aura12.png&#x27;</span>,
+  ];
+
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="kw">const</span> title = <span class="str">&#x27;<span class="cl">AURA</span> <span class="cl">GRID</span> - <span class="cl">BUILDER</span>&#x27;</span>;
+
+    <span class="kw">return</span> <span class="cl">MaterialApp</span>(
+      title: title,
+      theme: <span class="cl">ThemeData</span>(
+        useMaterial3: <span class="kw">true</span>,
+        colorScheme: <span class="cl">ColorScheme</span>.fromSeed(seedColor: <span class="kw">const</span> <span class="cl">Color</span>(0xFF6A7CF5)),
+      ),
+      home: <span class="cl">Scaffold</span>(
+        appBar: <span class="cl">AppBar</span>(title: <span class="kw">const</span> <span class="cl">Text</span>(title), centerTitle: <span class="kw">true</span>),
+        body: <span class="cl">Padding</span>(
+          padding: <span class="kw">const</span> <span class="cl">EdgeInsets</span>.all(20),
+          child: <span class="cl">GridView</span>.builder(
+            itemCount: _immagini.length,
+            gridDelegate: <span class="kw">const</span> <span class="cl">SliverGridDelegateWithFixedCrossAxisCount</span>(
+              crossAxisCount: 2,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+            ),
+            itemBuilder: (<span class="cl"><span class="kw">BuildContext</span></span> context, <span class="kw">int</span> index) {
+              <span class="kw">return</span> <span class="cl">AuraTile</span>(imagePath: _immagini[index]);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+<span class="kw">class</span> <span class="cl">AuraTile</span> <span class="kw">extends</span> <span class="cl">StatelessWidget</span> {
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> imagePath;
+
+  <span class="kw">const</span> <span class="cl">AuraTile</span>({<span class="kw">super</span>.key, <span class="kw">required</span> <span class="kw">this</span>.imagePath});
+
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="kw">return</span> <span class="cl">Material</span>(
+      color: <span class="cl">Colors</span>.transparent,
+      child: <span class="cl">ClipRRect</span>(
+        borderRadius: <span class="cl">BorderRadius</span>.circular(16),
+        child: <span class="cl">Image</span>.asset(imagePath, fit: <span class="cl">BoxFit</span>.cover),
+      ),
+    );
+  }
+}
+</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-panel " id="detail-trix">
+    <div class="detail-header">
+      <span class="detail-filename">main.dart</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body" style="grid-template-columns: 1fr">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+        <pre><span class="kw">import</span> <span class="str">&#x27;package:flutter/material.dart&#x27;</span>;
+
+<span class="kw">void</span> main() {
+  runApp(<span class="kw">const</span> <span class="cl">MyApp</span>());
+}
+
+<span class="kw">class</span> <span class="cl">MyApp</span> <span class="kw">extends</span> <span class="cl">StatelessWidget</span> {
+  <span class="kw">const</span> <span class="cl">MyApp</span>({<span class="kw">super</span>.key});
+
+  <span class="cm">// <span class="cl">This</span> widget <span class="kw">is</span> the root of your application.</span>
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="kw">return</span> <span class="cl">MaterialApp</span>(
+      title: <span class="str">&#x27;<span class="cl">Flutter</span> <span class="cl">Demo</span>&#x27;</span>,
+      theme: <span class="cl">ThemeData</span>(
+        <span class="cm">// <span class="cl">This</span> <span class="kw">is</span> the theme of your application.</span>
+        <span class="cm">//</span>
+        <span class="cm">// <span class="cl">TRY</span> <span class="cl">THIS</span>: <span class="cl">Try</span> running your application with <span class="str">&quot;flutter run&quot;</span>. <span class="cl">You</span>&#x27;ll see</span>
+        <span class="cm">// the application has a purple toolbar. <span class="cl">Then</span>, without quitting the app,</span>
+        <span class="cm">// <span class="kw">try</span> changing the seedColor <span class="kw">in</span> the colorScheme below to <span class="cl">Colors</span>.green</span>
+        <span class="cm">// and then invoke <span class="str">&quot;hot reload&quot;</span> (save your changes or press the <span class="str">&quot;hot</span>
+        <span class="cm">// reload&quot;</span> button <span class="kw">in</span> a <span class="cl">Flutter</span>-supported <span class="cl">IDE</span>, or press <span class="str">&quot;r&quot;</span> <span class="kw">if</span> you used</span>
+        <span class="cm">// the command line to start the app).</span>
+        <span class="cm">//</span>
+        <span class="cm">// <span class="cl">Notice</span> that the counter didn<span class="str">&#x27;t reset back to zero; the application</span>
+        <span class="cm">// state <span class="kw">is</span> not lost during the reload. <span class="cl">To</span> reset the state, use hot</span>
+        <span class="cm">// restart instead.</span>
+        <span class="cm">//</span>
+        <span class="cm">// <span class="cl">This</span> works <span class="kw">for</span> code too, not just values: <span class="cl">Most</span> code changes can be</span>
+        <span class="cm">// tested with just a hot reload.</span>
+        colorScheme: .fromSeed(seedColor: <span class="cl">Colors</span>.deepPurple),
+      ),
+      home: <span class="kw">const</span> <span class="cl">MyHomePage</span>(title: &#x27;</span><span class="cl">Flutter</span> <span class="cl">Demo</span> <span class="cl">Home</span> <span class="cl">Page</span>&#x27;),
+    );
+  }
+}
+
+<span class="kw">class</span> <span class="cl">MyHomePage</span> <span class="kw">extends</span> <span class="cl">StatefulWidget</span> {
+  <span class="kw">const</span> <span class="cl">MyHomePage</span>({<span class="kw">super</span>.key, <span class="kw">required</span> <span class="kw">this</span>.title});
+
+  <span class="cm">// <span class="cl">This</span> widget <span class="kw">is</span> the home page of your application. <span class="cl">It</span> <span class="kw">is</span> stateful, meaning</span>
+  <span class="cm">// that it has a <span class="cl">State</span> object (defined below) that contains fields that affect</span>
+  <span class="cm">// how it looks.</span>
+
+  <span class="cm">// <span class="cl">This</span> <span class="kw">class</span> <span class="kw">is</span> the configuration <span class="kw">for</span> the state. <span class="cl">It</span> holds the values (<span class="kw">in</span> <span class="kw">this</span></span>
+  <span class="cm">// case the title) provided by the parent (<span class="kw">in</span> <span class="kw">this</span> case the <span class="cl">App</span> widget) and</span>
+  <span class="cm">// used by the build method of the <span class="cl">State</span>. <span class="cl">Fields</span> <span class="kw">in</span> a <span class="cl"><span class="kw">Widget</span></span> subclass are</span>
+  <span class="cm">// always marked <span class="str">&quot;<span class="kw">final</span>&quot;</span>.</span>
+
+  <span class="kw">final</span> <span class="cl"><span class="kw">String</span></span> title;
+
+  @<span class="kw">override</span>
+  <span class="cl">State</span>&lt;<span class="cl">MyHomePage</span>&gt; createState() =&gt; _MyHomePageState();
+}
+
+<span class="kw">class</span> _MyHomePageState <span class="kw">extends</span> <span class="cl">State</span>&lt;<span class="cl">MyHomePage</span>&gt; {
+  <span class="kw">int</span> _counter = 0;
+
+  <span class="kw">void</span> _incrementCounter() {
+    setState(() {
+      <span class="cm">// <span class="cl">This</span> call to setState tells the <span class="cl">Flutter</span> framework that something has</span>
+      <span class="cm">// changed <span class="kw">in</span> <span class="kw">this</span> <span class="cl">State</span>, which causes it to rerun the build method below</span>
+      <span class="cm">// so that the display can reflect the updated values. <span class="cl">If</span> we changed</span>
+      <span class="cm">// _counter without calling setState(), then the build method would not be</span>
+      <span class="cm">// called again, and so nothing would appear to happen.</span>
+      _counter++;
+    });
+  }
+
+  @<span class="kw">override</span>
+  <span class="cl"><span class="kw">Widget</span></span> build(<span class="cl"><span class="kw">BuildContext</span></span> context) {
+    <span class="cm">// <span class="cl">This</span> method <span class="kw">is</span> rerun every time setState <span class="kw">is</span> called, <span class="kw">for</span> instance <span class="kw">as</span> done</span>
+    <span class="cm">// by the _incrementCounter method above.</span>
+    <span class="cm">//</span>
+    <span class="cm">// <span class="cl">The</span> <span class="cl">Flutter</span> framework has been optimized to make rerunning build methods</span>
+    <span class="cm">// fast, so that you can just rebuild anything that needs updating rather</span>
+    <span class="cm">// than having to individually change instances of widgets.</span>
+    <span class="kw">return</span> <span class="cl">Scaffold</span>(
+      appBar: <span class="cl">AppBar</span>(
+        <span class="cm">// <span class="cl">TRY</span> <span class="cl">THIS</span>: <span class="cl">Try</span> changing the color here to a specific color (to</span>
+        <span class="cm">// <span class="cl">Colors</span>.amber, perhaps?) and trigger a hot reload to see the <span class="cl">AppBar</span></span>
+        <span class="cm">// change color <span class="kw">while</span> the other colors stay the same.</span>
+        backgroundColor: <span class="cl">Theme</span>.of(context).colorScheme.inversePrimary,
+        <span class="cm">// <span class="cl">Here</span> we take the value from the <span class="cl">MyHomePage</span> object that was created by</span>
+        <span class="cm">// the <span class="cl">App</span>.build method, and use it to set our appbar title.</span>
+        title: <span class="cl">Text</span>(widget.title),
+      ),
+      body: <span class="cl">Center</span>(
+        <span class="cm">// <span class="cl">Center</span> <span class="kw">is</span> a layout widget. <span class="cl">It</span> takes a single child and positions it</span>
+        <span class="cm">// <span class="kw">in</span> the middle of the parent.</span>
+        child: <span class="cl">Column</span>(
+          <span class="cm">// <span class="cl">Column</span> <span class="kw">is</span> also a layout widget. <span class="cl">It</span> takes a list of children and</span>
+          <span class="cm">// arranges them vertically. <span class="cl">By</span> default, it sizes itself to fit its</span>
+          <span class="cm">// children horizontally, and tries to be <span class="kw">as</span> tall <span class="kw">as</span> its parent.</span>
+          <span class="cm">//</span>
+          <span class="cm">// <span class="cl">Column</span> has various properties to control how it sizes itself and</span>
+          <span class="cm">// how it positions its children. <span class="cl">Here</span> we use mainAxisAlignment to</span>
+          <span class="cm">// center the children vertically; the main axis here <span class="kw">is</span> the vertical</span>
+          <span class="cm">// axis because <span class="cl">Columns</span> are vertical (the cross axis would be</span>
+          <span class="cm">// horizontal).</span>
+          <span class="cm">//</span>
+          <span class="cm">// <span class="cl">TRY</span> <span class="cl">THIS</span>: <span class="cl">Invoke</span> <span class="str">&quot;debug painting&quot;</span> (choose the <span class="str">&quot;<span class="cl">Toggle</span> <span class="cl">Debug</span> <span class="cl">Paint</span>&quot;</span></span>
+          <span class="cm">// action <span class="kw">in</span> the <span class="cl">IDE</span>, or press <span class="str">&quot;p&quot;</span> <span class="kw">in</span> the console), to see the</span>
+          <span class="cm">// wireframe <span class="kw">for</span> each widget.</span>
+          mainAxisAlignment: .center,
+          children: [
+            <span class="kw">const</span> <span class="cl">Text</span>(<span class="str">&#x27;<span class="cl">You</span> have pushed the button <span class="kw">this</span> many times:&#x27;</span>),
+            <span class="cl">Text</span>(
+              <span class="str">&#x27;$_counter&#x27;</span>,
+              style: <span class="cl">Theme</span>.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: <span class="cl">FloatingActionButton</span>(
+        onPressed: _incrementCounter,
+        tooltip: <span class="str">&#x27;<span class="cl">Increment</span>&#x27;</span>,
+        child: <span class="kw">const</span> <span class="cl">Icon</span>(<span class="cl">Icons</span>.add),
+      ),
+    );
+  }
+}
+</pre>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function setTab(el, cat) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.project-card').forEach(c => {
+    c.classList.toggle('hidden', cat !== 'all' && c.dataset.category !== cat);
+  });
+}
+function toggleDetail(card, id) {
+  const wasActive = card.classList.contains('active');
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
+  const grid = document.getElementById('grid');
+  if (!wasActive) {
+    card.classList.add('active');
+    if (grid) grid.classList.add('panel-open');
+    const panel = document.getElementById('detail-' + id);
+    if (panel) { panel.classList.add('visible'); panel.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  } else {
+    if (grid) grid.classList.remove('panel-open');
+  }
+}
+function closeDetail() {
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
+  const grid = document.getElementById('grid');
+  if (grid) grid.classList.remove('panel-open');
+}
+</script>
+</body>
+</html>
