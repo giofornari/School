@@ -40,13 +40,21 @@
   .tab.active{color:var(--text-1);background:var(--surface-hi)}
   .tab-count{font-size:10px;color:var(--text-4);margin-left:3px}
   .tab.active .tab-count{color:var(--text-3)}
-  .filter-stat{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:6px}
-  .fstat-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
-  .tag-bar{display:flex;flex-wrap:wrap;gap:5px;padding:12px 0 16px;border-bottom:1px solid var(--border);margin-bottom:20px}
-  .tag-chip{font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;border:1px solid var(--border-hi);color:var(--text-3);cursor:pointer;transition:all .12s;user-select:none;display:inline-flex;align-items:center;gap:4px}
-  .tag-chip:hover{border-color:var(--green-bd);color:var(--text-2)}
+  .filter-stat{font-size:11px;color:var(--text-3)}
+  .tag-bar{display:flex;flex-wrap:wrap;gap:5px;padding:14px 0 18px;border-bottom:1px solid var(--border);margin-bottom:22px;align-items:center}
+  .tag-chip{font-size:11px;font-weight:500;padding:4px 10px;border-radius:5px;border:1px solid var(--border-hi);color:var(--text-3);cursor:pointer;transition:all .12s;user-select:none;display:inline-flex;align-items:center;gap:5px}
+  .tag-chip:hover{border-color:var(--text-4);color:var(--text-2);background:var(--surface)}
   .tag-chip.on{border-color:var(--green);color:var(--green);background:var(--green-dim)}
-  .tc-n{font-size:10px;opacity:.6}
+  .tag-chip.type-chip{border-color:var(--amber-bd);color:var(--amber);background:var(--amber-dim)}
+  .tag-chip.type-chip:hover{background:rgba(251,191,36,.14);border-color:var(--amber)}
+  .tag-chip.type-chip.on{border-color:var(--amber);background:rgba(251,191,36,.18);color:#fbbf24}
+  .tc-n{font-size:10px;opacity:.55}
+  .tag-chip.on .tc-n{opacity:.8}
+  .tag-div{width:1px;height:18px;background:var(--border-hi);margin:0 3px;flex-shrink:0}
+  .tag-clear{margin-left:auto;font-size:11px;font-weight:500;color:var(--text-4);cursor:pointer;padding:4px 10px;border-radius:5px;border:1px solid var(--border);transition:all .12s;display:none;align-items:center;gap:4px;flex-shrink:0}
+  .tag-clear:hover{color:var(--text-2);border-color:var(--border-hi)}
+  .tag-clear.vis{display:inline-flex}
+  .ctag-more{font-size:10px;color:var(--text-4);background:none;border-color:transparent}
   .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden}
   .project-card{background:var(--bg);padding:20px 22px 16px;cursor:pointer;transition:background .1s;user-select:none}
   .project-card:hover{background:var(--surface)}
@@ -110,9 +118,9 @@
       <div class="tab" onclick="setTab(this,'Laboratorio')">Laboratorio <span class="tab-count">11</span></div>
       <div class="tab" onclick="setTab(this,'Progetti')">Progetti <span class="tab-count">3</span></div>
     </div>
-    <div class="filter-stat"><span class="fstat-dot"></span>21 with live output</div>
+    <div class="filter-stat" id="showing-count">27 projects</div>
   </div>
-  <div class="tag-bar"><span class="tag-chip" onclick="toggleTag(this,"OOP")">OOP <span class="tc-n">27</span></span><span class="tag-chip" onclick="toggleTag(this,"arrays")">arrays <span class="tc-n">27</span></span><span class="tag-chip" onclick="toggleTag(this,"recursion")">recursion <span class="tc-n">25</span></span><span class="tag-chip" onclick="toggleTag(this,"@Override")">@Override <span class="tc-n">21</span></span><span class="tag-chip" onclick="toggleTag(this,"esercizi")">esercizi <span class="tc-n">13</span></span><span class="tag-chip" onclick="toggleTag(this,"ArrayList")">ArrayList <span class="tc-n">12</span></span><span class="tag-chip" onclick="toggleTag(this,"generics")">generics <span class="tc-n">12</span></span><span class="tag-chip" onclick="toggleTag(this,"lab")">lab <span class="tc-n">11</span></span><span class="tag-chip" onclick="toggleTag(this,"extends")">extends <span class="tc-n">10</span></span><span class="tag-chip" onclick="toggleTag(this,"abstract")">abstract <span class="tc-n">9</span></span><span class="tag-chip" onclick="toggleTag(this,"exam")">exam <span class="tc-n">3</span></span><span class="tag-chip" onclick="toggleTag(this,"implements")">implements <span class="tc-n">2</span></span><span class="tag-chip" onclick="toggleTag(this,"interface")">interface <span class="tc-n">2</span></span><span class="tag-chip" onclick="toggleTag(this,"HashMap")">HashMap <span class="tc-n">1</span></span><span class="tag-chip" onclick="toggleTag(this,"enum")">enum <span class="tc-n">1</span></span></div>
+  <div class="tag-bar" id="tag-bar"><span class="tag-chip type-chip" onclick="toggleTag(this,&quot;esercizi&quot;)">esercizi <span class="tc-n">13</span></span><span class="tag-chip type-chip" onclick="toggleTag(this,&quot;lab&quot;)">lab <span class="tc-n">11</span></span><span class="tag-chip type-chip" onclick="toggleTag(this,&quot;exam&quot;)">exam <span class="tc-n">3</span></span><span class="tag-div"></span><span class="tag-chip" onclick="toggleTag(this,&quot;OOP&quot;)">OOP <span class="tc-n">27</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;arrays&quot;)">arrays <span class="tc-n">27</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;recursion&quot;)">recursion <span class="tc-n">25</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;@Override&quot;)">@Override <span class="tc-n">21</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;ArrayList&quot;)">ArrayList <span class="tc-n">12</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;generics&quot;)">generics <span class="tc-n">12</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;extends&quot;)">extends <span class="tc-n">10</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;abstract&quot;)">abstract <span class="tc-n">9</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;implements&quot;)">implements <span class="tc-n">2</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;interface&quot;)">interface <span class="tc-n">2</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;HashMap&quot;)">HashMap <span class="tc-n">1</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;enum&quot;)">enum <span class="tc-n">1</span></span><span class="tag-clear" id="tag-clear" onclick="clearTags()">✕ clear</span></div>
   <div class="projects" id="grid">
     <div class="project-card" data-id="01-verifica-teoria" data-category="Progetti" data-tags="[&quot;exam&quot;, &quot;OOP&quot;, &quot;@Override&quot;, &quot;arrays&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'01-verifica-teoria')">
       <div class="card-head">
@@ -145,7 +153,7 @@
         <span class="expand-icon">›</span>
       </div>
       <span class="out-pill">▶ OK per importo: 500.0 CC [1234-5678-9012-3456 12/2</span>
-      <div class="card-foot"><span class="ctag ct-type">exam</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><s</div>
+      <div class="card-foot"><span class="ctag ct-type">exam</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="abbonamento" data-category="Esercizi" data-tags="[&quot;esercizi&quot;, &quot;OOP&quot;, &quot;@Override&quot;, &quot;arrays&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'abbonamento')">
       <div class="card-head">
@@ -167,7 +175,7 @@
         <span class="expand-icon">›</span>
       </div>
       <span class="out-pill">▶ === SISTEMA GESTIONE AUTONOLEGGIO ===  --- CREAZIO</span>
-      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><s</div>
+      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="cerchio" data-category="Esercizi" data-tags="[&quot;esercizi&quot;, &quot;OOP&quot;, &quot;arrays&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'cerchio')">
       <div class="card-head">
@@ -200,7 +208,7 @@
         <span class="expand-icon">›</span>
       </div>
       <span class="out-pill">▶ === SISTEMA DI GESTIONE INVENTARIO PC ===  Aggiunt</span>
-      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><s</div>
+      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="immobili" data-category="Esercizi" data-tags="[&quot;esercizi&quot;, &quot;OOP&quot;, &quot;extends&quot;, &quot;abstract&quot;, &quot;@Override&quot;, &quot;arrays&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'immobili')">
       <div class="card-head">
@@ -244,7 +252,7 @@
         <span class="expand-icon">›</span>
       </div>
       
-      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">HashMap</span><</div>
+      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">HashMap</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag ctag-more">+2</span></div>
     </div>
     <div class="project-card" data-id="punto" data-category="Esercizi" data-tags="[&quot;esercizi&quot;, &quot;OOP&quot;, &quot;@Override&quot;, &quot;arrays&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'punto')">
       <div class="card-head">
@@ -277,7 +285,7 @@
         <span class="expand-icon">›</span>
       </div>
       <span class="out-pill">▶ === TRENI ===  Treno: Regionale Express 1234  ---</span>
-      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><s</div>
+      <div class="card-foot"><span class="ctag ct-type">esercizi</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="triangolo" data-category="Esercizi" data-tags="[&quot;esercizi&quot;, &quot;OOP&quot;, &quot;@Override&quot;, &quot;arrays&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'triangolo')">
       <div class="card-head">
@@ -299,7 +307,7 @@
         <span class="expand-icon">›</span>
       </div>
       <span class="out-pill">▶ === SISTEMA GESTIONE BIBLIOTECA CON PRESTITI ===</span>
-      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><s</div>
+      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="biblioteca" data-category="Laboratorio" data-tags="[&quot;lab&quot;, &quot;OOP&quot;, &quot;extends&quot;, &quot;abstract&quot;, &quot;@Override&quot;, &quot;ArrayList&quot;, &quot;arrays&quot;, &quot;generics&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'biblioteca')">
       <div class="card-head">
@@ -310,7 +318,7 @@
         <span class="expand-icon">›</span>
       </div>
       <span class="out-pill">▶ === SISTEMA GESTIONE BIBLIOTECA ===   === CATALOGO</span>
-      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><s</div>
+      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">extends</span><span class="ctag">abstract</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="metodipagamento" data-category="Laboratorio" data-tags="[&quot;lab&quot;, &quot;OOP&quot;, &quot;implements&quot;, &quot;interface&quot;, &quot;@Override&quot;, &quot;ArrayList&quot;, &quot;arrays&quot;, &quot;generics&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'metodipagamento')">
       <div class="card-head">
@@ -321,7 +329,7 @@
         <span class="expand-icon">›</span>
       </div>
       
-      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">implements</span><span class="ctag">interface</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</spa</div>
+      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">implements</span><span class="ctag">interface</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="notifiche" data-category="Laboratorio" data-tags="[&quot;lab&quot;, &quot;OOP&quot;, &quot;implements&quot;, &quot;interface&quot;, &quot;@Override&quot;, &quot;ArrayList&quot;, &quot;arrays&quot;, &quot;generics&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'notifiche')">
       <div class="card-head">
@@ -332,7 +340,7 @@
         <span class="expand-icon">›</span>
       </div>
       
-      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">implements</span><span class="ctag">interface</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</spa</div>
+      <div class="card-foot"><span class="ctag ct-type">lab</span><span class="ctag">OOP</span><span class="ctag">implements</span><span class="ctag">interface</span><span class="ctag">@Override</span><span class="ctag">ArrayList</span><span class="ctag">arrays</span><span class="ctag">generics</span><span class="ctag">recursion</span></div>
     </div>
     <div class="project-card" data-id="oggettocd" data-category="Laboratorio" data-tags="[&quot;lab&quot;, &quot;OOP&quot;, &quot;arrays&quot;, &quot;recursion&quot;]" onclick="togglePanel(this,'oggettocd')">
       <div class="card-head">
@@ -420,12 +428,17 @@ let activeCat = 'all';
 let activePanel = null;
 
 function applyFilters() {
+  let count = 0;
   document.querySelectorAll('.project-card').forEach(c => {
     const tags = JSON.parse(c.dataset.tags || '[]');
     const catOk = activeCat === 'all' || c.dataset.category === activeCat;
     const tagOk = activeTags.size === 0 || [...activeTags].some(t => tags.includes(t));
-    c.classList.toggle('hidden', !(catOk && tagOk));
+    const show = catOk && tagOk;
+    c.classList.toggle('hidden', !show);
+    if (show) count++;
   });
+  const stat = document.getElementById('showing-count');
+  if (stat) stat.textContent = count + ' projects';
 }
 function setTab(el, cat) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -434,9 +447,18 @@ function setTab(el, cat) {
   closePanel();
   applyFilters();
 }
+function clearTags() {
+  activeTags.clear();
+  document.querySelectorAll('.tag-chip.on').forEach(c => c.classList.remove('on'));
+  const btn = document.getElementById('tag-clear');
+  if (btn) btn.classList.remove('vis');
+  closePanel(); applyFilters();
+}
 function toggleTag(el, tag) {
   if (activeTags.has(tag)) { activeTags.delete(tag); el.classList.remove('on'); }
   else { activeTags.add(tag); el.classList.add('on'); }
+  const btn = document.getElementById('tag-clear');
+  if (btn) btn.classList.toggle('vis', activeTags.size > 0);
   closePanel();
   applyFilters();
 }
