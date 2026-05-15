@@ -44,14 +44,22 @@
   .tab.active{color:var(--text-1);background:var(--surface-hi)}
   .tab-count{font-size:10px;color:var(--text-4);margin-left:3px}
   .tab.active .tab-count{color:var(--text-3)}
-  .filter-stat{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:6px}
-  .fstat-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+  .filter-stat{font-size:11px;color:var(--text-3)}
   /* TAG BAR */
-  .tag-bar{display:flex;flex-wrap:wrap;gap:5px;padding:12px 0 16px;border-bottom:1px solid var(--border);margin-bottom:20px}
-  .tag-chip{font-size:11px;font-weight:500;padding:3px 9px;border-radius:999px;border:1px solid var(--border-hi);color:var(--text-3);cursor:pointer;transition:all .12s;user-select:none;display:inline-flex;align-items:center;gap:4px}
-  .tag-chip:hover{border-color:var(--green-bd);color:var(--text-2)}
+  .tag-bar{display:flex;flex-wrap:wrap;gap:5px;padding:14px 0 18px;border-bottom:1px solid var(--border);margin-bottom:22px;align-items:center}
+  .tag-chip{font-size:11px;font-weight:500;padding:4px 10px;border-radius:5px;border:1px solid var(--border-hi);color:var(--text-3);cursor:pointer;transition:all .12s;user-select:none;display:inline-flex;align-items:center;gap:5px}
+  .tag-chip:hover{border-color:var(--text-4);color:var(--text-2);background:var(--surface)}
   .tag-chip.on{border-color:var(--green);color:var(--green);background:var(--green-dim)}
-  .tc-n{font-size:10px;opacity:.6}
+  .tag-chip.type-chip{border-color:var(--amber-bd);color:var(--amber);background:var(--amber-dim)}
+  .tag-chip.type-chip:hover{background:rgba(251,191,36,.14);border-color:var(--amber)}
+  .tag-chip.type-chip.on{border-color:var(--amber);background:rgba(251,191,36,.18);color:#fbbf24}
+  .tc-n{font-size:10px;opacity:.55}
+  .tag-chip.on .tc-n{opacity:.8}
+  .tag-div{width:1px;height:18px;background:var(--border-hi);margin:0 3px;flex-shrink:0}
+  .tag-clear{margin-left:auto;font-size:11px;font-weight:500;color:var(--text-4);cursor:pointer;padding:4px 10px;border-radius:5px;border:1px solid var(--border);transition:all .12s;display:none;align-items:center;gap:4px;flex-shrink:0}
+  .tag-clear:hover{color:var(--text-2);border-color:var(--border-hi)}
+  .tag-clear.vis{display:inline-flex}
+  .ctag-more{font-size:10px;color:var(--text-4);background:none;border-color:transparent}
   /* GRID */
   .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-top:0}
   /* CARD */
@@ -132,9 +140,9 @@
       <div class="tab" onclick="setTab(this,'fundamentals')">fundamentals <span class="tab-count">1</span></div>
       <div class="tab" onclick="setTab(this,'tw_js_workout')">tw_js_workout <span class="tab-count">1</span></div>
     </div>
-    <div class="filter-stat"><span class="fstat-dot"></span>8 previewable</div>
+    <div class="filter-stat" id="showing-count">13 projects</div>
   </div>
-  <div class="tag-bar"><span class="tag-chip" onclick="toggleTag(this,"DOM")">DOM <span class="tc-n">12</span></span><span class="tag-chip" onclick="toggleTag(this,"events")">events <span class="tc-n">9</span></span><span class="tag-chip" onclick="toggleTag(this,"regex")">regex <span class="tc-n">6</span></span><span class="tag-chip" onclick="toggleTag(this,"exercise")">exercise <span class="tc-n">5</span></span><span class="tag-chip" onclick="toggleTag(this,"arrays")">arrays <span class="tc-n">4</span></span><span class="tag-chip" onclick="toggleTag(this,"timers")">timers <span class="tc-n">2</span></span><span class="tag-chip" onclick="toggleTag(this,"exam")">exam <span class="tc-n">1</span></span><span class="tag-chip" onclick="toggleTag(this,"game")">game <span class="tc-n">1</span></span><span class="tag-chip" onclick="toggleTag(this,"modules")">modules <span class="tc-n">1</span></span><span class="tag-chip" onclick="toggleTag(this,"quiz")">quiz <span class="tc-n">1</span></span></div>
+  <div class="tag-bar" id="tag-bar"><span class="tag-chip type-chip" onclick="toggleTag(this,&quot;exercise&quot;)">exercise <span class="tc-n">5</span></span><span class="tag-chip type-chip" onclick="toggleTag(this,&quot;exam&quot;)">exam <span class="tc-n">1</span></span><span class="tag-chip type-chip" onclick="toggleTag(this,&quot;game&quot;)">game <span class="tc-n">1</span></span><span class="tag-chip type-chip" onclick="toggleTag(this,&quot;quiz&quot;)">quiz <span class="tc-n">1</span></span><span class="tag-div"></span><span class="tag-chip" onclick="toggleTag(this,&quot;DOM&quot;)">DOM <span class="tc-n">12</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;events&quot;)">events <span class="tc-n">9</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;regex&quot;)">regex <span class="tc-n">6</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;arrays&quot;)">arrays <span class="tc-n">4</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;timers&quot;)">timers <span class="tc-n">2</span></span><span class="tag-chip" onclick="toggleTag(this,&quot;modules&quot;)">modules <span class="tc-n">1</span></span><span class="tag-clear" id="tag-clear" onclick="clearTags()">✕ clear</span></div>
   <div class="projects" id="grid">
     <div class="project-card" data-id="consulenza" data-category="Consulenza" data-tags="[&quot;DOM&quot;, &quot;events&quot;, &quot;regex&quot;, &quot;arrays&quot;]" onclick="togglePanel(this,'consulenza')">
       <div class="card-head">
@@ -275,12 +283,17 @@ let activeCat = 'all';
 let activePanel = null;
 
 function applyFilters() {
+  let count = 0;
   document.querySelectorAll('.project-card').forEach(c => {
     const tags = JSON.parse(c.dataset.tags || '[]');
     const catOk = activeCat === 'all' || c.dataset.category === activeCat;
     const tagOk = activeTags.size === 0 || [...activeTags].some(t => tags.includes(t));
-    c.classList.toggle('hidden', !(catOk && tagOk));
+    const show = catOk && tagOk;
+    c.classList.toggle('hidden', !show);
+    if (show) count++;
   });
+  const stat = document.getElementById('showing-count');
+  if (stat) stat.textContent = count + ' projects';
 }
 function setTab(el, cat) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -289,9 +302,18 @@ function setTab(el, cat) {
   closePanel();
   applyFilters();
 }
+function clearTags() {
+  activeTags.clear();
+  document.querySelectorAll('.tag-chip.on').forEach(c => c.classList.remove('on'));
+  const btn = document.getElementById('tag-clear');
+  if (btn) btn.classList.remove('vis');
+  closePanel(); applyFilters();
+}
 function toggleTag(el, tag) {
   if (activeTags.has(tag)) { activeTags.delete(tag); el.classList.remove('on'); }
   else { activeTags.add(tag); el.classList.add('on'); }
+  const btn = document.getElementById('tag-clear');
+  if (btn) btn.classList.toggle('vis', activeTags.size > 0);
   closePanel();
   applyFilters();
 }
