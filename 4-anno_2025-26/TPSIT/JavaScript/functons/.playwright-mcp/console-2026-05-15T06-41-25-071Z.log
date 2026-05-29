@@ -1,0 +1,3 @@
+[     652ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:8765/favicon.ico:0
+[  369017ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://tdp.giordii.dev/favicon.ico:0
+[  376076ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://bigbrodyg.github.io/favicon.ico:0

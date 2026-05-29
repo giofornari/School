@@ -1,0 +1,70 @@
+<h2>Pick a visual direction</h2>
+<p class="subtitle">Shared across all 4 sites. Same generator, same CSS, different repo content.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="terminal" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0d1117;padding:16px;font-family:monospace;color:#e6edf3;font-size:12px;line-height:1.6;min-height:140px">
+      <div style="color:#58a6ff;font-size:14px;font-weight:600;margin-bottom:8px">JavaProjects /</div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <span style="background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb55;padding:2px 8px;border-radius:4px;font-size:11px">Java</span>
+        <span style="color:#7d8590;font-size:11px">12 projects</span>
+      </div>
+      <div style="background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px">
+        <div style="color:#8b949e;font-size:10px;margin-bottom:6px">▸ Cerchio.java</div>
+        <div style="color:#8b949e;font-size:10px;margin-bottom:6px">▸ ConvertitoreXML.java</div>
+        <div style="color:#3fb950;font-size:10px">$ output: Area = 78.54</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Terminal Dark</h3>
+      <p>GitHub-inspired dark theme. Monospace accents, code-first feel. Fits dev repos naturally.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="clean" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#ffffff;padding:16px;font-family:'Inter',sans-serif;color:#111;font-size:12px;line-height:1.6;min-height:140px;border-bottom:1px solid #e5e7eb">
+      <div style="color:#111;font-size:14px;font-weight:700;margin-bottom:8px">JavaProjects</div>
+      <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+        <span style="background:#eff6ff;color:#3b82f6;border:1px solid #bfdbfe;padding:2px 8px;border-radius:20px;font-size:10px">Java</span>
+        <span style="color:#6b7280;font-size:10px;padding:2px 0">12 projects</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:8px">
+          <div style="font-weight:600;font-size:11px;color:#111">Cerchio</div>
+          <div style="font-size:10px;color:#6b7280">Circle calculator</div>
+        </div>
+        <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:6px;padding:8px">
+          <div style="font-weight:600;font-size:11px;color:#111">ConvertitoreXML</div>
+          <div style="font-size:10px;color:#6b7280">XML converter</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Clean Light</h3>
+      <p>White background, subtle cards, pill tags. Readable, modern, school-portfolio safe.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="slate" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#1e2028;padding:16px;font-family:'Inter',sans-serif;color:#e2e8f0;font-size:12px;line-height:1.6;min-height:140px">
+      <div style="color:#e2e8f0;font-size:14px;font-weight:700;margin-bottom:4px">JavaProjects</div>
+      <div style="color:#94a3b8;font-size:10px;margin-bottom:12px">12 projects · Java</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <div style="background:#272b38;border-radius:8px;padding:8px;border-left:3px solid #6366f1">
+          <div style="font-weight:600;font-size:11px;color:#e2e8f0">Cerchio</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:2px">▶ 78.54</div>
+        </div>
+        <div style="background:#272b38;border-radius:8px;padding:8px;border-left:3px solid #6366f1">
+          <div style="font-weight:600;font-size:11px;color:#e2e8f0">ConvertitoreXML</div>
+          <div style="font-size:10px;color:#94a3b8;margin-top:2px">▶ parsed</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Slate Dark</h3>
+      <p>Soft dark, indigo accents, rounded cards. Less harsh than terminal — warmer dev aesthetic.</p>
+    </div>
+  </div>
+
+</div>

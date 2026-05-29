@@ -1,0 +1,7 @@
+{"type":"server-started","port":64131,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:64131","screen_dir":"/home/giordi/Repos/DIYJavaScript/.superpowers/brainstorm/239248-1778598474/content","state_dir":"/home/giordi/Repos/DIYJavaScript/.superpowers/brainstorm/239248-1778598474/state"}
+{"type":"screen-added","file":"/home/giordi/Repos/DIYJavaScript/.superpowers/brainstorm/239248-1778598474/content/style-direction.html"}
+{"type":"screen-added","file":"/home/giordi/Repos/DIYJavaScript/.superpowers/brainstorm/239248-1778598474/content/style-direction-v2.html"}
+{"source":"user-event","type":"click","text":"JavaProjects\n        Java · 12 projects\n      \n      \n        \n          Cerchio\n          ▶ Area = 78.54\n        \n        \n          ConvertitoreXML\n          view source →\n        \n        \n          Laboratorio / Es.1\n          ▶ Hello World\n        \n        \n          Verifica 01\n          view source →\n        \n      \n    \n    \n      Obsidian\n      Pure black, white type, subtle borders, green for output. Vercel/Next.js aesthetic. Crisp, premium.","choice":"vercel","id":null,"timestamp":1778599072239}
+{"type":"screen-added","file":"/home/giordi/Repos/DIYJavaScript/.superpowers/brainstorm/239248-1778598474/content/obsidian-layout.html"}
+{"type":"screen-added","file":"/home/giordi/Repos/DIYJavaScript/.superpowers/brainstorm/239248-1778598474/content/obsidian-v2.html"}
+{"type":"server-stopped","reason":"idle timeout"}

@@ -1,0 +1,81 @@
+<h2>Pick a color palette</h2>
+<p class="subtitle">Same layout, same tokens — different base color. Current is pure black (#000), which reads as harsh.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="github-dark" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0d1117;padding:18px;font-family:'Inter',system-ui,sans-serif;min-height:180px">
+      <div style="border-bottom:1px solid #21262d;padding-bottom:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#e6edf3">GIORDI.DEV</span>
+        <span style="font-size:11px;color:#8b949e;background:#161b22;padding:4px 10px;border-radius:5px">Java</span>
+      </div>
+      <div style="font-size:36px;font-weight:800;letter-spacing:-2px;color:#e6edf3;margin-bottom:8px">JavaProjects</div>
+      <div style="font-size:12px;color:#8b949e;margin-bottom:14px">Object-oriented exercises and lab assignments.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#21262d;border:1px solid #21262d;border-radius:6px;overflow:hidden">
+        <div style="background:#0d1117;padding:12px 14px">
+          <div style="font-size:12px;font-weight:600;color:#e6edf3;margin-bottom:3px">Cerchio</div>
+          <span style="font-size:10px;font-family:monospace;color:#3fb950;background:#3fb95010;border:1px solid #3fb95030;padding:2px 7px;border-radius:3px">▶ 78.54</span>
+        </div>
+        <div style="background:#0d1117;padding:12px 14px">
+          <div style="font-size:12px;font-weight:600;color:#e6edf3;margin-bottom:3px">Verifica 01</div>
+          <span style="font-size:10px;color:#6e7681">view source →</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>GitHub Dark</h3>
+      <p>Base #0d1117, surfaces #161b22/#21262d. The industry standard for dark dev tools. Instantly legible — every developer has trained on it.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="slate" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0f172a;padding:18px;font-family:'Inter',system-ui,sans-serif;min-height:180px">
+      <div style="border-bottom:1px solid #1e293b;padding-bottom:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#f1f5f9">GIORDI.DEV</span>
+        <span style="font-size:11px;color:#94a3b8;background:#1e293b;padding:4px 10px;border-radius:5px">Java</span>
+      </div>
+      <div style="font-size:36px;font-weight:800;letter-spacing:-2px;color:#f1f5f9;margin-bottom:8px">JavaProjects</div>
+      <div style="font-size:12px;color:#94a3b8;margin-bottom:14px">Object-oriented exercises and lab assignments.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e293b;border:1px solid #1e293b;border-radius:6px;overflow:hidden">
+        <div style="background:#0f172a;padding:12px 14px">
+          <div style="font-size:12px;font-weight:600;color:#f1f5f9;margin-bottom:3px">Cerchio</div>
+          <span style="font-size:10px;font-family:monospace;color:#4ade80;background:#4ade8010;border:1px solid #4ade8030;padding:2px 7px;border-radius:3px">▶ 78.54</span>
+        </div>
+        <div style="background:#0f172a;padding:12px 14px">
+          <div style="font-size:12px;font-weight:600;color:#f1f5f9;margin-bottom:3px">Verifica 01</div>
+          <span style="font-size:10px;color:#475569">view source →</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Slate Night</h3>
+      <p>Base #0f172a (Tailwind slate-900), cool blue-tinted dark. More alive than pure black — surfaces have natural depth. Text at #f1f5f9 reads warmer.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="charcoal" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#141414;padding:18px;font-family:'Inter',system-ui,sans-serif;min-height:180px">
+      <div style="border-bottom:1px solid #2a2a2a;padding-bottom:10px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#ebebeb">GIORDI.DEV</span>
+        <span style="font-size:11px;color:#999;background:#1f1f1f;padding:4px 10px;border-radius:5px">Java</span>
+      </div>
+      <div style="font-size:36px;font-weight:800;letter-spacing:-2px;color:#fff;margin-bottom:8px">JavaProjects</div>
+      <div style="font-size:12px;color:#999;margin-bottom:14px">Object-oriented exercises and lab assignments.</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#2a2a2a;border:1px solid #2a2a2a;border-radius:6px;overflow:hidden">
+        <div style="background:#141414;padding:12px 14px">
+          <div style="font-size:12px;font-weight:600;color:#ebebeb;margin-bottom:3px">Cerchio</div>
+          <span style="font-size:10px;font-family:monospace;color:#22c55e;background:#22c55e10;border:1px solid #22c55e30;padding:2px 7px;border-radius:3px">▶ 78.54</span>
+        </div>
+        <div style="background:#141414;padding:12px 14px">
+          <div style="font-size:12px;font-weight:600;color:#ebebeb;margin-bottom:3px">Verifica 01</div>
+          <span style="font-size:10px;color:#555">view source →</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Charcoal</h3>
+      <p>Base #141414, neutral dark gray. Not pure black — reduces eye strain on white text. Surfaces at #1f1f1f/#2a2a2a give clear card separation. Most readable of the three.</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup v3 – Design System Fixed</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ─────────────────────────────────────
+     DESIGN TOKENS
+  ───────────────────────────────────── */
+  :root {
+    /* surfaces */
+    --bg:          #000000;
+    --surface:     #0c0c0c;
+    --surface-hi:  #121212;
+    --border:      #1e1e1e;
+    --border-hi:   #2a2a2a;
+
+    /* text — clear 4-level hierarchy */
+    --text-1:      #f0f0f0;   /* primary content */
+    --text-2:      #a0a0a0;   /* secondary / descriptions */
+    --text-3:      #636363;   /* muted / labels */
+    --text-4:      #3d3d3d;   /* decorative / disabled — nothing smaller */
+
+    /* accent */
+    --green:       #22c55e;
+    --green-dim:   #16a34a33;
+    --green-border:#16a34a55;
+    --blue:        #60a5fa;
+    --blue-dim:    #1d4ed818;
+    --blue-border: #1d4ed855;
+
+    /* typography */
+    --font-sans:  'Inter', system-ui, sans-serif;
+    --font-mono:  'JetBrains Mono', 'Fira Code', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-1);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    border-bottom: 1px solid var(--border);
+    padding: 0 56px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(0,0,0,0.88);
+    backdrop-filter: blur(16px);
+    z-index: 10;
+  }
+  .nav-brand {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-1);
+  }
+  .nav-links { display: flex; gap: 2px; list-style: none; }
+  .nav-links a {
+    font-size: 12px;
+    color: var(--text-2);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 11px;
+    border-radius: 6px;
+    transition: color .12s, background .12s;
+    letter-spacing: 0.01em;
+  }
+  .nav-links a:hover { color: var(--text-1); background: var(--surface-hi); }
+  .nav-links a.active { color: var(--text-1); background: var(--surface-hi); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 56px 60px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-3);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--border-hi);
+  }
+  .hero-title {
+    font-size: 68px;
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1;
+    color: #fff;
+    margin-bottom: 18px;
+  }
+  .hero-desc {
+    font-size: 14px;
+    color: var(--text-2);
+    max-width: 420px;
+    line-height: 1.75;
+    margin-bottom: 32px;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--blue-border);
+    color: var(--blue);
+    background: var(--blue-dim);
+  }
+  .meta-stat { font-size: 12px; color: var(--text-3); }
+  .meta-stat strong { color: var(--text-2); font-weight: 600; }
+
+  /* ── CONTENT ── */
+  .content { padding: 0 56px; }
+
+  /* ── FILTER ROW ── */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 0 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .tabs { display: flex; gap: 2px; }
+  .tab {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 13px;
+    border-radius: 6px;
+    color: var(--text-3);
+    cursor: pointer;
+    transition: color .12s, background .12s;
+    user-select: none;
+  }
+  .tab:hover { color: var(--text-2); background: var(--surface); }
+  .tab.active { color: var(--text-1); background: var(--surface-hi); }
+  .tab-count {
+    display: inline-block;
+    font-size: 10px;
+    color: var(--text-4);
+    margin-left: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .tab.active .tab-count { color: var(--text-3); }
+  .filter-right {
+    font-size: 11px;
+    color: var(--text-3);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 500;
+  }
+  .filter-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    flex-shrink: 0;
+  }
+
+  /* ── GRID ── */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .project-card {
+    background: var(--bg);
+    padding: 20px 22px 18px;
+    cursor: pointer;
+    transition: background .1s;
+    position: relative;
+  }
+  .project-card:hover { background: var(--surface); }
+  .project-card.active { background: var(--surface); }
+
+  .expand-icon {
+    position: absolute;
+    top: 20px; right: 18px;
+    font-size: 12px;
+    color: var(--text-4);
+    transition: color .1s;
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: -1px;
+  }
+  .project-card:hover .expand-icon { color: var(--text-3); }
+  .project-card.active .expand-icon { color: var(--text-3); transform: rotate(180deg); }
+
+  .project-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-1);
+    margin-bottom: 4px;
+    padding-right: 24px;
+    letter-spacing: -0.1px;
+  }
+  .project-path {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-3);
+    margin-bottom: 14px;
+    letter-spacing: 0;
+  }
+  .output-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    padding: 3px 8px;
+    border-radius: 3px;
+    max-width: 210px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .output-pill::before { content: '▶'; font-size: 7px; flex-shrink: 0; }
+  .source-link {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-3);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color .1s;
+  }
+  .source-link:hover { color: var(--text-2); }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--border-hi);
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    margin-bottom: 48px;
+    display: none;
+  }
+  .detail-panel.visible { display: block; }
+  .detail-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 13px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .detail-filename {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-2);
+  }
+  .detail-close {
+    font-size: 11px;
+    color: var(--text-3);
+    cursor: pointer;
+    padding: 3px 8px;
+    border-radius: 4px;
+    transition: color .12s, background .12s;
+    font-weight: 500;
+  }
+  .detail-close:hover { color: var(--text-1); background: var(--surface-hi); }
+
+  .detail-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .pane { padding: 22px 24px; }
+  .pane:first-child { border-right: 1px solid var(--border); }
+  .pane-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-3);
+    margin-bottom: 14px;
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-2);
+    line-height: 1.85;
+    white-space: pre-wrap;
+  }
+  pre .kw { color: #93c5fd; }
+  pre .cl { color: #f9a8d4; }
+  pre .cm { color: var(--text-3); font-style: italic; }
+  pre .str { color: #86efac; }
+  .output-block {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--green);
+    background: #010e06;
+    border: 1px solid var(--green-border);
+    border-radius: 6px;
+    padding: 18px 20px;
+    line-height: 2;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">giordi.dev</span>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Java</a></li>
+    <li><a href="#">JavaScript</a></li>
+    <li><a href="#">Python</a></li>
+    <li><a href="#">GApps</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">School projects · Giordano Fornari</div>
+  <h1 class="hero-title">JavaProjects</h1>
+  <p class="hero-desc">Object-oriented exercises, lab assignments, and verifiche. Compiled and executed automatically on every commit.</p>
+  <div class="hero-meta">
+    <span class="badge">Java 17</span>
+    <span class="meta-stat"><strong>12</strong> projects</span>
+    <span class="meta-stat"><strong>8</strong> with output</span>
+  </div>
+</div>
+
+<div class="content">
+
+  <div class="filter-row">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this)">All <span class="tab-count">12</span></div>
+      <div class="tab" onclick="setTab(this)">Laboratorio <span class="tab-count">6</span></div>
+      <div class="tab" onclick="setTab(this)">Esercizi <span class="tab-count">4</span></div>
+      <div class="tab" onclick="setTab(this)">Verifiche <span class="tab-count">2</span></div>
+    </div>
+    <div class="filter-right">
+      <span class="filter-dot"></span>
+      8 projects with live output
+    </div>
+  </div>
+
+  <div class="projects">
+
+    <div class="project-card active" onclick="toggleDetail(this,'cerchio')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">Cerchio</div>
+      <div class="project-path">Esercizi/Cerchio/</div>
+      <span class="output-pill">Area = 78.54 · Perim = 31.41</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this,'xml')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">ConvertitoreXML</div>
+      <div class="project-path">Esercizi/ConvertitoreXML/</div>
+      <span class="output-pill">Parsed: 3 nodes</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this,'lab1')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">Laboratorio / Es. 1</div>
+      <div class="project-path">Laboratorio/Esercizio1/</div>
+      <span class="output-pill">Hello, World!</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this,'ver1')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">Verifica 01 — Teoria</div>
+      <div class="project-path">01_Verifica_teoria/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this,'lab2')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">Laboratorio / Es. 2</div>
+      <div class="project-path">Laboratorio/Esercizio2/</div>
+      <span class="output-pill">0 1 1 2 3 5 8 13</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this,'ver2')">
+      <span class="expand-icon">⌄</span>
+      <div class="project-name">Verifica 02 — Lab</div>
+      <div class="project-path">02_Verifica_lab/</div>
+      <a class="source-link" href="#">⟶ view source</a>
+    </div>
+
+  </div>
+
+  <div class="detail-panel visible" id="detail-cerchio">
+    <div class="detail-header">
+      <span class="detail-filename">Cerchio.java</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+<pre><span class="cm">// Calcola area e perimetro di un cerchio</span>
+<span class="kw">public class</span> <span class="cl">Cerchio</span> {
+  <span class="kw">public static void</span> main(String[] args) {
+    <span class="kw">double</span> r = 5.0;
+    <span class="kw">double</span> area = Math.PI * r * r;
+    <span class="kw">double</span> perim = 2 * Math.PI * r;
+    System.out.printf(<span class="str">"Area = %.2f%n"</span>, area);
+    System.out.printf(<span class="str">"Perim = %.2f%n"</span>, perim);
+  }
+}</pre>
+      </div>
+      <div class="pane">
+        <div class="pane-label">Output</div>
+        <div class="output-block">Area = 78.54
+Perim = 31.41</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function setTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function toggleDetail(card, id) {
+  const wasActive = card.classList.contains('active');
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
+  if (!wasActive) {
+    card.classList.add('active');
+    const panel = document.getElementById('detail-' + id);
+    if (panel) { panel.classList.add('visible'); panel.scrollIntoView({behavior:'smooth', block:'nearest'}); }
+  }
+}
+function closeDetail() {
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
+}
+</script>
+</body>
+</html>

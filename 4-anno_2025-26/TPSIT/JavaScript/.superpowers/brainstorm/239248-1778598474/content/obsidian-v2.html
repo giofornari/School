@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup v2 – Obsidian Fixed</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    border-bottom: 1px solid #1c1c1c;
+    padding: 0 56px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(0,0,0,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 10;
+  }
+  .nav-brand {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .nav-links {
+    display: flex;
+    gap: 4px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    color: #888;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: color .15s, background .15s;
+  }
+  .nav-links a:hover { color: #fff; background: #111; }
+  .nav-links a.active { color: #fff; background: #161616; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 56px 64px;
+    border-bottom: 1px solid #1c1c1c;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #555;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: #333;
+  }
+  .hero-title {
+    font-size: 64px;
+    font-weight: 800;
+    letter-spacing: -2.5px;
+    line-height: 1;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  .hero-desc {
+    font-size: 14px;
+    color: #555;
+    max-width: 400px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid #1d4ed840;
+    color: #60a5fa;
+    background: #1d4ed810;
+  }
+  .meta-stat {
+    font-size: 12px;
+    color: #444;
+  }
+  .meta-stat strong { color: #777; font-weight: 600; }
+
+  /* ── CONTENT ── */
+  .content { padding: 0 56px; }
+
+  /* ── FILTER TABS ── */
+  .filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 0 20px;
+    border-bottom: 1px solid #1c1c1c;
+    margin-bottom: 28px;
+  }
+  .tabs {
+    display: flex;
+    gap: 2px;
+  }
+  .tab {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    color: #555;
+    cursor: pointer;
+    transition: color .15s, background .15s;
+    user-select: none;
+  }
+  .tab:hover { color: #ccc; background: #0e0e0e; }
+  .tab.active { color: #fff; background: #161616; }
+  .tab-count {
+    display: inline-block;
+    font-size: 10px;
+    color: #444;
+    margin-left: 5px;
+    font-variant-numeric: tabular-nums;
+  }
+  .tab.active .tab-count { color: #666; }
+  .filter-right {
+    font-size: 11px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .filter-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+    display: inline-block;
+  }
+
+  /* ── PROJECT GRID ── */
+  .projects {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: #111;
+    border: 1px solid #111;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1px;
+  }
+
+  .project-card {
+    background: #000;
+    padding: 22px 24px;
+    cursor: pointer;
+    transition: background .12s;
+    position: relative;
+  }
+  .project-card:hover { background: #0a0a0a; }
+  .project-card.active { background: #080808; }
+
+  /* expand indicator */
+  .project-card::after {
+    content: '↓';
+    position: absolute;
+    top: 22px;
+    right: 20px;
+    font-size: 11px;
+    color: #222;
+    transition: color .12s, transform .12s;
+  }
+  .project-card:hover::after { color: #444; }
+  .project-card.active::after {
+    content: '↑';
+    color: #555;
+  }
+
+  .project-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 4px;
+    letter-spacing: -0.1px;
+    padding-right: 20px;
+  }
+  .project-path {
+    font-size: 10px;
+    color: #2e2e2e;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin-bottom: 14px;
+  }
+  .output-pill {
+    display: inline-block;
+    font-size: 10px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    color: #10b981;
+    background: #10b98108;
+    border: 1px solid #10b98120;
+    padding: 3px 8px;
+    border-radius: 3px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .source-link {
+    font-size: 10px;
+    font-weight: 500;
+    color: #444;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+  }
+  .source-link:hover { color: #888; }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    border: 1px solid #111;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    margin-bottom: 48px;
+    display: none;
+  }
+  .detail-panel.visible { display: block; }
+
+  .detail-header {
+    background: #080808;
+    border-bottom: 1px solid #111;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .detail-name { font-size: 13px; font-weight: 700; color: #fff; }
+  .detail-close {
+    font-size: 11px;
+    color: #444;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color .12s, background .12s;
+  }
+  .detail-close:hover { color: #fff; background: #111; }
+
+  .detail-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .pane {
+    padding: 24px;
+  }
+  .pane:first-child { border-right: 1px solid #111; }
+  .pane-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #333;
+    margin-bottom: 14px;
+  }
+  pre {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    color: #666;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+  pre .kw { color: #60a5fa; }
+  pre .cl { color: #f9a8d4; }
+  pre .cm { color: #252525; }
+  .output-block {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: #10b981;
+    background: #03100a;
+    border: 1px solid #10b98115;
+    border-radius: 5px;
+    padding: 18px;
+    line-height: 2;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">giordi.dev</span>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Java</a></li>
+    <li><a href="#">JavaScript</a></li>
+    <li><a href="#">Python</a></li>
+    <li><a href="#">GApps</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">School projects · Giordano Fornari</div>
+  <h1 class="hero-title">JavaProjects</h1>
+  <p class="hero-desc">Object-oriented exercises, lab assignments, and verifiche. Compiled and run automatically on every commit.</p>
+  <div class="hero-meta">
+    <span class="badge">Java 17</span>
+    <span class="meta-stat"><strong>12</strong> projects</span>
+    <span class="meta-stat"><strong>8</strong> with output</span>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- FILTER ROW -->
+  <div class="filter-row">
+    <div class="tabs">
+      <div class="tab active" onclick="setTab(this)">All <span class="tab-count">12</span></div>
+      <div class="tab" onclick="setTab(this)">Laboratorio <span class="tab-count">6</span></div>
+      <div class="tab" onclick="setTab(this)">Esercizi <span class="tab-count">4</span></div>
+      <div class="tab" onclick="setTab(this)">Verifiche <span class="tab-count">2</span></div>
+    </div>
+    <div class="filter-right">
+      <span class="filter-dot"></span>
+      8 projects have live output
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div class="projects" id="grid">
+
+    <div class="project-card active" onclick="toggleDetail(this, 'cerchio')">
+      <div class="project-name">Cerchio</div>
+      <div class="project-path">Esercizi/Cerchio/</div>
+      <span class="output-pill">Area = 78.54 · Perim = 31.41</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this, 'xml')">
+      <div class="project-name">ConvertitoreXML</div>
+      <div class="project-path">Esercizi/ConvertitoreXML/</div>
+      <span class="output-pill">Parsed: 3 nodes</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this, 'lab1')">
+      <div class="project-name">Laboratorio / Es. 1</div>
+      <div class="project-path">Laboratorio/Esercizio1/</div>
+      <span class="output-pill">Hello, World!</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this, 'ver1')">
+      <div class="project-name">Verifica 01 — Teoria</div>
+      <div class="project-path">01_Verifica_teoria/</div>
+      <a class="source-link" href="#">view source →</a>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this, 'lab2')">
+      <div class="project-name">Laboratorio / Es. 2</div>
+      <div class="project-path">Laboratorio/Esercizio2/</div>
+      <span class="output-pill">0 1 1 2 3 5 8 13</span>
+    </div>
+
+    <div class="project-card" onclick="toggleDetail(this, 'ver2')">
+      <div class="project-name">Verifica 02 — Lab</div>
+      <div class="project-path">02_Verifica_lab/</div>
+      <a class="source-link" href="#">view source →</a>
+    </div>
+
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div class="detail-panel visible" id="detail-cerchio">
+    <div class="detail-header">
+      <span class="detail-name">Cerchio.java</span>
+      <span class="detail-close" onclick="closeDetail()">close ✕</span>
+    </div>
+    <div class="detail-body">
+      <div class="pane">
+        <div class="pane-label">Source</div>
+<pre><span class="cm">// Calcola area e perimetro</span>
+<span class="kw">public class</span> <span class="cl">Cerchio</span> {
+  <span class="kw">public static void</span> main(String[] args) {
+    <span class="kw">double</span> r = 5.0;
+    <span class="kw">double</span> area = Math.PI * r * r;
+    <span class="kw">double</span> perim = 2 * Math.PI * r;
+    System.out.printf("Area = %.2f%n", area);
+    System.out.printf("Perim = %.2f%n", perim);
+  }
+}</pre>
+      </div>
+      <div class="pane">
+        <div class="pane-label">Output</div>
+        <div class="output-block">Area = 78.54
+Perim = 31.41</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function setTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function toggleDetail(card, id) {
+  const wasActive = card.classList.contains('active');
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
+  if (!wasActive) {
+    card.classList.add('active');
+    const panel = document.getElementById('detail-' + id);
+    if (panel) panel.classList.add('visible');
+  }
+}
+
+function closeDetail() {
+  document.querySelectorAll('.project-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
+}
+</script>
+
+</body>
+</html>

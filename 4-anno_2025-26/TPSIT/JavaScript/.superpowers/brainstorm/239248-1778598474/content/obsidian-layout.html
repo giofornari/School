@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup – Obsidian Layout</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #000;
+    color: #fff;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── NAV ── */
+  nav {
+    border-bottom: 1px solid #1a1a1a;
+    padding: 0 48px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: #000;
+    z-index: 10;
+  }
+  .nav-brand {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 12px;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color .15s;
+  }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 72px 48px 56px;
+    border-bottom: 1px solid #1a1a1a;
+    max-width: 900px;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #444;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .hero-desc {
+    font-size: 15px;
+    color: #666;
+    max-width: 460px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .badge {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid #333;
+    color: #888;
+  }
+  .badge.lang { border-color: #1d4ed880; color: #60a5fa; background: #1d4ed810; }
+  .meta-stat { font-size: 12px; color: #444; }
+  .meta-stat strong { color: #888; font-weight: 600; }
+
+  /* ── CONTENT AREA ── */
+  .page { display: flex; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 220px;
+    flex-shrink: 0;
+    border-right: 1px solid #1a1a1a;
+    padding: 36px 0;
+    position: sticky;
+    top: 52px;
+    height: calc(100vh - 52px);
+    overflow-y: auto;
+  }
+  .sidebar-section { padding: 0 24px; margin-bottom: 28px; }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+    border-radius: 3px;
+  }
+  .sidebar-item:hover { color: #fff; }
+  .sidebar-item.active { color: #fff; }
+  .sidebar-count {
+    font-size: 10px;
+    color: #333;
+    font-variant-numeric: tabular-nums;
+  }
+  .sidebar-item.active .sidebar-count { color: #555; }
+
+  /* ── MAIN ── */
+  .main { flex: 1; padding: 36px 48px; min-width: 0; }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #444;
+  }
+  .section-count { font-size: 11px; color: #333; }
+
+  /* ── PROJECT GRID ── */
+  .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #1a1a1a; border: 1px solid #1a1a1a; border-radius: 6px; overflow: hidden; margin-bottom: 36px; }
+
+  .project-card {
+    background: #000;
+    padding: 20px 22px;
+    cursor: pointer;
+    transition: background .1s;
+  }
+  .project-card:hover { background: #0d0d0d; }
+  .project-card.has-output:hover { background: #061209; }
+
+  .project-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e8e8e8;
+    margin-bottom: 5px;
+    letter-spacing: -0.1px;
+  }
+  .project-path {
+    font-size: 11px;
+    color: #333;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    margin-bottom: 12px;
+  }
+  .project-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .output-pill {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    color: #10b981;
+    background: #10b98110;
+    border: 1px solid #10b98122;
+    padding: 2px 8px;
+    border-radius: 3px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .source-link {
+    font-size: 10px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .source-link:hover { color: #888; }
+  .no-output { font-size: 10px; color: #2a2a2a; }
+
+  /* ── EXPANDED DETAIL ── */
+  .detail {
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 36px;
+  }
+  .detail-header {
+    background: #0d0d0d;
+    border-bottom: 1px solid #1a1a1a;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .detail-name { font-size: 13px; font-weight: 700; color: #fff; }
+  .detail-tabs { display: flex; gap: 1px; background: #1a1a1a; border-radius: 3px; overflow: hidden; }
+  .detail-tab {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 5px 12px;
+    background: #111;
+    color: #444;
+    cursor: pointer;
+  }
+  .detail-tab.active { background: #1a1a1a; color: #fff; }
+  .detail-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .pane { padding: 20px; }
+  .pane:first-child { border-right: 1px solid #1a1a1a; }
+  .pane-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  pre {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 11px;
+    color: #888;
+    line-height: 1.7;
+    white-space: pre-wrap;
+  }
+  pre .kw { color: #60a5fa; }
+  pre .cl { color: #f9a8d4; }
+  pre .cm { color: #2e2e2e; }
+  .output-block {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 12px;
+    color: #10b981;
+    background: #061209;
+    border: 1px solid #10b98115;
+    border-radius: 4px;
+    padding: 16px;
+    line-height: 1.8;
+  }
+
+  /* ── NOTE ── */
+  .mockup-note {
+    text-align: center;
+    padding: 28px;
+    font-size: 12px;
+    color: #333;
+    border-top: 1px solid #111;
+    letter-spacing: 0.02em;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">giordi.dev</span>
+  <ul class="nav-links">
+    <li><a href="#" class="active">JavaProjects</a></li>
+    <li><a href="#">DIYJavaScript</a></li>
+    <li><a href="#">Python</a></li>
+    <li><a href="#">GApps</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">School · Giordano Fornari</div>
+  <h1 class="hero-title">Java<br>Projects</h1>
+  <p class="hero-desc">Object-oriented exercises, lab verifications, and data-structure projects. Compiled and run on every commit.</p>
+  <div class="hero-meta">
+    <span class="badge lang">Java 17</span>
+    <span class="meta-stat"><strong>12</strong> projects</span>
+    <span class="meta-stat"><strong>3</strong> categories</span>
+  </div>
+</div>
+
+<!-- PAGE -->
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Categories</div>
+      <div class="sidebar-item active">All <span class="sidebar-count">12</span></div>
+      <div class="sidebar-item">Laboratorio <span class="sidebar-count">6</span></div>
+      <div class="sidebar-item">Esercizi <span class="sidebar-count">4</span></div>
+      <div class="sidebar-item">Verifiche <span class="sidebar-count">2</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Output</div>
+      <div class="sidebar-item">Has output <span class="sidebar-count">8</span></div>
+      <div class="sidebar-item">Source only <span class="sidebar-count">4</span></div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <div class="section-header">
+      <span class="section-title">All projects</span>
+      <span class="section-count">12 items</span>
+    </div>
+
+    <!-- PROJECT GRID -->
+    <div class="projects">
+      <div class="project-card has-output">
+        <div class="project-name">Cerchio</div>
+        <div class="project-path">Esercizi/Cerchio/</div>
+        <div class="project-footer">
+          <span class="output-pill">Area = 78.54 · Perimetro = 31.41</span>
+        </div>
+      </div>
+      <div class="project-card has-output">
+        <div class="project-name">ConvertitoreXML</div>
+        <div class="project-path">Esercizi/ConvertitoreXML/</div>
+        <div class="project-footer">
+          <span class="output-pill">Parsed: 3 nodes</span>
+        </div>
+      </div>
+      <div class="project-card has-output">
+        <div class="project-name">Laboratorio / Es. 1</div>
+        <div class="project-path">Laboratorio/Esercizio1/</div>
+        <div class="project-footer">
+          <span class="output-pill">Hello, World!</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">Verifica 01 — Teoria</div>
+        <div class="project-path">01_Verifica_teoria/</div>
+        <div class="project-footer">
+          <span class="no-output">source only</span>
+          <a href="#" class="source-link">view →</a>
+        </div>
+      </div>
+      <div class="project-card has-output">
+        <div class="project-name">Laboratorio / Es. 2</div>
+        <div class="project-path">Laboratorio/Esercizio2/</div>
+        <div class="project-footer">
+          <span class="output-pill">Fibonacci: 0 1 1 2 3 5 8</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-name">Verifica 02 — Lab</div>
+        <div class="project-path">02_Verifica_lab/</div>
+        <div class="project-footer">
+          <span class="no-output">source only</span>
+          <a href="#" class="source-link">view →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPANDED DETAIL -->
+    <div class="section-header">
+      <span class="section-title">Cerchio — detail</span>
+      <div class="detail-tabs">
+        <div class="detail-tab active">Source + Output</div>
+        <div class="detail-tab">Source</div>
+      </div>
+    </div>
+    <div class="detail">
+      <div class="detail-body">
+        <div class="pane">
+          <div class="pane-label">Cerchio.java</div>
+<pre><span class="cm">// Calcola area e perimetro</span>
+<span class="kw">public class</span> <span class="cl">Cerchio</span> {
+  <span class="kw">public static void</span> main(
+      String[] args) {
+    <span class="kw">double</span> r = 5.0;
+    <span class="kw">double</span> area =
+      Math.PI * r * r;
+    <span class="kw">double</span> perim =
+      2 * Math.PI * r;
+    System.out.printf(
+      "Area = %.2f%n", area);
+    System.out.printf(
+      "Perimetro = %.2f%n", perim);
+  }
+}</pre>
+        </div>
+        <div class="pane">
+          <div class="pane-label">Output</div>
+          <div class="output-block">Area = 78.54
+Perimetro = 31.41</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<div class="mockup-note">Mockup — not interactive · Click to select this layout direction</div>
+
+<script>
+document.querySelector('.mockup-note').addEventListener('click', function() {
+  // Signal selection to parent visual companion
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({type:'select',choice:'obsidian-layout'}, '*');
+  }
+});
+
+// Make project cards feel alive
+document.querySelectorAll('.project-card').forEach(c => {
+  c.addEventListener('click', function() {
+    document.querySelectorAll('.project-card').forEach(x => x.style.background = '');
+    this.style.background = '#0a0a0a';
+  });
+});
+</script>
+
+</body>
+</html>

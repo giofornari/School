@@ -1,0 +1,466 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - list [ref=e3]:
+      - listitem [ref=e4]:
+        - link "Java" [ref=e5] [cursor=pointer]:
+          - /url: https://bigbrodyg.github.io/JavaProjects/
+      - listitem [ref=e6]:
+        - link "JavaScript" [ref=e7] [cursor=pointer]:
+          - /url: https://bigbrodyg.github.io/DIYJavaScript/
+      - listitem [ref=e8]:
+        - link "Python" [ref=e9] [cursor=pointer]:
+          - /url: https://bigbrodyg.github.io/PythonAlmostSelfLearned/
+      - listitem [ref=e10]:
+        - link "GApps" [ref=e11] [cursor=pointer]:
+          - /url: https://bigbrodyg.github.io/GAppProjects/
+  - generic [ref=e12]:
+    - generic [ref=e13]: School projects · Giordano Fornari
+    - heading "JavaProjects" [level=1] [ref=e15]
+    - paragraph [ref=e16]: Object-oriented exercises, lab assignments, and verifiche. Compiled and run on every commit.
+    - generic [ref=e17]:
+      - generic [ref=e18]:
+        - strong [ref=e19]: "27"
+        - text: projects
+      - generic [ref=e21]:
+        - strong [ref=e22]: "21"
+        - text: with output
+  - generic [ref=e23]:
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - generic [ref=e26] [cursor=pointer]: All 27
+        - generic [ref=e27] [cursor=pointer]: Esercizi 13
+        - generic [ref=e28] [cursor=pointer]: Laboratorio 11
+        - generic [ref=e29] [cursor=pointer]: Progetti 3
+      - generic [ref=e30]: 27 projects
+    - generic [ref=e31]:
+      - generic [ref=e32] [cursor=pointer]:
+        - text: esercizi
+        - generic [ref=e33]: "13"
+      - generic [ref=e34] [cursor=pointer]:
+        - text: lab
+        - generic [ref=e35]: "11"
+      - generic [ref=e36] [cursor=pointer]:
+        - text: exam
+        - generic [ref=e37]: "3"
+      - generic [ref=e39] [cursor=pointer]:
+        - text: OOP
+        - generic [ref=e40]: "27"
+      - generic [ref=e41] [cursor=pointer]:
+        - text: arrays
+        - generic [ref=e42]: "27"
+      - generic [ref=e43] [cursor=pointer]:
+        - text: recursion
+        - generic [ref=e44]: "25"
+      - generic [ref=e45] [cursor=pointer]:
+        - text: "@Override"
+        - generic [ref=e46]: "21"
+      - generic [ref=e47] [cursor=pointer]:
+        - text: ArrayList
+        - generic [ref=e48]: "12"
+      - generic [ref=e49] [cursor=pointer]:
+        - text: generics
+        - generic [ref=e50]: "12"
+      - generic [ref=e51] [cursor=pointer]:
+        - text: extends
+        - generic [ref=e52]: "10"
+      - generic [ref=e53] [cursor=pointer]:
+        - text: abstract
+        - generic [ref=e54]: "9"
+      - generic [ref=e55] [cursor=pointer]:
+        - text: implements
+        - generic [ref=e56]: "2"
+      - generic [ref=e57] [cursor=pointer]:
+        - text: interface
+        - generic [ref=e58]: "2"
+      - generic [ref=e59] [cursor=pointer]:
+        - text: HashMap
+        - generic [ref=e60]: "1"
+      - generic [ref=e61] [cursor=pointer]:
+        - text: enum
+        - generic [ref=e62]: "1"
+    - generic [ref=e63]:
+      - generic [ref=e64] [cursor=pointer]:
+        - generic [ref=e65]:
+          - generic [ref=e66]:
+            - generic [ref=e67]: 01_Verifica_teoria
+            - generic [ref=e68]: 01_Verifica_teoria/
+          - generic [ref=e69]: ›
+        - generic [ref=e70]: ▶ SchedaSim --------------------------- - num_te
+        - generic [ref=e71]:
+          - generic [ref=e72]: exam
+          - generic [ref=e73]: OOP
+          - generic [ref=e74]: "@Override"
+          - generic [ref=e75]: arrays
+          - generic [ref=e76]: recursion
+      - generic [ref=e77] [cursor=pointer]:
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]: 02_Verifica_lab
+            - generic [ref=e81]: 02_Verifica_lab/
+          - generic [ref=e82]: ›
+        - generic [ref=e83]: ▶ Benvenuto! Macchina Distributrice 1.0.0 --------
+        - generic [ref=e84]:
+          - generic [ref=e85]: exam
+          - generic [ref=e86]: OOP
+          - generic [ref=e87]: "@Override"
+          - generic [ref=e88]: ArrayList
+          - generic [ref=e89]: arrays
+          - generic [ref=e90]: generics
+          - generic [ref=e91]: recursion
+      - generic [ref=e92] [cursor=pointer]:
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - generic [ref=e95]: 03_Verifica_lab
+            - generic [ref=e96]: 03_Verifica_lab/
+          - generic [ref=e97]: ›
+        - generic [ref=e98]: "▶ OK per importo: 500.0 CC [1234-5678-9012-3456 12/2"
+        - generic [ref=e99]:
+          - generic [ref=e100]: exam
+          - generic [ref=e101]: OOP
+          - generic [ref=e102]: extends
+          - generic [ref=e103]: abstract
+          - generic [ref=e104]: "@Override"
+          - generic [ref=e105]: ArrayList
+          - generic [ref=e106]: arrays
+          - generic [ref=e107]: generics
+          - generic [ref=e108]: recursion
+      - generic [ref=e109] [cursor=pointer]:
+        - generic [ref=e110]:
+          - generic [ref=e111]:
+            - generic [ref=e112]: Abbonamento
+            - generic [ref=e113]: Esercizi/Abbonamento/
+          - generic [ref=e114]: ›
+        - generic [ref=e115]:
+          - generic [ref=e116]: esercizi
+          - generic [ref=e117]: OOP
+          - generic [ref=e118]: "@Override"
+          - generic [ref=e119]: arrays
+          - generic [ref=e120]: recursion
+      - generic [ref=e121] [cursor=pointer]:
+        - generic [ref=e122]:
+          - generic [ref=e123]:
+            - generic [ref=e124]: Autonoleggio
+            - generic [ref=e125]: Esercizi/Autonoleggio/
+          - generic [ref=e126]: ›
+        - generic [ref=e127]: ▶ === SISTEMA GESTIONE AUTONOLEGGIO === --- CREAZIO
+        - generic [ref=e128]:
+          - generic [ref=e129]: esercizi
+          - generic [ref=e130]: OOP
+          - generic [ref=e131]: extends
+          - generic [ref=e132]: abstract
+          - generic [ref=e133]: "@Override"
+          - generic [ref=e134]: ArrayList
+          - generic [ref=e135]: arrays
+          - generic [ref=e136]: generics
+          - generic [ref=e137]: recursion
+      - generic [ref=e138] [cursor=pointer]:
+        - generic [ref=e139]:
+          - generic [ref=e140]:
+            - generic [ref=e141]: Cerchio
+            - generic [ref=e142]: Esercizi/Cerchio/
+          - generic [ref=e143]: ›
+        - generic [ref=e144]: ▶ 10.0 314.1592653589793 62.83185307179586 5.0 78.5
+        - generic [ref=e145]:
+          - generic [ref=e146]: esercizi
+          - generic [ref=e147]: OOP
+          - generic [ref=e148]: arrays
+          - generic [ref=e149]: recursion
+      - generic [ref=e150] [cursor=pointer]:
+        - generic [ref=e151]:
+          - generic [ref=e152]:
+            - generic [ref=e153]: Ereditarietà
+            - generic [ref=e154]: Esercizi/Ereditarietà/
+          - generic [ref=e155]: ›
+        - generic [ref=e156]: "▶ Studente{codiceFiscale='RSSMRA80A01H501U', nome='M"
+        - generic [ref=e157]:
+          - generic [ref=e158]: esercizi
+          - generic [ref=e159]: OOP
+          - generic [ref=e160]: extends
+          - generic [ref=e161]: "@Override"
+          - generic [ref=e162]: arrays
+          - generic [ref=e163]: recursion
+      - generic [ref=e164] [cursor=pointer]:
+        - generic [ref=e165]:
+          - generic [ref=e166]:
+            - generic [ref=e167]: GestionePC
+            - generic [ref=e168]: Esercizi/GestionePC/
+          - generic [ref=e169]: ›
+        - generic [ref=e170]: ▶ === SISTEMA DI GESTIONE INVENTARIO PC === Aggiunt
+        - generic [ref=e171]:
+          - generic [ref=e172]: esercizi
+          - generic [ref=e173]: OOP
+          - generic [ref=e174]: extends
+          - generic [ref=e175]: abstract
+          - generic [ref=e176]: "@Override"
+          - generic [ref=e177]: ArrayList
+          - generic [ref=e178]: arrays
+          - generic [ref=e179]: generics
+          - generic [ref=e180]: recursion
+      - generic [ref=e181] [cursor=pointer]:
+        - generic [ref=e182]:
+          - generic [ref=e183]:
+            - generic [ref=e184]: Immobili
+            - generic [ref=e185]: Esercizi/Immobili/
+          - generic [ref=e186]: ›
+        - generic [ref=e187]: "▶ Villa: Abitazione con 8 stanze, 240.00 mq, indiriz"
+        - generic [ref=e188]:
+          - generic [ref=e189]: esercizi
+          - generic [ref=e190]: OOP
+          - generic [ref=e191]: extends
+          - generic [ref=e192]: abstract
+          - generic [ref=e193]: "@Override"
+          - generic [ref=e194]: arrays
+          - generic [ref=e195]: recursion
+      - generic [ref=e196] [cursor=pointer]:
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - generic [ref=e199]: Libro
+            - generic [ref=e200]: Esercizi/Libro/
+          - generic [ref=e201]: ›
+        - generic [ref=e202]: "▶ ---------------- Titolo: How to get AURA Autore: g"
+        - generic [ref=e203]:
+          - generic [ref=e204]: esercizi
+          - generic [ref=e205]: OOP
+          - generic [ref=e206]: arrays
+          - generic [ref=e207]: recursion
+      - generic [ref=e208] [cursor=pointer]:
+        - generic [ref=e209]:
+          - generic [ref=e210]:
+            - generic [ref=e211]: Orario
+            - generic [ref=e212]: Esercizi/Orario/
+          - generic [ref=e213]: ›
+        - generic [ref=e214]: "▶ now: 23:59:59 after un tic: 0:0:0 after 125 minute"
+        - generic [ref=e215]:
+          - generic [ref=e216]: esercizi
+          - generic [ref=e217]: OOP
+          - generic [ref=e218]: arrays
+          - generic [ref=e219]: recursion
+      - generic [ref=e220] [cursor=pointer]:
+        - generic [ref=e221]:
+          - generic [ref=e222]:
+            - generic [ref=e223]: PersonaleConsulenza
+            - generic [ref=e224]: Esercizi/PersonaleConsulenza/
+          - generic [ref=e225]: ›
+        - generic [ref=e226]:
+          - generic [ref=e227]: esercizi
+          - generic [ref=e228]: OOP
+          - generic [ref=e229]: extends
+          - generic [ref=e230]: abstract
+          - generic [ref=e231]: "@Override"
+          - generic [ref=e232]: ArrayList
+          - generic [ref=e233]: HashMap
+          - generic [ref=e234]: arrays
+          - generic [ref=e235]: generics
+          - generic [ref=e236]: "+2"
+      - generic [ref=e237] [cursor=pointer]:
+        - generic [ref=e238]:
+          - generic [ref=e239]:
+            - generic [ref=e240]: Punto
+            - generic [ref=e241]: Esercizi/Punto/
+          - generic [ref=e242]: ›
+        - generic [ref=e243]: "▶ p1: (3.0, 4.0) p2: (0.0, 0.0) p3: (3.0, 4.0) space"
+        - generic [ref=e244]:
+          - generic [ref=e245]: esercizi
+          - generic [ref=e246]: OOP
+          - generic [ref=e247]: "@Override"
+          - generic [ref=e248]: arrays
+          - generic [ref=e249]: recursion
+      - generic [ref=e250] [cursor=pointer]:
+        - generic [ref=e251]:
+          - generic [ref=e252]:
+            - generic [ref=e253]: Software
+            - generic [ref=e254]: Esercizi/Software/
+          - generic [ref=e255]: ›
+        - generic [ref=e256]: "▶ Numero programmi: 3 Contenitore programmi: - ZeroC"
+        - generic [ref=e257]:
+          - generic [ref=e258]: esercizi
+          - generic [ref=e259]: OOP
+          - generic [ref=e260]: "@Override"
+          - generic [ref=e261]: arrays
+          - generic [ref=e262]: recursion
+      - generic [ref=e263] [cursor=pointer]:
+        - generic [ref=e264]:
+          - generic [ref=e265]:
+            - generic [ref=e266]: Treni
+            - generic [ref=e267]: Esercizi/Treni/
+          - generic [ref=e268]: ›
+        - generic [ref=e269]: "▶ === TRENI === Treno: Regionale Express 1234 ---"
+        - generic [ref=e270]:
+          - generic [ref=e271]: esercizi
+          - generic [ref=e272]: OOP
+          - generic [ref=e273]: extends
+          - generic [ref=e274]: abstract
+          - generic [ref=e275]: "@Override"
+          - generic [ref=e276]: ArrayList
+          - generic [ref=e277]: arrays
+          - generic [ref=e278]: generics
+          - generic [ref=e279]: recursion
+      - generic [ref=e280] [cursor=pointer]:
+        - generic [ref=e281]:
+          - generic [ref=e282]:
+            - generic [ref=e283]: Triangolo
+            - generic [ref=e284]: Esercizi/Triangolo/
+          - generic [ref=e285]: ›
+        - generic [ref=e286]: "▶ Tri inizl: Tri{p1=(0.0, 0.0), p2=(6.0, 0.0), p3=(2"
+        - generic [ref=e287]:
+          - generic [ref=e288]: esercizi
+          - generic [ref=e289]: OOP
+          - generic [ref=e290]: "@Override"
+          - generic [ref=e291]: arrays
+          - generic [ref=e292]: recursion
+      - generic [ref=e293] [cursor=pointer]:
+        - generic [ref=e294]:
+          - generic [ref=e295]:
+            - generic [ref=e296]: BiblioOverride
+            - generic [ref=e297]: Laboratorio/BiblioOverride/
+          - generic [ref=e298]: ›
+        - generic [ref=e299]: ▶ === SISTEMA GESTIONE BIBLIOTECA CON PRESTITI ===
+        - generic [ref=e300]:
+          - generic [ref=e301]: lab
+          - generic [ref=e302]: OOP
+          - generic [ref=e303]: extends
+          - generic [ref=e304]: abstract
+          - generic [ref=e305]: "@Override"
+          - generic [ref=e306]: ArrayList
+          - generic [ref=e307]: arrays
+          - generic [ref=e308]: generics
+          - generic [ref=e309]: recursion
+      - generic [ref=e310] [cursor=pointer]:
+        - generic [ref=e311]:
+          - generic [ref=e312]:
+            - generic [ref=e313]: Biblioteca
+            - generic [ref=e314]: Laboratorio/Biblioteca/
+          - generic [ref=e315]: ›
+        - generic [ref=e316]: ▶ === SISTEMA GESTIONE BIBLIOTECA === === CATALOGO
+        - generic [ref=e317]:
+          - generic [ref=e318]: lab
+          - generic [ref=e319]: OOP
+          - generic [ref=e320]: extends
+          - generic [ref=e321]: abstract
+          - generic [ref=e322]: "@Override"
+          - generic [ref=e323]: ArrayList
+          - generic [ref=e324]: arrays
+          - generic [ref=e325]: generics
+          - generic [ref=e326]: recursion
+      - generic [ref=e327] [cursor=pointer]:
+        - generic [ref=e328]:
+          - generic [ref=e329]:
+            - generic [ref=e330]: MetodiPagamento
+            - generic [ref=e331]: Laboratorio/MetodiPagamento/
+          - generic [ref=e332]: ›
+        - generic [ref=e333]:
+          - generic [ref=e334]: lab
+          - generic [ref=e335]: OOP
+          - generic [ref=e336]: implements
+          - generic [ref=e337]: interface
+          - generic [ref=e338]: "@Override"
+          - generic [ref=e339]: ArrayList
+          - generic [ref=e340]: arrays
+          - generic [ref=e341]: generics
+          - generic [ref=e342]: recursion
+      - generic [ref=e343] [cursor=pointer]:
+        - generic [ref=e344]:
+          - generic [ref=e345]:
+            - generic [ref=e346]: Notifiche
+            - generic [ref=e347]: Laboratorio/Notifiche/
+          - generic [ref=e348]: ›
+        - generic [ref=e349]:
+          - generic [ref=e350]: lab
+          - generic [ref=e351]: OOP
+          - generic [ref=e352]: implements
+          - generic [ref=e353]: interface
+          - generic [ref=e354]: "@Override"
+          - generic [ref=e355]: ArrayList
+          - generic [ref=e356]: arrays
+          - generic [ref=e357]: generics
+          - generic [ref=e358]: recursion
+      - generic [ref=e359] [cursor=pointer]:
+        - generic [ref=e360]:
+          - generic [ref=e361]:
+            - generic [ref=e362]: OggettoCD
+            - generic [ref=e363]: Laboratorio/OggettoCD/
+          - generic [ref=e364]: ›
+        - generic [ref=e365]: "▶ ------------------------------ Titolo: LA BELLAVIT"
+        - generic [ref=e366]:
+          - generic [ref=e367]: lab
+          - generic [ref=e368]: OOP
+          - generic [ref=e369]: arrays
+          - generic [ref=e370]: recursion
+      - generic [ref=e371] [cursor=pointer]:
+        - generic [ref=e372]:
+          - generic [ref=e373]:
+            - generic [ref=e374]: Playlist
+            - generic [ref=e375]: Laboratorio/Playlist/
+          - generic [ref=e376]: ›
+        - generic [ref=e377]:
+          - generic [ref=e378]: lab
+          - generic [ref=e379]: OOP
+          - generic [ref=e380]: "@Override"
+          - generic [ref=e381]: ArrayList
+          - generic [ref=e382]: arrays
+          - generic [ref=e383]: generics
+          - generic [ref=e384]: recursion
+      - generic [ref=e385] [cursor=pointer]:
+        - generic [ref=e386]:
+          - generic [ref=e387]:
+            - generic [ref=e388]: Rettangolo
+            - generic [ref=e389]: Laboratorio/Rettangolo/
+          - generic [ref=e390]: ›
+        - generic [ref=e391]: "▶ p1: (3.0, 4.0) p2: (0.0, 0.0) p3: (3.0, 4.0) space"
+        - generic [ref=e392]:
+          - generic [ref=e393]: lab
+          - generic [ref=e394]: OOP
+          - generic [ref=e395]: "@Override"
+          - generic [ref=e396]: arrays
+          - generic [ref=e397]: recursion
+      - generic [ref=e398] [cursor=pointer]:
+        - generic [ref=e399]:
+          - generic [ref=e400]:
+            - generic [ref=e401]: Scuola
+            - generic [ref=e402]: Laboratorio/Scuola/
+          - generic [ref=e403]: ›
+        - generic [ref=e404]:
+          - generic [ref=e405]: lab
+          - generic [ref=e406]: OOP
+          - generic [ref=e407]: extends
+          - generic [ref=e408]: abstract
+          - generic [ref=e409]: "@Override"
+          - generic [ref=e410]: arrays
+          - generic [ref=e411]: recursion
+      - generic [ref=e412] [cursor=pointer]:
+        - generic [ref=e413]:
+          - generic [ref=e414]:
+            - generic [ref=e415]: SpeseManager
+            - generic [ref=e416]: Laboratorio/SpeseManager/
+          - generic [ref=e417]: ›
+        - generic [ref=e418]: "▶ Spese inserite: 1) Trasporto - 12.80 (Carta) | 202"
+        - generic [ref=e419]:
+          - generic [ref=e420]: lab
+          - generic [ref=e421]: OOP
+          - generic [ref=e422]: "@Override"
+          - generic [ref=e423]: ArrayList
+          - generic [ref=e424]: arrays
+          - generic [ref=e425]: generics
+          - generic [ref=e426]: recursion
+      - generic [ref=e427] [cursor=pointer]:
+        - generic [ref=e428]:
+          - generic [ref=e429]:
+            - generic [ref=e430]: mergeArray
+            - generic [ref=e431]: Laboratorio/mergeArray/
+          - generic [ref=e432]: ›
+        - generic [ref=e433]: ▶ [1, 2, 3, 4, 7, 9, 11]
+        - generic [ref=e434]:
+          - generic [ref=e435]: lab
+          - generic [ref=e436]: OOP
+          - generic [ref=e437]: arrays
+      - generic [ref=e438] [cursor=pointer]:
+        - generic [ref=e439]:
+          - generic [ref=e440]:
+            - generic [ref=e441]: vocalcount
+            - generic [ref=e442]: Laboratorio/vocalcount/
+          - generic [ref=e443]: ›
+        - generic [ref=e444]: "▶ a: 0 e: 2 i: 1 o: 2 u: 0 vowel num: 5"
+        - generic [ref=e445]:
+          - generic [ref=e446]: lab
+          - generic [ref=e447]: OOP
+          - generic [ref=e448]: arrays
