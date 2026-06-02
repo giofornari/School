@@ -47,6 +47,21 @@ public class PortaCD {
         return -1;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PortaCD portaCD = (PortaCD) o;
+        return count == portaCD.count && java.util.Arrays.equals(slots, portaCD.slots);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(count);
+        result = 31 * result + java.util.Arrays.hashCode(slots);
+        return result;
+    }
+
     public int confrontaCollezione(PortaCD altra) {
         if (altra == null) {
             return 0;
@@ -72,6 +87,7 @@ public class PortaCD {
         return matches;
     }
 
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (Cd cd : slots) {

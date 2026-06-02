@@ -55,13 +55,19 @@ public class Triangolo {
         return Math.sqrt(Math.max(areaQuad, 0.0));
     }
 
-    public boolean equals(Triangolo t) {
-        if (t == null) {
-            return false;
-        }
-        return this.p1.equals(t.p1)
-                && this.p2.equals(t.p2)
-                && this.p3.equals(t.p3);
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Triangolo triangolo = (Triangolo) o;
+        return java.util.Objects.equals(p1, triangolo.p1) &&
+               java.util.Objects.equals(p2, triangolo.p2) &&
+               java.util.Objects.equals(p3, triangolo.p3);
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(p1, p2, p3);
     }
 
     public boolean equivale(Triangolo t) {

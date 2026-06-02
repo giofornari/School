@@ -34,8 +34,17 @@ public class Punto {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public boolean equals(Punto p) {
-        return this.x == p.x && this.y == p.y;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Punto punto = (Punto) o;
+        return Double.compare(punto.x, x) == 0 && Double.compare(punto.y, y) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(x, y);
     }
 
     @Override

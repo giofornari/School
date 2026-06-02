@@ -34,11 +34,17 @@ public class Punto {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
-    public boolean equals(Punto p) {
-        if (p == null) {
-            return false;
-        }
-        return Math.abs(this.x - p.x) < EPSILON && Math.abs(this.y - p.y) < EPSILON;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Punto punto = (Punto) o;
+        return Math.abs(punto.x - x) < EPSILON && Math.abs(punto.y - y) < EPSILON;
+    }
+
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(x, y);
     }
 
     @Override

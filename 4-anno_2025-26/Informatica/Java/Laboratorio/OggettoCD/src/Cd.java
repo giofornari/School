@@ -14,6 +14,7 @@ public class Cd {
     }
 
     // metodi
+    @Override
     public String toString() {
         return "\nTitolo: " + titolo + "\nAutore: " + autore + "\nNumero brani: " + numBrani + "\nDurata: " + durata + " minuti";
     }
