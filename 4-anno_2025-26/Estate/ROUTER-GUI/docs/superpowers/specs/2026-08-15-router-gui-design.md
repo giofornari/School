@@ -299,6 +299,10 @@ ridisegno.
    `metr` **crescente**. Se anche la metrica pareggia decide l'ordine di inserimento in
    tabella: `Array.prototype.sort` è garantito stabile da ES2019, quindi non serve alcun
    accorgimento.
+
+   Il pareggio sul prefisso si verifica quando la TDI contiene due rotte verso la stessa
+   destinazione con gateway diversi (§ 7): è la configurazione di riserva, e la metrica è
+   ciò che stabilisce quale percorso è il principale e quale il fallback.
 4. **Selezione.** Il primo è `scelta`. I rimanenti sono `alternative` — le route
    utilizzabili come fallback / fault tolerance.
 5. **Motivazione.** Compone il testo: quale prefisso ha vinto, di quanti bit, e — se
@@ -364,7 +368,8 @@ avviene in serializzazione/deserializzazione.
 | IP malformato | Validazione: esattamente 4 ottetti, ognuno intero 0–255, nessun carattere estraneo. Messaggio inline nel form, campo evidenziato. |
 | Mask non contigua (`255.0.255.0`) | **Rifiutata.** Test: `~msk + 1` deve essere una potenza di due (o zero). Una netmask valida è una sequenza di 1 seguita da una sequenza di 0. |
 | Mask in notazione `/24` | Accettata: il form accetta sia dotted sia CIDR e normalizza. |
-| Rotta duplicata (stessa `rete` + `msk`) | Avviso, l'utente sceglie se sostituire o annullare. Due route identiche in TDI sono un errore di configurazione, non un caso da gestire nel lookup. |
+| Rotta identica (stessa `rete` + `msk` + `gw`) | **Rifiutata.** È pura ridondanza: due volte la stessa istruzione. |
+| Stessa destinazione, gateway diverso (`192.168.1.0/24` via A metrica 1, via B metrica 10) | **Ammessa, ed è il caso interessante.** È la *floating static route*: stesso prefisso, percorso di riserva. Decide la metrica. Se si rifiutasse questa configurazione il campo `metr` non servirebbe a nulla, perché due rotte con lo stesso prefisso che coprono lo stesso indirizzo hanno necessariamente la stessa rete e la stessa mask — il pareggio sul prefisso non potrebbe mai verificarsi. È qui che nascono le «route alternative utilizzabili come fallback» richieste dalla traccia. |
 | JSON malformato o versione ignota in caricamento | Messaggio d'errore, **lo stato corrente resta intatto**. Mai lasciare l'applicazione in stato parziale. |
 | Nessuna route compatibile | Non è un errore del programma: è un esito legittimo. «Destinazione irraggiungibile». |
 | Overflow di segno nei bitwise | Prevenuto sistematicamente con `>>> 0` prima di ogni visualizzazione o confronto d'ordine. |
