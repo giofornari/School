@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulatore di Router — Tabella di Instradamento</title>
+<link rel="stylesheet" href="css/stile.css">
+</head>
+<body>
+
+<header>
+  <h1>Simulatore di Router</h1>
+  <p class="sottotitolo">Tabella di Instradamento e Longest Prefix Match</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>Tabella di Instradamento</h2>
+
+    <div class="scorri">
+      <table id="tab-tdi">
+        <thead>
+          <tr>
+            <th class="num">#</th>
+            <th>Rete di destinazione</th>
+            <th>Netmask</th>
+            <th>Gateway</th>
+            <th>Interfaccia</th>
+            <th class="num">Metrica</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <p id="tdi-vuota" class="nota">La tabella è vuota. Aggiungi una rotta, oppure carica l'esempio.</p>
+
+    <form id="form-rotta" autocomplete="off">
+      <div class="campo">
+        <label for="in-rete">Rete</label>
+        <input id="in-rete" placeholder="196.13.2.0" required>
+      </div>
+      <div class="campo">
+        <label for="in-msk">Netmask</label>
+        <input id="in-msk" placeholder="255.255.255.0 oppure /24" required>
+      </div>
+      <div class="campo">
+        <label for="in-gw">Gateway</label>
+        <input id="in-gw" value="0.0.0.0" required>
+      </div>
+      <div class="campo">
+        <label for="in-iface">Interfaccia</label>
+        <input id="in-iface" placeholder="eth0" required>
+      </div>
+      <div class="campo stretto">
+        <label for="in-metr">Metrica</label>
+        <input id="in-metr" type="number" min="0" value="1" required>
+      </div>
+      <button type="submit">Aggiungi rotta</button>
+    </form>
+
+    <p id="err-rotta" class="errore" hidden></p>
+
+    <div class="barra">
+      <button type="button" id="b-salva">Salva su file</button>
+      <button type="button" id="b-carica" class="secondario">Carica da file</button>
+      <input type="file" id="in-file" accept="application/json,.json" hidden>
+      <button type="button" id="b-esempio" class="secondario">Carica esempio</button>
+      <button type="button" id="b-svuota" class="secondario">Svuota tabella</button>
+    </div>
+    <p id="msg-file" class="nota" hidden></p>
+  </section>
+
+  <section>
+    <h2>Simulazione di instradamento</h2>
+
+    <form id="form-sim" autocomplete="off">
+      <div class="campo">
+        <label for="in-dest">Indirizzo di destinazione</label>
+        <input id="in-dest" placeholder="196.13.2.5" required>
+      </div>
+      <button type="submit">Instrada</button>
+    </form>
+
+    <p id="err-sim" class="errore" hidden></p>
+
+    <div id="esito" hidden></div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    Le rotte compatibili sono evidenziate in tabella: <span class="pallino scelta"></span> scelta ·
+    <span class="pallino alt"></span> alternativa di fallback ·
+    <span class="pallino no"></span> non compatibile.
+    I test sono in <a href="test.html">test.html</a>.
+  </p>
+</footer>
+
+<!-- Niente ES modules: aprendo il file con doppio click il protocollo e' file://,
+     che li blocca. Quindi script classici, in ordine di dipendenza. -->
+<script src="js/ip.js"></script>
+<script src="js/rotta.js"></script>
+<script src="js/tdi.js"></script>
+<script src="js/iface.js"></script>
+<script src="js/pacchetto.js"></script>
+<script src="js/router.js"></script>
+<script src="js/persistenza.js"></script>
+<script src="js/vista-tdi.js"></script>
+<script src="js/vista-sim.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
