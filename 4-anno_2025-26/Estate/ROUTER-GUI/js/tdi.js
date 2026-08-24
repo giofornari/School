@@ -10,8 +10,9 @@ class Tdi {
 
   agg(r) {
     if (this.rotte.some(x => x.identicaA(r))) {
-      throw new Error('rotta gia presente: ' + Ip.int2dotted(r.rete) + '/' + r.pfx +
-                      ' via ' + Ip.int2dotted(r.gw));
+      throw new Error('rotta già presente: ' + Ip.int2dotted(r.rete) + '/' + r.pfx +
+                      ' via ' + Ip.int2dotted(r.gw) +
+                      '. Per una rotta di riserva serve un gateway diverso.');
     }
     this.rotte.push(r);
   }
