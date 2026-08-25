@@ -1,0 +1,5 @@
+.remember/
+.playwright-mcp/
+*.png
+config.json
+router-*.json
