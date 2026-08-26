@@ -1,9 +1,9 @@
-// La Tabella di Instradamento: un array di Rotta, piu' l'algoritmo che sceglie.
+// La Tabella di Instradamento: un array di Rotta, più l'algoritmo che sceglie.
 //
 // Array e scansione lineare, non un trie. Un router vero usa un Patricia trie
-// perche' ha centinaia di migliaia di rotte; qui ne ha dieci, e soprattutto la
-// scansione completa E' la visualizzazione. Un trie salta le regole non
-// compatibili, che e' esattamente l'informazione che questa GUI deve mostrare.
+// perché ha centinaia di migliaia di rotte; qui ne ha dieci, e soprattutto la
+// scansione completa È la visualizzazione. Un trie salta le regole non
+// compatibili, che è esattamente l'informazione che questa GUI deve mostrare.
 class Tdi {
 
   constructor() { this.rotte = []; }
@@ -31,7 +31,7 @@ class Tdi {
   get vuota() { return this.rotte.length === 0; }
 
   // Longest Prefix Match, in una passata sola. Nessuna regola viene saltata:
-  // l'esito di ogni confronto finisce in righe[], che e' quello che la vista
+  // l'esito di ogni confronto finisce in righe[], che è quello che la vista
   // colora.
   cerca(ip) {
     ip = ip >>> 0;
@@ -43,8 +43,8 @@ class Tdi {
 
     const match = righe.filter(r => r.esito).map(r => r.rotta);
 
-    // Prefisso piu' lungo, poi metrica piu' bassa. A parita' di entrambi decide
-    // l'ordine in tabella: sort e' stabile da ES2019, quindi non serve altro.
+    // Prefisso più lungo, poi metrica più bassa. A parità di entrambi decide
+    // l'ordine in tabella: sort è stabile da ES2019, quindi non serve altro.
     match.sort((a, b) => b.pfx - a.pfx || a.metr - b.metr);
 
     const scelta = match.length ? match[0] : null;

@@ -1,5 +1,5 @@
 // Pannello della simulazione: raccoglie l'indirizzo e mostra l'esito.
-// La spiegazione arriva gia' scritta dentro esito.motivo — qui non si ragiona,
+// La spiegazione arriva già scritta dentro esito.motivo — qui non si ragiona,
 // si impagina.
 class VistaSim {
 

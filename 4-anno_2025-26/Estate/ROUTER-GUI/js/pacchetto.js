@@ -1,6 +1,6 @@
-// Al momento di questo pacchetto interessa solo dst. src e ttl ci sono perche'
+// Al momento di questo pacchetto interessa solo dst. src e ttl ci sono perché
 // quando arriverà l'inoltro multi-hop non si dovrà cambiare la firma di
-// Router.inoltra(): il ttl serve li', a non far girare i pacchetti in tondo per
+// Router.inoltra(): il ttl serve lì, a non far girare i pacchetti in tondo per
 // sempre quando due router si rimbalzano la stessa destinazione.
 class Pacchetto {
 

@@ -18,7 +18,7 @@ class Router {
     this.ifaces.splice(k, 1);
   }
 
-  // La TDI cita l'interfaccia d'uscita per nome, come fa un router vero. E' qui
+  // La TDI cita l'interfaccia d'uscita per nome, come fa un router vero. È qui
   // che il nome torna a essere un oggetto. Quando arriverà Rete, questo è il
   // punto in cui si aggancerà il Link — e Rotta non dovrà cambiare di una virgola.
   iface(nome) {

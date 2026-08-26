@@ -1,6 +1,6 @@
 gruppo('Tdi — Longest Prefix Match');
 
-// La TDI dell'host A di pag. 129, piu' una rotta piu' specifica per vedere l'LPM
+// La TDI dell'host A di pag. 129, più una rotta più specifica per vedere l'LPM
 // fare davvero qualcosa.
 function tdiEsempio() {
   const t = new Tdi();
@@ -37,7 +37,7 @@ eq('il prefisso batte la metrica',
    pfxVsMetr.cerca(Ip.dotted2int('192.168.1.1')).scelta.pfx, 17);
 
 // Floating static route: stessa destinazione, gateway diversi. Qui, e solo qui,
-// la metrica puo' decidere — due rotte con lo stesso prefisso che coprono lo
+// la metrica può decidere — due rotte con lo stesso prefisso che coprono lo
 // stesso indirizzo hanno per forza stessa rete e stessa mask.
 const tie = new Tdi();
 tie.agg(Rotta.daDotted('10.0.0.0', '/8', '1.1.1.1', 'eth0', 20));

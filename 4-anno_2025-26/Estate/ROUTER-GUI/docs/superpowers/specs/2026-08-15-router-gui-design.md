@@ -163,20 +163,25 @@ classDiagram
         +string iface
         +int metr
         +get pfx() int
+        +get connessa() bool
         +copre(ip) bool
         +calcolo(ip) obj
+        +stessaDest(a) bool
+        +identicaA(a) bool
         +toJSON() obj
         +daJSON(o)$ Rotta
+        +daDotted(rete,msk,gw,iface,metr)$ Rotta
     }
     class Tdi {
         -Rotta[] rotte
+        +get vuota() bool
         +agg(r)
         +rimuovi(i)
         +svuota()
         +elenco() Rotta[]
         +cerca(ip) Esito
         +toJSON() obj
-        +daJSON(o)$ Tdi
+        +daJSON(arr)$ Tdi
     }
     class Esito {
         +uint32 ip
@@ -189,6 +194,9 @@ classDiagram
         +string nome
         +Tdi tdi
         +Iface[] ifaces
+        +aggIface(i)
+        +rimuoviIface(nome)
+        +iface(nome) Iface
         +inoltra(pkt) Esito
         +toJSON() obj
         +daJSON(o)$ Router
@@ -198,14 +206,23 @@ classDiagram
         +uint32 ip
         +uint32 msk
         +bool su
+        +get pfx() int
+        +locale(ip) bool
+        +toJSON() obj
+        +daJSON(o)$ Iface
     }
     class Pacchetto {
         +uint32 src
         +uint32 dst
         +int ttl
+        +daDotted(src,dst,ttl)$ Pacchetto
     }
     class Persistenza {
-        +esporta(router)$
+        <<utility>>
+        +int VERSIONE
+        +serializza(router)$ obj
+        +deserializza(obj)$ Router
+        +esporta(router, nomeFile)$
         +importa(file)$ Promise~Router~
     }
     class VistaTdi {
@@ -214,11 +231,17 @@ classDiagram
     }
     class VistaSim {
         +mostra(esito)
+        +errore(msg)
+        +pulisci()
         +onSimula(cb)
     }
     class App {
         -Router router
+        -Esito ultimoEsito
         +avvia()
+        +aggiungiRotta()
+        +ridisegna()
+        +esempio()$ Router
     }
 
     Router "1" *-- "1" Tdi
@@ -502,7 +525,12 @@ ROUTER-GUI/
 │   ├── vista-sim.js        pannello di simulazione ed esito
 │   └── app.js              controller, wiring, avvio
 ├── test/
-│   └── test.js             asserzioni
+│   ├── runner.js           mini-runner di asserzioni
+│   ├── test-ip.js
+│   ├── test-rotta.js
+│   ├── test-tdi.js
+│   ├── test-router.js
+│   └── test-persistenza.js
 └── docs/
     └── superpowers/specs/  questo documento
 ```

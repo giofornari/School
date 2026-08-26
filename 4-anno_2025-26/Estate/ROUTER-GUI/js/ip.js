@@ -1,4 +1,4 @@
-// Un indirizzo IPv4 e' un numero a 32 bit. La notazione dotted e' solo il vestito
+// Un indirizzo IPv4 è un numero a 32 bit. La notazione dotted è solo il vestito
 // che indossa per farsi leggere dagli umani: nasce qui, muore qui, e nel resto del
 // programma circolano soltanto interi.
 //
@@ -26,9 +26,9 @@ const Ip = {
            ((n >>>  8) & 255) + '.' + ( n         & 255);
   },
 
-  // Una netmask valida e' una fila di 1 seguita da una fila di 0, senza buchi.
+  // Una netmask valida è una fila di 1 seguita da una fila di 0, senza buchi.
   // Complementandola si ottiene 0...01...1; sommando 1 resta una sola potenza di
-  // due (o si va in overflow a 0, che e' il caso /0). E "x & (x-1) === 0" e' il
+  // due (o si va in overflow a 0, che è il caso /0). E "x & (x-1) === 0" è il
   // classico test per le potenze di due.
   mskValida(m) {
     const c = (((~m) >>> 0) + 1) >>> 0;
@@ -52,7 +52,7 @@ const Ip = {
     return p === 0 ? 0 : (0xFFFFFFFF << (32 - p)) >>> 0;
   },
 
-  // Accetta sia "255.255.255.0" sia "/24" sia "24", perche' nessuno ha voglia di
+  // Accetta sia "255.255.255.0" sia "/24" sia "24", perché nessuno ha voglia di
   // ricordarsi quale delle tre voleva il form.
   parseMsk(s) {
     const t = String(s).trim();

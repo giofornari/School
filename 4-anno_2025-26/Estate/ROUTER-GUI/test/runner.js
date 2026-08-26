@@ -1,4 +1,4 @@
-// Mini-runner di asserzioni. Non è Jest, e va benissimo cosi': introdurre Jest
+// Mini-runner di asserzioni. Non è Jest, e va benissimo così: introdurre Jest
 // vorrebbe dire introdurre npm, e con npm un build step — che è esattamente il
 // vincolo che questo progetto si è dato.
 const T = { ok: 0, ko: 0, righe: [] };

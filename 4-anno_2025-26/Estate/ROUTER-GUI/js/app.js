@@ -1,6 +1,6 @@
 // Controller: tiene il router, collega le viste al dominio, ridisegna.
 // Nessuna aritmetica sugli indirizzi nemmeno qui — al massimo si chiede a Ip di
-// convertire cio' che l'utente ha digitato, che e' lettura di input.
+// convertire ciò che l'utente ha digitato, che è lettura di input.
 const App = {
 
   router: null,
@@ -60,7 +60,7 @@ const App = {
           this.nota('Caricata la configurazione di ' + r.nome + '.');
         })
         .catch(e => this.nota('Caricamento fallito: ' + e.message + ' — la tabella attuale resta com\'era.'));
-      // Cosi' ricaricare due volte lo stesso file rilancia l'evento change.
+      // Così ricaricare due volte lo stesso file rilancia l'evento change.
       ev.target.value = '';
     });
 
@@ -103,7 +103,7 @@ const App = {
     }
   },
 
-  // Dopo ogni modifica alla tabella l'evidenziazione precedente non vuol piu'
+  // Dopo ogni modifica alla tabella l'evidenziazione precedente non vuol più
   // dire niente: meglio toglierla che lasciare colori che mentono.
   scordaEsito() {
     this.ultimoEsito = null;
@@ -118,9 +118,9 @@ const App = {
     el.hidden = false;
   },
 
-  // La TDI di pag. 129 (default route + rete connessa) piu' le righe che quel
+  // La TDI di pag. 129 (default route + rete connessa) più le righe che quel
   // programma non poteva esprimere: una destinazione raggiungibile per due strade
-  // diverse, dove a decidere e' la metrica.
+  // diverse, dove a decidere è la metrica.
   esempio() {
     const r = new Router('R1');
     r.aggIface(new Iface('eth0', Ip.dotted2int('196.13.1.1'), Ip.pfx2msk(24)));

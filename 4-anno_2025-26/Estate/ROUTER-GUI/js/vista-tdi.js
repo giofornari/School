@@ -1,6 +1,6 @@
 // Disegna la tabella e basta. Qui dentro non si fa aritmetica sugli indirizzi:
-// l'unica cosa che questa classe chiede a Ip e' int2dotted, che e' formattazione,
-// non calcolo. Chi ha deciso quale rotta vince e' stato Tdi.cerca().
+// l'unica cosa che questa classe chiede a Ip è int2dotted, che è formattazione,
+// non calcolo. Chi ha deciso quale rotta vince è stato Tdi.cerca().
 class VistaTdi {
 
   constructor(tabella, elVuota) {
@@ -64,7 +64,7 @@ class VistaTdi {
 
       // Il calcolo va su una riga tutta sua: in colonna starebbe stretto e
       // manderebbe la tabella in scroll orizzontale proprio sulla cosa che
-      // interessa di piu' vedere.
+      // interessa di più vedere.
       if (riga) this.tbody.appendChild(this._dettaglio(esito.ip, rt, riga, tr.className));
     });
   }

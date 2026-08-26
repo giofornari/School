@@ -5,7 +5,7 @@
 // l'attributo download, si carica con un <input type="file"> e una FileReader.
 // localStorage non è un file e quindi non conta.
 //
-// Si serializza il Router intero, non la sola TDI: cosi' il futuro formato
+// Si serializza il Router intero, non la sola TDI: così il futuro formato
 // multi-router ({versione:2, routers:[...], links:[...]}) sarà un superset di
 // questo, e i file salvati oggi continueranno a caricarsi con un if sulla versione.
 const Persistenza = {

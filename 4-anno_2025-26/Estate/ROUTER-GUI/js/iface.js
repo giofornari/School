@@ -1,8 +1,8 @@
-// Interfaccia di rete. Nel simulatore mono-router fa poco: da' un tipo alla
+// Interfaccia di rete. Nel simulatore mono-router fa poco: dà un tipo alla
 // colonna "Use" della TDI, che nel programma in C era una stringa di ottetti
 // senza comportamento.
 //
-// Esiste gia' adesso perche' e' l'aggancio del multi-hop: un Link collegherà due
+// Esiste già adesso perché è l'aggancio del multi-hop: un Link collegherà due
 // Iface, non due stringhe.
 class Iface {
 
