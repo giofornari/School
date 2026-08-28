@@ -103,7 +103,7 @@ const App = {
     }
   },
 
-  // Dopo ogni modifica alla tabella l'evidenziazione precedente non vuol più
+  // dopo ogni modifica alla tabella l'evidenziazione precedente non vuol più
   // dire niente: meglio toglierla che lasciare colori che mentono.
   scordaEsito() {
     this.ultimoEsito = null;
