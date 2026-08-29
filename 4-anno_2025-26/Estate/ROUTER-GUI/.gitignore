@@ -1,5 +1,2 @@
-.remember/
-.playwright-mcp/
-*.png
-config.json
-router-*.json
+node_modules/
+assets/styles.css
