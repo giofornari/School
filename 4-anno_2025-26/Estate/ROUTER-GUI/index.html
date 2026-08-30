@@ -3,13 +3,151 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Simulatore di router IPv4</title>
+    <title>simulatore di router ipv4</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <!-- main.js prima di Alpine: il componente va registrato prima che Alpine parta -->
+    <script type="module" src="src/main.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.17.3/dist/cdn.min.js" integrity="sha384-/7syvHwR9PpZbxOwOnlTTl4DepN0R0q9aiGAu+D0AcTtZXmrNw0zgp+TzUlPgDx2" crossorigin="anonymous"></script>
 </head>
 <body class="min-h-screen bg-slate-50 text-slate-800">
-    <main class="max-w-6xl mx-auto p-6">
-        <h1 class="text-2xl font-bold">Simulatore di router IPv4</h1>
+    <main class="max-w-7xl mx-auto p-6" x-data="simulator">
+        <h1 class="text-2xl font-bold">simulatore di router ipv4</h1>
+
+        <template x-if="avviso">
+            <p class="mt-4 px-3 py-2 text-sm rounded border border-amber-300 bg-amber-50 text-amber-900" x-text="avviso"></p>
+        </template>
+
+        <template x-if="router">
+            <div class="space-y-6 mt-6">
+                <div class="grid gap-6 md:grid-cols-2">
+                    <section class="p-4 rounded-lg border border-slate-200 bg-white">
+                        <h2 class="font-semibold">simulazione</h2>
+                        <form class="flex flex-wrap gap-2 mt-3" @submit.prevent="simulate()">
+                            <input class="w-64 px-2 py-1 font-mono rounded border border-slate-300" type="text" x-model.trim="ip" placeholder="ip di destinazone, es. 172.16.9.9" aria-label="ip di destinazione">
+                            <button class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">simula</button>
+                        </form>
+                        <p class="mt-2 text-sm text-red-600" x-show="erroreSim" x-text="erroreSim"></p>
+                    </section>
+
+                    <section class="p-4 rounded-lg border border-slate-200 bg-white">
+                        <h2 class="font-semibold">configurazione del router <span x-text="router.name"></span></h2>
+                        <div class="flex flex-wrap gap-2 mt-3">
+                            <button class="px-3 py-1 rounded border border-slate-300 bg-white hover:bg-slate-100" type="button" @click="save()">salva su file</button>
+                            <label class="px-3 py-1 rounded border border-slate-300 bg-white cursor-pointer hover:bg-slate-100 focus-within:ring-2 focus-within:ring-blue-500">carica da file
+                                <input class="sr-only" type="file" accept=".json,application/json" @change="load($event)">
+                            </label>
+                            <button class="px-3 py-1 rounded border border-slate-300 bg-white hover:bg-slate-100" type="button" @click="restore()">ripristina esempio</button>
+                        </div>
+                        <p class="mt-2 text-sm text-red-600" x-show="erroreFile" x-text="erroreFile"></p>
+                        <p class="mt-2 text-xs text-slate-500">ogni modifica viene salvata in automatico nel browser</p>
+                    </section>
+                </div>
+
+                <section class="p-4 rounded-lg border border-slate-200 bg-white">
+                    <h2 class="font-semibold">interfacce</h2>
+                    <ul class="flex flex-wrap gap-3 mt-3">
+                        <template x-for="iface in router.interfaces">
+                            <li class="flex items-center gap-4 px-3 py-2 rounded border border-slate-200">
+                                <div class="font-mono text-sm">
+                                    <div class="font-semibold" x-text="iface.name"></div>
+                                    <div class="text-slate-500" x-text="iface.ip + ' / ' + iface.mask"></div>
+                                </div>
+                                <button class="w-14 py-0.5 text-xs font-semibold rounded" type="button" :class="iface.up ? 'bg-green-600 text-white' : 'bg-slate-300 text-slate-700'" :aria-pressed="iface.up" x-text="iface.up ? 'up' : 'down'" @click="toggle(iface)"></button>
+                                <button class="text-xs text-red-600 hover:underline" type="button" @click="removeInterface(iface.name)">elimina</button>
+                            </li>
+                        </template>
+                    </ul>
+
+                    <form class="flex flex-wrap items-end gap-2 mt-4" @submit.prevent="addInterface()">
+                        <label class="text-xs text-slate-500">nome
+                            <input class="block w-24 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 text-slate-800" type="text" x-model.trim="nuovaIface.name" placeholder="eth3">
+                        </label>
+                        <label class="text-xs text-slate-500">ip
+                            <input class="block w-40 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 text-slate-800" type="text" x-model.trim="nuovaIface.ip" placeholder="10.0.2.1">
+                        </label>
+                        <label class="text-xs text-slate-500">netmask
+                            <input class="block w-40 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 text-slate-800" type="text" x-model.trim="nuovaIface.mask" placeholder="255.255.255.252">
+                        </label>
+                        <button class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">aggiungi interfaccia</button>
+                    </form>
+                    <p class="mt-2 text-sm text-red-600" x-show="erroreIface" x-text="erroreIface"></p>
+                </section>
+
+                <section class="p-4 rounded-lg border border-slate-200 bg-white">
+                    <h2 class="font-semibold">tabella di instradamento</h2>
+                    <div class="overflow-x-auto mt-3">
+                        <table class="w-full text-left text-sm whitespace-nowrap">
+                            <thead class="text-slate-500">
+                                <tr>
+                                    <th class="px-2 py-1 font-medium">rete</th>
+                                    <th class="px-2 py-1 font-medium">netmask</th>
+                                    <th class="px-2 py-1 font-medium">prefisso</th>
+                                    <th class="px-2 py-1 font-medium">next hop</th>
+                                    <th class="px-2 py-1 font-medium">interfaccia</th>
+                                    <th class="px-2 py-1 font-medium">metrica</th>
+                                    <th class="px-2 py-1 font-medium">ip and mask = rete</th>
+                                    <th class="px-2 py-1 font-medium">esito</th>
+                                    <th class="px-2 py-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="font-mono">
+                                <template x-for="(route, indice) in router.tdi.routes">
+                                    <tr class="border-t border-slate-100" :class="righe[indice]?.classe">
+                                        <td class="px-2 py-1" x-text="route.network"></td>
+                                        <td class="px-2 py-1" x-text="route.mask"></td>
+                                        <td class="px-2 py-1" x-text="'/' + route.prefix"></td>
+                                        <td class="px-2 py-1" x-text="route.nextHop ?? 'diretta'"></td>
+                                        <td class="px-2 py-1" x-text="route.iface"></td>
+                                        <td class="px-2 py-1" x-text="route.metric"></td>
+                                        <td class="px-2 py-1" x-text="righe[indice]?.calcolo"></td>
+                                        <td class="px-2 py-1">
+                                            <span x-text="righe[indice]?.esito"></span>
+                                            <span class="inline-block ml-1 px-1.5 font-sans text-xs rounded" :class="righe[indice]?.classeBadge" x-show="righe[indice]?.badge" x-text="righe[indice]?.badge"></span>
+                                        </td>
+                                        <td class="px-2 py-1">
+                                            <button class="font-sans text-red-600 hover:underline" type="button" @click="removeRoute(indice)">elimina</button>
+                                        </td>
+                                    </tr>
+                                </template>
+                                <tr class="border-t border-slate-100" x-show="router.tdi.routes.length === 0">
+                                    <td class="px-2 py-3 font-sans text-slate-400" colspan="9">la tdi è vuota: aggiungi una route qui sotto</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 p-3 text-sm rounded border border-slate-200 bg-slate-50">
+                        <h3 class="font-semibold">motivo</h3>
+                        <p class="mt-1" x-text="risultato ? risultato.motivo : 'nessuna simulazione attiva: scrivi un ip e premi simula'"></p>
+                    </div>
+
+                    <form class="flex flex-wrap items-end gap-2 mt-4" @submit.prevent="addRoute()">
+                        <label class="text-xs text-slate-500">rete
+                            <input class="block w-40 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 text-slate-800" type="text" x-model.trim="nuovaRoute.network" placeholder="172.16.0.0">
+                        </label>
+                        <label class="text-xs text-slate-500">netmask
+                            <input class="block w-40 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 text-slate-800" type="text" x-model.trim="nuovaRoute.mask" placeholder="255.255.0.0">
+                        </label>
+                        <label class="text-xs text-slate-500">next hop
+                            <input class="block w-40 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 text-slate-800" type="text" x-model.trim="nuovaRoute.nextHop" placeholder="vuoto se diretta">
+                        </label>
+                        <label class="text-xs text-slate-500">interfaccia
+                            <select class="block w-28 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 bg-white text-slate-800" x-model="nuovaRoute.iface">
+                                <option value="">scegli</option>
+                                <template x-for="iface in router.interfaces">
+                                    <option :value="iface.name" x-text="iface.name"></option>
+                                </template>
+                            </select>
+                        </label>
+                        <label class="text-xs text-slate-500">metrica
+                            <input class="block w-20 mt-1 px-2 py-1 font-mono text-sm rounded border border-slate-300 text-slate-800" type="number" min="0" step="1" x-model.number="nuovaRoute.metric">
+                        </label>
+                        <button class="px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700" type="submit">aggiungi route</button>
+                    </form>
+                    <p class="mt-2 text-sm text-red-600" x-show="erroreRoute" x-text="erroreRoute"></p>
+                </section>
+            </div>
+        </template>
     </main>
 </body>
 </html>
