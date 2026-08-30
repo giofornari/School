@@ -19,7 +19,7 @@ export class Route {
             parseIp(nextHop); // errore se il next hop non è un ip valido
         }
         if (!Number.isInteger(metric) || metric < 0) {
-            throw new Error(`metrica non valida: ${metric} (serve un intero maggiore o uguale a 0)`);
+            throw new Error(`metrica non valida: ${metric} (serve un intero magiore o uguale a 0)`);
         }
     }
 

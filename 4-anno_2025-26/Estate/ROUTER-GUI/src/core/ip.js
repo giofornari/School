@@ -4,8 +4,8 @@
 export function parseIp(testo) {
     const ottetti = String(testo).split('.');
     // niente zeri iniziali: "010" sembrerebbe un numero in ottale
-    const ottettiValidi = ottetti.every(ottetto => /^(0|[1-9]\d{0,2})$/.test(ottetto) && Number(ottetto) <= 255);
-    if (ottetti.length !== 4 || !ottettiValidi) {
+    const validi = ottetti.every(ottetto => /^(0|[1-9]\d{0,2})$/.test(ottetto) && Number(ottetto) <= 255);
+    if (ottetti.length !== 4 || !validi) {
         throw new Error(`formato non valido: "${testo}" (servono 4 numeri da 0 a 255, separati da punti e senza zeri iniziali)`);
     }
     let numero = 0;
