@@ -2,11 +2,11 @@
 
 // serve l'intero per fare AND e confronti tra indirizzi
 export function parseIp(testo) {
-    const ottetti = String(testo).split('.');
+    const ottetti = typeof testo === 'string' ? testo.split('.') : []; // dal json può arrivare un numero o un array
     // niente zeri iniziali: "010" sembrerebbe un numero in ottale
     const validi = ottetti.every(ottetto => /^(0|[1-9]\d{0,2})$/.test(ottetto) && Number(ottetto) <= 255);
     if (ottetti.length !== 4 || !validi) {
-        throw new Error(`formato non valido: "${testo}" (servono 4 numeri da 0 a 255, separati da punti e senza zeri iniziali)`);
+        throw new Error(`formato non valido: ${JSON.stringify(testo)} (servono 4 numeri da 0 a 255, separati da punti e senza zeri iniziali)`);
     }
     let numero = 0;
     for (const ottetto of ottetti) {
