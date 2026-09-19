@@ -1,2 +1,7 @@
 .vscode
 .gstack/
+node_modules/
+.superpowers/
+.claude/
+.playwright-mcp/
+logs_*.zip
