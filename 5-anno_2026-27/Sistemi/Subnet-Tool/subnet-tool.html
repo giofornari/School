@@ -62,6 +62,10 @@
     --yellow: #f2c12e; --yellow-ink: #7a5900;
     --red: #d64541;    --red-ink: #ab2d29;
     --green: #2e9e5b;  --green-ink: #1c7040;
+    --purple: #7b5cd6; --purple-ink: #5a3db5;
+    --teal: #16939b;   --teal-ink: #0d6b71;
+    --orange: #e8731c; --orange-ink: #a24c0b;
+    --slate: #66768a;  --slate-ink: #465465;
 
     --sans: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
     --cond: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
@@ -80,6 +84,7 @@
     --led-off: #4a5462; --screw-hi: #b5bdc8; --screw-mid: #6b7482; --screw-lo: #343b45;
     --led-g: #3ee07f; --led-a: #ffb41f;
     --blue-ink: #6ea9f5; --yellow-ink: #f2c94c; --red-ink: #ff7f7a; --green-ink: #62d392;
+    --purple-ink: #b8a3f7; --teal-ink: #5dd0d7; --orange-ink: #ffa565; --slate-ink: #b0bccb;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -93,13 +98,18 @@
       --led-off: #4a5462; --screw-hi: #b5bdc8; --screw-mid: #6b7482; --screw-lo: #343b45;
       --led-g: #3ee07f; --led-a: #ffb41f;
       --blue-ink: #6ea9f5; --yellow-ink: #f2c94c; --red-ink: #ff7f7a; --green-ink: #62d392;
+      --purple-ink: #b8a3f7; --teal-ink: #5dd0d7; --orange-ink: #ffa565; --slate-ink: #b0bccb;
     }
   }
 
-  body[data-view="addr"]  { --cable: var(--blue);   --cable-ink: var(--blue-ink); }
-  body[data-view="hosts"] { --cable: var(--yellow); --cable-ink: var(--yellow-ink); }
-  body[data-view="class"] { --cable: var(--red);    --cable-ink: var(--red-ink); }
-  body[data-view="vlsm"]  { --cable: var(--green);  --cable-ink: var(--green-ink); }
+  body[data-view="addr"]   { --cable: var(--blue);   --cable-ink: var(--blue-ink); }
+  body[data-view="subnet"] { --cable: var(--yellow); --cable-ink: var(--yellow-ink); }
+  body[data-view="class"]  { --cable: var(--red);    --cable-ink: var(--red-ink); }
+  body[data-view="vlsm"]   { --cable: var(--green);  --cable-ink: var(--green-ink); }
+  body[data-view="cidr"]   { --cable: var(--purple); --cable-ink: var(--purple-ink); }
+  body[data-view="route"]  { --cable: var(--teal);   --cable-ink: var(--teal-ink); }
+  body[data-view="mask"]   { --cable: var(--orange); --cable-ink: var(--orange-ink); }
+  body[data-view="ref"]    { --cable: var(--slate);  --cable-ink: var(--slate-ink); }
 
   * { box-sizing: border-box; }
   body {
@@ -109,13 +119,13 @@
     font: 16px/1.5 var(--sans);
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 980px; margin: 0 auto; padding: 28px 16px 56px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 28px 16px 56px; }
 
   /* ================= switch panel ================= */
   .rack { position: relative; margin-bottom: 38px; }
   .panel {
     position: relative;
-    display: flex; align-items: center; gap: 22px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px;
     padding: 14px 46px;
     border-radius: 6px;
     background:
@@ -147,7 +157,7 @@
 
   .lcd {
     display: flex; flex-direction: column; justify-content: center;
-    min-width: 168px; padding: 7px 11px;
+    min-width: 168px; padding: 7px 11px; margin-left: auto;
     background: var(--lcd-bg); color: var(--lcd-ink);
     border-radius: 3px;
     font: 12px/1.45 var(--mono);
@@ -156,9 +166,10 @@
   }
   .lcd span { white-space: nowrap; }
 
+  /* 8 porte su una riga dedicata, come il frontale di uno switch */
   .ports {
-    margin-left: auto;
-    display: flex; gap: 8px;
+    order: 3; width: 100%;
+    display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); justify-items: center; gap: 4px;
     padding: 8px 10px 6px;
     border-radius: 4px;
     background: var(--well);
@@ -169,7 +180,7 @@
     appearance: none; border: 0; background: none; color: inherit;
     display: flex; flex-direction: column; align-items: center; gap: 5px;
     padding: 4px 4px 2px; border-radius: 4px; cursor: pointer;
-    font: inherit;
+    font: inherit; min-width: 0;
   }
   .port:focus-visible { outline: 2px solid var(--led-a); outline-offset: 2px; }
   .leds { display: flex; justify-content: space-between; width: 52px; }
@@ -211,7 +222,7 @@
     25%, 60% { opacity: .15; }
     27%, 62% { opacity: .9; }
   }
-  .plabel { font: 600 14px/1 var(--cond); letter-spacing: .02em; opacity: .85; }
+  .plabel { font: 600 14px/1 var(--cond); letter-spacing: .02em; opacity: .85; white-space: nowrap; }
   .plabel b {
     display: inline-block; min-width: 15px; margin-right: 3px;
     padding: 1px 3px; border: 1px solid currentColor; border-radius: 2px;
@@ -249,24 +260,30 @@
   @keyframes viewin { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
 
   h2 { font: 700 28px/1.1 var(--cond); margin: 0 0 6px; letter-spacing: .005em; }
-  .lede { color: var(--muted); margin: 0 0 20px; max-width: 64ch; font-size: 15px; }
+  .lede { color: var(--muted); margin: 0 0 20px; max-width: 70ch; font-size: 15px; }
   label { display: block; font-size: 14px; font-weight: 500; color: var(--muted); margin-bottom: 5px; }
   .fields { display: grid; gap: 14px; grid-template-columns: 1fr; }
-  @media (min-width: 620px) { .fields.two { grid-template-columns: 1fr 1fr; } }
-  input[type="text"], input[type="number"], textarea {
+  @media (min-width: 620px) {
+    .fields.two { grid-template-columns: 1fr 1fr; }
+    .fields.three { grid-template-columns: 1fr 1fr 1fr; }
+    .fields.four { grid-template-columns: 1fr 1fr 1fr 1fr; }
+  }
+  input[type="text"], input[type="number"], input[type="search"], textarea, select {
     width: 100%; padding: 10px 12px;
     font: 15px var(--mono);
     background: var(--field); color: var(--ink);
     border: 1px solid var(--line); border-radius: 4px; outline: none;
     transition: border-color .15s, box-shadow .15s;
   }
+  select { font-family: var(--sans); cursor: pointer; }
   textarea { display: block; resize: vertical; min-height: 96px; line-height: 1.55; }
-  input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+  input[type="text"]:focus, input[type="number"]:focus, input[type="search"]:focus, textarea:focus, select:focus {
     border-color: var(--cable);
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--cable) 22%, transparent);
   }
-  input[type="checkbox"] { accent-color: var(--cable); width: 16px; height: 16px; margin: 0; }
+  input[type="checkbox"] { accent-color: var(--cable); width: 16px; height: 16px; margin: 0; flex: none; }
   .check { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-size: 15px; cursor: pointer; margin: 0; }
+  .checks { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 14px; }
 
   .out { margin-top: 20px; }
 
@@ -274,6 +291,7 @@
   .ip-self { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
   .muted { color: var(--muted); }
   .mono { font-family: var(--mono); font-weight: 600; }
+  .prose { font-family: var(--sans); }
   .strip {
     display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
     margin-top: 18px;
@@ -319,6 +337,8 @@
   .chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); flex: none; }
   .chip.ghost { border: 1px dashed var(--line-strong); background: transparent; color: var(--muted); }
   .chip.ghost i { border: 1px solid var(--muted); background: transparent; }
+  .chip.plain { --c: var(--line-strong); }
+  .nota { font: 600 13px/1.3 var(--mono); color: var(--cable-ink); white-space: nowrap; }
   label code { font-size: .92em; line-height: 1; }
   @media (max-width: 620px) {
     table.stack thead { display: none; }
@@ -334,17 +354,24 @@
   }
   .err { color: var(--red-ink); font-size: 14px; }
   .warn { color: var(--yellow-ink); font-size: 14px; margin-top: 8px; }
-  .readout { font: 600 32px/1.15 var(--mono); color: var(--cable-ink); letter-spacing: -.01em; }
+  .ok { color: var(--green-ink); }
+  .ko { color: var(--red-ink); }
+  .readout { font: 600 32px/1.15 var(--mono); color: var(--cable-ink); letter-spacing: -.01em; overflow-wrap: anywhere; }
+  .readout.sm { font-size: 24px; }
   .readout-sub { color: var(--muted); font-size: 14px; margin-top: 2px; }
 
   table.kv { border-collapse: collapse; width: 100%; font-size: 14px; margin-top: 14px; }
   table.kv td { padding: 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
   table.kv td:first-child { color: var(--muted); width: 38%; padding-right: 14px; }
   table.kv td:last-child { font-family: var(--mono); overflow-wrap: anywhere; }
+  table.kv td .sub { display: block; font: 12.5px/1.4 var(--sans); color: var(--muted); margin-top: 2px; }
   .bin { font-family: var(--mono); font-size: 14px; letter-spacing: .5px; word-break: break-all; }
   .b-hi { color: var(--cable-ink); font-weight: 600; }
   .b-lo { color: var(--muted); opacity: .75; }
   .b-lead { color: var(--cable-ink); font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .b-sub { color: var(--blue-ink); font-weight: 600; }
+  .b-host { color: var(--red-ink); font-weight: 600; }
+  body[data-view="addr"] .b-sub, body[data-view="subnet"] .b-sub { color: var(--purple-ink); }
   .dot { color: var(--muted); padding: 0 2px; }
   .note { font-size: 14px; color: var(--muted); margin-top: 10px; }
   .legend { font-size: 13px; color: var(--muted); margin-top: 8px; }
@@ -362,10 +389,15 @@
   table.grid td .sub { display: block; font-size: 12px; color: var(--muted); margin-top: 1px; }
   table.grid tr.hl td { background: color-mix(in srgb, var(--cable) 12%, transparent); font-weight: 600; }
   table.grid tr.fail td { color: var(--red-ink); }
+  table.grid tr.dim td { color: var(--muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent); }
+  table.grid tr.gap td { text-align: center; color: var(--muted); font-family: var(--sans); }
+  table.grid td.pk, table.grid th.pk { background: color-mix(in srgb, var(--cable) 10%, transparent); }
+  table.grid tr.win td { background: color-mix(in srgb, var(--green) 14%, transparent); font-weight: 600; }
+  table.grid tr.no td { color: var(--muted); }
 
   /* ================= VLSM ================= */
   .vl-top { display: grid; gap: 14px; grid-template-columns: 1fr; align-items: end; }
-  @media (min-width: 620px) { .vl-top { grid-template-columns: 1fr auto; } }
+  @media (min-width: 620px) { .vl-top { grid-template-columns: 1fr 1fr; } }
   .req-head, .req {
     display: grid; grid-template-columns: 1fr 130px 38px; gap: 8px; align-items: center;
   }
@@ -387,8 +419,9 @@
     font: 500 15px var(--sans); cursor: pointer;
   }
   .btn:hover { border-color: var(--cable); }
+  .btn.sm { padding: 3px 9px; font-size: 13px; }
   .btn.primary { background: var(--cable); border-color: var(--cable); color: #fff; }
-  body[data-view="hosts"] .btn.primary { color: #1c2530; }
+  body[data-view="subnet"] .btn.primary, body[data-view="mask"] .btn.primary { color: #1c2530; }
 
   .vl-summary { display: flex; flex-wrap: wrap; gap: 8px 28px; align-items: baseline; margin-top: 26px; }
   .map {
@@ -410,7 +443,6 @@
   /* ================= mask ottimale ================= */
   .subsec { margin-top: 34px; padding-top: 26px; border-top: 1px dashed var(--line); }
   h3 { font: 700 22px/1.15 var(--cond); margin: 0 0 6px; }
-  .b-sub { color: var(--blue-ink); font-weight: 600; }
   .opt-grid { display: grid; gap: 14px; grid-template-columns: 1fr; margin-top: 20px; }
   @media (min-width: 680px) { .opt-grid { grid-template-columns: 1fr 1fr; } }
   .opt-card {
@@ -432,6 +464,45 @@
     font: 12px var(--mono); padding: 1px 5px;
     border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; background: var(--field);
   }
+
+  /* ================= passaggi, verdetti, comandi ================= */
+  .calc { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 6px; font-size: 14.5px; }
+  .calc li { padding: 8px 12px; border: 1px solid var(--line); border-left: 3px solid var(--cable); border-radius: 3px; background: var(--field); }
+  .calc li b, .calc li code { font-family: var(--mono); font-weight: 600; }
+  .calc li.bad { border-left-color: var(--red); }
+  .verdict {
+    margin-top: 16px; padding: 14px 16px;
+    border: 1px solid var(--line); border-left: 5px solid var(--c, var(--cable)); border-radius: 3px;
+    background: color-mix(in srgb, var(--c, var(--cable)) 8%, var(--field));
+  }
+  .verdict .readout { color: var(--ink); font-size: 24px; }
+  .verdict p { margin: 6px 0 0; font-size: 14.5px; }
+  .frame { display: inline-flex; flex-wrap: wrap; margin-top: 10px; border: 1px solid var(--line-strong); border-radius: 3px; overflow: hidden; font: 600 13px var(--mono); }
+  .frame span { padding: 5px 10px; }
+  .frame .l2 { background: color-mix(in srgb, var(--yellow) 22%, var(--field)); }
+  .frame .l3 { background: color-mix(in srgb, var(--blue) 16%, var(--field)); border-left: 1px solid var(--line-strong); }
+  .cmds { display: grid; gap: 6px; margin-top: 12px; }
+  .cmd { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 6px 8px 6px 12px; border: 1px solid var(--line); border-radius: 3px; background: var(--field); }
+  .cmd code { font: 600 13.5px/1.4 var(--mono); overflow-wrap: anywhere; }
+  .cmd .sub { display: block; font: 12.5px/1.3 var(--sans); color: var(--muted); }
+  .os { font: 700 15px/1 var(--cond); margin: 18px 0 0; color: var(--cable-ink); letter-spacing: .03em; text-transform: uppercase; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .pill { font: 600 12.5px var(--mono); padding: 3px 8px; border: 1px solid var(--line); border-radius: 3px; background: var(--field); }
+  .pill.hl { border-color: var(--cable); background: color-mix(in srgb, var(--cable) 14%, var(--field)); }
+  .cols { display: grid; gap: 18px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .cols { grid-template-columns: 1fr 1fr; } }
+  .pow { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 4px 14px; margin-top: 12px; font: 13px/1.5 var(--mono); }
+  .pow span b { color: var(--cable-ink); font-weight: 600; display: inline-block; min-width: 3.2em; }
+
+  /* ================= riferimento ================= */
+  .ref-sec { margin-top: 26px; }
+  .ref-sec h3 { font-size: 20px; }
+  .ref-sec[hidden] { display: none; }
+  table.grid.ref td { white-space: normal; font-family: var(--sans); }
+  table.grid.ref td:first-child { font-weight: 600; white-space: nowrap; }
+  table.grid.ref td.m { font-family: var(--mono); font-size: 13px; }
+  mark { background: color-mix(in srgb, var(--yellow) 45%, transparent); color: inherit; border-radius: 2px; padding: 0 1px; }
+  .sticky-search { position: sticky; top: 0; z-index: 2; background: var(--surface); padding: 8px 0 10px; margin-top: -8px; }
 
   /* ================= theme slide switch ================= */
   .theme { display: flex; flex-direction: column; align-items: center; gap: 5px; }
@@ -465,32 +536,39 @@
   .theme-track button:focus-visible { outline: 2px solid var(--led-a); outline-offset: 1px; }
   .theme-label { font: 600 14px/1 var(--cond); letter-spacing: .02em; opacity: .85; }
 
-  body, .stage, input, .btn, .icon-btn, .opt-card { transition: background-color .3s, border-color .3s, color .3s, box-shadow .15s; }
+  body, .stage, input, select, .btn, .icon-btn, .opt-card { transition: background-color .3s, border-color .3s, color .3s, box-shadow .15s; }
 
   /* ================= responsive ================= */
   @media (max-width: 760px) {
-    .panel { flex-wrap: wrap; padding: 14px 34px; gap: 14px; }
+    .panel { padding: 14px 34px; gap: 12px 14px; }
     .panel::before, .panel::after { top: 30px; }
-    .brand { order: 0; }
-    .lcd { order: 1; margin-left: auto; min-width: 0; }
-    .theme { order: 2; }
-    .ports { order: 3; margin: 0; width: 100%; justify-content: space-between; }
+    .lcd { min-width: 0; }
     .stage { padding: 20px 16px 24px; }
+  }
+  @media (max-width: 640px) {
+    .ports { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 8px; }
   }
   @media (max-width: 480px) {
     .lcd { display: none; }
     .theme { margin-left: auto; flex-direction: row; gap: 8px; }
     .theme-label { display: none; }
+    .ports { padding: 8px 4px 6px; }
   }
   @media (max-width: 420px) {
     .brand-sub { display: none; }
     .jack { width: 46px; height: 36px; }
     .leds { width: 46px; }
     .plabel { font-size: 13px; }
+    .plabel b { display: none; }
     .req-head, .req { grid-template-columns: 1fr 96px 38px; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+  @media print {
+    body { background: #fff; }
+    .rack, .foot { display: none; }
+    .stage { box-shadow: none; border: 0; }
   }
 </style>
 </head>
@@ -501,11 +579,11 @@
     <nav class="panel" aria-label="Funzioni">
       <div class="brand">
         <span class="brand-name">Subnet Tool</span>
-        <span class="brand-sub">IPv4 addressing, 4 porte</span>
+        <span class="brand-sub">IPv4 e routing L3, 8 porte, offline</span>
       </div>
       <div class="lcd" aria-live="polite">
         <span id="lcd-1">Gi0/1 up</span>
-        <span id="lcd-2">CIDR ↔ dotted</span>
+        <span id="lcd-2">Indirizzi subnet</span>
       </div>
       <div class="ports" role="tablist" aria-label="Scegli la funzione">
         <button class="port" role="tab" id="tab-addr" data-view="addr" aria-controls="view-addr" style="--pc: var(--blue)">
@@ -513,10 +591,10 @@
           <span class="jack"><span class="plug"></span></span>
           <span class="plabel"><b>1</b>Indirizzi</span>
         </button>
-        <button class="port" role="tab" id="tab-hosts" data-view="hosts" aria-controls="view-hosts" style="--pc: var(--yellow)">
+        <button class="port" role="tab" id="tab-subnet" data-view="subnet" aria-controls="view-subnet" style="--pc: var(--yellow)">
           <span class="leds"><i class="led link"></i><i class="led act"></i></span>
           <span class="jack"><span class="plug"></span></span>
-          <span class="plabel"><b>2</b>Host</span>
+          <span class="plabel"><b>2</b>Subnet</span>
         </button>
         <button class="port" role="tab" id="tab-class" data-view="class" aria-controls="view-class" style="--pc: var(--red)">
           <span class="leds"><i class="led link"></i><i class="led act"></i></span>
@@ -527,6 +605,26 @@
           <span class="leds"><i class="led link"></i><i class="led act"></i></span>
           <span class="jack"><span class="plug"></span></span>
           <span class="plabel"><b>4</b>VLSM</span>
+        </button>
+        <button class="port" role="tab" id="tab-cidr" data-view="cidr" aria-controls="view-cidr" style="--pc: var(--purple)">
+          <span class="leds"><i class="led link"></i><i class="led act"></i></span>
+          <span class="jack"><span class="plug"></span></span>
+          <span class="plabel"><b>5</b>CIDR</span>
+        </button>
+        <button class="port" role="tab" id="tab-route" data-view="route" aria-controls="view-route" style="--pc: var(--teal)">
+          <span class="leds"><i class="led link"></i><i class="led act"></i></span>
+          <span class="jack"><span class="plug"></span></span>
+          <span class="plabel"><b>6</b>Routing</span>
+        </button>
+        <button class="port" role="tab" id="tab-mask" data-view="mask" aria-controls="view-mask" style="--pc: var(--orange)">
+          <span class="leds"><i class="led link"></i><i class="led act"></i></span>
+          <span class="jack"><span class="plug"></span></span>
+          <span class="plabel"><b>7</b>Maschere</span>
+        </button>
+        <button class="port" role="tab" id="tab-ref" data-view="ref" aria-controls="view-ref" style="--pc: var(--slate)">
+          <span class="leds"><i class="led link"></i><i class="led act"></i></span>
+          <span class="jack"><span class="plug"></span></span>
+          <span class="plabel"><b>8</b>Teoria</span>
         </button>
       </div>
       <div class="theme" role="radiogroup" aria-label="Tema">
@@ -553,27 +651,29 @@
     <!-- 1. Indirizzi della subnet -->
     <section class="view" id="view-addr" role="tabpanel" aria-labelledby="tab-addr">
       <h2>Indirizzi della subnet</h2>
-      <p class="lede">Da un IP e dalla sua subnet mask ricava nome della subnet, broadcast e host assegnabili. Sotto trovi gli indirizzi speciali e un classificatore.</p>
+      <p class="lede">Da un IP e dalla sua subnet mask ricava nome della subnet, broadcast e host assegnabili, con l'AND bit a bit passo per passo, netId/subnetId/hostId e la notazione RFC 1009. Sotto trovi gli indirizzi speciali e un classificatore.</p>
       <div class="fields two">
         <div>
           <label for="ad-ip">Indirizzo IP (accetta anche <code>a.b.c.d/n</code>)</label>
-          <input type="text" id="ad-ip" value="192.168.1.50" autocomplete="off" spellcheck="false">
+          <input type="text" id="ad-ip" value="172.16.40.7" autocomplete="off" spellcheck="false">
         </div>
         <div>
           <label for="ad-mask">Subnet mask (CIDR o dotted)</label>
-          <input type="text" id="ad-mask" value="255.255.255.192" autocomplete="off" spellcheck="false">
+          <input type="text" id="ad-mask" value="255.255.240.0" autocomplete="off" spellcheck="false">
         </div>
       </div>
       <div class="out" id="ad-out"></div>
 
       <div class="subsec">
         <h3>Classifica indirizzi</h3>
-        <p class="lede">Incolla uno o più indirizzi, uno per riga o separati da spazi o virgole. Ognuno viene classificato rispetto alla subnet qui sopra.</p>
+        <p class="lede">Incolla uno o più indirizzi, uno per riga o separati da spazi o virgole. Ognuno viene classificato rispetto alla subnet qui sopra, con notazione RFC 1009 e uso (sorgente, destinazione).</p>
         <label for="ad-list">Indirizzi da classificare</label>
-        <textarea id="ad-list" rows="4" spellcheck="false">192.168.1.0
-192.168.1.63
-192.168.1.37
-192.168.1.64
+        <textarea id="ad-list" rows="4" spellcheck="false">172.16.32.0
+172.16.47.255
+172.16.40.0
+172.16.32.255
+172.16.48.2
+172.16.255.255
 0.0.0.0
 127.0.0.1
 224.0.0.9
@@ -582,60 +682,94 @@
       </div>
     </section>
 
-    <!-- 2. Hosts -->
-    <section class="view" id="view-hosts" role="tabpanel" aria-labelledby="tab-hosts" hidden>
-      <h2>Host per subnet</h2>
-      <p class="lede">Conteggio degli host assegnabili togliendo network, broadcast e, se vuoi, il gateway. Aggiungi un IP per vedere i range reali.</p>
+    <!-- 2. Subnetting -->
+    <section class="view" id="view-subnet" role="tabpanel" aria-labelledby="tab-subnet" hidden>
+      <h2>Subnetting</h2>
+      <p class="lede">Dai requisiti (quante sottoreti, quanti host) alla subnet mask, poi l'elenco completo delle subnet con il subnetId in binario. Host per subnet = 2<sup>h</sup> − 2, come nel libro.</p>
       <div class="fields two">
         <div>
-          <label for="hosts-mask">Subnet mask (CIDR o dotted)</label>
-          <input type="text" id="hosts-mask" value="255.255.255.0" autocomplete="off" spellcheck="false">
+          <label for="sn-net">Rete da suddividere (<code>a.b.c.d/n</code>, <code>a.b.c.d mask</code> o solo IP per la mask classful)</label>
+          <input type="text" id="sn-net" value="192.168.1.0/24" autocomplete="off" spellcheck="false">
         </div>
-        <div>
-          <label for="hosts-ip">Indirizzo IP (opzionale)</label>
-          <input type="text" id="hosts-ip" value="192.168.1.50" autocomplete="off" spellcheck="false">
+        <div class="checks" style="align-self:end;margin-top:0">
+          <label class="check"><input type="checkbox" id="sn-gw"> Riserva anche il gateway (2<sup>h</sup> − 3)</label>
+          <label class="check"><input type="checkbox" id="sn-excl"> <span>Escludi subnet zero e all-ones (2<sup>s</sup> − 2)</span></label>
         </div>
       </div>
-      <label class="check" style="margin-top:14px"><input type="checkbox" id="hosts-gw" checked> Riserva un indirizzo per il gateway</label>
-      <div class="out" id="hosts-out"></div>
+      <div class="out" id="sn-base"></div>
 
       <div class="subsec">
-        <h3>Mask ottimale per la suddivisione</h3>
-        <p class="lede">Suddivide la rete con la mask qui sopra. Trova la mask con più host per sottorete e quella con più sottoreti che rispettano entrambi i requisiti.</p>
+        <h3>Dai requisiti alla mask</h3>
+        <p class="lede">Lascia vuoto un campo per ignorare quel vincolo: con solo le sottoreti trovi i bit di subnetId, con solo gli host i bit di hostId.</p>
         <div class="fields two">
           <div>
             <label for="opt-n">Sottoreti richieste</label>
-            <input type="number" id="opt-n" value="4" min="1" step="1">
+            <input type="number" id="opt-n" value="5" min="1" step="1">
           </div>
           <div>
             <label for="opt-h">Host richiesti per sottorete</label>
-            <input type="number" id="opt-h" value="10" min="1" step="1">
+            <input type="number" id="opt-h" value="30" min="1" step="1">
           </div>
         </div>
-        <label class="check" style="margin-top:14px"><input type="checkbox" id="opt-excl"> <span>Escludi subnet zero e all-ones (2<sup>s</sup> − 2, regola classful)</span></label>
         <div class="out" id="opt-out"></div>
+      </div>
+
+      <div class="subsec" id="sl-sec">
+        <h3>Elenco delle subnet</h3>
+        <p class="lede">Tutte le subnet ottenute con la nuova mask. Scrivi un IP per evidenziare la subnet che lo contiene.</p>
+        <div class="fields two">
+          <div>
+            <label for="sl-mask">Mask delle subnet (CIDR o dotted)</label>
+            <input type="text" id="sl-mask" value="/27" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label for="sl-ip">Evidenzia IP (opzionale)</label>
+            <input type="text" id="sl-ip" value="192.168.1.100" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="out" id="sl-out"></div>
       </div>
     </section>
 
     <!-- 3. Class -->
     <section class="view" id="view-class" role="tabpanel" aria-labelledby="tab-class" hidden>
       <h2>Classe e leading bit</h2>
-      <p class="lede">La classe si legge dai primi bit del primo ottetto, fino al primo zero.</p>
-      <label for="cls-in">Indirizzo IPv4</label>
-      <input type="text" id="cls-in" value="172.16.4.1" autocomplete="off" spellcheck="false">
+      <p class="lede">La classe si legge dai primi bit del primo ottetto, fino al primo zero. Da lì netmask classful, netId, hostId e quante reti e host ha la classe. Riconosce anche le netmask classful (255.255.255.0 → classe C).</p>
+      <div class="fields two">
+        <div>
+          <label for="cls-in">Indirizzo IPv4 o netmask</label>
+          <input type="text" id="cls-in" value="137.168.249.17" autocomplete="off" spellcheck="false">
+        </div>
+        <div>
+          <label for="cls-cmp">Stessa rete classful di… (opzionale)</label>
+          <input type="text" id="cls-cmp" value="137.168.0.1" autocomplete="off" spellcheck="false">
+        </div>
+      </div>
       <div class="out" id="cls-out"></div>
     </section>
 
     <!-- 4. VLSM -->
     <section class="view" id="view-vlsm" role="tabpanel" aria-labelledby="tab-vlsm" hidden>
       <h2>Calcolatore VLSM</h2>
-      <p class="lede">Le subnet vengono ordinate dalla più grande alla più piccola e allocate in sequenza, così ogni blocco resta allineato al proprio confine.</p>
+      <p class="lede">Le subnet vengono ordinate dalla più grande alla più piccola e allocate in sequenza, così ogni blocco resta allineato al proprio confine. È il metodo dei dimezzamenti successivi del libro.</p>
       <div class="vl-top">
         <div>
           <label for="vl-base">Rete di partenza</label>
           <input type="text" id="vl-base" value="192.168.10.0/24" autocomplete="off" spellcheck="false">
         </div>
-        <label class="check"><input type="checkbox" id="vl-gw" checked> Riserva un indirizzo per il gateway</label>
+        <div>
+          <label for="vl-preset">Carica un esempio</label>
+          <select id="vl-preset">
+            <option value="">Scegli…</option>
+            <option value="isp">Libro: ISP 210.1.8.0/21, aziende A–D (1000, 500, 200, 100)</option>
+            <option value="lab">Libro: 192.168.0.0/24, gruppi da 50, 30, 20 host</option>
+            <option value="office">Esempio: uffici, laboratorio, Wi-Fi, server, link</option>
+          </select>
+        </div>
+      </div>
+      <div class="checks">
+        <label class="check"><input type="checkbox" id="vl-gw"> Riserva anche il gateway</label>
+        <label class="check"><input type="checkbox" id="vl-book"> <span>Dimezzamenti come nel libro: l'ultima subnet prende tutto il blocco libero allineato</span></label>
       </div>
       <div class="req-head"><span>Nome subnet</span><span>Host richiesti</span><span></span></div>
       <div id="vl-rows"></div>
@@ -646,15 +780,143 @@
       <div class="out" id="vl-out"></div>
     </section>
 
+    <!-- 5. CIDR / supernetting -->
+    <section class="view" id="view-cidr" role="tabpanel" aria-labelledby="tab-cidr" hidden>
+      <h2>CIDR e supernetting</h2>
+      <p class="lede">Analizza un blocco CIDR (indirizzi, bit, reti di classe C aggregate, dimezzamenti) oppure trova la maschera di supernetting che aggrega un elenco di reti.</p>
+      <label for="cd-block">Blocco CIDR (<code>a.b.c.d/n</code>)</label>
+      <input type="text" id="cd-block" value="210.1.8.0/21" autocomplete="off" spellcheck="false">
+      <div class="out" id="cd-out"></div>
+
+      <div class="subsec">
+        <h3>Aggrega reti</h3>
+        <p class="lede">Una rete per riga (o separate da virgole). Accetta <code>192.192.0.0/24</code>, <code>192.192.1.x</code>, un IP da solo (mask classful) e intervalli come <code>192.192.0.x - 192.192.3.x</code>.</p>
+        <label for="cd-list">Reti da aggregare</label>
+        <textarea id="cd-list" rows="4" spellcheck="false">192.192.0.x
+192.192.1.x
+192.192.2.x
+192.192.3.x</textarea>
+        <div class="out" id="cd-agg"></div>
+      </div>
+    </section>
+
+    <!-- 6. Routing e TdI -->
+    <section class="view" id="view-route" role="tabpanel" aria-labelledby="tab-route" hidden>
+      <h2>Routing e tabella di instradamento</h2>
+      <p class="lede">Consegna diretta o indiretta di un host, la sua TdI in stile <code>route print</code>, la ricerca della regola vincente in una TdI qualsiasi e i comandi <code>route</code> per Windows e Linux.</p>
+      <div class="fields four">
+        <div>
+          <label for="rt-ip">IP dell'host</label>
+          <input type="text" id="rt-ip" value="196.13.1.1" autocomplete="off" spellcheck="false">
+        </div>
+        <div>
+          <label for="rt-mask">Subnet mask</label>
+          <input type="text" id="rt-mask" value="255.255.255.0" autocomplete="off" spellcheck="false">
+        </div>
+        <div>
+          <label for="rt-gw">Gateway di default</label>
+          <input type="text" id="rt-gw" value="196.13.1.254" autocomplete="off" spellcheck="false">
+        </div>
+        <div>
+          <label for="rt-dst">IP di destinazione</label>
+          <input type="text" id="rt-dst" value="196.13.2.5" autocomplete="off" spellcheck="false">
+        </div>
+      </div>
+      <div class="out" id="rt-out"></div>
+
+      <div class="subsec">
+        <h3>Quale regola della TdI vince?</h3>
+        <p class="lede">Una regola per riga: <code>destinazione/n gateway [interfaccia] [metrica]</code> oppure <code>destinazione mask gateway …</code>. Per la consegna diretta scrivi <code>diretta</code> o <code>-</code> al posto del gateway; <code>default</code> vale 0.0.0.0/0. Le righe con <code>#</code> sono commenti.</p>
+        <div class="fields two">
+          <div>
+            <label for="tb-preset">Carica una TdI</label>
+            <select id="tb-preset">
+              <option value="">Scegli…</option>
+              <option value="r3">Libro: router R3 dell'internetwork 172.16.0.0/20</option>
+              <option value="lpm">Esempio: regola più specifica e default</option>
+            </select>
+          </div>
+          <div>
+            <label for="tb-dst">IP di destinazione del pacchetto</label>
+            <input type="text" id="tb-dst" value="172.16.48.2" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <label for="tb-rules" style="margin-top:14px">Regole della TdI</label>
+        <textarea id="tb-rules" rows="9" spellcheck="false"></textarea>
+        <div class="out" id="tb-out"></div>
+      </div>
+
+      <div class="subsec">
+        <h3>Comandi route</h3>
+        <p class="lede">Genera la sintassi per aggiungere, eliminare e visualizzare una route statica.</p>
+        <div class="fields three">
+          <div>
+            <label for="cm-net">Rete di destinazione</label>
+            <input type="text" id="cm-net" value="10.0.0.0" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label for="cm-mask">Mask (CIDR o dotted)</label>
+            <input type="text" id="cm-mask" value="255.0.0.0" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label for="cm-gw">Gateway</label>
+            <input type="text" id="cm-gw" value="192.168.0.1" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="out" id="cm-out"></div>
+      </div>
+    </section>
+
+    <!-- 7. Maschere e basi -->
+    <section class="view" id="view-mask" role="tabpanel" aria-labelledby="tab-mask" hidden>
+      <h2>Maschere e conversioni</h2>
+      <p class="lede">Scrivi qualsiasi cosa: <code>/21</code>, <code>255.255.248.0</code>, un ottetto binario <code>11111000</code>, un valore esadecimale <code>ffffff00</code>, 32 bit in binario o un decimale a 32 bit come <code>167772160</code>.</p>
+      <label for="cv-in">Valore da convertire</label>
+      <input type="text" id="cv-in" value="255.255.248.0" autocomplete="off" spellcheck="false">
+      <div class="out" id="cv-out"></div>
+
+      <div class="subsec">
+        <h3>Tabella delle subnet mask</h3>
+        <label class="check"><input type="checkbox" id="mt-all"> Mostra anche da /0 a /7</label>
+        <div class="out" id="mt-out" style="margin-top:4px"></div>
+      </div>
+
+      <div class="subsec">
+        <div class="cols">
+          <div>
+            <h3>Ottetti di mask</h3>
+            <p class="lede" style="margin-bottom:0">Somma progressiva 128, 64, 32, 16, 8, 4, 2, 1.</p>
+            <div id="oct-out"></div>
+          </div>
+          <div>
+            <h3>Potenze di 2</h3>
+            <p class="lede" style="margin-bottom:0">Indirizzi = 2<sup>bit host</sup>, host = 2<sup>h</sup> − 2, subnet = 2<sup>s</sup>.</p>
+            <div id="pow-out"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Riferimento -->
+    <section class="view" id="view-ref" role="tabpanel" aria-labelledby="tab-ref" hidden>
+      <h2>Teoria del livello 3</h2>
+      <p class="lede">Sigle, RFC, enti, classi, indirizzi speciali, algoritmi di instradamento, CNLS e CONS, TdI e comandi, date. Filtra con una parola qualsiasi.</p>
+      <div class="sticky-search">
+        <label for="rf-q">Cerca</label>
+        <input type="search" id="rf-q" placeholder="es. RCC, 1918, flooding, broadcast, label" autocomplete="off" spellcheck="false">
+      </div>
+      <div id="rf-out"></div>
+    </section>
+
   </main>
 
-  <p class="foot">Cambia porta con <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> o con le frecce sul pannello. Cambia tema con <kbd>T</kbd>.</p>
+  <p class="foot">Cambia porta con <kbd>1</kbd>–<kbd>8</kbd> o con le frecce sul pannello, cerca nella teoria con <kbd>/</kbd>, cambia tema con <kbd>T</kbd>. Funziona offline: è un unico file HTML.</p>
 </div>
 
 <script>
 /* ================= core ================= */
 function parseIP(s) {
-  const p = s.trim().split('.');
+  const p = String(s).trim().split('.');
   if (p.length !== 4) return null;
   let n = 0;
   for (const x of p) {
@@ -681,7 +943,7 @@ function maskToPrefix(m) {
 }
 // "/24" | "24" | "255.255.255.0" -> { prefix } | { error }
 function parseMaskInput(s) {
-  s = s.trim();
+  s = String(s).trim();
   if (s === '') return { error: 'Scrivi un prefisso o una mask.' };
   const m = s.match(/^\/?(\d{1,2})$/);
   if (m) {
@@ -707,6 +969,7 @@ function parseCidr(s) {
 }
 
 function bin8(v) { return v.toString(2).padStart(8, '0'); }
+function binBits(v, n) { return n > 0 ? v.toString(2).padStart(n, '0') : ''; }
 function binSpans(n, hi, hiCls, loCls) {
   let out = '';
   for (let i = 31; i >= 0; i--) {
@@ -715,24 +978,115 @@ function binSpans(n, hi, hiCls, loCls) {
   }
   return out;
 }
+// bit [0, a) di rete, [a, b) di subnet, [b, 32) host
+function binRegions(n, a, b) {
+  let out = '';
+  for (let i = 0; i < 32; i++) {
+    const cls = i < a ? 'b-hi' : i < b ? 'b-sub' : 'b-lo';
+    out += `<span class="${cls}">${(n >>> (31 - i)) & 1}</span>`;
+    if (i % 8 === 7 && i !== 31) out += '<span class="dot">.</span>';
+  }
+  return out;
+}
 function fmt(n) { return n.toLocaleString('it-IT'); }
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function row(k, v) { return `<tr><td>${k}</td><td>${v}</td></tr>`; }
+function err(msg) { return `<div class="err">${esc(msg)}</div>`; }
 const $ = id => document.getElementById(id);
+
+function pow2(e) { return Math.pow(2, e); }
+function hex32(n) { return (n >>> 0).toString(16).padStart(8, '0'); }
+function octets(n) { return [n >>> 24, (n >>> 16) & 255, (n >>> 8) & 255, n & 255]; }
+function ord(k) { return ['1°', '2°', '3°', '4°'][k]; }
+function classOf(a) {
+  const o = a >>> 24;
+  return o < 128 ? 'A' : o < 192 ? 'B' : o < 224 ? 'C' : o < 240 ? 'D' : 'E';
+}
+const CLASS_PREFIX = { A: 8, B: 16, C: 24 };
+const PRIVATE = [
+  { net: 0x0A000000, p: 8,  label: '10.0.0.0/8',     desc: '1 rete di classe A' },
+  { net: 0xAC100000, p: 12, label: '172.16.0.0/12',  desc: '16 reti di classe B, da 172.16 a 172.31' },
+  { net: 0xC0A80000, p: 16, label: '192.168.0.0/16', desc: '256 reti di classe C, da 192.168.0 a 192.168.255' },
+];
+function inBlock(a, net, p) { return ((a & prefixToMask(p)) >>> 0) === net; }
+function privateBlock(a) { return PRIVATE.find(b => inBlock(a, b.net, b.p)) || null; }
+// ultimo ottetto con bit di rete: le subnet partono dai multipli di "block" in quell'ottetto
+function magic(p) {
+  if (p === 0) return null;
+  const k = Math.ceil(p / 8) - 1;
+  return { k, block: 256 - octets(prefixToMask(p))[k] };
+}
+// intervallo [start, end] -> blocchi CIDR allineati, dal più basso
+function rangeToCidrs(start, end) {
+  const out = [];
+  let s = start;
+  while (s <= end && out.length < 64) {
+    let size = 1, p = 32;
+    while (p > 0 && s % (size * 2) === 0 && s + size * 2 - 1 <= end) { size *= 2; p--; }
+    out.push({ net: s, prefix: p });
+    s += size;
+  }
+  return out;
+}
+/* Rete in ingresso:
+   "a.b.c.d/n", "a.b.c.d 255.255.255.0", "a.b.c.d mask m.m.m.m",
+   "192.192.0.x" (x finali = /24, /16, /8) oppure un IP da solo (mask classful). */
+function parseNet(s) {
+  s = String(s).trim().replace(/\s+/g, ' ');
+  if (s === '') return { error: 'Scrivi una rete, ad esempio 192.168.1.0/24.' };
+  let ip, p, how = '', m;
+  if ((m = s.match(/^([\d.]+)\s*\/\s*(\d{1,2})$/))) {
+    ip = parseIP(m[1]); p = Number(m[2]);
+    if (ip === null) return { error: `Indirizzo non valido: ${m[1]}` };
+    if (p > 32) return { error: 'Il prefisso va da 0 a 32.' };
+  } else if ((m = s.match(/^([\d.]+) (?:(?:net)?mask )?([\d.]+|\/\d{1,2})$/i))) {
+    ip = parseIP(m[1]);
+    const mk = parseMaskInput(m[2]);
+    if (ip === null) return { error: `Indirizzo non valido: ${m[1]}` };
+    if (mk.error) return { error: mk.error };
+    p = mk.prefix;
+  } else if (/^\d{1,3}(\.(\d{1,3}|[xX*]))*$/.test(s) && /[xX*]/.test(s)) {
+    const parts = s.split('.');
+    if (parts.length !== 4) return { error: 'Scrivi 4 ottetti, ad esempio 192.192.0.x.' };
+    const k = parts.findIndex(x => /^[xX*]$/.test(x));
+    if (parts.slice(k).some(x => !/^[xX*]$/.test(x))) return { error: 'Le x vanno solo in fondo, ad esempio 192.192.0.x.' };
+    ip = parseIP(parts.map(x => /^[xX*]$/.test(x) ? '0' : x).join('.'));
+    if (ip === null) return { error: `Indirizzo non valido: ${s}` };
+    p = k * 8; how = 'x';
+  } else {
+    ip = parseIP(s);
+    if (ip === null) return { error: 'Formato non riconosciuto: usa a.b.c.d/n, a.b.c.d seguito dalla mask o 192.168.0.x.' };
+    const c = classOf(ip);
+    if (!CLASS_PREFIX[c]) return { error: `${s} è di classe ${c}: non ha una mask classful, scrivi il prefisso.` };
+    p = CLASS_PREFIX[c]; how = 'classful';
+  }
+  const mask = prefixToMask(p), net = (ip & mask) >>> 0, bc = (net | (~mask >>> 0)) >>> 0;
+  return { ip, prefix: p, mask, net, bc, how, aligned: net === ip };
+}
 
 /* ================= 1. Indirizzi della subnet ================= */
 // Etichette identiche a quelle usate negli esercizi
 const CAT = {
-  net:      { label: 'Nome della subnet',          c: 'var(--blue)' },
-  bc:       { label: 'Broadcast della subnet',     c: 'var(--red)' },
-  host:     { label: 'Host assegnabile',           c: 'var(--green)' },
-  thishost: { label: 'This host on this network',  c: '#7d8a99' },
-  limbc:    { label: 'Broadcast limitato',         c: '#e8a31c' },
-  loop:     { label: 'Loopback',                   c: '#7b5cd6' },
-  mcast:    { label: 'Multicast',                  c: '#1aa3a3' },
-  out:      { label: 'Fuori dalla subnet',         c: 'transparent' },
-  resv:     { label: 'Riservato (classe E)',       c: '#c2447f' },
-  bad:      { label: 'Non valido',                 c: 'transparent' },
+  net:      { label: 'Nome della subnet',              c: 'var(--blue)' },
+  bc:       { label: 'Broadcast della subnet',         c: 'var(--red)' },
+  host:     { label: 'Host assegnabile',               c: 'var(--green)' },
+  thishost: { label: 'This host on this network',      c: '#7d8a99' },
+  spechost: { label: 'Specified host on this network', c: '#7d8a99' },
+  limbc:    { label: 'Broadcast limitato',             c: '#e8a31c' },
+  loop:     { label: 'Loopback',                       c: '#7b5cd6' },
+  mcast:    { label: 'Multicast',                      c: '#1aa3a3' },
+  out:      { label: 'Fuori dalla subnet',             c: 'transparent' },
+  resv:     { label: 'Riservato (classe E)',           c: '#c2447f' },
+  bad:      { label: 'Non valido',                     c: 'transparent' },
+};
+// Uso ammesso dell'indirizzo, con le parole degli esercizi
+const USE = {
+  src:  'Solo come sorgente',
+  dst:  'Solo come destinazione',
+  both: 'Sia come sorgente sia come destinazione',
+  none: 'Non utilizzabile come indirizzo IP',
+  host: 'Sorgente e destinazione (assegnabile)',
+  resv: 'Non assegnabile',
 };
 function chip(k) {
   return `<span class="chip${k === 'out' || k === 'bad' ? ' ghost' : ''}" style="--c:${CAT[k].c}"><i></i>${CAT[k].label}</span>`;
@@ -762,33 +1116,102 @@ function addrContext() {
   return { ip, p, mask, net, bc, fromIp };
 }
 
-// Categoria di un indirizzo rispetto alla subnet
+// Categoria di un indirizzo rispetto alla subnet, con notazione RFC 1009 (n) e uso (u)
 function classify(a, ctx) {
-  if (a === 0) return { k: 'thishost', d: '0.0.0.0, usato solo come sorgente (RFC 1122)' };
-  if (a === 0xFFFFFFFF) return { k: 'limbc', d: 'tutti gli host del segmento, non attraversa i router' };
-  const o1 = a >>> 24;
-  if (o1 === 127) return { k: 'loop', d: '127.0.0.0/8, la macchina stessa' };
-  if ((a >>> 28) === 0xE) return { k: 'mcast', d: '224.0.0.0/4, ex classe D' };
-  if (o1 === 0) return { k: 'thishost', d: 'blocco 0.0.0.0/8, host su "this network"' };
-  if ((a >>> 28) === 0xF) return { k: 'resv', d: '240.0.0.0/4, non assegnabile' };
+  const o1 = a >>> 24, cls = classOf(a);
+  if (a === 0) return { k: 'thishost', n: '{0, 0}', u: 'src', d: 'chi non ha ancora un IP, per esempio in DHCP Discover' };
+  if (a === 0xFFFFFFFF) return { k: 'limbc', n: '{-1, -1}', u: 'dst', d: 'tutti gli host del segmento, non attraversa i router' };
+  if (o1 === 127) return { k: 'loop', n: '{127, any}', u: 'both', d: '127.0.0.0/8, la macchina stessa: non esce sulla rete fisica' };
+  if (cls === 'D') return { k: 'mcast', n: 'classe D', u: 'dst', d: '224.0.0.0/4, indirizzo di gruppo (RFC 1112, non è in RFC 1009)' };
+  if (o1 === 0) return { k: 'spechost', n: '{0, hostId}', u: 'src', d: 'blocco 0.0.0.0/8, host indicato su "questa rete"' };
+  if (cls === 'E') return { k: 'resv', n: 'classe E', u: 'resv', d: '240.0.0.0/4, riservato e sperimentale' };
+  const priv = privateBlock(a) ? ' · privato RFC 1918' : '';
   if (((a & ctx.mask) >>> 0) !== ctx.net) {
     const other = (a & ctx.mask) >>> 0;
-    return { k: 'out', d: `appartiene a ${toDotted(other)}/${ctx.p}` };
+    return { k: 'out', n: '', u: '', d: `appartiene a ${toDotted(other)}/${ctx.p}${priv}` };
   }
-  if (ctx.p === 32) return { k: 'host', d: 'host route /32' };
-  if (ctx.p === 31) return { k: 'host', d: 'link point-to-point /31, RFC 3021' };
-  if (a === ctx.net) return { k: 'net', d: `primo indirizzo della /${ctx.p}` };
-  if (a === ctx.bc) return { k: 'bc', d: `ultimo indirizzo della /${ctx.p}` };
+  if (ctx.p === 32) return { k: 'host', n: '', u: 'host', d: 'host route /32' + priv };
+  if (ctx.p === 31) return { k: 'host', n: '', u: 'host', d: 'link point-to-point /31, RFC 3021' + priv };
+  const cp = CLASS_PREFIX[cls], sub = ctx.p > cp, s = sub ? ctx.p - cp : 0;
+  const sid = sub ? Math.floor(((a & ctx.mask) >>> 0) / pow2(32 - ctx.p)) % pow2(s) : 0;
+  const cnet = (a & prefixToMask(cp)) >>> 0;
+  if (a === ctx.net) {
+    if (sub) return { k: 'net', n: '{netId, subnetId, 0}', u: 'none',
+      d: `nome della subnet /${ctx.p}` + (sid === 0 ? `; con subnetId 0 coincide con il nome della rete ${toDotted(cnet)}` : '') + priv };
+    return { k: 'net', n: '{netId, 0}', u: 'none', d: (ctx.p === cp ? `nome della rete di classe ${cls}` : `nome del blocco /${ctx.p}`) + priv };
+  }
+  if (a === ctx.bc) {
+    if (sub) {
+      const allOnes = sid === pow2(s) - 1;
+      return { k: 'bc', n: allOnes ? '{netId, subnetId, -1} = {netId, -1, -1}' : '{netId, subnetId, -1}', u: 'dst',
+        d: `broadcast diretto alla subnet /${ctx.p}` + (allOnes ? `; coincide con il broadcast a tutte le subnet di ${toDotted(cnet)}` : '') + priv };
+    }
+    return { k: 'bc', n: '{netId, -1}', u: 'dst', d: 'broadcast diretto alla rete' + priv };
+  }
   const total = ctx.bc - ctx.net - 1;
-  return { k: 'host', d: `host ${fmt(a - ctx.net)} di ${fmt(total)}` };
+  return { k: 'host', n: sub ? '{netId, subnetId, hostId}' : '{netId, hostId}', u: 'host', d: `host ${fmt(a - ctx.net)} di ${fmt(total)}${priv}` };
+}
+
+function andTable(ctx) {
+  const { ip, mask, net, bc, p } = ctx;
+  const I = octets(ip), M = octets(mask), N = octets(net), B = octets(bc);
+  const k = p % 8 ? Math.floor(p / 8) : -1;
+  const th = [0, 1, 2, 3].map(i => `<th class="num${i === k ? ' pk' : ''}">${ord(i)} ottetto</th>`).join('');
+  const tr = (lab, arr, strong) => `<tr${strong ? ' class="hl"' : ''}><td class="name">${lab}</td>${arr.map((v, i) => `<td class="num${i === k ? ' pk' : ''}">${v}</td>`).join('')}</tr>`;
+  const detail = k >= 0
+    ? `<ul class="calc">
+        <li>${ord(k)} ottetto, nome: <b>${I[k]}</b> = <code>${bin8(I[k])}</code> AND <b>${M[k]}</b> = <code>${bin8(M[k])}</code> → <code>${bin8(N[k])}</code> = <b>${N[k]}</b></li>
+        <li>${ord(k)} ottetto, broadcast: bit host a 1 → <code>${bin8(B[k])}</code> = <b>${B[k]}</b> (${N[k]} + ${256 - M[k]} − 1)</li>
+      </ul>`
+    : `<div class="note">Mask a ottetti pieni: l'AND copia gli ottetti con 255 e azzera quelli con 0.</div>`;
+  return `
+    <h3 class="minor">AND bit a bit</h3>
+    <div class="scroll"><table class="grid"><thead><tr><th></th>${th}</tr></thead><tbody>
+      ${tr('IP', I)}${tr('Subnet mask', M)}${tr('IP AND mask = nome subnet', N, true)}${tr('Bit host a 1 = broadcast', B, true)}
+    </tbody></table></div>${detail}`;
+}
+
+function specialTable(ctx) {
+  const { ip, p, mask, net, bc } = ctx;
+  const cls = classOf(ip), cp = CLASS_PREFIX[cls];
+  let cnet = null, cbc = null;
+  if (cp) { const cm = prefixToMask(cp); cnet = (ip & cm) >>> 0; cbc = (cnet | (~cm >>> 0)) >>> 0; }
+  const sub = !!cp && p > cp && p <= 30;
+  const hid = (ip & ~mask) >>> 0;
+  const ex = v => v === null ? '<span class="muted">—</span>' : toDotted(v);
+  const R = [
+    ['{0, 0}', 'This host on this network', 'questo host su questa rete', ex(0), 'src'],
+    ['{0, hostId}', 'Specified host on this network', 'l\'host indicato, su questa rete', ex(hid || 1), 'src'],
+    ['{-1, -1}', 'Limited broadcast', 'broadcast limitato al segmento', ex(0xFFFFFFFF), 'dst'],
+    ['{netId, -1}', 'Directed broadcast to specified network', 'broadcast diretto alla rete', ex(cbc), 'dst'],
+    ['{netId, subnetId, -1}', 'Directed broadcast to specified subnet', 'broadcast diretto alla subnet', sub ? ex(bc) : ex(null), 'dst'],
+    ['{netId, -1, -1}', 'Directed broadcast to all subnets of network', 'broadcast a tutte le subnet della rete', sub ? ex(cbc) : ex(null), 'dst'],
+    ['{127, any}', 'Internal host loopback address', 'loopback, non esce sulla rete', ex(0x7F000001), 'both'],
+    ['{netId, 0}', 'Specified network', 'nome della rete', ex(cnet), 'none'],
+    ['{netId, subnetId, 0}', 'Specified subnet', 'nome della subnet', sub ? ex(net) : ex(null), 'none'],
+  ];
+  const rows = R.map(r => `<tr><td><span class="nota">${r[0]}</span></td><td class="wrap">${r[1]}<span class="sub">${r[2]}</span></td><td>${r[3]}</td><td class="wrap">${USE[r[4]]}</td></tr>`).join('')
+    + `<tr><td><span class="nota">classe D</span></td><td class="wrap">Multicast group address<span class="sub">RFC 1112, non fa parte di RFC 1009: è l'intruso tipico</span></td><td>224.0.0.0 – 239.255.255.255</td><td class="wrap">${USE.dst}</td></tr>`;
+  const where = cp
+    ? `Esempi calcolati su ${toDotted(ip)}/${p}: classe ${cls}, rete ${toDotted(cnet)}${sub ? `, subnet ${toDotted(net)}` : ', senza subnetting (le righe con subnetId servono una mask più lunga di /' + cp + ')'}.`
+    : `L'IP è di classe ${cls}: netId e subnetId non si applicano.`;
+  return `
+    <h3 class="minor">Indirizzi speciali (RFC 1009)</h3>
+    <div class="scroll">
+      <table class="grid stack">
+        <thead><tr><th>Notazione</th><th>Significato</th><th>Esempio</th><th>Uso</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="note">0 = bit tutti a 0, −1 = bit tutti a 1. {netId, -1} e {netId, -1, -1} sono lo stesso indirizzo; con il subnetting coincide anche con il broadcast della subnet all-ones. ${where}</div>`;
 }
 
 function renderAddr() {
   const el = $('ad-out');
   const ctx = addrContext();
-  if (ctx.error) { el.innerHTML = `<div class="err">${esc(ctx.error)}</div>`; renderAddrList(); return; }
+  if (ctx.error) { el.innerHTML = err(ctx.error); renderAddrList(); return; }
   const { ip, p, mask, net, bc } = ctx;
-  const size = Math.pow(2, 32 - p);
+  const size = pow2(32 - p);
 
   // striscia della subnet
   let strip, rows;
@@ -803,9 +1226,9 @@ function renderAddr() {
     rows =
       row(CAT.net.label, `${toDotted(net)}/${p}`) +
       row(CAT.bc.label, toDotted(bc)) +
-      row('Primo host assegnabile', toDotted(net + 1)) +
+      row('Primo host assegnabile', `${toDotted(net + 1)}<span class="sub">spesso è il gateway di default</span>`) +
       row('Ultimo host assegnabile', toDotted(bc - 1)) +
-      row('Host assegnabili', `2<sup>${32 - p}</sup> − 2 = <b>${fmt(hosts)}</b>`);
+      row('Host assegnabili', `2<sup>${32 - p}</sup> − 2 = <b>${fmt(hosts)}</b><span class="sub">indirizzi totali ${fmt(size)}, meno nome e broadcast</span>`);
   } else if (p === 31) {
     strip = `
       <div class="strip two">
@@ -824,8 +1247,37 @@ function renderAddr() {
   }
 
   rows +=
-    row('Subnet mask', `${toDotted(mask)} <span class="muted">/${p}</span>`) +
+    row('Subnet mask', `${toDotted(mask)} <span class="muted">/${p} · ${hex32(mask)}</span>`) +
     row('Wildcard', toDotted((~mask) >>> 0));
+  const mg = magic(p);
+  if (mg && p < 32) rows += row('Salto tra subnet', `${fmt(mg.block)} nel ${ord(mg.k)} ottetto<span class="sub">256 − ${octets(mask)[mg.k]}: le subnet partono dai multipli di ${fmt(mg.block)}</span>`);
+
+  // lettura classful: netId, subnetId, hostId
+  const cls = classOf(ip), cp = CLASS_PREFIX[cls];
+  let bits = '';
+  if (cp) {
+    const cm = prefixToMask(cp), cnet = (ip & cm) >>> 0;
+    rows += row('Classe (classful)', `${cls} · netmask ${toDotted(cm)} · rete ${toDotted(cnet)}`);
+    if (p > cp) {
+      const s = p - cp, sid = Math.floor(net / pow2(32 - p)) % pow2(s);
+      rows += row('netId + subnetId + hostId', `${cp} + ${s} + ${32 - p} bit`);
+      rows += row('subnetId', `<span class="b-sub">${binBits(sid, s)}</span> = ${fmt(sid)}<span class="sub">subnet n° ${fmt(sid)} delle 2<sup>${s}</sup> = ${fmt(pow2(s))} di ${toDotted(cnet)}/${cp}</span>`);
+      bits = `<div class="legend"><span class="b-hi">■</span> netId (${cp}) <span class="b-sub" style="margin-left:12px">■</span> subnetId (${s}) <span class="b-lo" style="margin-left:12px">■</span> hostId (${32 - p}). Il nome della subnet ha i bit host tutti a 0, il broadcast tutti a 1.</div>`;
+    } else if (p < cp) {
+      if (classOf(net) === classOf(bc)) rows += row('Supernet', `aggrega ${fmt(pow2(cp - p))} reti di classe ${cls} (2<sup>${cp - p}</sup>)`);
+      rows += row('netId + hostId', `${p} + ${32 - p} bit`);
+    } else {
+      rows += row('netId + hostId', `${cp} + ${32 - p} bit, nessun subnetting`);
+    }
+  } else {
+    rows += row('Classe', `${cls} ${cls === 'D' ? '(multicast)' : '(riservata)'}: nessuna netmask classful`);
+  }
+  const hid = (ip & ~mask) >>> 0;
+  rows += row('hostId', `${toDotted(hid)} <span class="muted">= ${fmt(hid)}</span>`);
+  rows += row('IP in esadecimale e decimale', `${hex32(ip)} · ${ip}`);
+  const pb = privateBlock(ip), sp = special(ip);
+  rows += row('Pubblico o privato', `<span class="prose">${pb ? `privato RFC 1918 (${pb.label}, ${pb.desc})` : sp ? sp : cp ? 'pubblico, fuori dai blocchi RFC 1918' : '—'}</span>`);
+  if (!bits) bits = `<div class="legend">Evidenziati i ${p} bit di rete: il nome della subnet ha i bit host tutti a 0, il broadcast tutti a 1.</div>`;
 
   const self = classify(ip, ctx);
   const selfNote = self.k === 'host'
@@ -833,31 +1285,21 @@ function renderAddr() {
     : `<div class="warn" style="margin-top:10px">Questo indirizzo non si può assegnare a un host: ${self.d}.</div>`;
   const ipNote = ctx.fromIp ? `<div class="note" style="margin-top:0;margin-bottom:6px">Uso il prefisso /${p} scritto nell'IP; il campo mask viene ignorato.</div>` : '';
 
-  const bin = (label, v) => `<tr><td>${label}</td><td><span class="bin">${binSpans(v, p, 'b-hi', 'b-lo')}</span></td></tr>`;
+  const s0 = cp && p > cp ? cp : p, s1 = p;
+  const bin = (label, v) => `<tr><td>${label}</td><td><span class="bin">${binRegions(v, s0, s1)}</span></td></tr>`;
 
   el.innerHTML = `
     ${ipNote}
-    <div class="ip-self"><span class="readout">${toDotted(ip)}</span> ${chip(self.k)}</div>
+    <div class="ip-self"><span class="readout">${toDotted(ip)}</span> ${chip(self.k)} ${self.n ? `<span class="nota">${self.n}</span>` : ''}</div>
     ${selfNote}
     ${strip}
     <table class="kv">${rows}</table>
     <table class="kv binkv">
       ${bin('IP', ip)}${bin('Subnet mask', mask)}${bin(CAT.net.label, net)}${bin(CAT.bc.label, bc)}
     </table>
-    <div class="legend">Evidenziati i ${p} bit di rete: il nome della subnet ha i bit host tutti a 0, il broadcast tutti a 1.</div>
-
-    <h3 class="minor">Indirizzi speciali</h3>
-    <div class="scroll">
-      <table class="grid stack">
-        <thead><tr><th>Categoria</th><th>Indirizzo</th><th>A cosa serve</th></tr></thead>
-        <tbody>
-          <tr><td class="name">${chip('thishost')}</td><td>0.0.0.0</td><td class="wrap">Sorgente di un host che non ha ancora un IP, per esempio in DHCP Discover</td></tr>
-          <tr><td class="name">${chip('limbc')}</td><td>255.255.255.255</td><td class="wrap">Tutti gli host del segmento locale; i router non lo inoltrano</td></tr>
-          <tr><td class="name">${chip('loop')}</td><td>127.0.0.1<span class="sub">127.0.0.0/8</span></td><td class="wrap">La macchina stessa; il traffico non esce mai sulla rete</td></tr>
-          <tr><td class="name">${chip('mcast')}</td><td>224.0.0.0 – 239.255.255.255<span class="sub">224.0.0.0/4</span></td><td class="wrap">Destinazione di un gruppo di host, ex classe D</td></tr>
-        </tbody>
-      </table>
-    </div>`;
+    ${bits}
+    ${andTable(ctx)}
+    ${specialTable(ctx)}`;
   renderAddrList();
 }
 
@@ -869,97 +1311,50 @@ function renderAddrList() {
   if (!items.length) { el.innerHTML = `<div class="note">Incolla almeno un indirizzo.</div>`; return; }
   const rows = items.map(s => {
     const a = parseIP(s);
-    if (a === null) return `<tr class="fail"><td>${esc(s)}</td><td class="name">${chip('bad')}</td><td class="wrap">non è un IPv4 in formato a.b.c.d</td></tr>`;
+    if (a === null) return `<tr class="fail"><td>${esc(s)}</td><td class="name">${chip('bad')}</td><td></td><td></td><td class="wrap">non è un IPv4 in formato a.b.c.d</td></tr>`;
     const r = classify(a, ctx);
-    return `<tr><td>${toDotted(a)}</td><td class="name">${chip(r.k)}</td><td class="wrap">${r.d}</td></tr>`;
+    return `<tr><td>${toDotted(a)}</td><td class="name">${chip(r.k)}</td><td>${r.n ? `<span class="nota">${r.n}</span>` : ''}</td><td class="wrap">${r.u ? USE[r.u] : ''}</td><td class="wrap">${r.d}</td></tr>`;
   }).join('');
   el.innerHTML = `
     <div class="note" style="margin-top:0">Subnet di riferimento: <b class="mono">${toDotted(ctx.net)}/${ctx.p}</b></div>
     <div class="scroll">
       <table class="grid stack">
-        <thead><tr><th>Indirizzo</th><th>Categoria</th><th>Dettaglio</th></tr></thead>
+        <thead><tr><th>Indirizzo</th><th>Categoria</th><th>RFC 1009</th><th>Uso</th><th>Dettaglio</th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>`;
 }
 
-/* ================= 2. Hosts ================= */
-function renderHosts() {
-  const el = $('hosts-out');
-  const r = parseMaskInput($('hosts-mask').value);
-  if (r.error) { el.innerHTML = `<div class="err">${esc(r.error)}</div>`; renderOpt(); return; }
-  const p = r.prefix, total = Math.pow(2, 32 - p), mask = prefixToMask(p);
+/* ================= 2. Subnetting ================= */
+function snReserved() { return $('sn-gw').checked ? 3 : 2; }
+function snBase() { return parseNet($('sn-net').value); }
 
-  const ipStr = $('hosts-ip').value.trim();
-  let ip = null, ipErr = '';
-  if (ipStr !== '') {
-    ip = parseIP(ipStr);
-    if (ip === null) ipErr = `<div class="err" style="margin-top:10px">IP non valido: correggilo per vedere i range.</div>`;
-  }
-
-  const gw = $('hosts-gw').checked, reserved = gw ? 3 : 2;
-  let hosts, rows = '', note = '';
-  if (p <= 30) {
-    hosts = total - reserved;
-    rows = row('Indirizzi totali', `2<sup>${32 - p}</sup> = ${fmt(total)}`) +
-           row('Network', '1') + row('Broadcast', '1') + (gw ? row('Gateway', '1') : '') +
-           row('Host assegnabili', `${fmt(total)} − ${reserved} = <b>${fmt(hosts)}</b>`);
-    note = gw ? `Senza riservare il gateway: ${fmt(total - 2)} host.` : `Riservando anche il gateway: ${fmt(total - 3)} host.`;
-  } else if (p === 31) {
-    hosts = 1;
-    rows = row('Indirizzi totali', '2') +
-           row('Network e broadcast', 'nessuno (RFC 3021, point-to-point)') +
-           row('Gateway', '1, l\'altro capo del link') +
-           row('Host assegnabili', '<b>1</b>');
-    note = 'Il /31 vale solo per link point-to-point: entrambi gli indirizzi sono usabili.';
-  } else {
-    hosts = 1;
-    rows = row('Indirizzi totali', '1') + row('Host assegnabili', '<b>1</b>, host route senza gateway');
-    note = 'Il /32 identifica un singolo host: loopback, route statiche, VIP.';
-  }
-
-  let ranges = '';
-  if (ip !== null) {
-    const net = (ip & mask) >>> 0, bc = (net | (~mask >>> 0)) >>> 0;
-    if (p <= 30) {
-      ranges = row('Network', `${toDotted(net)}/${p}`) +
-               (gw ? row('Gateway (primo usabile)', toDotted(net + 1)) : '') +
-               row('Range host', `${toDotted(net + (gw ? 2 : 1))} – ${toDotted(bc - 1)}`) +
-               row('Broadcast', toDotted(bc));
-    } else if (p === 31) {
-      ranges = row('Indirizzi del link', `${toDotted(net)} e ${toDotted(bc)}`);
-    } else {
-      ranges = row('Host', `${toDotted(ip)}/32`);
-    }
-    ranges = `<table class="kv" style="margin-top:20px">${ranges}</table>`;
-  }
-
-  el.innerHTML = `
-    <div class="readout">${fmt(hosts)}</div>
-    <div class="readout-sub">host assegnabili con /${p} (${toDotted(mask)})</div>
-    <table class="kv">${rows}</table>
-    <div class="note">${note}</div>
-    ${ipErr}${ranges}`;
-  renderOpt();
+function renderSnBase() {
+  const el = $('sn-base');
+  const b = snBase();
+  if (b.error) { el.innerHTML = err(b.error); return; }
+  const notes = [];
+  if (b.how === 'classful') notes.push(`Nessun prefisso: uso la mask classful della classe ${classOf(b.ip)}, /${b.prefix}.`);
+  if (!b.aligned) notes.push(`${toDotted(b.ip)} non è il nome della rete: uso ${toDotted(b.net)}/${b.prefix}.`);
+  el.innerHTML = `<div class="note" style="margin-top:0">Rete <b class="mono">${toDotted(b.net)}/${b.prefix}</b> · ${toDotted(b.mask)} · ${32 - b.prefix} bit da dividere tra subnetId e hostId.${notes.length ? '<br>' + notes.map(esc).join('<br>') : ''}</div>`;
 }
 
-/* ---- mask ottimale: max host vs max sottoreti ---- */
 // n. sottoreti ottenute con s bit di subnet
-function subnetCount(s, excl) { return s === 0 ? 1 : (excl ? Math.pow(2, s) - 2 : Math.pow(2, s)); }
+function subnetCount(s, excl) { return s === 0 ? 1 : (excl ? pow2(s) - 2 : pow2(s)); }
 
 function optimize(p0, N, H, reserved, excl) {
   const free = 32 - p0;
   let sMin = 0;
   while (sMin <= free && subnetCount(sMin, excl) < N) sMin++;
   let hMin = 2;
-  while (hMin <= free && Math.pow(2, hMin) - reserved < H) hMin++;
+  while (hMin <= free && pow2(hMin) - reserved < H) hMin++;
   const sMax = free - hMin;
   const res = { p0, free, sMin, hMin, sMax, ok: sMin <= sMax && hMin <= free };
   if (!res.ok) return res;
   res.options = [];
   for (let s = sMin; s <= sMax; s++) {
     const pfx = p0 + s, h = 32 - pfx;
-    res.options.push({ s, pfx, h, nets: subnetCount(s, excl), hosts: Math.pow(2, h) - reserved });
+    res.options.push({ s, pfx, h, nets: subnetCount(s, excl), hosts: pow2(h) - reserved });
   }
   // con la regola classful s = 1 dà 0 sottoreti: scarta le opzioni che non rispettano N
   res.options = res.options.filter(o => o.nets >= N);
@@ -968,32 +1363,40 @@ function optimize(p0, N, H, reserved, excl) {
   return res;
 }
 
-function bin3(pfx, p0) {
-  let out = '';
-  for (let i = 0; i < 32; i++) {
-    const cls = i < p0 ? 'b-hi' : i < pfx ? 'b-sub' : 'b-lo';
-    out += `<span class="${cls}">${i < pfx ? 1 : 0}</span>`;
-    if (i % 8 === 7 && i !== 31) out += '<span class="dot">.</span>';
-  }
-  return out;
-}
-
 function renderOpt() {
   const el = $('opt-out');
-  const r = parseMaskInput($('hosts-mask').value);
-  if (r.error) { el.innerHTML = `<div class="err">Correggi la mask qui sopra: è la rete da suddividere.</div>`; return; }
-  const p0 = r.prefix;
-  const N = Number($('opt-n').value), H = Number($('opt-h').value);
-  if (!Number.isInteger(N) || N < 1) { el.innerHTML = `<div class="err">Le sottoreti richieste devono essere un intero da 1 in su.</div>`; return; }
-  if (!Number.isInteger(H) || H < 1) { el.innerHTML = `<div class="err">Gli host richiesti devono essere un intero da 1 in su.</div>`; return; }
-  if (p0 > 30) { el.innerHTML = `<div class="err">Con /${p0} non ci sono bit host da suddividere: serve una mask di partenza fino a /30.</div>`; return; }
+  const b = snBase();
+  if (b.error) { el.innerHTML = err('Correggi la rete da suddividere qui sopra.'); return; }
+  const p0 = b.prefix;
+  const nRaw = $('opt-n').value.trim(), hRaw = $('opt-h').value.trim();
+  const N = nRaw === '' ? 1 : Number(nRaw), H = hRaw === '' ? 1 : Number(hRaw);
+  if (!Number.isInteger(N) || N < 1) { el.innerHTML = err('Le sottoreti richieste devono essere un intero da 1 in su.'); return; }
+  if (!Number.isInteger(H) || H < 1) { el.innerHTML = err('Gli host richiesti devono essere un intero da 1 in su.'); return; }
+  if (p0 > 30) { el.innerHTML = err(`Con /${p0} non ci sono bit host da suddividere: serve una rete fino a /30.`); return; }
 
-  const gw = $('hosts-gw').checked, reserved = gw ? 3 : 2, excl = $('opt-excl').checked;
+  const reserved = snReserved(), excl = $('sn-excl').checked;
   const o = optimize(p0, N, H, reserved, excl);
 
+  const steps = [];
+  if (nRaw !== '') {
+    const s = o.sMin;
+    if (s > o.free) steps.push(`<li class="bad">Sottoreti: ${fmt(N)} richiedono più di ${o.free} bit di subnetId: impossibile partendo da /${p0}.</li>`);
+    else {
+      const prev = s > 0 ? ` (con ${s - 1} bit: ${fmt(subnetCount(s - 1, excl))})` : '';
+      steps.push(`<li>Sottoreti: ${fmt(N)} → servono s = <b>${s}</b> bit di subnetId: ${s === 0 ? 'nessuna divisione' : `2<sup>${s}</sup>${excl ? ' − 2' : ''} = <b>${fmt(subnetCount(s, excl))}</b> ≥ ${fmt(N)}${prev}`}</li>`);
+    }
+  }
+  if (hRaw !== '') {
+    const h = o.hMin;
+    if (h > o.free) steps.push(`<li class="bad">Host: ${fmt(H)} richiedono più di ${o.free} bit di hostId: impossibile partendo da /${p0}.</li>`);
+    else steps.push(`<li>Host: ${fmt(H)} → servono h = <b>${h}</b> bit di hostId: 2<sup>${h}</sup> − ${reserved} = <b>${fmt(pow2(h) - reserved)}</b> ≥ ${fmt(H)}${h > 2 ? ` (con ${h - 1} bit: ${fmt(pow2(h - 1) - reserved)})` : ''}</li>`);
+  }
+  const need = o.sMin + o.hMin;
+  steps.push(`<li${o.ok ? '' : ' class="bad"'}>Bit liberi: 32 − ${p0} = <b>${o.free}</b>; servono s + h = ${o.sMin} + ${o.hMin} = <b>${need}</b> ${o.ok ? `≤ ${o.free} ✓` : `> ${o.free} ✗`}${hRaw === '' ? ' (h minimo 2, cioè /30)' : ''}</li>`);
+  const calc = `<ul class="calc">${steps.join('')}</ul>`;
+
   if (!o.ok) {
-    const needS = o.sMin > o.free ? `più di ${o.free}` : o.sMin;
-    el.innerHTML = `<div class="err">Requisiti impossibili con /${p0}: servono ${needS} bit di subnet per ${fmt(N)} sottoreti e ${o.hMin} bit host per ${fmt(H)} host, ma i bit disponibili sono ${o.free}.</div>`;
+    el.innerHTML = calc + `<div class="err" style="margin-top:12px">Requisiti impossibili con /${p0}: serve una rete di partenza più grande (prefisso più corto).</div>`;
     return;
   }
 
@@ -1003,8 +1406,8 @@ function renderOpt() {
       <div class="readout">/${x.pfx}</div>
       <div class="readout-sub">${toDotted(prefixToMask(x.pfx))}</div>
       <div class="opt-facts"><b>${fmt(x.nets)}</b> sottoreti da <b>${fmt(x.hosts)}</b> host</div>
-      <div class="bin opt-bin">${bin3(x.pfx, p0)}</div>
-      <div class="note" style="margin-top:6px">${x.s} bit di subnet, ${x.h} bit host</div>
+      <div class="bin opt-bin">${binRegions(prefixToMask(x.pfx), p0, x.pfx)}</div>
+      <div class="note" style="margin-top:6px">${x.s} bit di subnetId, ${x.h} bit di hostId</div>
     </div>`;
 
   const same = o.maxHost.pfx === o.maxNet.pfx;
@@ -1015,97 +1418,226 @@ function renderOpt() {
   const rows = o.options.map(x => {
     const tag = x === o.maxHost && x === o.maxNet ? 'unica' : x === o.maxHost ? 'max host' : x === o.maxNet ? 'max sottoreti' : '';
     const hl = tag ? ' class="hl"' : '';
-    return `<tr${hl}><td>/${x.pfx}</td><td>${toDotted(prefixToMask(x.pfx))}</td><td class="num">${x.s}</td><td class="num">${fmt(x.nets)}</td><td class="num">${fmt(x.hosts)}</td><td class="tag">${tag}</td></tr>`;
+    return `<tr${hl}><td>/${x.pfx}</td><td>${toDotted(prefixToMask(x.pfx))}</td><td class="num">${x.s}</td><td class="num">${x.h}</td><td class="num">${fmt(x.nets)}</td><td class="num">${fmt(x.hosts)}</td><td class="tag">${tag}</td><td><button class="btn sm" type="button" data-list="${x.pfx}">Elenca</button></td></tr>`;
   }).join('');
 
   el.innerHTML = `
+    ${calc}
     ${cards}
-    <div class="legend"><span class="b-hi">■</span> bit della rete di partenza (/${p0}) <span class="b-sub" style="margin-left:12px">■</span> bit di subnet <span class="b-lo" style="margin-left:12px">■</span> bit host</div>
+    <div class="legend"><span class="b-hi">■</span> bit della rete di partenza (/${p0}) <span class="b-sub" style="margin-left:12px">■</span> bit di subnetId <span class="b-lo" style="margin-left:12px">■</span> bit di hostId</div>
     <div class="scroll">
       <table class="grid">
-        <thead><tr><th>Prefisso</th><th>Mask</th><th class="num">Bit subnet</th><th class="num">Sottoreti</th><th class="num">Host per sottorete</th><th></th></tr></thead>
+        <thead><tr><th>Prefisso</th><th>Mask</th><th class="num">Bit subnet</th><th class="num">Bit host</th><th class="num">Sottoreti</th><th class="num">Host per sottorete</th><th></th><th></th></tr></thead>
         <tbody>${rows}</tbody>
       </table>
     </div>
-    <div class="note">Tutte le mask valide tra i due estremi. Host = 2<sup>h</sup> − ${reserved} (network, broadcast${gw ? ', gateway' : ''}). Sottoreti = ${excl ? '2<sup>s</sup> − 2, senza subnet zero e all-ones' : '2<sup>s</sup>, con subnet zero e all-ones utilizzabili (RFC 1878)'}.</div>`;
+    <div class="note">Tutte le mask valide tra i due estremi. Host = 2<sup>h</sup> − ${reserved} (nome, broadcast${reserved === 3 ? ', gateway' : ''}). Sottoreti = ${excl ? '2<sup>s</sup> − 2, senza subnet zero e all-ones' : '2<sup>s</sup>, subnet zero e all-ones comprese (come nel libro)'}.</div>`;
 }
 
-/* ================= 3. Class ================= */
+function renderList() {
+  const el = $('sl-out');
+  const b = snBase();
+  if (b.error) { el.innerHTML = err('Correggi la rete da suddividere qui sopra.'); return; }
+  const r = parseMaskInput($('sl-mask').value);
+  if (r.error) { el.innerHTML = err(r.error); return; }
+  const p0 = b.prefix, p1 = r.prefix;
+  if (p1 < p0) { el.innerHTML = err(`La mask /${p1} è più corta di quella della rete (/${p0}): per aggregare reti usa la porta 5, CIDR.`); return; }
+  const s = p1 - p0, count = pow2(s), size = pow2(32 - p1);
+  const reserved = snReserved(), excl = $('sn-excl').checked;
+  const hosts = p1 <= 30 ? size - reserved : p1 === 31 ? 2 : 1;
+  const hostsHow = p1 <= 30 ? `2<sup>${32 - p1}</sup> − ${reserved}` : p1 === 31 ? 'link /31, RFC 3021' : 'host route';
+
+  // IP da evidenziare
+  let hi = -1, ipNote = '';
+  const ipStr = $('sl-ip').value.trim();
+  if (ipStr) {
+    const a = parseIP(ipStr);
+    if (a === null) ipNote = `<div class="err" style="margin-top:10px">IP da evidenziare non valido.</div>`;
+    else if (((a & b.mask) >>> 0) !== b.net) ipNote = `<div class="warn">${toDotted(a)} non appartiene a ${toDotted(b.net)}/${p0}.</div>`;
+    else {
+      hi = Math.floor((a - b.net) / size);
+      const sn = b.net + hi * size;
+      const what = p1 > 30 ? 'host' : a === sn ? 'è il nome della subnet' : a === sn + size - 1 ? 'è il broadcast della subnet' : 'host assegnabile';
+      ipNote = `<div class="note">${toDotted(a)} sta nella subnet n° ${fmt(hi)}, <b class="mono">${toDotted(sn)}/${p1}</b>: ${what}.</div>`;
+    }
+  }
+
+  const MAX = 256;
+  let idx;
+  if (count <= MAX) idx = Array.from({ length: count }, (_, i) => i);
+  else {
+    const set = new Set();
+    for (let i = 0; i < 128; i++) set.add(i);
+    if (hi >= 0) for (let i = Math.max(0, hi - 3); i <= Math.min(count - 1, hi + 3); i++) set.add(i);
+    for (let i = count - 4; i < count; i++) set.add(i);
+    idx = [...set].sort((x, y) => x - y);
+  }
+  let body = '', prev = -1;
+  for (const i of idx) {
+    if (prev >= 0 && i !== prev + 1) body += `<tr class="gap"><td colspan="6">… ${fmt(i - prev - 1)} subnet non mostrate …</td></tr>`;
+    prev = i;
+    const sn = b.net + i * size, sbc = sn + size - 1;
+    const first = p1 <= 30 ? sn + 1 : sn, last = p1 <= 30 ? sbc - 1 : sbc;
+    const excluded = excl && s > 0 && (i === 0 || i === count - 1);
+    const cls = i === hi ? ' class="hl"' : excluded ? ' class="dim" title="esclusa: subnet zero o all-ones"' : '';
+    body += `<tr${cls}><td class="num">${fmt(i)}</td><td><span class="b-sub">${binBits(i, s) || '—'}</span></td><td>${toDotted(sn)}/${p1}</td><td>${toDotted(first)}</td><td>${toDotted(last)}</td><td>${toDotted(sbc)}</td></tr>`;
+  }
+  const mg = magic(p1);
+  el.innerHTML = `
+    <div class="vl-summary" style="margin-top:0">
+      <div><div class="readout">${fmt(count)}</div><div class="readout-sub">subnet /${p1} (2<sup>${s}</sup>)${excl && s > 0 ? `, ${fmt(Math.max(0, count - 2))} senza zero e all-ones` : ''}</div></div>
+      <div><div class="readout">${fmt(hosts)}</div><div class="readout-sub">host per subnet (${hostsHow})</div></div>
+    </div>
+    <table class="kv">
+      ${row('Subnet mask', `${toDotted(prefixToMask(p1))} /${p1} · ${hex32(prefixToMask(p1))}`)}
+      ${row('Bit', `rete ${p0} + subnetId ${s} + hostId ${32 - p1}`)}
+      ${row('Mask in binario', `<span class="bin">${binRegions(prefixToMask(p1), p0, p1)}</span>`)}
+      ${mg && p1 < 32 && s > 0 ? row('Salto', `${fmt(mg.block)} nel ${ord(mg.k)} ottetto`) : ''}
+    </table>
+    ${ipNote}
+    <div class="scroll"><table class="grid"><thead><tr><th class="num">n°</th><th>subnetId</th><th>Nome subnet</th><th>Primo host</th><th>Ultimo host</th><th>Broadcast</th></tr></thead><tbody>${body}</tbody></table></div>
+    ${count > MAX ? `<div class="note">Mostro ${fmt(idx.length)} subnet su ${fmt(count)}: scrivi un IP per saltare a quella che ti interessa.</div>` : ''}`;
+}
+
+function renderSubnet() { renderSnBase(); renderOpt(); renderList(); }
+
+/* ================= 3. Classe ================= */
 const CLASSES = [
-  { c: 'A', lead: '0',    range: '0 – 127',   mask: '/8 255.0.0.0',     use: 'Unicast' },
-  { c: 'B', lead: '10',   range: '128 – 191', mask: '/16 255.255.0.0',  use: 'Unicast' },
-  { c: 'C', lead: '110',  range: '192 – 223', mask: '/24 255.255.255.0', use: 'Unicast' },
-  { c: 'D', lead: '1110', range: '224 – 239', mask: '—',                use: 'Multicast' },
-  { c: 'E', lead: '1111', range: '240 – 255', mask: '—',                use: 'Riservata, sperimentale' },
+  { c: 'A', lead: '0',    range: '0 – 127',   p: 8,    use: 'Unicast' },
+  { c: 'B', lead: '10',   range: '128 – 191', p: 16,   use: 'Unicast' },
+  { c: 'C', lead: '110',  range: '192 – 223', p: 24,   use: 'Unicast' },
+  { c: 'D', lead: '1110', range: '224 – 239', p: null, use: 'Multicast' },
+  { c: 'E', lead: '1111', range: '240 – 255', p: null, use: 'Riservata, sperimentale' },
 ];
+const CIDR_RULE = {
+  A: 'la metà superiore della classe A (primo ottetto 64–127) è riservata',
+  B: 'una classe B si assegna solo a reti con almeno 32 sottoreti e oltre 4096 host',
+  C: 'la metà inferiore (192–207) si assegna a blocchi contigui su base geografica; la metà superiore (208–223) non è assegnata',
+};
+const PRIV_OF_CLASS = {
+  A: '10.0.0.0/8, 1 rete di classe A',
+  B: '172.16.0.0 ÷ 172.31.255.255, 16 reti di classe B contigue (/12)',
+  C: '192.168.0.0 ÷ 192.168.255.255, 256 reti di classe C contigue (/16)',
+};
 function special(ip) {
   const inNet = (base, p) => ((ip & prefixToMask(p)) >>> 0) === parseIP(base);
   if (ip === 0xFFFFFFFF) return 'Limited broadcast 255.255.255.255';
+  if (ip === 0) return 'This host on this network 0.0.0.0';
   if (inNet('0.0.0.0', 8)) return '"This network" 0.0.0.0/8';
   if (inNet('127.0.0.0', 8)) return 'Loopback 127.0.0.0/8';
   if (inNet('10.0.0.0', 8)) return 'Privato RFC 1918, 10.0.0.0/8';
   if (inNet('172.16.0.0', 12)) return 'Privato RFC 1918, 172.16.0.0/12';
   if (inNet('192.168.0.0', 16)) return 'Privato RFC 1918, 192.168.0.0/16';
-  if (inNet('169.254.0.0', 16)) return 'Link-local APIPA 169.254.0.0/16';
+  if (inNet('169.254.0.0', 16)) return 'Link-local APIPA 169.254.0.0/16, non è privato RFC 1918';
   if (inNet('100.64.0.0', 10)) return 'CGNAT RFC 6598, 100.64.0.0/10';
+  if (inNet('224.0.0.0', 4)) return 'Multicast 224.0.0.0/4 (classe D)';
+  if (inNet('240.0.0.0', 4)) return 'Riservato 240.0.0.0/4 (classe E)';
   return null;
+}
+function classIndex(ip) {
+  if (((ip >>> 31) & 1) === 0) return 0;
+  if (((ip >>> 30) & 1) === 0) return 1;
+  if (((ip >>> 29) & 1) === 0) return 2;
+  if (((ip >>> 28) & 1) === 0) return 3;
+  return 4;
 }
 function renderClass() {
   const el = $('cls-out');
-  const ip = parseIP($('cls-in').value);
-  if (ip === null) { el.innerHTML = `<div class="err">Indirizzo IPv4 non valido.</div>`; return; }
-  let idx;
-  if (((ip >>> 31) & 1) === 0) idx = 0;
-  else if (((ip >>> 30) & 1) === 0) idx = 1;
-  else if (((ip >>> 29) & 1) === 0) idx = 2;
-  else if (((ip >>> 28) & 1) === 0) idx = 3;
-  else idx = 4;
+  const raw = $('cls-in').value.trim();
+  const ip = parseIP(raw);
+  if (ip === null) { el.innerHTML = err('Indirizzo IPv4 non valido.'); return; }
+  const idx = classIndex(ip);
   const k = CLASSES[idx], leadLen = k.lead.length, o1 = ip >>> 24;
+  const maskCls = { [0xFF000000]: 'A', [0xFFFF0000]: 'B', [0xFFFFFF00]: 'C' }[ip];
   const firstOctet = bin8(o1).split('').map((b, i) =>
     `<span class="${i < leadLen ? 'b-lead' : 'b-lo'}">${b}</span>`).join('');
   const sp = special(ip);
-  const rows = CLASSES.map((x, i) =>
-    `<tr class="${i === idx ? 'hl' : ''}"><td>${x.c}</td><td>${x.lead}…</td><td>${x.range}</td><td>${x.mask}</td><td>${x.use}</td></tr>`).join('');
+
+  let rows = row('Primo ottetto', `${o1} = <span class="bin">${firstOctet}</span>`) +
+             row('Leading bit', `<span class="b-lead">${k.lead}</span>`);
+  if (k.p) {
+    const m = prefixToMask(k.p), net = (ip & m) >>> 0, hid = (ip & ~m) >>> 0, bc = (net | (~m >>> 0)) >>> 0;
+    const nb = k.p - leadLen, hb = 32 - k.p;
+    rows +=
+      row('Netmask classful', `${toDotted(m)} /${k.p} · ${hex32(m)}`) +
+      row('netId (IP AND netmask)', `${toDotted(net)} <span class="muted">= ${net}</span>`) +
+      row('hostId', `${toDotted(hid)} <span class="muted">= ${fmt(hid)}</span>`) +
+      row('Broadcast della rete', toDotted(bc)) +
+      row('Bit', `${leadLen} leading + ${nb} netId + ${hb} hostId<span class="sub">netId di ${k.p} bit contando i leading bit</span>`) +
+      row('Reti della classe', `2<sup>${nb}</sup> = <b>${fmt(pow2(nb))}</b>`) +
+      row('Indirizzi per rete', `2<sup>${hb}</sup> = <b>${fmt(pow2(hb))}</b><span class="sub">host assegnabili 2<sup>${hb}</sup> − 2 = ${fmt(pow2(hb) - 2)}</span>`) +
+      row('Blocco privato della classe', PRIV_OF_CLASS[k.c]) +
+      row('Disposizioni CIDR (1993)', `<span class="prose">${CIDR_RULE[k.c]}</span>`);
+  } else {
+    rows += row('Netmask classful', 'nessuna') + row('Uso', `<span class="prose">${k.c === 'D' ? 'Multicast (RFC 1112): indirizzo di gruppo, solo come destinazione' : 'Riservata, sperimentale'}</span>`);
+  }
+  rows += row('Indirizzo in binario', `<span class="bin">${binSpans(ip, leadLen, 'b-lead', 'b-lo')}</span>`);
+  rows += row('Esadecimale e decimale', `${hex32(ip)} · ${ip}`);
+  if (sp) rows += row('Blocco speciale', sp);
+
+  let head = `<div class="readout">Classe ${k.c}</div>`;
+  if (maskCls) head = `<div class="readout">Netmask di classe ${maskCls}</div>
+    <div class="readout-sub">${esc(raw)} è la netmask classful della classe ${maskCls} (/${CLASS_PREFIX[maskCls]}). Letto come indirizzo, i leading bit ${k.lead} darebbero la classe ${k.c}: i dettagli sotto si riferiscono a quella lettura.</div>`;
+
+  // confronto
+  let cmp = '';
+  const cmpRaw = $('cls-cmp').value.trim();
+  if (cmpRaw) {
+    const b = parseIP(cmpRaw);
+    if (b === null) cmp = `<div class="err" style="margin-top:14px">Secondo indirizzo non valido.</div>`;
+    else {
+      const ca = classOf(ip), cb = classOf(b), pa = CLASS_PREFIX[ca], pb = CLASS_PREFIX[cb];
+      if (!pa || !pb) cmp = `<div class="verdict" style="--c:var(--yellow)"><div class="readout">Non confrontabili</div><p>Le classi D ed E non hanno un netId classful.</p></div>`;
+      else {
+        const na = (ip & prefixToMask(pa)) >>> 0, nb2 = (b & prefixToMask(pb)) >>> 0;
+        const same = ca === cb && na === nb2;
+        cmp = `<div class="verdict" style="--c:var(${same ? '--green' : '--red'})">
+          <div class="readout">${same ? 'Stessa rete classful' : 'Reti classful diverse'}</div>
+          <p>${toDotted(ip)} → classe ${ca}, netId <b class="mono">${toDotted(na)}</b><br>${toDotted(b)} → classe ${cb}, netId <b class="mono">${toDotted(nb2)}</b></p>
+        </div>`;
+      }
+    }
+  }
+
+  const tbl = CLASSES.map((x, i) => {
+    const nb = x.p ? x.p - x.lead.length : null, hb = x.p ? 32 - x.p : null;
+    return `<tr class="${i === idx ? 'hl' : ''}"><td>${x.c}</td><td>${x.lead}…</td><td>${x.range}</td><td>${x.p ? `/${x.p} ${toDotted(prefixToMask(x.p))}` : '—'}</td><td class="num">${x.p ? nb : '—'}</td><td class="num">${x.p ? fmt(pow2(nb)) : '—'}</td><td class="num">${x.p ? hb : '—'}</td><td class="num">${x.p ? fmt(pow2(hb) - 2) : '—'}</td><td>${x.use}</td></tr>`;
+  }).join('');
+
   el.innerHTML = `
-    <div class="readout">Classe ${k.c}</div>
-    <table class="kv">
-      ${row('Primo ottetto', `${o1} = <span class="bin">${firstOctet}</span>`)}
-      ${row('Leading bit', `<span class="b-lead">${k.lead}</span>`)}
-      ${row('Indirizzo in binario', `<span class="bin">${binSpans(ip, leadLen, 'b-lead', 'b-lo')}</span>`)}
-      ${row('Mask di default', k.mask)}
-      ${row('Uso', k.use)}
-      ${sp ? row('Blocco speciale', sp) : ''}
-    </table>
+    ${head}
+    <table class="kv">${rows}</table>
+    ${cmp}
     <div class="scroll">
       <table class="grid">
-        <thead><tr><th>Classe</th><th>Leading bit</th><th>Primo ottetto</th><th>Mask di default</th><th>Uso</th></tr></thead>
-        <tbody>${rows}</tbody>
+        <thead><tr><th>Classe</th><th>Leading bit</th><th>Primo ottetto</th><th>Mask di default</th><th class="num">Bit netId</th><th class="num">Reti</th><th class="num">Bit hostId</th><th class="num">Host per rete</th><th>Uso</th></tr></thead>
+        <tbody>${tbl}</tbody>
       </table>
-    </div>`;
+    </div>
+    <div class="note">Bit di netId esclusi i leading bit: A 7, B 14, C 21. Attenzione al refuso del libro: la classe B inizia con 10, non con 01.</div>`;
 }
 
 /* ================= 4. VLSM ================= */
 const SEG_COLORS = ['#1f6fd1', '#2e9e5b', '#d64541', '#e8a31c', '#7b5cd6', '#1aa3a3', '#c2447f', '#6b8a2a'];
 const DARK_TEXT = new Set(['#e8a31c']);
-let vlRows = [
-  { name: 'Uffici', hosts: 100 },
-  { name: 'Laboratorio', hosts: 50 },
-  { name: 'Wi-Fi ospiti', hosts: 25 },
-  { name: 'Server', hosts: 10 },
-  { name: 'Link router', hosts: 2 },
-];
+const VL_PRESETS = {
+  isp:    { base: '210.1.8.0/21',    book: true,  rows: [['Azienda A', 1000], ['Azienda B', 500], ['Azienda C', 200], ['Azienda D', 100]] },
+  lab:    { base: '192.168.0.0/24',  book: false, rows: [['Gruppo da 50', 50], ['Gruppo da 30', 30], ['Gruppo da 20', 20]] },
+  office: { base: '192.168.10.0/24', book: false, rows: [['Uffici', 100], ['Laboratorio', 50], ['Wi-Fi ospiti', 25], ['Server', 10], ['Link router', 2]] },
+};
+let vlRows = VL_PRESETS.office.rows.map(([name, hosts]) => ({ name, hosts }));
 let vlLast = null;
 
-function vlsm(base, reqs, gw) {
+function vlsm(base, reqs, gw, book) {
   const mask = prefixToMask(base.prefix);
   const net = (base.ip & mask) >>> 0;
-  const size = Math.pow(2, 32 - base.prefix);
+  const size = pow2(32 - base.prefix);
   const reserved = gw ? 3 : 2;
   const items = reqs.map((r, i) => {
     const need = r.hosts + reserved;
     let bits = 2;
-    while (Math.pow(2, bits) < need) bits++;
-    return { i, name: r.name, hosts: r.hosts, prefix: 32 - bits, block: Math.pow(2, bits) };
+    while (pow2(bits) < need) bits++;
+    return { i, name: r.name, hosts: r.hosts, need, prefix: 32 - bits, block: pow2(bits) };
   });
   const order = items.slice().sort((a, b) => b.block - a.block || a.i - b.i);
   let cursor = 0;
@@ -1116,14 +1648,34 @@ function vlsm(base, reqs, gw) {
     it.usable = it.block - reserved;
     cursor += it.block;
   }
-  return { net, prefix: base.prefix, size, used: cursor, order, gw, aligned: net === base.ip };
+  // dimezzamenti del libro: l'ultima subnet si prende tutto il blocco libero che resta allineato
+  if (book) {
+    const ok = order.filter(o => !o.fail), last = ok[ok.length - 1];
+    if (last) {
+      const rel = last.net - net;
+      let blk = last.block;
+      while (rel % (blk * 2) === 0 && rel + blk * 2 <= size) blk *= 2;
+      if (blk !== last.block) {
+        last.grown = last.prefix;
+        last.block = blk; last.prefix = 32 - Math.log2(blk);
+        last.bc = last.net + blk - 1; last.usable = blk - reserved;
+        cursor = rel + blk;
+      }
+    }
+  }
+  for (const it of order) {
+    if (it.fail) continue;
+    const end = it.net - net + it.block;
+    it.freeAfter = end < size ? rangeToCidrs(net + end, net + size - 1) : [];
+  }
+  return { net, prefix: base.prefix, size, used: cursor, order, gw, reserved, aligned: net === base.ip };
 }
 
 function renderVlRows() {
   $('vl-rows').innerHTML = vlRows.map((r, i) => `
     <div class="req">
       <input type="text" data-i="${i}" data-k="name" value="${esc(r.name)}" aria-label="Nome subnet ${i + 1}" spellcheck="false">
-      <input type="number" data-i="${i}" data-k="hosts" value="${r.hosts}" min="1" step="1" aria-label="Host richiesti subnet ${i + 1}">
+      <input type="number" data-i="${i}" data-k="hosts" value="${Number.isNaN(r.hosts) ? '' : r.hosts}" min="1" step="1" aria-label="Host richiesti subnet ${i + 1}">
       <button class="icon-btn" type="button" data-del="${i}" aria-label="Rimuovi ${esc(r.name || 'subnet ' + (i + 1))}">
         <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M3 3l8 8M11 3l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
@@ -1134,15 +1686,15 @@ function renderVlsm() {
   const el = $('vl-out');
   vlLast = null;
   const base = parseCidr($('vl-base').value);
-  if (base.error) { el.innerHTML = `<div class="err">${esc(base.error)}</div>`; return; }
-  if (base.prefix > 30) { el.innerHTML = `<div class="err">La rete di partenza è troppo piccola: serve almeno un /30.</div>`; return; }
+  if (base.error) { el.innerHTML = err(base.error); return; }
+  if (base.prefix > 30) { el.innerHTML = err('La rete di partenza è troppo piccola: serve almeno un /30.'); return; }
 
   const bad = vlRows.findIndex(r => !Number.isInteger(r.hosts) || r.hosts < 1);
   if (vlRows.length === 0) { el.innerHTML = `<div class="note">Aggiungi almeno una subnet per iniziare.</div>`; return; }
-  if (bad >= 0) { el.innerHTML = `<div class="err">Riga ${bad + 1}: gli host richiesti devono essere un intero da 1 in su.</div>`; return; }
+  if (bad >= 0) { el.innerHTML = err(`Riga ${bad + 1}: gli host richiesti devono essere un intero da 1 in su.`); return; }
 
-  const gw = $('vl-gw').checked;
-  const res = vlsm(base, vlRows.map((r, i) => ({ name: r.name.trim() || `Subnet ${i + 1}`, hosts: r.hosts })), gw);
+  const gw = $('vl-gw').checked, book = $('vl-book').checked;
+  const res = vlsm(base, vlRows.map((r, i) => ({ name: r.name.trim() || `Subnet ${i + 1}`, hosts: r.hosts })), gw, book);
   vlLast = res;
 
   const pct = (res.used / res.size * 100);
@@ -1176,6 +1728,12 @@ function renderVlsm() {
     </tr>`;
   }).join('');
 
+  const steps = res.order.filter(o => !o.fail).map(o => {
+    const grow = o.grown ? `, esteso a /${o.prefix}: è l'ultima e prende tutto il blocco libero` : '';
+    const left = o.freeAfter.length ? o.freeAfter.map(f => `<code>${toDotted(f.net)}/${f.prefix}</code>`).join(' + ') : 'niente';
+    return `<li>${esc(o.name)}: ${fmt(o.hosts)} + ${res.reserved} = ${fmt(o.need)} indirizzi → blocco da ${fmt(pow2(32 - (o.grown || o.prefix)))} (/${o.grown || o.prefix})${grow} → <b>${toDotted(o.net)}/${o.prefix}</b><br><span class="muted">Resta libero: ${left}</span></li>`;
+  }).join('');
+
   el.innerHTML = `
     ${res.aligned ? '' : `<div class="warn">L'indirizzo non è quello di rete: uso ${toDotted(res.net)}/${res.prefix}.</div>`}
     <div class="vl-summary">
@@ -1186,7 +1744,8 @@ function renderVlsm() {
     <div class="map" role="img" aria-label="Occupazione dello spazio di indirizzi">${segs}</div>
     <div class="map-scale"><span>${toDotted(res.net)}</span><span>${toDotted(res.net + res.size - 1)}</span></div>
     <div class="scroll"><table class="grid"><thead>${head}</thead><tbody>${body}</tbody></table></div>
-    <div class="note">Blocco minimo /30. ${gw ? 'Per ogni subnet si riservano network, broadcast e gateway (primo usabile).' : 'Per ogni subnet si riservano network e broadcast.'}</div>`;
+    <div class="note">Blocco minimo /30. ${gw ? 'Per ogni subnet si riservano nome, broadcast e gateway (primo usabile).' : 'Per ogni subnet si riservano nome e broadcast: host = 2<sup>h</sup> − 2.'}</div>
+    ${steps ? `<h3 class="minor">Dimezzamenti successivi</h3><ol class="calc">${steps}</ol>` : ''}`;
 }
 
 function vlTsv() {
@@ -1247,12 +1806,676 @@ $('vl-copy').addEventListener('click', async () => {
   else btn.textContent = (await copyText(t)) ? 'Tabella copiata' : 'Copia non riuscita';
   setTimeout(() => { btn.textContent = 'Copia tabella'; }, 1600);
 });
+$('vl-preset').addEventListener('change', e => {
+  const pr = VL_PRESETS[e.target.value];
+  if (!pr) return;
+  $('vl-base').value = pr.base;
+  $('vl-book').checked = pr.book;
+  $('vl-gw').checked = false;
+  vlRows = pr.rows.map(([name, hosts]) => ({ name, hosts }));
+  renderVlRows(); renderVlsm();
+  e.target.value = '';
+});
 $('vl-base').addEventListener('input', renderVlsm);
 $('vl-gw').addEventListener('change', renderVlsm);
+$('vl-book').addEventListener('change', renderVlsm);
+
+/* ================= 5. CIDR e supernetting ================= */
+function c24(n) { const o = octets(n); return `${o[0]}.${o[1]}.${o[2]}.x`; }
+
+function renderCidr() {
+  const el = $('cd-out');
+  const b = parseNet($('cd-block').value);
+  if (b.error) { el.innerHTML = err(b.error); return; }
+  const p = b.prefix, total = pow2(32 - p);
+  const notes = [];
+  if (b.how === 'classful') notes.push(`Nessun prefisso: uso la mask classful /${p}.`);
+  if (!b.aligned) notes.push(`${toDotted(b.ip)} non è l'inizio di un blocco /${p}: il blocco è ${toDotted(b.net)}/${p}.`);
+
+  let rows =
+    row('Maschera di supernetting', `${toDotted(b.mask)} · ${hex32(b.mask)}`) +
+    row('Intervallo', `${toDotted(b.net)} – ${toDotted(b.bc)}`) +
+    row('Indirizzi', `2<sup>${32 - p}</sup> = <b>${fmt(total)}</b>${p <= 30 ? `<span class="sub">come rete unica: ${fmt(total - 2)} host assegnabili</span>` : ''}`) +
+    row('Bit', `netId ${p} + hostId ${32 - p}`);
+  if (p <= 24) rows += row('Reti di classe C (/24) aggregate', `2<sup>${24 - p}</sup> = <b>${fmt(pow2(24 - p))}</b><span class="sub">da ${c24(b.net)} a ${c24(b.bc)}</span>`);
+  else rows += row('Reti di classe C (/24)', `nessuna intera: è 1/${fmt(pow2(p - 24))} di ${c24(b.net)}`);
+  if (p <= 16) rows += row('Reti di classe B (/16)', `2<sup>${16 - p}</sup> = ${fmt(pow2(16 - p))}`);
+  if (p <= 8) rows += row('Reti di classe A (/8)', `2<sup>${8 - p}</sup> = ${fmt(pow2(8 - p))}`);
+  const cls = classOf(b.net), pb = privateBlock(b.net);
+  rows += row('Classe del primo indirizzo', `${cls}${pb ? ` · privato RFC 1918 (${pb.label})` : ''}`);
+
+  // dimezzamenti: le due metà, i quarti, gli ottavi
+  let halves = '';
+  for (let d = 1; d <= 3 && p + d <= 32; d++) {
+    const q = p + d, sz = pow2(32 - q);
+    const pills = Array.from({ length: pow2(d) }, (_, i) => `<span class="pill">${toDotted(b.net + i * sz)}/${q}</span>`).join('');
+    halves += `<div class="note" style="margin-top:12px">${d === 1 ? 'Metà' : d === 2 ? 'Quarti' : 'Ottavi'} (/${q}, ${fmt(sz)} indirizzi ciascuno)</div><div class="pills" style="margin-top:4px">${pills}</div>`;
+  }
+  let nets = '';
+  if (p <= 24 && p >= 19) {
+    nets = `<h3 class="minor">Reti di classe C contenute</h3><div class="pills">${Array.from({ length: pow2(24 - p) }, (_, i) => `<span class="pill">${c24(b.net + i * 256)}</span>`).join('')}</div>`;
+  }
+  el.innerHTML = `
+    ${notes.length ? `<div class="warn" style="margin-top:0">${notes.map(esc).join('<br>')}</div>` : ''}
+    <div class="readout">${toDotted(b.net)}/${p}</div>
+    <div class="readout-sub">${toDotted(b.mask)}</div>
+    <table class="kv">${rows}</table>
+    <table class="kv binkv">
+      <tr><td>Primo indirizzo</td><td><span class="bin">${binSpans(b.net, p, 'b-hi', 'b-lo')}</span></td></tr>
+      <tr><td>Maschera</td><td><span class="bin">${binSpans(b.mask, p, 'b-hi', 'b-lo')}</span></td></tr>
+    </table>
+    <h3 class="minor">Dimezzamenti</h3>
+    ${halves || '<div class="note">Un /32 non si può dividere.</div>'}
+    ${nets}`;
+}
+
+// estremo di un intervallo: con /n o x vale il blocco intero, altrimenti l'IP letterale
+function parseEndpoint(t, end) {
+  if (/[\/xX*]/.test(t)) { const n = parseNet(t); return n.error ? n : { v: end ? n.bc : n.net }; }
+  const a = parseIP(t);
+  return a === null ? { error: `indirizzo non valido: ${t}` } : { v: a };
+}
+function parseAggEntry(tok) {
+  const parts = tok.split(/\s*(?:–|—|÷|-|\.\.)\s*/).filter(Boolean);
+  if (parts.length === 2) {
+    const a = parseEndpoint(parts[0], false), z = parseEndpoint(parts[1], true);
+    if (a.error) return a;
+    if (z.error) return z;
+    if (z.v < a.v) return { error: 'intervallo al contrario' };
+    return { s: a.v, e: z.v };
+  }
+  if (parts.length !== 1) return { error: 'non capisco questa riga' };
+  const n = parseNet(tok);
+  return n.error ? n : { s: n.net, e: n.bc };
+}
+
+function renderAgg() {
+  const el = $('cd-agg');
+  const toks = $('cd-list').value.split(/[\n,;]+/).map(s => s.trim()).filter(Boolean).slice(0, 256);
+  if (!toks.length) { el.innerHTML = `<div class="note">Scrivi almeno una rete.</div>`; return; }
+  const ivs = [], errs = [];
+  toks.forEach(t => { const r = parseAggEntry(t); if (r.error) errs.push(`${t}: ${r.error}`); else ivs.push({ ...r, t }); });
+  if (!ivs.length) { el.innerHTML = err(errs.join(' · ')); return; }
+
+  const lo = Math.min(...ivs.map(i => i.s)), hi = Math.max(...ivs.map(i => i.e));
+  let p = 32;
+  while (p > 0 && Math.floor(lo / pow2(32 - p)) !== Math.floor(hi / pow2(32 - p))) p--;
+  const snet = Math.floor(lo / pow2(32 - p)) * pow2(32 - p), sbc = snet + pow2(32 - p) - 1;
+
+  // unione degli intervalli
+  const sorted = ivs.slice().sort((a, b) => a.s - b.s);
+  const merged = [];
+  for (const iv of sorted) {
+    const last = merged[merged.length - 1];
+    if (last && iv.s <= last.e + 1) last.e = Math.max(last.e, iv.e);
+    else merged.push({ s: iv.s, e: iv.e });
+  }
+  const covered = merged.reduce((t, m) => t + (m.e - m.s + 1), 0);
+  const exact = merged.length === 1 && merged[0].s === snet && merged[0].e === sbc;
+  const blocks = merged.flatMap(m => rangeToCidrs(m.s, m.e));
+  const extra = pow2(32 - p) - covered;
+
+  const verdict = exact
+    ? `<div class="verdict" style="--c:var(--green)"><div class="readout">${toDotted(snet)}/${p}</div><p>Aggregazione esatta: la maschera di supernetting <b class="mono">${toDotted(prefixToMask(p))}</b> copre proprio le reti indicate, niente di più.</p></div>`
+    : `<div class="verdict" style="--c:var(--yellow)"><div class="readout">${toDotted(snet)}/${p}</div><p>È il blocco più piccolo che le contiene tutte, ma include anche ${fmt(extra)} indirizzi non richiesti. In blocchi CIDR esatti servono ${blocks.length} route: ${blocks.map(x => `<code>${toDotted(x.net)}/${x.prefix}</code>`).join(' + ')}</p></div>`;
+
+  const rows =
+    row('Maschera di supernetting', `${toDotted(prefixToMask(p))} /${p}`) +
+    row('Bit in comune', `${p}${p <= 24 ? ` · 24 − ${p} = ${24 - p} bit in meno di una classe C` : ''}`) +
+    row('Intervallo', `${toDotted(snet)} – ${toDotted(sbc)}`) +
+    row('Indirizzi', `2<sup>${32 - p}</sup> = ${fmt(pow2(32 - p))}`) +
+    (p <= 24 ? row('Reti di classe C aggregate', `2<sup>${24 - p}</sup> = <b>${fmt(pow2(24 - p))}</b> (${c24(snet)} ÷ ${c24(sbc)})`) : '');
+
+  const shown = ivs.slice(0, 16);
+  const binRows = shown.map(i => `<tr><td>${esc(i.t)}</td><td><span class="bin">${binSpans(i.s, p, 'b-hi', 'b-lo')}</span></td></tr>`).join('');
+
+  el.innerHTML = `
+    ${errs.length ? `<div class="err" style="margin-bottom:8px">Righe ignorate: ${errs.map(esc).join(' · ')}</div>` : ''}
+    ${verdict}
+    <table class="kv">${rows}</table>
+    <h3 class="minor">Bit in comune</h3>
+    <table class="kv binkv">${binRows}<tr><td><b>Supernet</b></td><td><span class="bin">${binSpans(snet, p, 'b-hi', 'b-lo')}</span></td></tr></table>
+    <div class="legend">Evidenziati i ${p} bit uguali in tutte le reti: diventano il netId della supernet.${ivs.length > 16 ? ` Mostro le prime 16 righe su ${ivs.length}.` : ''}</div>`;
+}
+
+/* ================= 6. Routing e TdI ================= */
+function renderRoute() {
+  const el = $('rt-out');
+  const rawIp = $('rt-ip').value.trim();
+  let ipStr = rawIp, p = null;
+  const m = rawIp.match(/^(.+?)\s*\/\s*(\d{1,2})$/);
+  if (m) { ipStr = m[1]; p = Number(m[2]); if (p > 32) { el.innerHTML = err('Il prefisso va da 0 a 32.'); return; } }
+  const ip = parseIP(ipStr);
+  if (ip === null) { el.innerHTML = err('IP dell\'host non valido.'); return; }
+  if (p === null) {
+    const r = parseMaskInput($('rt-mask').value);
+    if (r.error) { el.innerHTML = err(r.error); return; }
+    p = r.prefix;
+  }
+  const mask = prefixToMask(p), net = (ip & mask) >>> 0, bc = (net | (~mask >>> 0)) >>> 0;
+  const gwRaw = $('rt-gw').value.trim();
+  const gw = gwRaw ? parseIP(gwRaw) : null;
+  if (gwRaw && gw === null) { el.innerHTML = err('Gateway non valido.'); return; }
+  const dst = parseIP($('rt-dst').value);
+  if (dst === null) { el.innerHTML = err('IP di destinazione non valido.'); return; }
+  const dnet = (dst & mask) >>> 0;
+
+  const warns = [];
+  if (gw !== null && ((gw & mask) >>> 0) !== net) warns.push(`Il gateway ${toDotted(gw)} non è nella subnet dell'host (${toDotted(net)}/${p}): l'host non potrebbe raggiungerlo.`);
+  else if (gw !== null && p <= 30 && (gw === net || gw === bc)) warns.push(`Il gateway ${toDotted(gw)} è il nome o il broadcast della subnet: non è assegnabile.`);
+  if (p <= 30 && (ip === net || ip === bc)) warns.push(`${toDotted(ip)} è il nome o il broadcast della subnet: non si può assegnare all'host.`);
+
+  const steps = `<ul class="calc">
+      <li>netId host = ${toDotted(ip)} AND ${toDotted(mask)} = <b>${toDotted(net)}</b></li>
+      <li>netId destinazione = ${toDotted(dst)} AND ${toDotted(mask)} = <b>${toDotted(dnet)}</b></li>
+      <li>${dnet === net ? 'Uguali: la destinazione è nella stessa (sotto)rete' : 'Diversi: la destinazione è su un\'altra rete'}</li>
+    </ul>`;
+
+  let title, text, c = 'var(--teal)', l2 = null;
+  const o1 = dst >>> 24;
+  if (dst === ip) { title = 'Consegna locale'; text = 'La destinazione è l\'host stesso: la regola host /32 manda il pacchetto sull\'interfaccia di loopback.'; }
+  else if (o1 === 127) { title = 'Loopback'; text = 'Il pacchetto resta nella macchina: 127.x.x.x non esce mai sulla rete fisica.'; }
+  else if (dst === 0xFFFFFFFF) { title = 'Broadcast limitato'; text = 'Trama in broadcast sul segmento locale; i router non la inoltrano.'; l2 = 'ff:ff:ff:ff:ff:ff'; }
+  else if (classOf(dst) === 'D') { title = 'Multicast'; text = 'Trama verso un MAC multicast sul segmento, tramite la regola 224.0.0.0.'; l2 = 'MAC multicast'; }
+  else if (dnet === net && p <= 30 && dst === bc) { title = 'Broadcast della subnet'; text = 'È il broadcast diretto della propria subnet: trama in broadcast sul segmento.'; l2 = 'ff:ff:ff:ff:ff:ff'; }
+  else if (dnet === net && p <= 30 && dst === net) { title = 'Destinazione non valida'; text = 'È il nome della subnet: non identifica un host.'; c = 'var(--red)'; }
+  else if (dnet === net) { title = 'Consegna diretta'; text = `La trama va direttamente al MAC di ${toDotted(dst)}, ottenuto con ARP. Nessun gateway coinvolto.`; c = 'var(--green)'; l2 = `MAC di ${toDotted(dst)}`; }
+  else if (gw === null) { title = 'Non instradabile'; text = 'La destinazione è su un\'altra rete ma non c\'è un gateway di default: nessuna regola è vera, il pacchetto viene scartato.'; c = 'var(--red)'; }
+  else { title = 'Consegna indiretta'; text = `La trama va al MAC del gateway ${toDotted(gw)} (ottenuto con ARP); l'IP di destinazione resta ${toDotted(dst)}. Il gateway compare solo a livello 2.`; c = 'var(--yellow)'; l2 = `MAC di ${toDotted(gw)} (gateway)`; }
+  const frame = l2 ? `<div class="frame"><span class="l2">L2 → ${l2} · da MAC host</span><span class="l3">L3 ${toDotted(ip)} → ${toDotted(dst)}</span></div>` : '';
+
+  // TdI dell'host, come route print nel libro
+  const T = [];
+  if (gw !== null) T.push({ d: 0, m: 0, g: toDotted(gw), i: toDotted(ip), mean: 'Pacchetti stranieri (gateway di default)' });
+  T.push({ d: 0x7F000000, m: 0xFF000000, g: '127.0.0.1', i: '127.0.0.1', mean: 'Loopback' });
+  if (p < 32) T.push({ d: net, m: mask, g: toDotted(ip), i: toDotted(ip), mean: 'Rete di provenienza (consegna diretta)' });
+  T.push({ d: ip, m: 0xFFFFFFFF, g: '127.0.0.1', i: '127.0.0.1', mean: 'Host (se stesso)' });
+  if (p <= 30) T.push({ d: bc, m: 0xFFFFFFFF, g: toDotted(ip), i: toDotted(ip), mean: 'Broadcast sulla rete di provenienza' });
+  T.push({ d: 0xE0000000, m: 0xE0000000, g: toDotted(ip), i: toDotted(ip), mean: 'Multicast' });
+  T.push({ d: 0xFFFFFFFF, m: 0xFFFFFFFF, g: toDotted(ip), i: toDotted(ip), mean: 'Broadcast limitato' });
+  let win = null;
+  T.forEach(r => { r.pl = maskToPrefix(r.m); r.ok = ((dst & r.m) >>> 0) === r.d; if (r.ok && (!win || r.pl > win.pl)) win = r; });
+  const trows = T.map(r => `<tr class="${r === win ? 'win' : r.ok ? '' : 'no'}"><td>${toDotted(r.d)}</td><td>${toDotted(r.m)}</td><td>${r.g}</td><td>${r.i}</td><td class="wrap">${r.mean}</td><td>${r === win ? '✓ vince' : r.ok ? '✓' : ''}</td></tr>`).join('');
+
+  el.innerHTML = `
+    ${warns.map(w => `<div class="warn">${esc(w)}</div>`).join('')}
+    ${steps}
+    <div class="verdict" style="--c:${c}"><div class="readout">${title}</div><p>${text}</p>${frame}</div>
+    <h3 class="minor">TdI dell'host (route print)</h3>
+    <div class="scroll"><table class="grid">
+      <thead><tr><th>Indirizzo</th><th>Mask</th><th>Gateway</th><th>Interfaccia</th><th>Significato</th><th>${toDotted(dst)}</th></tr></thead>
+      <tbody>${trows}</tbody>
+    </table></div>
+    <div class="note">In verde la regola che vince per ${toDotted(dst)}: tra le regole vere quella con più bit a 1 nella mask. La riga 0.0.0.0 / 0.0.0.0 è sempre vera. Nel libro il multicast ha mask 224.0.0.0; Windows reale usa 240.0.0.0.</div>`;
+}
+
+const TB_PRESETS = {
+  r3: {
+    dst: '172.16.48.2',
+    text: `# Router R3: eth0 172.16.208.2, eth1 172.16.240.1, eth2 172.16.224.1
+172.16.0.0/20    172.16.208.1  eth0   # LANA, dietro R2
+172.16.16.0/20   172.16.208.1  eth0   # LANB, dietro R2
+172.16.32.0/20   172.16.240.2  eth1   # LANC, dietro R5
+172.16.48.0/20   172.16.224.2  eth2   # LAND, dietro R4
+172.16.192.0/20  172.16.208.1  eth0   # link R1-R2
+172.16.208.0/20  diretta       eth0   # link R2-R3
+172.16.224.0/20  diretta       eth2   # link R3-R4
+172.16.240.0/20  diretta       eth1   # link R3-R5`,
+  },
+  lpm: {
+    dst: '10.1.2.3',
+    text: `10.0.0.0 255.0.0.0       192.168.0.1    eth0  1
+10.1.0.0 255.255.0.0     192.168.0.2    eth0  1
+10.1.2.0 255.255.255.0   192.168.0.3    eth1  1
+192.168.0.0/24           diretta        eth0  0
+0.0.0.0 0.0.0.0          192.168.0.254  eth0  1   # pacchetti stranieri`,
+  },
+};
+
+function parseRule(line) {
+  const toks = line.trim().split(/\s+/);
+  let i = 0, net, p;
+  const t0 = toks[i++];
+  if (/^default$/i.test(t0)) { net = 0; p = 0; }
+  else {
+    const m = t0.match(/^([\d.]+)\/(\d{1,2})$/);
+    if (m) {
+      net = parseIP(m[1]); p = Number(m[2]);
+      if (net === null) return { error: `destinazione non valida: ${m[1]}` };
+      if (p > 32) return { error: 'prefisso oltre 32' };
+    } else {
+      net = parseIP(t0);
+      if (net === null) return { error: `destinazione non valida: ${t0}` };
+      const mk = toks[i++];
+      const mm = mk === undefined ? { error: 'manca la mask' } : parseMaskInput(mk);
+      if (mm.error) return { error: `mask non valida: ${mk || '(vuota)'}` };
+      p = mm.prefix;
+    }
+  }
+  const gt = toks[i++];
+  if (gt === undefined) return { error: 'manca il gateway (o "diretta")' };
+  let gw = null, direct = false;
+  if (/^(diretta|diretto|direct|on-link|connected|-|\*)$/i.test(gt)) direct = true;
+  else {
+    gw = parseIP(gt);
+    if (gw === null) return { error: `gateway non valido: ${gt}` };
+    if (gw === 0) direct = true;
+  }
+  let ifc = '', metric = null;
+  for (; i < toks.length; i++) {
+    if (/^\d+$/.test(toks[i]) && metric === null) metric = Number(toks[i]);
+    else if (!ifc) ifc = toks[i];
+  }
+  const mask = prefixToMask(p);
+  return { net: (net & mask) >>> 0, given: net, p, mask, gw, direct, ifc, metric };
+}
+
+function renderTable() {
+  const el = $('tb-out');
+  const dst = parseIP($('tb-dst').value);
+  if (dst === null) { el.innerHTML = err('IP di destinazione non valido.'); return; }
+  const rules = [], errs = [];
+  $('tb-rules').value.split('\n').forEach((ln, n) => {
+    const cm = ln.match(/#\s*(.*)$/);
+    const s = ln.replace(/#.*/, '').trim();
+    if (!s) return;
+    const r = parseRule(s);
+    if (r.error) { errs.push(`Riga ${n + 1}: ${r.error}`); return; }
+    r.line = n + 1; r.comment = cm ? cm[1].trim() : '';
+    rules.push(r);
+  });
+  if (!rules.length) { el.innerHTML = errs.length ? err(errs.join(' · ')) : `<div class="note">Scrivi almeno una regola o carica una TdI.</div>`; return; }
+
+  let win = null;
+  const mv = r => r.metric === null ? Infinity : r.metric;
+  rules.forEach(r => {
+    r.and = (dst & r.mask) >>> 0;
+    r.ok = r.and === r.net;
+    if (r.ok && (!win || r.p > win.p || (r.p === win.p && mv(r) < mv(win)))) win = r;
+  });
+  const nOk = rules.filter(r => r.ok).length;
+  const fixes = rules.filter(r => r.given !== r.net).map(r => `Riga ${r.line}: ${toDotted(r.given)}/${r.p} non è un nome di rete, uso ${toDotted(r.net)}/${r.p}.`);
+
+  let verdict;
+  if (!win) verdict = `<div class="verdict" style="--c:var(--red)"><div class="readout">Nessuna regola vera</div><p>Il pacchetto per ${toDotted(dst)} viene scartato: manca una regola 0.0.0.0 / 0.0.0.0 per i pacchetti stranieri.</p></div>`;
+  else {
+    const where = win.ifc ? ` · ${esc(win.ifc)}` : '';
+    const title = win.direct ? `Consegna diretta${where}` : `Next hop ${toDotted(win.gw)}${where}`;
+    const why = nOk === 1 ? 'È l\'unica regola vera.' : `Regole vere: ${nOk}. Vince quella con più bit a 1 nella mask (/${win.p})${rules.some(r => r.ok && r !== win && r.p === win.p) ? ', a parità di mask la metrica più bassa' : ''}.`;
+    const how = win.direct
+      ? `La destinazione è su una rete collegata direttamente${win.ifc ? ` a ${esc(win.ifc)}` : ''}: ARP per il MAC di ${toDotted(dst)}.`
+      : `Consegna indiretta: la trama va al MAC di ${toDotted(win.gw)}, l'IP di destinazione resta ${toDotted(dst)}.`;
+    verdict = `<div class="verdict" style="--c:var(${win.direct ? '--green' : '--teal'})"><div class="readout">${title}</div><p>${why} ${how}${win.comment ? ` <span class="muted">(${esc(win.comment)})</span>` : ''}</p></div>`;
+  }
+
+  const trs = rules.map(r => `<tr class="${r === win ? 'win' : r.ok ? '' : 'no'}">
+      <td class="num">${r.line}</td>
+      <td>${toDotted(r.net)}/${r.p}${r.comment ? `<span class="sub">${esc(r.comment)}</span>` : ''}</td>
+      <td>${toDotted(r.mask)}</td>
+      <td>${r.direct ? 'diretta' : toDotted(r.gw)}</td>
+      <td>${esc(r.ifc)}</td>
+      <td class="num">${r.metric === null ? '' : r.metric}</td>
+      <td>${toDotted(r.and)}</td>
+      <td>${r === win ? '✓ vince' : r.ok ? '✓ vera' : '✗'}</td>
+    </tr>`).join('');
+
+  el.innerHTML = `
+    ${[...errs, ...fixes].map(w => `<div class="warn">${esc(w)}</div>`).join('')}
+    ${verdict}
+    <div class="scroll"><table class="grid">
+      <thead><tr><th class="num">Riga</th><th>Destinazione</th><th>Mask</th><th>Gateway</th><th>Interfaccia</th><th class="num">Metrica</th><th>${toDotted(dst)} AND mask</th><th>Vera?</th></tr></thead>
+      <tbody>${trs}</tbody>
+    </table></div>
+    <div class="note">Una regola è vera se destinazione AND mask = indirizzo della regola. Tra le vere vince la più specifica (più «uni» nella mask); a parità decide la metrica: il libro scrive «più alta», nei sistemi reali vince la più bassa.</div>`;
+}
+function loadTb(key) {
+  const pr = TB_PRESETS[key];
+  if (!pr) return;
+  $('tb-rules').value = pr.text;
+  $('tb-dst').value = pr.dst;
+  renderTable();
+}
+
+function renderCmd() {
+  const el = $('cm-out');
+  const n = parseIP($('cm-net').value);
+  if (n === null) { el.innerHTML = err('Rete di destinazione non valida.'); return; }
+  const r = parseMaskInput($('cm-mask').value);
+  if (r.error) { el.innerHTML = err(r.error); return; }
+  const g = parseIP($('cm-gw').value);
+  if (g === null) { el.innerHTML = err('Gateway non valido.'); return; }
+  const p = r.prefix, mask = prefixToMask(p), N = toDotted((n & mask) >>> 0), M = toDotted(mask), G = toDotted(g);
+  const fix = ((n & mask) >>> 0) !== n ? `<div class="warn">${toDotted(n)} non è un nome di rete per /${p}: uso ${N}.</div>` : '';
+  const win = [
+    ['route print', 'visualizza la TdI'],
+    ['route print > tdi.txt', 'salva la TdI su file'],
+    [`route add ${N} mask ${M} ${G}`, 'aggiunge la route statica; l\'ultimo parametro è il gateway. Si perde al riavvio'],
+    [`route -p add ${N} mask ${M} ${G}`, 'come sopra, ma persistente (-p)'],
+    [`route delete ${N}`, 'elimina la route'],
+    ['netstat -r', 'visualizza la TdI (anche su Linux: netstat -rn)'],
+  ];
+  const addLx = p === 32 ? `route add -host ${N} gw ${G}` : p === 0 ? `route add default gw ${G}` : `route add -net ${N} netmask ${M} gw ${G}`;
+  const delLx = p === 32 ? `route del -host ${N} gw ${G}` : p === 0 ? `route del default gw ${G}` : `route del -net ${N} netmask ${M} gw ${G}`;
+  const lin = [
+    ['route -n', 'visualizza la Kernel IP routing table in formato numerico (Destination, Gateway, Genmask, Flags, Metric, Ref, Use, Iface)'],
+    [addLx, 'aggiunge la route statica (sintassi del libro)'],
+    [delLx, 'elimina la route'],
+    [`ip route add ${p === 0 ? 'default' : `${N}/${p}`} via ${G}`, 'equivalente moderno con iproute2'],
+    [`ip route del ${p === 0 ? 'default' : `${N}/${p}`} via ${G}`, 'elimina con iproute2'],
+    ['ip route', 'visualizza la TdI con iproute2'],
+  ];
+  const block = list => `<div class="cmds">${list.map(([c, d]) => `<div class="cmd"><div><code>${esc(c)}</code><span class="sub">${d}</span></div><button class="btn sm" type="button" data-copy="${esc(c)}">Copia</button></div>`).join('')}</div>`;
+  el.innerHTML = `${fix}<div class="os">Windows</div>${block(win)}<div class="os">Linux</div>${block(lin)}
+    <div class="note">Nella TdI di Linux le interfacce LAN si chiamano ethx, le WAN pppx, il loopback lo.</div>`;
+}
+
+/* ================= 7. Maschere e conversioni ================= */
+const MASK_OCTETS = [0, 128, 192, 224, 240, 248, 252, 254, 255];
+let cvPrefix = null;
+
+function convert(raw) {
+  const t = String(raw).trim().replace(/\s+/g, '');
+  if (!t) return { error: 'Scrivi un valore.' };
+  let m;
+  if ((m = t.match(/^\/(\d{1,2})$/)) || (/^\d{1,2}$/.test(t) && Number(t) <= 32)) {
+    const p = Number(m ? m[1] : t);
+    if (p > 32) return { error: 'Il prefisso va da 0 a 32.' };
+    return { kind: 'prefix', v: prefixToMask(p) };
+  }
+  if (/^[01]{8}$/.test(t)) return { kind: 'octet', o: parseInt(t, 2), from: 'binario' };
+  if (/^[01]{32}$/.test(t) || /^[01]{8}(\.[01]{8}){3}$/.test(t)) return { kind: 'bin32', v: parseInt(t.replace(/\./g, ''), 2) >>> 0 };
+  if (/^\d{1,3}(\.\d{1,3}){3}$/.test(t)) {
+    const v = parseIP(t);
+    return v === null ? { error: 'Ogni ottetto va da 0 a 255.' } : { kind: 'dotted', v };
+  }
+  if (/^\d+$/.test(t)) {
+    const d = Number(t);
+    if (d <= 255) return { kind: 'octet', o: d, from: 'decimale' };
+    if (d <= 4294967295) return { kind: 'dec32', v: d >>> 0 };
+    return { error: 'Oltre 4.294.967.295 (2³² − 1): non sta in 32 bit.' };
+  }
+  if ((m = t.match(/^(?:0x)?([0-9a-f]{1,8})h?$/i))) return { kind: 'hex', v: parseInt(m[1], 16) >>> 0 };
+  if (/^[0-9a-f]{1,2}(\.[0-9a-f]{1,2}){3}$/i.test(t)) return { kind: 'hex', v: parseInt(t.split('.').map(x => x.padStart(2, '0')).join(''), 16) >>> 0 };
+  return { error: 'Formato non riconosciuto: prova /n, a.b.c.d, 8 o 32 bit in binario, esadecimale o un decimale.' };
+}
+
+function renderConvert() {
+  const el = $('cv-out');
+  const c = convert($('cv-in').value);
+  cvPrefix = null;
+  if (c.error) { el.innerHTML = err(c.error); renderMaskTable(); return; }
+  if (c.kind === 'octet') {
+    const o = c.o, ones = MASK_OCTETS.indexOf(o);
+    const bits = bin8(o);
+    el.innerHTML = `
+      <div class="readout">${o} = ${bits}</div>
+      <div class="readout-sub">ottetto letto come ${c.from}</div>
+      <table class="kv">
+        ${row('Decimale', o)}
+        ${row('Binario', `<span class="bin">${bits}</span>`)}
+        ${row('Esadecimale', o.toString(16).padStart(2, '0'))}
+        ${row('Come ottetto di mask', ones >= 0 ? `${ones} bit a 1 · salto ${256 - o}` : '<span class="prose">non valido: i bit a 1 devono stare tutti a sinistra (0, 128, 192, 224, 240, 248, 252, 254, 255)</span>')}
+        ${row('Come primo ottetto', `classe ${classOf(o * 16777216)}`)}
+      </table>`;
+    renderMaskTable();
+    return;
+  }
+  const v = c.v, p = maskToPrefix(v);
+  if (p >= 0) cvPrefix = p;
+  const how = { prefix: 'prefisso CIDR', bin32: 'binario a 32 bit', dotted: 'notazione dotted', dec32: 'decimale a 32 bit', hex: 'esadecimale' }[c.kind];
+  let rows =
+    row('Dotted decimal', toDotted(v)) +
+    row('Binario', `<span class="bin">${p >= 0 ? binSpans(v, p, 'b-hi', 'b-lo') : binSpans(v, 0, 'b-hi', 'b-lo')}</span>`) +
+    row('Esadecimale', `${hex32(v)} · 0x${hex32(v).toUpperCase()} · ${octets(v).map(x => x.toString(16).padStart(2, '0')).join('.')}`) +
+    row('Decimale a 32 bit', `${v}`);
+  if (p >= 0) {
+    const classful = { 8: 'A', 16: 'B', 24: 'C' }[p];
+    const mg = magic(p);
+    rows +=
+      row('Come subnet mask', `<b>/${p}</b>${classful ? ` · netmask classful di classe ${classful}` : ''}`) +
+      row('Wildcard', toDotted((~v) >>> 0)) +
+      row('Bit di hostId', `${32 - p} → 2<sup>${32 - p}</sup> = ${fmt(pow2(32 - p))} indirizzi`) +
+      row('Host assegnabili', p <= 30 ? `2<sup>${32 - p}</sup> − 2 = <b>${fmt(pow2(32 - p) - 2)}</b>` : p === 31 ? '2, link /31 (RFC 3021)' : '1, host route') +
+      (mg && p < 32 ? row('Salto', `${mg.block} nel ${ord(mg.k)} ottetto`) : '');
+  } else if (c.kind !== 'prefix') {
+    rows += row('Come subnet mask', 'non valida: i bit a 1 non sono contigui');
+  }
+  if (c.kind !== 'prefix') {
+    const pb = privateBlock(v), sp = special(v);
+    rows += row('Come indirizzo', `classe ${classOf(v)}${pb ? ` · privato RFC 1918 (${pb.label})` : sp ? ` · ${sp}` : ''}`);
+  }
+  el.innerHTML = `
+    <div class="readout">${c.kind === 'prefix' ? `/${p} = ${toDotted(v)}` : toDotted(v)}</div>
+    <div class="readout-sub">letto come ${how}</div>
+    <table class="kv">${rows}</table>`;
+  renderMaskTable();
+}
+
+function renderMaskTable() {
+  const all = $('mt-all').checked;
+  let rows = '';
+  for (let p = all ? 0 : 8; p <= 32; p++) {
+    const m = prefixToMask(p), h = 32 - p, mg = magic(p);
+    const classful = { 8: 'A', 16: 'B', 24: 'C' }[p];
+    rows += `<tr class="${p === cvPrefix ? 'hl' : ''}"><td>/${p}</td><td>${toDotted(m)}</td><td>${hex32(m)}</td><td class="num">${h}</td><td class="num">${fmt(pow2(h))}</td><td class="num">${p <= 30 ? fmt(pow2(h) - 2) : p === 31 ? '2*' : '1'}</td><td>${mg && p < 32 ? `${mg.block} nel ${ord(mg.k)}` : '—'}</td><td class="tag">${classful ? `classe ${classful}` : ''}</td></tr>`;
+  }
+  $('mt-out').innerHTML = `<div class="scroll"><table class="grid">
+      <thead><tr><th>Prefisso</th><th>Subnet mask</th><th>Hex</th><th class="num">Bit host</th><th class="num">Indirizzi</th><th class="num">Host (2<sup>h</sup> − 2)</th><th>Salto</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>
+    <div class="note">* /31 solo per link punto-punto (RFC 3021), fuori dallo schema del libro.</div>`;
+}
+
+function renderStatic() {
+  $('oct-out').innerHTML = `<div class="scroll"><table class="grid">
+      <thead><tr><th class="num">Decimale</th><th>Binario</th><th class="num">Bit a 1</th><th class="num">Salto</th></tr></thead>
+      <tbody>${MASK_OCTETS.map((v, i) => `<tr><td class="num">${v}</td><td><span class="bin">${bin8(v).split('').map((b, j) => `<span class="${j < i ? 'b-hi' : 'b-lo'}">${b}</span>`).join('')}</span></td><td class="num">${i}</td><td class="num">${256 - v}</td></tr>`).join('')}</tbody>
+    </table></div>`;
+  $('pow-out').innerHTML = `<div class="pow">${Array.from({ length: 33 }, (_, e) => `<span><b>2<sup>${e}</sup></b> ${fmt(pow2(e))}</span>`).join('')}</div>`;
+}
+
+/* ================= 8. Teoria ================= */
+const REF = [
+  { t: 'Sigle', h: ['Sigla', 'Significato', 'Nota'], r: [
+    ['ES', 'End System', 'Host: stazione di partenza o di arrivo dei pacchetti'],
+    ['IS', 'Intermediate System', 'Router nelle reti CNLS, switch nelle CONS; nel gergo TCP/IP gateway'],
+    ['TdI', 'Tabella di Instradamento', 'Routing table; ogni riga è una regola (Indirizzo, Porta, metriche)'],
+    ['CIDR', 'Classless Inter-Domain Routing', 'RFC 1519, introdotto dall\'IETF nel 1993'],
+    ['VLSM', 'Variable Length Subnet Masks', 'RFC 1009: subnet mask diverse nella stessa rete, per esempio /30 sui link'],
+    ['RCC', 'Routing Control Center', 'IS speciale del routing centralizzato'],
+    ['FDR', 'Fixed Directory Routing', 'Non adattativo, TdI scritte a mano: route statiche'],
+    ['CNLS', 'ConnectionLess, non orientato alla connessione', 'Routing by network address'],
+    ['CONS', 'Connection Oriented, orientato alla connessione', 'Label swapping'],
+    ['MPLS', 'Multi Protocol Label Switching', 'Rete CONS con label swapping'],
+    ['ATM', 'Asynchronous Transfer Mode', 'Rete CONS con label swapping'],
+    ['ICANN', 'Internet Corporation for Assigned Names and Numbers', 'Autorità che gestisce l\'assegnazione degli IP, tramite lo IANA'],
+    ['IANA', 'Internet Assigned Numbers Authority', 'Opera per conto dell\'ICANN, direttive della RFC 2050'],
+    ['RIR', 'Regional Internet Registry', 'Agenzie continentali; per l\'Europa il RIPE'],
+    ['RIPE', 'Réseaux IP Européens', 'Il libro scrive «Reseaux IP European»'],
+    ['LIR', 'Local Internet Registry', 'Enti nazionali (in Italia circa 600 nel 2012)'],
+    ['ISP', 'Internet Service Provider', 'Distribuisce gli indirizzi agli utenti, con i LIR'],
+    ['IETF', 'Internet Engineering Task Force', 'Ha introdotto CIDR nel 1993'],
+    ['DNS', 'Domain Name System', 'Base di dati distribuita dei nomi; sostituisce il file hosts'],
+    ['ARP', 'Address Resolution Protocol', 'Da IP a MAC: del destinatario (consegna diretta) o del gateway (indiretta)'],
+    ['ICMP', 'Internet Control Message Protocol', 'Tra i messaggi: il Redirect del gateway'],
+    ['TTL', 'Time To Live', 'Campo IP che realizza l\'age counter'],
+    ['TCP', 'Transmission Control Protocol', 'Livello 4: controllo degli errori sugli ES'],
+    ['IMP', 'Interface Message Processor', 'Rudimentale router del 1969, progetto di Leonard Kleinrock'],
+    ['OSI', 'Open Systems Interconnection', 'Livello 2 Datalink, 3 Rete (Network), 4 Trasporto'],
+  ] },
+  { t: 'RFC', h: ['RFC', 'Argomento'], r: [
+    ['760, 791, 1166', 'Specifica originale classful (classi A–E)'],
+    ['950', 'Subnetting'],
+    ['1009', 'Special addresses e VLSM'],
+    ['1112', 'Multicast (classe D)'],
+    ['1519', 'CIDR (1993)'],
+    ['1918', 'Reti private'],
+    ['2050', 'Direttive seguite dallo IANA'],
+    ['1878', 'Subnet zero e all-ones utilizzabili (fuori dal libro)'],
+    ['3021', '/31 sui link punto-punto (fuori dal libro)'],
+  ] },
+  { t: 'Enti', h: ['Ente', 'Ruolo'], r: [
+    ['Catena', 'ICANN → tramite IANA → RIR (per l\'Europa RIPE) → LIR e ISP → utenti'],
+    ['ICANN', 'Autorità che gestisce l\'assegnazione degli indirizzi IP su Internet'],
+    ['IANA', 'Opera per conto dell\'ICANN, sotto le direttive della RFC 2050'],
+    ['RIR', 'Nome generico delle agenzie continentali'],
+    ['RIPE', 'Agenzia continentale per l\'Europa'],
+    ['LIR', 'Enti sul territorio nazionale (in Italia circa 600) che distribuiscono gli indirizzi agli utenti'],
+    ['ISP', 'Distribuiscono gli indirizzi agli utenti insieme ai LIR'],
+    ['IETF', 'Ha introdotto nel 1993 il nuovo schema di indirizzamento CIDR'],
+    ['IEEE', 'Standard delle LAN, per esempio i bridge 802.1D: non assegna indirizzi IP'],
+    ['ISO', 'Modello OSI: non assegna indirizzi IP'],
+  ] },
+  { t: 'Classi e blocchi', h: ['Voce', 'Dettaglio'], r: [
+    ['Classe A', 'Leading bit 0 · primo ottetto 0–127 · /8 255.0.0.0 · 7 bit di netId (2⁷ = 128 reti) · 24 bit di hostId (2²⁴ = 16.777.216 indirizzi)'],
+    ['Classe B', 'Leading bit 10 · 128–191 · /16 255.255.0.0 · 14 bit di netId (16.384 reti) · 16 bit di hostId (65.536 indirizzi)'],
+    ['Classe C', 'Leading bit 110 · 192–223 · /24 255.255.255.0 · 21 bit di netId (2.097.152 reti) · 8 bit di hostId (256 indirizzi)'],
+    ['Classe D', 'Leading bit 1110 · 224–239 · multicast (RFC 1112)'],
+    ['Classe E', 'Leading bit 1111 · 240–255 · riservata, sperimentale'],
+    ['Netmask in hex', 'A ff000000 · B ffff0000 · C ffffff00 (= 4294967040)'],
+    ['Privati 10.0.0.0/8', '1 rete di classe A'],
+    ['Privati 172.16.0.0/12', '172.16.0.0 ÷ 172.31.255.255: 16 reti di classe B contigue, 2²⁰ = 1.048.576 indirizzi'],
+    ['Privati 192.168.0.0/16', '192.168.0.0 ÷ 192.168.255.255: 256 reti di classe C contigue, 2¹⁶ = 65.536 indirizzi'],
+    ['Reti private', 'Sottratte alla circolazione su Internet, usate liberamente (milioni di macchine con lo stesso IP): hanno introdotto le intranet'],
+    ['Fuori dai lotti', '172.32.x.x e 192.169.x.x sono pubblici; 169.254.0.0/16 è link-local (APIPA), non RFC 1918'],
+    ['127.0.0.0/8', 'Loopback; 127.0.0.1 è localhost'],
+    ['Spazio IPv4', '2³² = 4.294.967.296 indirizzi, byte in ordine big endian, notazione dotted'],
+    ['CIDR (1993)', 'Classe A: metà superiore (64–127) riservata · Classe B: solo a reti con almeno 32 sottoreti e oltre 4096 host · Classe C: metà inferiore a blocchi contigui geografici, metà superiore non assegnata'],
+    ['Problemi del classful', 'Spreco di indirizzi nelle sottoreti, ISP costretti a blocchi sovradimensionati, classi A troppo grandi, TdI degli ISP troppo ampie (tipico: la classe B)'],
+  ] },
+  { t: 'Indirizzi speciali (RFC 1009)', h: ['Notazione', 'Significato', 'Uso'], r: [
+    ['{0, 0}', 'This host on this network (0.0.0.0)', 'Solo come sorgente'],
+    ['{0, hostId}', 'Specified host on this network', 'Solo come sorgente'],
+    ['{-1, -1}', 'Limited broadcast (255.255.255.255)', 'Solo come destinazione'],
+    ['{netId, -1}', 'Directed broadcast to specified network', 'Solo come destinazione'],
+    ['{netId, subnetId, -1}', 'Directed broadcast to specified subnet', 'Solo come destinazione'],
+    ['{netId, -1, -1}', 'Directed broadcast to all subnets of network', 'Solo come destinazione'],
+    ['{127, any}', 'Internal host loopback address', 'Sia come sorgente sia come destinazione'],
+    ['{netId, 0}', 'Specified network', 'Non utilizzabile come indirizzo IP'],
+    ['{netId, subnetId, 0}', 'Specified subnet', 'Non utilizzabile come indirizzo IP'],
+    ['Intruso', 'Multicast group address: classe D, RFC 1112, non è in RFC 1009', 'Solo come destinazione'],
+    ['Legenda', '0 = bit tutti a 0, −1 = bit tutti a 1', 'Nomi e broadcast non si assegnano a stazioni'],
+  ] },
+  { t: 'Algoritmi di instradamento', h: ['Algoritmo', 'Tipo', 'Caratteristiche'], r: [
+    ['FDR', 'Non adattativo (statico)', 'TdI scritta a mano dall\'amministratore con regole Indirizzo/Porta; le regole sono route statiche; a volte più linee per un destinatario, da usare in caso di guasto; il sysadmin ha il totale controllo dei flussi'],
+    ['Flooding', 'Non adattativo (statico)', 'Ritrasmette ogni pacchetto su tutte le linee tranne quella da cui è arrivato; garantito convergente, proposto in campo militare; sulle maglie genera loop: servono age counter (TTL) aggiornati a ogni transito ed eliminazione dei pacchetti recidivi; non ottimizza le linee, usato quasi solo come supporto'],
+    ['Routing centralizzato', 'Adattativo (dinamico)', 'Un IS speciale, l\'RCC, raccoglie lo stato della rete, calcola e distribuisce le TdI; ottimizza ma è poco robusto: se si guasta l\'RCC o una sua linea la rete collassa; stazione molto potente'],
+    ['Routing isolato', 'Adattativo (dinamico)', 'Ogni IS costruisce la TdI solo dal traffico che lo attraversa, senza consultare altri router; backward learning; gestione locale, simile ai bridge 802.1D (con Spanning Tree); pacchetti stranieri gestiti con difficoltà'],
+    ['Backward learning', 'Tecnica del routing isolato', '«Se da una porta P arriva un pacchetto dall\'host A, tramite P si raggiunge A»: aggiunge (A, P) alla TdI'],
+    ['Label swapping', 'Tecnica CONS', 'Non è uno dei quattro algoritmi: vedi CNLS e CONS'],
+    ['Distance vector', 'Adattativo', 'Algoritmo reale (per esempio RIP), non è tra i quattro del libro'],
+    ['Criteri richiesti', 'Requisiti sostanziali', 'Robustezza e versatilità, stabilità (convergere in tempi ragionevoli), equità (non danneggiare nodi); non operano in senso deterministico'],
+    ['Ottimalità', 'Obiettivi', 'Minimizzare il ritardo medio di ogni pacchetto (utente), massimizzare l\'utilizzo della rete (gestore), tolleranza ai guasti; spesso in contrasto'],
+    ['Elementi del livello 3', 'Base', 'Router e porte di inoltro, indirizzi nei pacchetti L3, TdI, algoritmo di instradamento (il MAC no)'],
+    ['TdI ideale', 'Irrealizzabile', 'Una riga per ogni host, aggiornata subito su tutti i nodi a ogni cambio di topologia'],
+  ] },
+  { t: 'CNLS e CONS', h: ['Aspetto', 'CNLS: by network address', 'CONS: label swapping'], r: [
+    ['IS', 'Router', 'Switch (label switch)'],
+    ['Il pacchetto contiene', 'Indirizzi L3 di mittente e destinatario', 'Solo la label, identificativo del circuito virtuale'],
+    ['Decisione', 'Per ogni pacchetto, con la TdI (chiave: indirizzo del destinatario)', 'All\'apertura si calcola il circuito virtuale; poi look-up table indicizzata da (porta d\'ingresso, label) → (porta d\'uscita, nuova label)'],
+    ['Cammini', 'Pacchetti dello stesso flusso su cammini diversi, possibili duplicati o fuori ordine', 'Tutti sullo stesso circuito virtuale'],
+    ['Fault tolerance', 'Alta, ma congestione e rallentamenti', 'Nessuna durante la sessione; presuppone connessioni Datalink molto affidabili'],
+    ['Velocità', 'Calcolo per ogni pacchetto', 'Accesso indicizzato, anche in hardware; tante righe quanti circuiti virtuali attivi'],
+    ['Esempi', 'TCP/IP, il modo classico', 'ATM, MPLS'],
+    ['Errori', 'Controllo demandato al livello 4 (TCP) sugli ES: gli IS sono dei gestori, inaffidabili', ''],
+    ['Busta L2', 'Cambia a ogni tratta: r1 a | A M, r2 r1 | A M, r3 r2 | A M, r4 r3 | A M, m r4 | A M; il pacchetto L3 resta A → M', ''],
+    ['Esempio del libro', '', 'Circuito A → M con label 3-6-5-6-8: S1 esce P2 L=6, S2 P2 L=5, S3 P3 L=6, S4 P2 L=8'],
+  ] },
+  { t: 'TdI, consegna e comandi', h: ['Voce', 'Dettaglio'], r: [
+    ['Regola', 'Ogni riga della TdI, con almeno i campi Indirizzo (destinazione) e Porta (interfaccia)'],
+    ['Metriche', 'Costo (economico e di efficienza o velocità delle linee) e hops (nodi intermedi da attraversare): prima il costo minore, poi meno hops'],
+    ['Più regole vere', 'Vince quella con più bit a 1 nella Mask; a parità decide la metrica (il libro dice «più alta», nei sistemi reali vince la più bassa)'],
+    ['0.0.0.0 / 0.0.0.0', 'Sempre vera: regola per i pacchetti «stranieri», dell\'ultima opportunità; porta al gateway di default'],
+    ['Consegna diretta', 'Stesso netId: trama al MAC del destinatario (ARP); in TdI il gateway è l\'IP della propria interfaccia (o «-»)'],
+    ['Consegna indiretta', 'netId diverso: trama al MAC del gateway (ARP); l\'IP di destinazione non cambia'],
+    ['ICMP Redirect', 'Host di subnet diverse sullo stesso switch: il primo pacchetto passa dal gateway, che risponde con un Redirect; poi spediscono direttamente'],
+    ['Parametri dell\'host', 'IP, netmask o subnet mask, IP del gateway di default'],
+    ['Windows', 'route print · route print > tdi.txt · route add 10.0.0.0 mask 255.0.0.0 192.168.0.1 · route -p add … (persistente) · route delete 10.0.0.0'],
+    ['Linux', 'route -n · route add -net 10.0.0.0 netmask 255.0.0.0 gw 192.168.0.1 · route del -net … · ip route · interfacce ethx (LAN), pppx (WAN), lo (loopback)'],
+    ['File hosts', 'File locale che associa nomi e IP (/etc/hosts); sulle reti grandi si passa al DNS'],
+    ['hostname', 'Stringa alfanumerica facile da ricordare associata a un IP'],
+    ['hops = 0', 'Programma del libro: destinazione raggiunta (host connesso al router); sentinella h = −1 contro loop ed errori'],
+    ['Programma «Hops»', 'Input illecito (da R1 a R9): cerca all\'infinito, salvo «Errore TTL»; in IP lo gestisce il campo TTL'],
+    ['next hop', 'Ogni salto da un router al successivo; anche il gateway di default è detto next hop'],
+    ['Calcolatrici IP', 'IP calculator: strumenti, anche web, per i calcoli del piano di indirizzamento (come questo)'],
+  ] },
+  { t: 'Formule', h: ['Cosa', 'Come'], r: [
+    ['Host per subnet', '2^h − 2, con h = bit di hostId = 32 − prefisso (nome e broadcast esclusi)'],
+    ['Subnet', '2^s con s = bit di subnetId; classful senza subnet zero e all-ones: 2^s − 2'],
+    ['Bit minimi', 'subnetId: il più piccolo s con 2^s ≥ N · hostId: il più piccolo h con 2^h − 2 ≥ H'],
+    ['Supernetting', 'n reti di classe C contigue = 2^k → prefisso 24 − k (4 reti C → /22)'],
+    ['Nome della subnet', 'IP AND mask: bit di hostId a 0'],
+    ['Broadcast', 'bit di hostId a 1 = nome + 2^h − 1'],
+    ['Salto', '256 − valore della mask nell\'ottetto non pieno (mask 240 → subnet ogni 16)'],
+    ['Ottetti di mask', '128, 192, 224, 240, 248, 252, 254, 255'],
+  ] },
+  { t: 'Esempi del libro', h: ['Esempio', 'Dati'], r: [
+    ['Internetwork 172.16.0.0/20', 'subnetId 4 bit (16 subnet), hostId 12 bit (4094 host); 8 subnet = 4 LAN + 4 link punto-punto'],
+    ['Subnet delle LAN', 'LANA 172.16.0.0 · LANB 172.16.16.0 · LANC 172.16.32.0 · LAND 172.16.48.0 (subnetId 0000–0011)'],
+    ['Subnet dei link', 'R1-R2 172.16.192.0 · R2-R3 172.16.208.0 · R3-R4 172.16.224.0 · R3-R5 172.16.240.0 (1100–1111; il libro scrive 0100 per R1-R2, è un refuso)'],
+    ['Router R3', 'eth0 172.16.208.2 · eth1 172.16.240.1 · eth2 172.16.224.1; LANA, LANB e R1-R2 via 172.16.208.1 (R2), LANC via 172.16.240.2 (R5), LAND via 172.16.224.2 (R4). TdI caricabile nella porta 6'],
+    ['Host di LAND', '172.16.48.2 · mask 255.255.240.0 · gateway 172.16.48.1 (R4) · broadcast 172.16.63.255'],
+    ['192.168.0.0/26', 'Subnet A .0 (host .1–.62, gateway .62, broadcast .63) · B .64 · C .128 · D .192; A1 = 192.168.0.1; gruppi da 50, 30, 20 host → 2 bit di subnetId'],
+    ['Classful', 'A1 196.13.1.1/24 con gateway 196.13.1.254 verso 196.13.2.5: consegna indiretta · 137.168.0.1 e 137.168.249.17: stessa rete B 137.168.0.0'],
+    ['ISP 210.1.8.0/21', 'A 1000 host → 210.1.8.0/22 · B 500 → 210.1.12.0/23 · C 200 → 210.1.14.0/24 · D 100 → 210.1.15.0/24. Caricabile nella porta 4'],
+    ['Supernet', '192.192.0.x ÷ 192.192.3.x = 192.192.0.0/22'],
+  ] },
+  { t: 'Trappole', h: ['Dove', 'Attenzione'], r: [
+    ['Classe B', 'A pag. 124 il libro scrive leading bit «01»: è un refuso, sono 10 (pag. 125 è corretto)'],
+    ['Subnet A', 'Il libro scrive host .1 ÷ .64: il giusto è .1 ÷ .62, .63 è il broadcast'],
+    ['Metrica', '«Più alta» nel libro; nei sistemi reali vince la più bassa'],
+    ['Host', 'Sempre 2^h − 2: il gateway è uno degli host, non si toglie a parte'],
+    ['Indirizzi speciali', '«Multicast group address» non è in RFC 1009: è l\'intruso'],
+    ['Privati', '169.254.x.x, 172.32.x.x e 192.169.x.x non sono RFC 1918'],
+    ['Classe D', '223 è ancora classe C, 240 è già classe E'],
+    ['Netmask', '255.255.255.0 è la netmask di classe C, anche se come indirizzo sarebbe classe E'],
+  ] },
+  { t: 'Date', h: ['Quando', 'Cosa'], r: [
+    ['29 ottobre 1969', 'Primo collegamento (Kleinrock, router IMP): a Stanford arriva «lo» invece di «login»'],
+    ['1993', 'CIDR (RFC 1519, IETF): lo schema classful decade ufficialmente'],
+    ['2010', 'Ultima assegnazione di una classe A'],
+    ['3 febbraio 2011', 'Esaurimento effettivo degli indirizzi IPv4'],
+  ] },
+];
+
+function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+function hlText(s, words) {
+  let out = esc(s);
+  for (const w of words) {
+    if (w.length < 2) continue;
+    const re = new RegExp(`(${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    out = out.replace(re, (m0, g, off, str) => {
+      // non evidenziare dentro le entità HTML
+      const amp = str.lastIndexOf('&', off), semi = str.lastIndexOf(';', off);
+      return amp > semi ? m0 : `<mark>${g}</mark>`;
+    });
+  }
+  return out;
+}
+function renderRef() {
+  const q = norm($('rf-q').value.trim());
+  const words = q.split(/\s+/).filter(Boolean);
+  const rawWords = $('rf-q').value.trim().split(/\s+/).filter(Boolean);
+  let shown = 0;
+  const html = REF.map(sec => {
+    const rows = sec.r.filter(r => {
+      if (!words.length) return true;
+      const hay = norm(sec.t + ' ' + r.join(' '));
+      return words.every(w => hay.includes(w));
+    });
+    if (!rows.length) return '';
+    shown += rows.length;
+    return `<section class="ref-sec"><h3>${sec.t}</h3><div class="scroll"><table class="grid ref"><thead><tr>${sec.h.map(x => `<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c, i) => `<td${i > 0 && /[{}]|\d+\.\d+\.\d+/.test(c) && c.length < 40 ? ' class="m"' : ''}>${hlText(c, rawWords)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></section>`;
+  }).join('');
+  $('rf-out').innerHTML = html || `<div class="note">Nessun risultato per «${esc($('rf-q').value)}».</div>`;
+}
 
 /* ================= port selector ================= */
-const VIEWS = ['addr', 'hosts', 'class', 'vlsm'];
-const LCD = { addr: 'Indirizzi subnet', hosts: 'Host per subnet', class: 'Classe e leading bit', vlsm: 'Calcolatore VLSM' };
+const VIEWS = ['addr', 'subnet', 'class', 'vlsm', 'cidr', 'route', 'mask', 'ref'];
+const LCD = {
+  addr: 'Indirizzi subnet', subnet: 'Subnetting', class: 'Classe e leading bit', vlsm: 'Calcolatore VLSM',
+  cidr: 'CIDR e supernet', route: 'Routing e TdI', mask: 'Maschere e basi', ref: 'Teoria livello 3',
+};
 const ports = [...document.querySelectorAll('.port')];
 
 function placeCable() {
@@ -1263,6 +2486,7 @@ function placeCable() {
 }
 
 function select(view, focus) {
+  if (view === 'hosts') view = 'subnet';   // vecchi link
   if (!VIEWS.includes(view)) view = 'addr';
   document.body.dataset.view = view;
   ports.forEach(p => {
@@ -1305,6 +2529,7 @@ document.addEventListener('keydown', e => {
   if (e.target.closest('input, textarea, select')) return;
   const n = Number(e.key);
   if (n >= 1 && n <= VIEWS.length) select(VIEWS[n - 1]);
+  if (e.key === '/') { e.preventDefault(); select('ref'); $('rf-q').focus(); $('rf-q').select(); }
 });
 window.addEventListener('hashchange', () => { const h = readHash(); if (h && h !== document.body.dataset.view) select(h); });
 window.addEventListener('resize', () => {
@@ -1368,14 +2593,38 @@ applyTheme(storedTheme(), false);
 $('ad-ip').addEventListener('input', renderAddr);
 $('ad-mask').addEventListener('input', renderAddr);
 $('ad-list').addEventListener('input', renderAddrList);
-$('hosts-mask').addEventListener('input', renderHosts);
-$('hosts-ip').addEventListener('input', renderHosts);
-$('hosts-gw').addEventListener('change', renderHosts);
-$('opt-n').addEventListener('input', renderOpt);
-$('opt-h').addEventListener('input', renderOpt);
-$('opt-excl').addEventListener('change', renderOpt);
+['sn-net', 'opt-n', 'opt-h'].forEach(id => $(id).addEventListener('input', renderSubnet));
+['sn-gw', 'sn-excl'].forEach(id => $(id).addEventListener('change', renderSubnet));
+['sl-mask', 'sl-ip'].forEach(id => $(id).addEventListener('input', renderList));
+$('opt-out').addEventListener('click', e => {
+  const b = e.target.closest('[data-list]');
+  if (!b) return;
+  $('sl-mask').value = '/' + b.dataset.list;
+  renderList();
+  $('sl-sec').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
 $('cls-in').addEventListener('input', renderClass);
-renderAddr(); renderHosts(); renderClass(); renderVlRows(); renderVlsm();
+$('cls-cmp').addEventListener('input', renderClass);
+$('cd-block').addEventListener('input', renderCidr);
+$('cd-list').addEventListener('input', renderAgg);
+['rt-ip', 'rt-mask', 'rt-gw', 'rt-dst'].forEach(id => $(id).addEventListener('input', renderRoute));
+$('tb-dst').addEventListener('input', renderTable);
+$('tb-rules').addEventListener('input', renderTable);
+$('tb-preset').addEventListener('change', e => { loadTb(e.target.value); e.target.value = ''; });
+['cm-net', 'cm-mask', 'cm-gw'].forEach(id => $(id).addEventListener('input', renderCmd));
+$('cm-out').addEventListener('click', async e => {
+  const b = e.target.closest('[data-copy]');
+  if (!b) return;
+  b.textContent = (await copyText(b.dataset.copy)) ? 'Copiato' : 'Non riuscito';
+  setTimeout(() => { b.textContent = 'Copia'; }, 1400);
+});
+$('cv-in').addEventListener('input', renderConvert);
+$('mt-all').addEventListener('change', renderMaskTable);
+$('rf-q').addEventListener('input', renderRef);
+
+renderAddr(); renderSubnet(); renderClass(); renderVlRows(); renderVlsm();
+renderCidr(); renderAgg(); renderRoute(); loadTb('r3'); renderCmd();
+renderConvert(); renderStatic(); renderRef();
 
 document.body.classList.add('no-anim');
 select(readHash() || 'addr');
