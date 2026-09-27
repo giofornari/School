@@ -15,6 +15,7 @@ oldfiles/
 bin/
 out/
 target/
+obj/
 build/
 .gradle/
 
