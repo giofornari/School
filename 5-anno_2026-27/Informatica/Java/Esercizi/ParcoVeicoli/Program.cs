@@ -19,7 +19,8 @@ namespace ParcoVeicoli
                 Console.WriteLine("4. Costo totale manutenzione");
                 Console.WriteLine("5. Esci");
                 Console.Write("Scelta: ");
-                scelta = int.Parse(Console.ReadLine());
+                // input non num -> 0 (non valida)
+                int.TryParse(Console.ReadLine(), out scelta);
 
                 switch (scelta)
                 {
