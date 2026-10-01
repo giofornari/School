@@ -1,0 +1,148 @@
+/* Foglio di stile del server web statico - Autore: Giordano Fornari */
+
+:root {
+    --sfondo: #f4f6f8;
+    --testo: #1f2933;
+    --tenue: #616e7c;
+    --card: #ffffff;
+    --bordo: #d9e2ec;
+    --accento: #2f6fb0;
+}
+
+/* tema scuro se il sistema lo preferisce */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --sfondo: #14181d;
+        --testo: #e4e7eb;
+        --tenue: #9aa5b1;
+        --card: #1f252c;
+        --bordo: #323b45;
+        --accento: #7fb3e8;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    background: var(--sfondo);
+    color: var(--testo);
+}
+
+header,
+main,
+footer {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+header {
+    padding-top: 48px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+}
+
+header p {
+    margin: 4px 0 0;
+    color: var(--tenue);
+}
+
+main {
+    flex: 1;
+    padding-top: 24px;
+    padding-bottom: 48px;
+}
+
+a {
+    color: var(--accento);
+}
+
+/* home: i due link come card */
+.scelte {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 16px 0 32px;
+}
+
+.card {
+    display: block;
+    padding: 24px;
+    background: var(--card);
+    border: 1px solid var(--bordo);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--testo);
+    transition: border-color 0.15s, transform 0.15s;
+}
+
+.card:hover {
+    border-color: var(--accento);
+    transform: translateY(-2px);
+}
+
+.card .titolo {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.card .sotto {
+    color: var(--accento);
+}
+
+.nota {
+    color: var(--tenue);
+    font-size: 0.95rem;
+}
+
+/* pagine con l'immagine */
+figure {
+    margin: 0 0 24px;
+}
+
+figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+figcaption {
+    margin-top: 8px;
+    color: var(--tenue);
+    font-size: 0.9rem;
+}
+
+.indietro {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.indietro:hover {
+    text-decoration: underline;
+}
+
+/* pagina 404 */
+.codice {
+    font-size: 4rem;
+    color: var(--accento);
+}
+
+footer {
+    padding-bottom: 24px;
+    color: var(--tenue);
+    font-size: 0.85rem;
+}
