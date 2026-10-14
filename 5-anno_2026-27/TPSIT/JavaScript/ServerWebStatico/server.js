@@ -26,17 +26,12 @@ function finito(err) {
     if (err) console.log('invio interrotto:', err.code);
 }
 
-// range "bytes=1000-1999": il browser vuole solo un pezzo del file (es. sposti il video)
+// range "bytes=1000-1999" o "bytes=1000-": il browser vuole solo un pezzo del file (es. sposti il video)
 function inviaPezzo(res, file, info, tipo, range) {
     const [a, b] = range.replace('bytes=', '').split('-');
-    const inizio = a === '' ? info.size - Number(b) : Number(a);
-    const fine = a === '' || b === '' ? info.size - 1 : Math.min(Number(b), info.size - 1);
-
-    // pezzo non valido -> 416
-    if (isNaN(inizio) || isNaN(fine) || inizio < 0 || inizio > fine) {
-        res.writeHead(416, { 'Content-Range': 'bytes */' + info.size });
-        return res.end();
-    }
+    const inizio = Number(a);
+    const fine = b ? Number(b) : info.size - 1;
+    if (isNaN(inizio)) return errore404(res);
 
     res.writeHead(206, {
         'Content-Type': tipo,

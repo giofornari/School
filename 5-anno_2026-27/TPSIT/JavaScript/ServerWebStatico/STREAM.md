@@ -47,6 +47,14 @@ Risultato:
 /pipeline  | RAM picco:  12 MB | completato: NO | file ancora aperti: 2   <- resta 2: chiuso bene
 ```
 
+## Chiusura: Express (express.js)
+```
+npm install
+npm run express
+```
+`express.static` fa le stesse cose di server.js (stream, Range/206), in una riga.
+Non è magia: è quello che abbiamo appena costruito. Il gzip qui manca: serve il middleware `compression`.
+
 ## Domande probabili
 - **Gli stream sono vecchi?** No, sono la base di Node (http, fs, zlib, socket sono tutti stream).
   È vecchio `.pipe()` da solo, sostituito da `pipeline`.
