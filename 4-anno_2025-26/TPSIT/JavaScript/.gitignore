@@ -5,3 +5,4 @@ node_modules/
 .claude/
 .playwright-mcp/
 logs_*.zip
+grande.bin
