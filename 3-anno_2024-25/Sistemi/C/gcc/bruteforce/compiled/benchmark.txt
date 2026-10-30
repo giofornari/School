@@ -1,0 +1,8 @@
+0: 		Tempo impiegato per la moltiplicazione delle matrici: 4.773 secondi
+
+2: 		Tempo impiegato per la moltiplicazione delle matrici: 0.699 secondi
+
+fast: 		Tempo impiegato per la moltiplicazione delle matrici: 0.937 secondi
+
+3 native: 	Tempo impiegato per la moltiplicazione delle matrici: 0.420 secondi
+
