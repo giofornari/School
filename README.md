@@ -6,13 +6,15 @@ Esplora tre anni di Informatica attraverso il codice scritto a scuola: esercizi,
 
 **[Terzo anno](#terzo-anno) · [Quarto anno](#quarto-anno) · [Quinto anno](#quinto-anno)**
 
-<a href="#percorso"><img src=".github/readme/percorso-triennio-9d3e671c97.svg" width="100%" alt="Terzo anno: capire un problema e tradurlo in un algoritmo. Quarto anno: organizzare dati e codice in applicazioni con interfacce. Quinto anno, in corso: collegare applicazioni, servizi e reti."></a>
+<a href="#percorso"><img src=".github/readme/percorso-triennio-86c041092f.svg" width="100%" alt="Terzo anno: capire un problema e tradurlo in un algoritmo. Quarto anno: organizzare dati e codice in applicazioni con interfacce. Quinto anno, in corso: collegare applicazioni, servizi e reti."></a>
+
+---
 
 <a id="percorso"></a>
 
 <a id="terzo-anno"></a>
 
-<a href="https://github.com/giofornari/School/tree/main/3-anno_2024-25"><img src=".github/readme/anno-3-rosso-48d4c642f4.svg" width="100%" alt="Terzo anno, 2024–25: le basi. Algoritmi, programmazione procedurale e primi concetti di rete e web. Python, C e HTML."></a>
+<a href="https://github.com/giofornari/School/tree/main/3-anno_2024-25"><img src=".github/readme/anno-3-rosso-8c47171fd1.svg" width="100%" alt="Terzo anno, 2024–25: le basi. Algoritmi, programmazione procedurale e primi concetti di rete e web. Python, C e HTML."></a>
 
 | Area | Cosa esplorare |
 | :--- | :--- |
@@ -22,9 +24,11 @@ Esplora tre anni di Informatica attraverso il codice scritto a scuola: esercizi,
 | [Sicurezza](3-anno_2024-25/Attacco-Difesa) | Challenge, analisi e difesa di servizi. |
 | [PCTO universitario](3-anno_2024-25/PCTO) | Attività Python all’Università di Parma. |
 
+---
+
 <a id="quarto-anno"></a>
 
-<a href="https://github.com/giofornari/School/tree/main/4-anno_2025-26"><img src=".github/readme/anno-4-giallo-eebc068358.svg" width="100%" alt="Quarto anno, 2025–26: oggetti e interfacce. Classi, ereditarietà, strutture dati, applicazioni e sviluppo web. Java, Python, JavaScript e Dart."></a>
+<a href="https://github.com/giofornari/School/tree/main/4-anno_2025-26"><img src=".github/readme/anno-4-giallo-a436b35fbd.svg" width="100%" alt="Quarto anno, 2025–26: oggetti e interfacce. Classi, ereditarietà, strutture dati, applicazioni e sviluppo web. Java, Python, JavaScript e Dart."></a>
 
 | Area | Cosa esplorare |
 | :--- | :--- |
@@ -33,9 +37,11 @@ Esplora tre anni di Informatica attraverso il codice scritto a scuola: esercizi,
 | [TPSIT](4-anno_2025-26/TPSIT) | Form, client e script JavaScript. |
 | [Attività estive](4-anno_2025-26/Estate) | Approfondimenti di programmazione e simulazione di reti. |
 
+---
+
 <a id="quinto-anno"></a>
 
-<a href="https://github.com/giofornari/School/tree/main/5-anno_2026-27"><img src=".github/readme/anno-5-blu-3b8c541573.svg" width="100%" alt="Quinto anno, 2026–27, in corso: applicazioni e reti. Applicazioni desktop, servizi web, subnetting e IoT. C#, Node.js e Packet Tracer."></a>
+<a href="https://github.com/giofornari/School/tree/main/5-anno_2026-27"><img src=".github/readme/anno-5-blu-d313d2d7be.svg" width="100%" alt="Quinto anno, 2026–27, in corso: applicazioni e reti. Applicazioni desktop, servizi web, subnetting e IoT. C#, Node.js e Packet Tracer."></a>
 
 | Area | Cosa esplorare |
 | :--- | :--- |
