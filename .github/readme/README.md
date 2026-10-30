@@ -1,6 +1,18 @@
 # Grafiche di School
 
-16 SVG: copertina, quattro infografiche, tre testate annuali, sette icone e chiusura. Palette petrolio/turchese/verde, onde di luce, Poppins e icone lineari riprendono il lavoro iniziato da Claude sullo stile DCS Academy.
+Sette SVG nello stile **lavagna del corso Security Awareness / Ariele**: carta `#F4F7FA`, quadretti `#DCE3EC`, inchiostro `#0D0D26`, tratto navy `#164573`, evidenziatore `#FFE27A`. Instrument Sans per il testo, una parola in Cormorant corsivo per tavola, JetBrains Mono per codice e dati.
+
+Riferimenti locali: `corsi/security-awareness/sistema/montaggio.md`, `produzione/src/ds/tokens.ts`, `produzione/src/ds/components/Lavagna.tsx` e i fotogrammi del modulo 5 nella repo DCS Academy. Si adatta il registro di spiegazione su carta, con le stesse famiglie tipografiche e gerarchie, a immagini statiche.
+
+| Tavola | Utilità |
+| :--- | :--- |
+| `hero.svg` | Associa ciascuna cartella annuale ai temi che contiene. |
+| `anno-3.svg` | Spiega la conversione 13 → 1101 del programma C `dectobin.c`. |
+| `anno-4.svg` | Mostra l’ereditarietà delle classi reali di Biblioteca. |
+| `anno-5.svg` | Segue richiesta, lettura del file e risposta di ServerWebStatico. |
+| `percorso.svg` | Distribuisce la history importata per mese e anno scolastico. |
+| `linguaggi.svg` | Confronta il materiale presente per linguaggio, con conteggi e percentuali. |
+| `confluenza.svg` | Indica gli anni e le aree in cui ritrovare ciascuna sorgente originale. |
 
 ## Rigenerazione
 
@@ -10,7 +22,9 @@ Dalla radice della repository, con Python e [uv](https://docs.astral.sh/uv/):
 uv run --with fonttools --with brotli python .github/readme/genera.py
 ```
 
-I font sono già in `font/`, insieme alla [licenza OFL](font/Poppins-OFL.txt). Gli SVG incorporano un sottoinsieme WOFF2: non richiedono font installati o servizi esterni. Le immagini sono statiche e hanno un titolo; il README fornisce descrizioni alternative e collegamenti testuali.
+I font WOFF2 sono in `font/`, insieme alla [licenza OFL e alle attribuzioni](font/OFL.txt). Il generatore istanzia i pesi e converte i glifi in tracciati: gli SVG non richiedono font installati, font web o servizi esterni. Le immagini sono statiche e hanno titolo e descrizione; il README fornisce descrizioni alternative e collegamenti agli esempi. Le etichette dettagliate si consultano ingrandendo l’immagine; percorsi ed esempi restano disponibili anche come testo nel README.
+
+Non ci sono icone generiche, fondali luminosi o una tavola finale ornamentale. I diagrammi sono semplificazioni didattiche verificate sui file collegati: non sostituiscono il codice completo.
 
 ## Dati e limiti
 
