@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioOverride - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg: #03060f;
+            --panel: #0a101f;
+            --panel-alt: #121a30;
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f5f6ff;
+            --muted: #9aa4c6;
+            --accent: #6bb8ff;
+            --accent-strong: #4a92ff;
+            --success: #38d98a;
+            --error: #f48b9c;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        header {
+            flex-shrink: 0;
+            background: rgba(10, 16, 31, 0.96);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        header h1 i {
+            color: var(--accent);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            border-top: 1px solid var(--border);
+            min-height: 0;
+            overflow: hidden;
+        }
+        
+        .left-panel {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+        }
+        
+        .tabs {
+            display: flex;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            border: none;
+            background: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 10px 12px;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text);
+        }
+        
+        .tab-button.active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .code-area {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--panel-alt);
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        
+        pre {
+            height: 100%;
+            margin: 0;
+        }
+        
+        pre code {
+            display: block;
+            height: 100%;
+            padding: 16px !important;
+            background: #060a17 !important;
+            color: #eaf0ff !important;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: 1px solid var(--border);
+            background: rgba(3, 6, 15, 0.85);
+            color: var(--text);
+            border-radius: 4px;
+            padding: 4px 9px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        
+        .copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .right-panel {
+            width: 32%;
+            min-width: 280px;
+            min-height: 0;
+            background: var(--panel);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .run-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .run-header h2 {
+            font-size: 0.9rem;
+        }
+        
+        .run-btn {
+            border: none;
+            background: linear-gradient(120deg, var(--accent-strong), var(--accent));
+            color: #fff;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        
+        .output-area {
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: var(--panel-alt);
+        }
+        
+        .output-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 130px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            background: rgba(4, 8, 20, 0.92);
+            color: var(--muted);
+        }
+        
+        .output-box.success {
+            border-color: rgba(56, 217, 138, 0.45);
+            color: var(--success);
+        }
+        
+        .output-box.error {
+            border-color: rgba(244, 139, 156, 0.45);
+            color: var(--error);
+        }
+        
+        .status-indicator {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            padding: 6px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            color: var(--muted);
+        }
+        
+        .status-indicator.success {
+            color: var(--success);
+            border-color: rgba(56, 217, 138, 0.35);
+        }
+        
+        .status-indicator.error {
+            color: var(--error);
+            border-color: rgba(244, 139, 156, 0.35);
+        }
+        
+        .status-indicator.running {
+            color: var(--accent);
+            border-color: rgba(107, 184, 255, 0.35);
+        }
+        
+        .spinner {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 999px;
+            border: 2px solid rgba(107, 184, 255, 0.2);
+            border-top-color: var(--accent);
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            border-left: 3px solid var(--accent);
+            padding: 7px 10px;
+            background: rgba(107, 184, 255, 0.08);
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 960px) {
+            body {
+                overflow: auto;
+            }
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            header {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .tabs {
+                padding: 0 8px;
+            }
+            .tab-button {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            BiblioOverride
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="bibliooverride-tab0">Main.java</button>
+        
+            <button class="tab-button " data-tab="bibliooverride-tab1">Pubblicazione.java</button>
+        
+            <button class="tab-button " data-tab="bibliooverride-tab2">Libro.java</button>
+        
+            <button class="tab-button " data-tab="bibliooverride-tab3">Rivista.java</button>
+        
+            <button class="tab-button " data-tab="bibliooverride-tab4">Biblioteca.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="bibliooverride-tab0" class="tab-content active">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * Test completo del sistema biblioteca con override dei metodi
+ * @author giordii.dev
+ */
+public class Main {
+    public static void main(String[] args) {
+        System.out.println(&quot;=== SISTEMA GESTIONE BIBLIOTECA CON PRESTITI ===\n&quot;);
+        
+        // creazione biblioteca comunale
+        Biblioteca biblioteca = new Biblioteca(&quot;Biblioteca Comunale&quot;);
+        // come quella del mio paese
+        
+        // libri classici che trovi in ogni biblioteca
+        Libro libro1 = new Libro(
+            &quot;Il Signore degli Anelli&quot;,
+            LocalDate.of(1954, 7, 29),
+            1216,  // un mattone da 1216 pagine... ma ne vale la pena
+            &quot;978-88-452-3232-8&quot;,
+            &quot;J.R.R. Tolkien&quot;
+        );
+        
+        Libro libro2 = new Libro(
+            &quot;1984&quot;,
+            LocalDate.of(1949, 6, 8),
+            328,  // distopia profetica, più attuale che mai
+            &quot;978-88-04-68012-1&quot;,
+            &quot;George Orwell&quot;
+        );
+        
+        Libro libro3 = new Libro(
+            &quot;Il Nome della Rosa&quot;,
+            LocalDate.of(1980, 9, 1),
+            503,  // giallo medievale italiano, orgoglio nazionale
+            &quot;978-88-452-6647-7&quot;,
+            &quot;Umberto Eco&quot;
+        );
+        
+        // riviste scientifiche per i nerd
+        Rivista rivista1 = new Rivista(
+            &quot;National Geographic Italia&quot;,
+            LocalDate.of(2024, 11, 1),
+            120,  // foto stupende, vale la pena solo per quelle
+            &quot;Vol. 35, N. 11&quot;,
+            &quot;Mensile&quot;
+        );
+        
+        Rivista rivista2 = new Rivista(
+            &quot;Focus&quot;,
+            LocalDate.of(2024, 10, 15),
+            98,  // scienza e tecnologia, quella italiana
+            &quot;N. 385&quot;,
+            &quot;Mensile&quot;
+        );
+        
+        Rivista rivista3 = new Rivista(
+            &quot;Le Scienze&quot;,
+            LocalDate.of(2024, 11, 20),
+            88,  // edizione italiana di Scientific American, roba seria
+            &quot;N. 655&quot;,
+            &quot;Mensile&quot;
+        );
+        
+        biblioteca.aggiungiPubblicazione(libro1);
+        biblioteca.aggiungiPubblicazione(rivista1);
+        biblioteca.aggiungiPubblicazione(libro2);
+        biblioteca.aggiungiPubblicazione(rivista2);
+        biblioteca.aggiungiPubblicazione(libro3);
+        biblioteca.aggiungiPubblicazione(rivista3);
+        
+        biblioteca.stampaCatalogo();
+        
+        System.out.println(&quot;--- INFORMAZIONI DURATE PRESTITI ---&quot;);
+        System.out.println(&quot;Durata prestito libri: &quot; + Libro.getDurataPrestitoGiorni() + &quot; giorni&quot;);
+        System.out.println(&quot;Durata prestito riviste: &quot; + Rivista.getDurataPrestitoGiorni() + &quot; giorni&quot;);
+        System.out.println();
+        
+        // test prestiti con nomi classici
+        System.out.println(&quot;--- TEST PRESTITI ---&quot;);
+        LocalDate oggi = LocalDate.of(2024, 12, 1);  // prima domenica di dicembre
+        
+        System.out.println(&quot;\nPrestito libro #1 a Mario Rossi dal &quot; + oggi);
+        biblioteca.effettuaPrestito(1, &quot;Mario Rossi&quot;, oggi);
+        // Mario vuole leggere il Signore degli Anelli... buona fortuna con 1216 pagine
+        
+        System.out.println(&quot;Prestito rivista #2 a Luigi Verdi dal &quot; + oggi);
+        biblioteca.effettuaPrestito(2, &quot;Luigi Verdi&quot;, oggi);
+        // Luigi appassionato di geografia e viaggi
+        
+        System.out.println(&quot;Prestito libro #3 a Anna Bianchi dal &quot; + oggi);
+        biblioteca.effettuaPrestito(3, &quot;Anna Bianchi&quot;, oggi);
+        // Anna legge Orwell per la verifica di italiano...
+        
+        System.out.println(&quot;Prestito rivista #4 a Carlo Neri dal &quot; + oggi);
+        biblioteca.effettuaPrestito(4, &quot;Carlo Neri&quot;, oggi);
+        // Carlo è un fanatico di Focus
+        
+        biblioteca.stampaPrestiti();
+        
+        System.out.println(&quot;--- CATALOGO AGGIORNATO ---&quot;);
+        biblioteca.stampaCatalogo();
+        
+        System.out.println(&quot;--- PUBBLICAZIONI DISPONIBILI ---&quot;);
+        for (Pubblicazione p : biblioteca.getPubblicazioniDisponibili()) {
+            System.out.println(p);
+        }
+        System.out.println();
+        
+        System.out.println(&quot;--- TEST RESTITUZIONE ---&quot;);
+        System.out.println(&quot;Restituzione libro #1&quot;);
+        biblioteca.effettuaRestituzione(1);
+        
+        System.out.println(&quot;Restituzione rivista #2&quot;);
+        biblioteca.effettuaRestituzione(2);
+        System.out.println();
+        
+        biblioteca.stampaPrestiti();
+        
+        System.out.println(&quot;--- VERIFICA OVERRIDE CALCOLO DATA ---&quot;);
+        // test del polimorfismo: stesso metodo, comportamenti diversi
+        Libro libroTest = new Libro(&quot;Test Libro&quot;, LocalDate.now(), 100, &quot;123-456&quot;, &quot;Autore Test&quot;);
+        Rivista rivistaTest = new Rivista(&quot;Test Rivista&quot;, LocalDate.now(), 50, &quot;N.1&quot;, &quot;Settimanale&quot;);
+        
+        LocalDate dataTest = LocalDate.of(2024, 12, 1);
+        System.out.println(&quot;Data inizio prestito: &quot; + dataTest);
+        System.out.println(&quot;Libro - Data restituzione (30 giorni): &quot; + libroTest.calcolaDataRestituzione(dataTest));
+        // libri: 30 giorni perché ci vuole tempo per leggerli
+        System.out.println(&quot;Rivista - Data restituzione (7 giorni): &quot; + rivistaTest.calcolaDataRestituzione(dataTest));
+        // riviste: solo 7 giorni, te le spari in un pomeriggio
+        System.out.println();
+        
+        System.out.println(&quot;--- STATISTICHE FINALI ---&quot;);
+        System.out.println(&quot;Totale pubblicazioni: &quot; + biblioteca.contaPubblicazioni());
+        System.out.println(&quot;Pubblicazioni in prestito: &quot; + biblioteca.getPubblicazioniInPrestito().size());
+        System.out.println(&quot;Pubblicazioni disponibili: &quot; + biblioteca.getPubblicazioniDisponibili().size());
+        System.out.println(&quot;Totale libri: &quot; + biblioteca.getLibri().size());
+        System.out.println(&quot;Totale riviste: &quot; + biblioteca.getRiviste().size());
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="bibliooverride-tab1" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * Classe astratta per pubblicazioni (libri e riviste)
+ * @author giordii.dev
+ */
+public abstract class Pubblicazione {
+    private static int contatore = 1;  // auto-increment per ID univoco
+    
+    private final int numProgressivo;  // ID generato automaticamente
+    private final String titolo;
+    private final LocalDate dataPubbl;  // quando è uscita
+    private final int numPagine;  // spessore del mattone
+    
+    // stato del prestito
+    private boolean inPrestito;  // true se qualcuno se l&#39;è presa
+    private LocalDate dataInizioPrestitoAttuale;  // quando è stata prestata
+    private String utentePrestito;  // chi l&#39;ha in questo momento
+    
+    public Pubblicazione(String titolo, LocalDate dataPubbl, int numPagine) {
+        if (titolo == null || titolo.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;titolo != null&quot;);
+        }
+        if (dataPubbl == null) {
+            throw new IllegalArgumentException(&quot;data pubblicazione != null&quot;);
+        }
+        if (numPagine &lt;= 0) {
+            throw new IllegalArgumentException(&quot;numero pagine &gt; 0&quot;);
+        }
+        
+        this.numProgressivo = contatore++;
+        this.titolo = titolo;
+        this.dataPubbl = dataPubbl;
+        this.numPagine = numPagine;
+        this.inPrestito = false;  // inizialmente disponibile
+        this.dataInizioPrestitoAttuale = null;
+        this.utentePrestito = null;
+    }
+    
+    /**
+     * Metodo astratto da implementare nelle sottoclassi per definire
+     * il calcolo della data di restituzione specifica per ogni tipo di pubblicazione
+     */
+    public abstract LocalDate calcolaDataRestituzione(LocalDate dataInizio);
+    
+    public void prestito(String utente, LocalDate dataInizio) {
+        if (inPrestito) {
+            throw new IllegalStateException(&quot;La pubblicazione è già in prestito&quot;);
+        }
+        if (utente == null || utente.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;Il nome dell&#39;utente non può essere vuoto&quot;);
+        }
+        if (dataInizio == null) {
+            throw new IllegalArgumentException(&quot;La data di inizio prestito non può essere null&quot;);
+        }
+        
+        this.inPrestito = true;
+        this.dataInizioPrestitoAttuale = dataInizio;
+        this.utentePrestito = utente;
+    }
+    
+    public void restituzione() {
+        if (!inPrestito) {
+            throw new IllegalStateException(&quot;La pubblicazione non è in prestito&quot;);
+        }
+        
+        this.inPrestito = false;
+        this.dataInizioPrestitoAttuale = null;
+        this.utentePrestito = null;
+    }
+    
+    public boolean isInPrestito() {
+        return inPrestito;
+    }
+    
+    public LocalDate getDataInizioPrestitoAttuale() {
+        return dataInizioPrestitoAttuale;
+    }
+    
+    public String getUtentePrestito() {
+        return utentePrestito;
+    }
+    
+    public LocalDate getDataRestituzioneAttesa() {
+        if (!inPrestito) {
+            return null;
+        }
+        return calcolaDataRestituzione(dataInizioPrestitoAttuale);
+    }
+    
+    public int getNumeroProgressivo() {
+        return numProgressivo;
+    }
+    
+    public String getTitolo() {
+        return titolo;
+    }
+    
+    public LocalDate getDataPubblicazione() {
+        return dataPubbl;
+    }
+    
+    public int getNumeroPagine() {
+        return numPagine;
+    }
+    
+    @Override
+    public String toString() {
+        String base = String.format(&quot;[#%d] %s - %s - %d pagine&quot;, 
+            numProgressivo, titolo, dataPubbl, numPagine);
+        
+        if (inPrestito) {
+            base += String.format(&quot; | IN PRESTITO a %s (dal %s, rientro previsto: %s)&quot;,
+                utentePrestito, dataInizioPrestitoAttuale, getDataRestituzioneAttesa());
+        } else {
+            base += &quot; | DISPONIBILE&quot;;  // sullo scaffale pronta per essere presa
+        }
+        
+        return base;
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="bibliooverride-tab2" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * Libro con ISBN e autore, prestabile per 30 giorni
+ * @author giordii.dev
+ */
+public class Libro extends Pubblicazione {
+    private final String isbn;    // codice identificativo internazionale
+    private final String autore;  // chi ha scritto questo capolavoro (o mattone)
+    
+    // Durata standard del prestito per i libri: 30 giorni
+    private static final int DURATA_PRESTITO_GIORNI = 30;  // un mese pieno per leggerlo con calma
+    
+    public Libro(String titolo, LocalDate dataPubbl, int numPagine, 
+                 String isbn, String autore) {
+        super(titolo, dataPubbl, numPagine);
+        
+        if (isbn == null || isbn.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;isbn != null&quot;);
+        }
+        if (autore == null || autore.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;autore != null&quot;);
+        }
+        
+        this.isbn = isbn;
+        this.autore = autore;
+    }
+    
+    /**
+     * Override: i libri possono essere prestati per 30 giorni
+     */
+    @Override
+    public LocalDate calcolaDataRestituzione(LocalDate dataInizio) {
+        if (dataInizio == null) {
+            throw new IllegalArgumentException(&quot;La data di inizio non può essere null&quot;);
+        }
+        return dataInizio.plusDays(DURATA_PRESTITO_GIORNI);
+    }
+    
+    public String getIsbn() {
+        return isbn;
+    }
+    
+    public String getAutore() {
+        return autore;
+    }
+    
+    public static int getDurataPrestitoGiorni() {
+        return DURATA_PRESTITO_GIORNI;
+    }
+    
+    @Override
+    public String toString() {
+        return &quot;LIBRO: &quot; + super.toString() + 
+               String.format(&quot; | ISBN: %s | Autore: %s&quot;, isbn, autore);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="bibliooverride-tab3" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+
+/**
+ * Rivista periodica, prestabile solo per 7 giorni
+ * @author giordii.dev
+ */
+public class Rivista extends Pubblicazione {
+    private final String numVol;  // numero/volume della rivista
+    private final String periodicita;  // quanto spesso esce (settimanale, mensile...)
+    
+    // Durata standard del prestito per le riviste: 7 giorni
+    private static final int DURATA_PRESTITO_GIORNI = 7;  // una settimana, si leggono veloci
+    
+    public Rivista(String titolo, LocalDate dataPubbl, int numPagine,
+                   String numVol, String periodicita) {
+        super(titolo, dataPubbl, numPagine);
+        
+        if (numVol == null || numVol.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;numero/volume != null&quot;);
+        }
+        if (periodicita == null || periodicita.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;periodicita != null&quot;);
+        }
+        
+        this.numVol = numVol;
+        this.periodicita = periodicita;
+    }
+    
+    /**
+     * Override: le riviste possono essere prestate per soli 7 giorni
+     */
+    @Override
+    public LocalDate calcolaDataRestituzione(LocalDate dataInizio) {
+        if (dataInizio == null) {
+            throw new IllegalArgumentException(&quot;La data di inizio non può essere null&quot;);
+        }
+        return dataInizio.plusDays(DURATA_PRESTITO_GIORNI);
+    }
+    
+    public String getNumeroVolume() {
+        return numVol;
+    }
+    
+    public String getPeriodicita() {
+        return periodicita;
+    }
+    
+    public static int getDurataPrestitoGiorni() {
+        return DURATA_PRESTITO_GIORNI;
+    }
+    
+    @Override
+    public String toString() {
+        return &quot;RIVISTA: &quot; + super.toString() + 
+               String.format(&quot; | N/Vol: %s | Periodicità: %s&quot;, numVol, periodicita);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="bibliooverride-tab4" class="tab-content ">
+                <pre><code class="language-java">import java.time.LocalDate;
+import java.util.ArrayList;
+
+/**
+ * Gestione biblioteca con prestiti di libri e riviste
+ * @author giordii.dev
+ */
+public class Biblioteca {
+    private final String nome;  // nome della biblioteca
+    private final ArrayList&lt;Pubblicazione&gt; pubbl;  // catalogo completo con libri e riviste
+    
+    /**
+     * Crea una nuova biblioteca
+     * @param nome il nome della biblioteca
+     */
+    public Biblioteca(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;nome != null&quot;);
+        }
+        this.nome = nome;
+        this.pubbl = new ArrayList&lt;&gt;();  // inizia vuoto, si riempie dopo
+    }
+    
+    /**
+     * Aggiunge una pubblicazione al catalogo
+     * @param p la pubblicazione da aggiungere
+     */
+    public void aggiungiPubblicazione(Pubblicazione p) {
+        if (p == null) {
+            throw new IllegalArgumentException(&quot;pubblicazione != null&quot;);
+        }
+        pubbl.add(p);  // aggiungi al catalogo
+    }
+    
+    /**
+     * Rimuove una pubblicazione dal catalogo
+     * @param numeroProgressivo l&#39;ID della pubblicazione
+     */
+    public void rimuoviPubblicazione(int numeroProgressivo) {
+        pubbl.removeIf(p -&gt; p.getNumeroProgressivo() == numeroProgressivo);
+        // usa lambda per rimozione efficiente, java 8+
+    }
+    
+    /**
+     * Cerca una pubblicazione per numero progressivo
+     * @param numeroProgressivo l&#39;ID univoco
+     * @return la pubblicazione trovata o null
+     */
+    public Pubblicazione cercaPerNumero(int numeroProgressivo) {
+        for (Pubblicazione p : pubbl) {
+            if (p.getNumeroProgressivo() == numeroProgressivo) {
+                return p;  // trovata!
+            }
+        }
+        return null;  // non esiste nel catalogo
+    }
+    
+    /**
+     * Effettua il prestito di una pubblicazione
+     * @param numeroProgressivo ID della pubblicazione
+     * @param utente nome dell&#39;utente
+     * @param dataInizio data inizio prestito
+     */
+    public void effettuaPrestito(int numeroProgressivo, String utente, LocalDate dataInizio) {
+        Pubblicazione p = cercaPerNumero(numeroProgressivo);
+        if (p == null) {
+            throw new IllegalArgumentException(&quot;Pubblicazione non trovata&quot;);
+        }
+        p.prestito(utente, dataInizio);  // delega alla pubblicazione
+    }
+    
+    public void effettuaRestituzione(int numeroProgressivo) {
+        Pubblicazione p = cercaPerNumero(numeroProgressivo);
+        if (p == null) {
+            throw new IllegalArgumentException(&quot;Pubblicazione non trovata&quot;);
+        }
+        p.restituzione();
+    }
+    
+    public ArrayList&lt;Pubblicazione&gt; getPubblicazioniInPrestito() {
+        ArrayList&lt;Pubblicazione&gt; inPrestito = new ArrayList&lt;&gt;();
+        for (Pubblicazione p : pubbl) {
+            if (p.isInPrestito()) {
+                inPrestito.add(p);  // fuori in giro da qualche parte
+            }
+        }
+        return inPrestito;
+    }
+    
+    public ArrayList&lt;Pubblicazione&gt; getPubblicazioniDisponibili() {
+        ArrayList&lt;Pubblicazione&gt; disponibili = new ArrayList&lt;&gt;();
+        for (Pubblicazione p : pubbl) {
+            if (!p.isInPrestito()) {
+                disponibili.add(p);  // sullo scaffale pronte
+            }
+        }
+        return disponibili;
+    }
+    
+    /**
+     * Filtra solo i libri dal catalogo
+     * @return lista dei libri
+     */
+    public ArrayList&lt;Libro&gt; getLibri() {
+        ArrayList&lt;Libro&gt; libri = new ArrayList&lt;&gt;();
+        for (Pubblicazione p : pubbl) {
+            if (p instanceof Libro) {
+                libri.add((Libro) p);  // cast sicuro dopo instanceof check
+            }
+        }
+        return libri;
+    }
+    
+    /**
+     * Filtra solo le riviste dal catalogo
+     * @return lista delle riviste
+     */
+    public ArrayList&lt;Rivista&gt; getRiviste() {
+        ArrayList&lt;Rivista&gt; riviste = new ArrayList&lt;&gt;();
+        for (Pubblicazione p : pubbl) {
+            if (p instanceof Rivista) {
+                riviste.add((Rivista) p);  // downcast sicuro, instanceof garantisce
+            }
+        }
+        return riviste;
+    }
+    
+    public int contaPubblicazioni() {
+        return pubbl.size();
+    }
+    
+    public void stampaCatalogo() {
+        System.out.println(&quot;\n=== CATALOGO BIBLIOTECA: &quot; + nome + &quot; ===&quot;);
+        System.out.println(&quot;Totale pubblicazioni: &quot; + pubbl.size());
+        System.out.println();
+        
+        if (pubbl.isEmpty()) {
+            System.out.println(&quot;Nessuna pubblicazione presente.&quot;);  // scaffali vuoti...
+        } else {
+            for (Pubblicazione p : pubbl) {
+                System.out.println(p);
+            }
+        }
+        System.out.println(&quot;==========================================&quot;);
+    }
+    
+    public void stampaPrestiti() {
+        System.out.println(&quot;\n=== PUBBLICAZIONI IN PRESTITO ===&quot;);
+        ArrayList&lt;Pubblicazione&gt; inPrestito = getPubblicazioniInPrestito();
+        
+        if (inPrestito.isEmpty()) {
+            System.out.println(&quot;Nessuna pubblicazione in prestito.&quot;);
+        } else {
+            for (Pubblicazione p : inPrestito) {
+                System.out.println(p);
+            }
+        }
+        System.out.println(&quot;==================================\n&quot;);
+    }
+    
+    public String getNome() {
+        return nome;
+    }
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">=== SISTEMA GESTIONE BIBLIOTECA CON PRESTITI ===
+
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 6
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | DISPONIBILE | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | DISPONIBILE | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | DISPONIBILE | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | DISPONIBILE | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+--- INFORMAZIONI DURATE PRESTITI ---
+Durata prestito libri: 30 giorni
+Durata prestito riviste: 7 giorni
+
+--- TEST PRESTITI ---
+
+Prestito libro #1 a Mario Rossi dal 2024-12-01
+Prestito rivista #2 a Luigi Verdi dal 2024-12-01
+Prestito libro #3 a Anna Bianchi dal 2024-12-01
+Prestito rivista #4 a Carlo Neri dal 2024-12-01
+
+=== PUBBLICAZIONI IN PRESTITO ===
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | IN PRESTITO a Mario Rossi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | IN PRESTITO a Luigi Verdi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+==================================
+
+--- CATALOGO AGGIORNATO ---
+
+=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===
+Totale pubblicazioni: 6
+
+LIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | IN PRESTITO a Mario Rossi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | IN PRESTITO a Luigi Verdi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-04-68012-1 | Autore: George Orwell
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
+==========================================
+--- PUBBLICAZIONI DISPONIBILI ---
+RIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile
+RIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile
+
+--- TEST RESTITUZIONE ---
+Restituzione libro #1
+Restituzione rivista #2
+
+
+=== PUBBLICAZIONI IN PRESTITO ===
+RIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile
+LIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco
+==================================
+
+--- VERIFICA OVERRIDE CALCOLO DATA ---
+Data inizio prestito: 2024-12-01
+Libro - Data restituzione (30 giorni): 2024-12-31
+Rivista - Data restituzione (7 giorni): 2024-12-08
+
+--- STATISTICHE FINALI ---
+Totale pubblicazioni: 6
+Pubblicazioni in prestito: 2
+Pubblicazioni disponibili: 4
+Totale libri: 3
+Totale riviste: 3
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["import java.time.LocalDate;\n\n/**\n * Test completo del sistema biblioteca con override dei metodi\n * @author giordii.dev\n */\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== SISTEMA GESTIONE BIBLIOTECA CON PRESTITI ===\\n\");\n        \n        // creazione biblioteca comunale\n        Biblioteca biblioteca = new Biblioteca(\"Biblioteca Comunale\");\n        // come quella del mio paese\n        \n        // libri classici che trovi in ogni biblioteca\n        Libro libro1 = new Libro(\n            \"Il Signore degli Anelli\",\n            LocalDate.of(1954, 7, 29),\n            1216,  // un mattone da 1216 pagine... ma ne vale la pena\n            \"978-88-452-3232-8\",\n            \"J.R.R. Tolkien\"\n        );\n        \n        Libro libro2 = new Libro(\n            \"1984\",\n            LocalDate.of(1949, 6, 8),\n            328,  // distopia profetica, più attuale che mai\n            \"978-88-04-68012-1\",\n            \"George Orwell\"\n        );\n        \n        Libro libro3 = new Libro(\n            \"Il Nome della Rosa\",\n            LocalDate.of(1980, 9, 1),\n            503,  // giallo medievale italiano, orgoglio nazionale\n            \"978-88-452-6647-7\",\n            \"Umberto Eco\"\n        );\n        \n        // riviste scientifiche per i nerd\n        Rivista rivista1 = new Rivista(\n            \"National Geographic Italia\",\n            LocalDate.of(2024, 11, 1),\n            120,  // foto stupende, vale la pena solo per quelle\n            \"Vol. 35, N. 11\",\n            \"Mensile\"\n        );\n        \n        Rivista rivista2 = new Rivista(\n            \"Focus\",\n            LocalDate.of(2024, 10, 15),\n            98,  // scienza e tecnologia, quella italiana\n            \"N. 385\",\n            \"Mensile\"\n        );\n        \n        Rivista rivista3 = new Rivista(\n            \"Le Scienze\",\n            LocalDate.of(2024, 11, 20),\n            88,  // edizione italiana di Scientific American, roba seria\n            \"N. 655\",\n            \"Mensile\"\n        );\n        \n        biblioteca.aggiungiPubblicazione(libro1);\n        biblioteca.aggiungiPubblicazione(rivista1);\n        biblioteca.aggiungiPubblicazione(libro2);\n        biblioteca.aggiungiPubblicazione(rivista2);\n        biblioteca.aggiungiPubblicazione(libro3);\n        biblioteca.aggiungiPubblicazione(rivista3);\n        \n        biblioteca.stampaCatalogo();\n        \n        System.out.println(\"--- INFORMAZIONI DURATE PRESTITI ---\");\n        System.out.println(\"Durata prestito libri: \" + Libro.getDurataPrestitoGiorni() + \" giorni\");\n        System.out.println(\"Durata prestito riviste: \" + Rivista.getDurataPrestitoGiorni() + \" giorni\");\n        System.out.println();\n        \n        // test prestiti con nomi classici\n        System.out.println(\"--- TEST PRESTITI ---\");\n        LocalDate oggi = LocalDate.of(2024, 12, 1);  // prima domenica di dicembre\n        \n        System.out.println(\"\\nPrestito libro #1 a Mario Rossi dal \" + oggi);\n        biblioteca.effettuaPrestito(1, \"Mario Rossi\", oggi);\n        // Mario vuole leggere il Signore degli Anelli... buona fortuna con 1216 pagine\n        \n        System.out.println(\"Prestito rivista #2 a Luigi Verdi dal \" + oggi);\n        biblioteca.effettuaPrestito(2, \"Luigi Verdi\", oggi);\n        // Luigi appassionato di geografia e viaggi\n        \n        System.out.println(\"Prestito libro #3 a Anna Bianchi dal \" + oggi);\n        biblioteca.effettuaPrestito(3, \"Anna Bianchi\", oggi);\n        // Anna legge Orwell per la verifica di italiano...\n        \n        System.out.println(\"Prestito rivista #4 a Carlo Neri dal \" + oggi);\n        biblioteca.effettuaPrestito(4, \"Carlo Neri\", oggi);\n        // Carlo è un fanatico di Focus\n        \n        biblioteca.stampaPrestiti();\n        \n        System.out.println(\"--- CATALOGO AGGIORNATO ---\");\n        biblioteca.stampaCatalogo();\n        \n        System.out.println(\"--- PUBBLICAZIONI DISPONIBILI ---\");\n        for (Pubblicazione p : biblioteca.getPubblicazioniDisponibili()) {\n            System.out.println(p);\n        }\n        System.out.println();\n        \n        System.out.println(\"--- TEST RESTITUZIONE ---\");\n        System.out.println(\"Restituzione libro #1\");\n        biblioteca.effettuaRestituzione(1);\n        \n        System.out.println(\"Restituzione rivista #2\");\n        biblioteca.effettuaRestituzione(2);\n        System.out.println();\n        \n        biblioteca.stampaPrestiti();\n        \n        System.out.println(\"--- VERIFICA OVERRIDE CALCOLO DATA ---\");\n        // test del polimorfismo: stesso metodo, comportamenti diversi\n        Libro libroTest = new Libro(\"Test Libro\", LocalDate.now(), 100, \"123-456\", \"Autore Test\");\n        Rivista rivistaTest = new Rivista(\"Test Rivista\", LocalDate.now(), 50, \"N.1\", \"Settimanale\");\n        \n        LocalDate dataTest = LocalDate.of(2024, 12, 1);\n        System.out.println(\"Data inizio prestito: \" + dataTest);\n        System.out.println(\"Libro - Data restituzione (30 giorni): \" + libroTest.calcolaDataRestituzione(dataTest));\n        // libri: 30 giorni perché ci vuole tempo per leggerli\n        System.out.println(\"Rivista - Data restituzione (7 giorni): \" + rivistaTest.calcolaDataRestituzione(dataTest));\n        // riviste: solo 7 giorni, te le spari in un pomeriggio\n        System.out.println();\n        \n        System.out.println(\"--- STATISTICHE FINALI ---\");\n        System.out.println(\"Totale pubblicazioni: \" + biblioteca.contaPubblicazioni());\n        System.out.println(\"Pubblicazioni in prestito: \" + biblioteca.getPubblicazioniInPrestito().size());\n        System.out.println(\"Pubblicazioni disponibili: \" + biblioteca.getPubblicazioniDisponibili().size());\n        System.out.println(\"Totale libri: \" + biblioteca.getLibri().size());\n        System.out.println(\"Totale riviste: \" + biblioteca.getRiviste().size());\n    }\n}\n", "import java.time.LocalDate;\n\n/**\n * Classe astratta per pubblicazioni (libri e riviste)\n * @author giordii.dev\n */\npublic abstract class Pubblicazione {\n    private static int contatore = 1;  // auto-increment per ID univoco\n    \n    private final int numProgressivo;  // ID generato automaticamente\n    private final String titolo;\n    private final LocalDate dataPubbl;  // quando è uscita\n    private final int numPagine;  // spessore del mattone\n    \n    // stato del prestito\n    private boolean inPrestito;  // true se qualcuno se l'è presa\n    private LocalDate dataInizioPrestitoAttuale;  // quando è stata prestata\n    private String utentePrestito;  // chi l'ha in questo momento\n    \n    public Pubblicazione(String titolo, LocalDate dataPubbl, int numPagine) {\n        if (titolo == null || titolo.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"titolo != null\");\n        }\n        if (dataPubbl == null) {\n            throw new IllegalArgumentException(\"data pubblicazione != null\");\n        }\n        if (numPagine <= 0) {\n            throw new IllegalArgumentException(\"numero pagine > 0\");\n        }\n        \n        this.numProgressivo = contatore++;\n        this.titolo = titolo;\n        this.dataPubbl = dataPubbl;\n        this.numPagine = numPagine;\n        this.inPrestito = false;  // inizialmente disponibile\n        this.dataInizioPrestitoAttuale = null;\n        this.utentePrestito = null;\n    }\n    \n    /**\n     * Metodo astratto da implementare nelle sottoclassi per definire\n     * il calcolo della data di restituzione specifica per ogni tipo di pubblicazione\n     */\n    public abstract LocalDate calcolaDataRestituzione(LocalDate dataInizio);\n    \n    public void prestito(String utente, LocalDate dataInizio) {\n        if (inPrestito) {\n            throw new IllegalStateException(\"La pubblicazione è già in prestito\");\n        }\n        if (utente == null || utente.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"Il nome dell'utente non può essere vuoto\");\n        }\n        if (dataInizio == null) {\n            throw new IllegalArgumentException(\"La data di inizio prestito non può essere null\");\n        }\n        \n        this.inPrestito = true;\n        this.dataInizioPrestitoAttuale = dataInizio;\n        this.utentePrestito = utente;\n    }\n    \n    public void restituzione() {\n        if (!inPrestito) {\n            throw new IllegalStateException(\"La pubblicazione non è in prestito\");\n        }\n        \n        this.inPrestito = false;\n        this.dataInizioPrestitoAttuale = null;\n        this.utentePrestito = null;\n    }\n    \n    public boolean isInPrestito() {\n        return inPrestito;\n    }\n    \n    public LocalDate getDataInizioPrestitoAttuale() {\n        return dataInizioPrestitoAttuale;\n    }\n    \n    public String getUtentePrestito() {\n        return utentePrestito;\n    }\n    \n    public LocalDate getDataRestituzioneAttesa() {\n        if (!inPrestito) {\n            return null;\n        }\n        return calcolaDataRestituzione(dataInizioPrestitoAttuale);\n    }\n    \n    public int getNumeroProgressivo() {\n        return numProgressivo;\n    }\n    \n    public String getTitolo() {\n        return titolo;\n    }\n    \n    public LocalDate getDataPubblicazione() {\n        return dataPubbl;\n    }\n    \n    public int getNumeroPagine() {\n        return numPagine;\n    }\n    \n    @Override\n    public String toString() {\n        String base = String.format(\"[#%d] %s - %s - %d pagine\", \n            numProgressivo, titolo, dataPubbl, numPagine);\n        \n        if (inPrestito) {\n            base += String.format(\" | IN PRESTITO a %s (dal %s, rientro previsto: %s)\",\n                utentePrestito, dataInizioPrestitoAttuale, getDataRestituzioneAttesa());\n        } else {\n            base += \" | DISPONIBILE\";  // sullo scaffale pronta per essere presa\n        }\n        \n        return base;\n    }\n}\n", "import java.time.LocalDate;\n\n/**\n * Libro con ISBN e autore, prestabile per 30 giorni\n * @author giordii.dev\n */\npublic class Libro extends Pubblicazione {\n    private final String isbn;    // codice identificativo internazionale\n    private final String autore;  // chi ha scritto questo capolavoro (o mattone)\n    \n    // Durata standard del prestito per i libri: 30 giorni\n    private static final int DURATA_PRESTITO_GIORNI = 30;  // un mese pieno per leggerlo con calma\n    \n    public Libro(String titolo, LocalDate dataPubbl, int numPagine, \n                 String isbn, String autore) {\n        super(titolo, dataPubbl, numPagine);\n        \n        if (isbn == null || isbn.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"isbn != null\");\n        }\n        if (autore == null || autore.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"autore != null\");\n        }\n        \n        this.isbn = isbn;\n        this.autore = autore;\n    }\n    \n    /**\n     * Override: i libri possono essere prestati per 30 giorni\n     */\n    @Override\n    public LocalDate calcolaDataRestituzione(LocalDate dataInizio) {\n        if (dataInizio == null) {\n            throw new IllegalArgumentException(\"La data di inizio non può essere null\");\n        }\n        return dataInizio.plusDays(DURATA_PRESTITO_GIORNI);\n    }\n    \n    public String getIsbn() {\n        return isbn;\n    }\n    \n    public String getAutore() {\n        return autore;\n    }\n    \n    public static int getDurataPrestitoGiorni() {\n        return DURATA_PRESTITO_GIORNI;\n    }\n    \n    @Override\n    public String toString() {\n        return \"LIBRO: \" + super.toString() + \n               String.format(\" | ISBN: %s | Autore: %s\", isbn, autore);\n    }\n}\n", "import java.time.LocalDate;\n\n/**\n * Rivista periodica, prestabile solo per 7 giorni\n * @author giordii.dev\n */\npublic class Rivista extends Pubblicazione {\n    private final String numVol;  // numero/volume della rivista\n    private final String periodicita;  // quanto spesso esce (settimanale, mensile...)\n    \n    // Durata standard del prestito per le riviste: 7 giorni\n    private static final int DURATA_PRESTITO_GIORNI = 7;  // una settimana, si leggono veloci\n    \n    public Rivista(String titolo, LocalDate dataPubbl, int numPagine,\n                   String numVol, String periodicita) {\n        super(titolo, dataPubbl, numPagine);\n        \n        if (numVol == null || numVol.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"numero/volume != null\");\n        }\n        if (periodicita == null || periodicita.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"periodicita != null\");\n        }\n        \n        this.numVol = numVol;\n        this.periodicita = periodicita;\n    }\n    \n    /**\n     * Override: le riviste possono essere prestate per soli 7 giorni\n     */\n    @Override\n    public LocalDate calcolaDataRestituzione(LocalDate dataInizio) {\n        if (dataInizio == null) {\n            throw new IllegalArgumentException(\"La data di inizio non può essere null\");\n        }\n        return dataInizio.plusDays(DURATA_PRESTITO_GIORNI);\n    }\n    \n    public String getNumeroVolume() {\n        return numVol;\n    }\n    \n    public String getPeriodicita() {\n        return periodicita;\n    }\n    \n    public static int getDurataPrestitoGiorni() {\n        return DURATA_PRESTITO_GIORNI;\n    }\n    \n    @Override\n    public String toString() {\n        return \"RIVISTA: \" + super.toString() + \n               String.format(\" | N/Vol: %s | Periodicità: %s\", numVol, periodicita);\n    }\n}\n", "import java.time.LocalDate;\nimport java.util.ArrayList;\n\n/**\n * Gestione biblioteca con prestiti di libri e riviste\n * @author giordii.dev\n */\npublic class Biblioteca {\n    private final String nome;  // nome della biblioteca\n    private final ArrayList<Pubblicazione> pubbl;  // catalogo completo con libri e riviste\n    \n    /**\n     * Crea una nuova biblioteca\n     * @param nome il nome della biblioteca\n     */\n    public Biblioteca(String nome) {\n        if (nome == null || nome.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"nome != null\");\n        }\n        this.nome = nome;\n        this.pubbl = new ArrayList<>();  // inizia vuoto, si riempie dopo\n    }\n    \n    /**\n     * Aggiunge una pubblicazione al catalogo\n     * @param p la pubblicazione da aggiungere\n     */\n    public void aggiungiPubblicazione(Pubblicazione p) {\n        if (p == null) {\n            throw new IllegalArgumentException(\"pubblicazione != null\");\n        }\n        pubbl.add(p);  // aggiungi al catalogo\n    }\n    \n    /**\n     * Rimuove una pubblicazione dal catalogo\n     * @param numeroProgressivo l'ID della pubblicazione\n     */\n    public void rimuoviPubblicazione(int numeroProgressivo) {\n        pubbl.removeIf(p -> p.getNumeroProgressivo() == numeroProgressivo);\n        // usa lambda per rimozione efficiente, java 8+\n    }\n    \n    /**\n     * Cerca una pubblicazione per numero progressivo\n     * @param numeroProgressivo l'ID univoco\n     * @return la pubblicazione trovata o null\n     */\n    public Pubblicazione cercaPerNumero(int numeroProgressivo) {\n        for (Pubblicazione p : pubbl) {\n            if (p.getNumeroProgressivo() == numeroProgressivo) {\n                return p;  // trovata!\n            }\n        }\n        return null;  // non esiste nel catalogo\n    }\n    \n    /**\n     * Effettua il prestito di una pubblicazione\n     * @param numeroProgressivo ID della pubblicazione\n     * @param utente nome dell'utente\n     * @param dataInizio data inizio prestito\n     */\n    public void effettuaPrestito(int numeroProgressivo, String utente, LocalDate dataInizio) {\n        Pubblicazione p = cercaPerNumero(numeroProgressivo);\n        if (p == null) {\n            throw new IllegalArgumentException(\"Pubblicazione non trovata\");\n        }\n        p.prestito(utente, dataInizio);  // delega alla pubblicazione\n    }\n    \n    public void effettuaRestituzione(int numeroProgressivo) {\n        Pubblicazione p = cercaPerNumero(numeroProgressivo);\n        if (p == null) {\n            throw new IllegalArgumentException(\"Pubblicazione non trovata\");\n        }\n        p.restituzione();\n    }\n    \n    public ArrayList<Pubblicazione> getPubblicazioniInPrestito() {\n        ArrayList<Pubblicazione> inPrestito = new ArrayList<>();\n        for (Pubblicazione p : pubbl) {\n            if (p.isInPrestito()) {\n                inPrestito.add(p);  // fuori in giro da qualche parte\n            }\n        }\n        return inPrestito;\n    }\n    \n    public ArrayList<Pubblicazione> getPubblicazioniDisponibili() {\n        ArrayList<Pubblicazione> disponibili = new ArrayList<>();\n        for (Pubblicazione p : pubbl) {\n            if (!p.isInPrestito()) {\n                disponibili.add(p);  // sullo scaffale pronte\n            }\n        }\n        return disponibili;\n    }\n    \n    /**\n     * Filtra solo i libri dal catalogo\n     * @return lista dei libri\n     */\n    public ArrayList<Libro> getLibri() {\n        ArrayList<Libro> libri = new ArrayList<>();\n        for (Pubblicazione p : pubbl) {\n            if (p instanceof Libro) {\n                libri.add((Libro) p);  // cast sicuro dopo instanceof check\n            }\n        }\n        return libri;\n    }\n    \n    /**\n     * Filtra solo le riviste dal catalogo\n     * @return lista delle riviste\n     */\n    public ArrayList<Rivista> getRiviste() {\n        ArrayList<Rivista> riviste = new ArrayList<>();\n        for (Pubblicazione p : pubbl) {\n            if (p instanceof Rivista) {\n                riviste.add((Rivista) p);  // downcast sicuro, instanceof garantisce\n            }\n        }\n        return riviste;\n    }\n    \n    public int contaPubblicazioni() {\n        return pubbl.size();\n    }\n    \n    public void stampaCatalogo() {\n        System.out.println(\"\\n=== CATALOGO BIBLIOTECA: \" + nome + \" ===\");\n        System.out.println(\"Totale pubblicazioni: \" + pubbl.size());\n        System.out.println();\n        \n        if (pubbl.isEmpty()) {\n            System.out.println(\"Nessuna pubblicazione presente.\");  // scaffali vuoti...\n        } else {\n            for (Pubblicazione p : pubbl) {\n                System.out.println(p);\n            }\n        }\n        System.out.println(\"==========================================\");\n    }\n    \n    public void stampaPrestiti() {\n        System.out.println(\"\\n=== PUBBLICAZIONI IN PRESTITO ===\");\n        ArrayList<Pubblicazione> inPrestito = getPubblicazioniInPrestito();\n        \n        if (inPrestito.isEmpty()) {\n            System.out.println(\"Nessuna pubblicazione in prestito.\");\n        } else {\n            for (Pubblicazione p : inPrestito) {\n                System.out.println(p);\n            }\n        }\n        System.out.println(\"==================================\\n\");\n    }\n    \n    public String getNome() {\n        return nome;\n    }\n}\n"];
+        const projectName = "BiblioOverride";
+        const buildStatus = "success";
+        const precompiledOutput = "=== SISTEMA GESTIONE BIBLIOTECA CON PRESTITI ===\n\n\n=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===\nTotale pubblicazioni: 6\n\nLIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | DISPONIBILE | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien\nRIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | DISPONIBILE | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile\nLIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | DISPONIBILE | ISBN: 978-88-04-68012-1 | Autore: George Orwell\nRIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile\nLIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | DISPONIBILE | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\nRIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile\n==========================================\n--- INFORMAZIONI DURATE PRESTITI ---\nDurata prestito libri: 30 giorni\nDurata prestito riviste: 7 giorni\n\n--- TEST PRESTITI ---\n\nPrestito libro #1 a Mario Rossi dal 2024-12-01\nPrestito rivista #2 a Luigi Verdi dal 2024-12-01\nPrestito libro #3 a Anna Bianchi dal 2024-12-01\nPrestito rivista #4 a Carlo Neri dal 2024-12-01\n\n=== PUBBLICAZIONI IN PRESTITO ===\nLIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | IN PRESTITO a Mario Rossi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien\nRIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile\nLIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | IN PRESTITO a Luigi Verdi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-04-68012-1 | Autore: George Orwell\nLIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\n==================================\n\n--- CATALOGO AGGIORNATO ---\n\n=== CATALOGO BIBLIOTECA: Biblioteca Comunale ===\nTotale pubblicazioni: 6\n\nLIBRO: [#1] Il Signore degli Anelli - 1954-07-29 - 1216 pagine | IN PRESTITO a Mario Rossi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-3232-8 | Autore: J.R.R. Tolkien\nRIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile\nLIBRO: [#2] 1984 - 1949-06-08 - 328 pagine | IN PRESTITO a Luigi Verdi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-04-68012-1 | Autore: George Orwell\nRIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile\nLIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\nRIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile\n==========================================\n--- PUBBLICAZIONI DISPONIBILI ---\nRIVISTA: [#5] Focus - 2024-10-15 - 98 pagine | DISPONIBILE | N/Vol: N. 385 | Periodicità: Mensile\nRIVISTA: [#6] Le Scienze - 2024-11-20 - 88 pagine | DISPONIBILE | N/Vol: N. 655 | Periodicità: Mensile\n\n--- TEST RESTITUZIONE ---\nRestituzione libro #1\nRestituzione rivista #2\n\n\n=== PUBBLICAZIONI IN PRESTITO ===\nRIVISTA: [#4] National Geographic Italia - 2024-11-01 - 120 pagine | IN PRESTITO a Carlo Neri (dal 2024-12-01, rientro previsto: 2024-12-08) | N/Vol: Vol. 35, N. 11 | Periodicità: Mensile\nLIBRO: [#3] Il Nome della Rosa - 1980-09-01 - 503 pagine | IN PRESTITO a Anna Bianchi (dal 2024-12-01, rientro previsto: 2024-12-31) | ISBN: 978-88-452-6647-7 | Autore: Umberto Eco\n==================================\n\n--- VERIFICA OVERRIDE CALCOLO DATA ---\nData inizio prestito: 2024-12-01\nLibro - Data restituzione (30 giorni): 2024-12-31\nRivista - Data restituzione (7 giorni): 2024-12-08\n\n--- STATISTICHE FINALI ---\nTotale pubblicazioni: 6\nPubblicazioni in prestito: 2\nPubblicazioni disponibili: 4\nTotale libri: 3\nTotale riviste: 3\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

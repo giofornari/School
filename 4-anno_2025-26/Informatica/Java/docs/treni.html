@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treni - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg: #03060f;
+            --panel: #0a101f;
+            --panel-alt: #121a30;
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f5f6ff;
+            --muted: #9aa4c6;
+            --accent: #6bb8ff;
+            --accent-strong: #4a92ff;
+            --success: #38d98a;
+            --error: #f48b9c;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        header {
+            flex-shrink: 0;
+            background: rgba(10, 16, 31, 0.96);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        header h1 i {
+            color: var(--accent);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            border-top: 1px solid var(--border);
+            min-height: 0;
+            overflow: hidden;
+        }
+        
+        .left-panel {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+        }
+        
+        .tabs {
+            display: flex;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            border: none;
+            background: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 10px 12px;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text);
+        }
+        
+        .tab-button.active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .code-area {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--panel-alt);
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        
+        pre {
+            height: 100%;
+            margin: 0;
+        }
+        
+        pre code {
+            display: block;
+            height: 100%;
+            padding: 16px !important;
+            background: #060a17 !important;
+            color: #eaf0ff !important;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: 1px solid var(--border);
+            background: rgba(3, 6, 15, 0.85);
+            color: var(--text);
+            border-radius: 4px;
+            padding: 4px 9px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        
+        .copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .right-panel {
+            width: 32%;
+            min-width: 280px;
+            min-height: 0;
+            background: var(--panel);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .run-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .run-header h2 {
+            font-size: 0.9rem;
+        }
+        
+        .run-btn {
+            border: none;
+            background: linear-gradient(120deg, var(--accent-strong), var(--accent));
+            color: #fff;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        
+        .output-area {
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: var(--panel-alt);
+        }
+        
+        .output-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 130px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            background: rgba(4, 8, 20, 0.92);
+            color: var(--muted);
+        }
+        
+        .output-box.success {
+            border-color: rgba(56, 217, 138, 0.45);
+            color: var(--success);
+        }
+        
+        .output-box.error {
+            border-color: rgba(244, 139, 156, 0.45);
+            color: var(--error);
+        }
+        
+        .status-indicator {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            padding: 6px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            color: var(--muted);
+        }
+        
+        .status-indicator.success {
+            color: var(--success);
+            border-color: rgba(56, 217, 138, 0.35);
+        }
+        
+        .status-indicator.error {
+            color: var(--error);
+            border-color: rgba(244, 139, 156, 0.35);
+        }
+        
+        .status-indicator.running {
+            color: var(--accent);
+            border-color: rgba(107, 184, 255, 0.35);
+        }
+        
+        .spinner {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 999px;
+            border: 2px solid rgba(107, 184, 255, 0.2);
+            border-top-color: var(--accent);
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            border-left: 3px solid var(--accent);
+            padding: 7px 10px;
+            background: rgba(107, 184, 255, 0.08);
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 960px) {
+            body {
+                overflow: auto;
+            }
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            header {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .tabs {
+                padding: 0 8px;
+            }
+            .tab-button {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            Treni
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="treni-tab0">Main.java</button>
+        
+            <button class="tab-button " data-tab="treni-tab1">Vagone.java</button>
+        
+            <button class="tab-button " data-tab="treni-tab2">VagonePasseggeri.java</button>
+        
+            <button class="tab-button " data-tab="treni-tab3">VagoneMerci.java</button>
+        
+            <button class="tab-button " data-tab="treni-tab4">Treno.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="treni-tab0" class="tab-content active">
+                <pre><code class="language-java">public class Main {
+    public static void main(String[] args) {
+        System.out.println(&quot;=== TRENI ===\n&quot;);
+        
+        // Creazione treno
+        Treno trenoRegionale = new Treno(&quot;Regionale Express 1234&quot;);
+        System.out.println(&quot;Treno: &quot; + trenoRegionale.getNome());
+        System.out.println();
+        
+        // Vagoni passeggeri
+        System.out.println(&quot;--- Vagoni Pass ---&quot;);
+        
+        VagonePasseggeri vp1 = new VagonePasseggeri(
+            &quot;VP-001&quot;, 45000, &quot;Alstom&quot;, 2015, 1, 60, 45
+        );
+        trenoRegionale.addVag(vp1);
+        System.out.println(&quot;+ &quot; + vp1.toString());
+        
+        VagonePasseggeri vp2 = new VagonePasseggeri(
+            &quot;VP-002&quot;, 42000, &quot;Bombardier&quot;, 2018, 1, 64, 58
+        );
+        trenoRegionale.addVag(vp2);
+        System.out.println(&quot;+ &quot; + vp2.toString());
+        
+        VagonePasseggeri vp3 = new VagonePasseggeri(
+            &quot;VP-003&quot;, 40000, &quot;Siemens&quot;, 2020, 2, 80, 72
+        );
+        trenoRegionale.addVag(vp3);
+        System.out.println(&quot;+ &quot; + vp3.toString());
+        
+        VagonePasseggeri vp4 = new VagonePasseggeri(
+            &quot;VP-004&quot;, 41000, &quot;Alstom&quot;, 2019, 2, 80, 65
+        );
+        trenoRegionale.addVag(vp4);
+        System.out.println(&quot;+ &quot; + vp4.toString());
+        
+        System.out.println();
+        
+        // Vagoni merci
+        System.out.println(&quot;--- Vagoni Cargo ---&quot;);
+        
+        VagoneMerci vm1 = new VagoneMerci(
+            &quot;VM-101&quot;, 28000, &quot;Greenbrier&quot;, 2016, 120.0, 50000, 42000
+        );
+        trenoRegionale.addVag(vm1);
+        System.out.println(&quot;+ &quot; + vm1.toString());
+        
+        VagoneMerci vm2 = new VagoneMerci(
+            &quot;VM-102&quot;, 30000, &quot;FreightCar&quot;, 2017, 140.0, 60000, 55000
+        );
+        trenoRegionale.addVag(vm2);
+        System.out.println(&quot;+ &quot; + vm2.toString());
+        
+        VagoneMerci vm3 = new VagoneMerci(
+            &quot;VM-103&quot;, 26000, &quot;Greenbrier&quot;, 2021, 100.0, 45000, 38000
+        );
+        trenoRegionale.addVag(vm3);
+        System.out.println(&quot;+ &quot; + vm3.toString());
+        
+        System.out.println();
+        System.out.println(&quot;=&quot;.repeat(80));
+        System.out.println();
+        
+        // Riepilogo composizione
+        System.out.println(&quot;--- RIEPILOGO ---&quot;);
+        System.out.println(trenoRegionale.toString());
+        System.out.println();
+        
+        // Statistiche
+        System.out.println(&quot;--- STATS ---&quot;);
+        System.out.println(&quot;Tot vag: &quot; + trenoRegionale.numVag());
+        System.out.println(&quot;  - Pass: &quot; + trenoRegionale.numVagPass());
+        System.out.println(&quot;  - Cargo: &quot; + trenoRegionale.numVagMerci());
+        System.out.println();
+        
+        System.out.println(&quot;Seats:&quot;);
+        System.out.println(&quot;  - Tot: &quot; + trenoRegionale.getPassTot());
+        System.out.println(&quot;  - Occ: &quot; + trenoRegionale.getPassOcc());
+        System.out.println(&quot;  - Free: &quot; + 
+            (trenoRegionale.getPassTot() - trenoRegionale.getPassOcc()));
+        System.out.println();
+        
+        System.out.println(String.format(&quot;Weight tot (no engine): %.2f kg (%.2f t)&quot;,
+            trenoRegionale.totPeso(), 
+            trenoRegionale.totPeso() / 1000));
+        System.out.println();
+        
+        // Test modifica peso medio
+        System.out.println(&quot;--- TEST AVG WEIGHT ---&quot;);
+        System.out.println(&quot;avg now: &quot; + VagonePasseggeri.avgPeso + &quot; kg&quot;);
+        System.out.println(&quot;tot now: &quot; + 
+            String.format(&quot;%.2f kg&quot;, trenoRegionale.totPeso()));
+        
+        VagonePasseggeri.avgPeso = 70.0;
+        System.out.println(&quot;\navg -&gt; &quot; + VagonePasseggeri.avgPeso + &quot; kg&quot;);
+        System.out.println(&quot;tot -&gt; &quot; + 
+            String.format(&quot;%.2f kg&quot;, trenoRegionale.totPeso()));
+        System.out.println(&quot;diff: &quot; + 
+            String.format(&quot;%.2f kg&quot;, (70.0 - 65.0) * trenoRegionale.getPassOcc()));
+        System.out.println();
+        
+        // Elenco completo vagoni
+        System.out.println(&quot;=&quot;.repeat(80));
+        System.out.println(&quot;--- LIST ---&quot;);
+        int numero = 1;
+        for (Vagone vagone : trenoRegionale.getVagoni()) {
+            System.out.println(numero + &quot;. &quot; + vagone.toString());
+            numero++;
+        }
+        
+        System.out.println();
+        System.out.println(&quot;=== FINE ===&quot;);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="treni-tab1" class="tab-content ">
+                <pre><code class="language-java">import java.util.Objects;
+
+// Vagone base astratto
+public abstract class Vagone {
+    protected final String id;
+    protected final double tara;
+    protected final String manufactor;
+    protected final int created;
+
+    protected Vagone(String id, double tara, String manufactor, int created) {
+        Objects.requireNonNull(id, &quot;id != null&quot;);
+        Objects.requireNonNull(manufactor, &quot;azienda != null&quot;);
+        
+        if (id.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;id non vuoto&quot;);
+        }
+        if (tara &lt;= 0) {
+            throw new IllegalArgumentException(&quot;peso vuoto &gt; 0&quot;);
+        }
+        if (created &lt; 1800 || created &gt; 2100) {
+            throw new IllegalArgumentException(&quot;anno tra 1800 e 2100&quot;);
+        }
+        
+        this.id = id;
+        this.tara = tara;
+        this.manufactor = manufactor;
+        this.created = created;
+    }
+
+    public abstract double totPeso();
+
+    public String getid() {
+        return id;
+    }
+
+    public double gettara() {
+        return tara;
+    }
+
+    public String getmanufactor() {
+        return manufactor;
+    }
+
+    public int getcreated() {
+        return created;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(&quot;id: %s, Peso a vuoto: %.2f kg, Costruttore: %s, Anno: %d&quot;,
+                id, tara, manufactor, created);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="treni-tab2" class="tab-content ">
+                <pre><code class="language-java">// Vagone passeggeri
+public class VagonePasseggeri extends Vagone {
+    public static double avgPeso = 65.0;
+    
+    private final int classe;
+    private final int totSeats;
+    private int occSeats;
+
+    public VagonePasseggeri(String id, double tara, String manufactor, 
+                           int created, int classe, int totSeats, 
+                           int occSeats) {
+        super(id, tara, manufactor, created);
+        
+        if (classe &lt; 1 || classe &gt; 2) {
+            throw new IllegalArgumentException(&quot;classe 1 o 2&quot;);
+        }
+        if (totSeats &lt;= 0) {
+            throw new IllegalArgumentException(&quot;posti disponibili &gt; 0&quot;);
+        }
+        if (occSeats &lt; 0) {
+            throw new IllegalArgumentException(&quot;posti occupati &gt;= 0&quot;);
+        }
+        if (occSeats &gt; totSeats) {
+            throw new IllegalArgumentException(&quot;occupati &lt;= disponibili&quot;);
+        }
+        
+        this.classe = classe;
+        this.totSeats = totSeats;
+        this.occSeats = occSeats;
+    }
+
+    @Override
+    public double totPeso() {
+        return tara + (occSeats * avgPeso);
+    }
+
+    public int getClasse() {
+        return classe;
+    }
+
+    public int getTotSeats() {
+        return totSeats;
+    }
+
+    public int getOccSeats() {
+        return occSeats;
+    }
+
+    public void setOccSeats(int occSeats) {
+        if (occSeats &lt; 0) {
+            throw new IllegalArgumentException(&quot;posti occupati &gt;= 0&quot;);
+        }
+        if (occSeats &gt; totSeats) {
+            throw new IllegalArgumentException(&quot;occupati &lt;= disponibili&quot;);
+        }
+        this.occSeats = occSeats;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(&quot;VAGONE PASSEGGERI - %s, Classe: %d, Posti: %d/%d, Peso totale: %.2f kg&quot;,
+                super.toString(), classe, occSeats, totSeats, totPeso());
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="treni-tab3" class="tab-content ">
+                <pre><code class="language-java">// Vagone merci
+public class VagoneMerci extends Vagone {
+    private final double vol;
+    private final double maxLoad;
+    private double effLoad;
+
+    public VagoneMerci(String id, double tara, String manufactor, 
+                      int created, double vol, double maxLoad, 
+                      double effLoad) {
+        super(id, tara, manufactor, created);
+        
+        if (vol &lt;= 0) {
+            throw new IllegalArgumentException(&quot;volume carico &gt; 0&quot;);
+        }
+        if (maxLoad &lt;= 0) {
+            throw new IllegalArgumentException(&quot;peso max carico &gt; 0&quot;);
+        }
+        if (effLoad &lt; 0) {
+            throw new IllegalArgumentException(&quot;peso effettivo &gt;= 0&quot;);
+        }
+        if (effLoad &gt; maxLoad) {
+            throw new IllegalArgumentException(&quot;effettivo &lt;= massimo&quot;);
+        }
+        
+        this.vol = vol;
+        this.maxLoad = maxLoad;
+        this.effLoad = effLoad;
+    }
+
+    @Override
+    public double totPeso() {
+        return tara + effLoad;
+    }
+
+    public double getVol() {
+        return vol;
+    }
+
+    public double getMaxLoad() {
+        return maxLoad;
+    }
+
+    public double getEffLoad() {
+        return effLoad;
+    }
+
+    public void setEffLoad(double effLoad) {
+        if (effLoad &lt; 0) {
+            throw new IllegalArgumentException(&quot;peso effettivo &gt;= 0&quot;);
+        }
+        if (effLoad &gt; maxLoad) {
+            throw new IllegalArgumentException(&quot;effettivo &lt;= massimo&quot;);
+        }
+        this.effLoad = effLoad;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(&quot;VAGONE MERCI - %s, Volume: %.2f m³, Carico: %.2f/%.2f kg, Peso totale: %.2f kg&quot;,
+                super.toString(), vol, effLoad, maxLoad, totPeso());
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="treni-tab4" class="tab-content ">
+                <pre><code class="language-java">import java.util.ArrayList;
+
+// Gestione composizione treno
+public class Treno {
+    private final String nome;
+    private final ArrayList&lt;Vagone&gt; vagoni;
+
+    public Treno(String nome) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;nome non vuoto&quot;);
+        }
+        this.nome = nome;
+        this.vagoni = new ArrayList&lt;&gt;();
+    }
+
+    public void addVag(Vagone vagone) {
+        if (vagone == null) {
+            throw new NullPointerException(&quot;vagone != null&quot;);
+        }
+        vagoni.add(vagone);
+    }
+
+    public double totPeso() {
+        double pesoTotale = 0.0;
+        for (Vagone vagone : vagoni) {
+            pesoTotale += vagone.totPeso();
+        }
+        return pesoTotale;
+    }
+
+    public int numVag() {
+        return vagoni.size();
+    }
+
+    public int numVagPass() {
+        int count = 0;
+        for (Vagone vagone : vagoni) {
+            if (vagone instanceof VagonePasseggeri) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int numVagMerci() {
+        int count = 0;
+        for (Vagone vagone : vagoni) {
+            if (vagone instanceof VagoneMerci) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getPassTot() {
+        int capacita = 0;
+        for (Vagone vagone : vagoni) {
+            if (vagone instanceof VagonePasseggeri) {
+                capacita += ((VagonePasseggeri) vagone).getTotSeats();
+            }
+        }
+        return capacita;
+    }
+
+    public int getPassOcc() {
+        int occupati = 0;
+        for (Vagone vagone : vagoni) {
+            if (vagone instanceof VagonePasseggeri) {
+                occupati += ((VagonePasseggeri) vagone).getOccSeats();
+            }
+        }
+        return occupati;
+    }
+
+    public ArrayList&lt;Vagone&gt; getVagoni() {
+        return new ArrayList&lt;&gt;(vagoni);
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(&quot;Treno &#39;%s&#39; - Vagoni: %d (Passeggeri: %d, Merci: %d), Peso complessivo: %.2f kg&quot;,
+                nome, numVag(), numVagPass(), 
+                numVagMerci(), totPeso());
+    }
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">=== TRENI ===
+
+Treno: Regionale Express 1234
+
+--- Vagoni Pass ---
++ VAGONE PASSEGGERI - id: VP-001, Peso a vuoto: 45000.00 kg, Costruttore: Alstom, Anno: 2015, Classe: 1, Posti: 45/60, Peso totale: 47925.00 kg
++ VAGONE PASSEGGERI - id: VP-002, Peso a vuoto: 42000.00 kg, Costruttore: Bombardier, Anno: 2018, Classe: 1, Posti: 58/64, Peso totale: 45770.00 kg
++ VAGONE PASSEGGERI - id: VP-003, Peso a vuoto: 40000.00 kg, Costruttore: Siemens, Anno: 2020, Classe: 2, Posti: 72/80, Peso totale: 44680.00 kg
++ VAGONE PASSEGGERI - id: VP-004, Peso a vuoto: 41000.00 kg, Costruttore: Alstom, Anno: 2019, Classe: 2, Posti: 65/80, Peso totale: 45225.00 kg
+
+--- Vagoni Cargo ---
++ VAGONE MERCI - id: VM-101, Peso a vuoto: 28000.00 kg, Costruttore: Greenbrier, Anno: 2016, Volume: 120.00 m³, Carico: 42000.00/50000.00 kg, Peso totale: 70000.00 kg
++ VAGONE MERCI - id: VM-102, Peso a vuoto: 30000.00 kg, Costruttore: FreightCar, Anno: 2017, Volume: 140.00 m³, Carico: 55000.00/60000.00 kg, Peso totale: 85000.00 kg
++ VAGONE MERCI - id: VM-103, Peso a vuoto: 26000.00 kg, Costruttore: Greenbrier, Anno: 2021, Volume: 100.00 m³, Carico: 38000.00/45000.00 kg, Peso totale: 64000.00 kg
+
+================================================================================
+
+--- RIEPILOGO ---
+Treno &#39;Regionale Express 1234&#39; - Vagoni: 7 (Passeggeri: 4, Merci: 3), Peso complessivo: 402600.00 kg
+
+--- STATS ---
+Tot vag: 7
+  - Pass: 4
+  - Cargo: 3
+
+Seats:
+  - Tot: 284
+  - Occ: 240
+  - Free: 44
+
+Weight tot (no engine): 402600.00 kg (402.60 t)
+
+--- TEST AVG WEIGHT ---
+avg now: 65.0 kg
+tot now: 402600.00 kg
+
+avg -&gt; 70.0 kg
+tot -&gt; 403800.00 kg
+diff: 1200.00 kg
+
+================================================================================
+--- LIST ---
+1. VAGONE PASSEGGERI - id: VP-001, Peso a vuoto: 45000.00 kg, Costruttore: Alstom, Anno: 2015, Classe: 1, Posti: 45/60, Peso totale: 48150.00 kg
+2. VAGONE PASSEGGERI - id: VP-002, Peso a vuoto: 42000.00 kg, Costruttore: Bombardier, Anno: 2018, Classe: 1, Posti: 58/64, Peso totale: 46060.00 kg
+3. VAGONE PASSEGGERI - id: VP-003, Peso a vuoto: 40000.00 kg, Costruttore: Siemens, Anno: 2020, Classe: 2, Posti: 72/80, Peso totale: 45040.00 kg
+4. VAGONE PASSEGGERI - id: VP-004, Peso a vuoto: 41000.00 kg, Costruttore: Alstom, Anno: 2019, Classe: 2, Posti: 65/80, Peso totale: 45550.00 kg
+5. VAGONE MERCI - id: VM-101, Peso a vuoto: 28000.00 kg, Costruttore: Greenbrier, Anno: 2016, Volume: 120.00 m³, Carico: 42000.00/50000.00 kg, Peso totale: 70000.00 kg
+6. VAGONE MERCI - id: VM-102, Peso a vuoto: 30000.00 kg, Costruttore: FreightCar, Anno: 2017, Volume: 140.00 m³, Carico: 55000.00/60000.00 kg, Peso totale: 85000.00 kg
+7. VAGONE MERCI - id: VM-103, Peso a vuoto: 26000.00 kg, Costruttore: Greenbrier, Anno: 2021, Volume: 100.00 m³, Carico: 38000.00/45000.00 kg, Peso totale: 64000.00 kg
+
+=== FINE ===
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"=== TRENI ===\\n\");\n        \n        // Creazione treno\n        Treno trenoRegionale = new Treno(\"Regionale Express 1234\");\n        System.out.println(\"Treno: \" + trenoRegionale.getNome());\n        System.out.println();\n        \n        // Vagoni passeggeri\n        System.out.println(\"--- Vagoni Pass ---\");\n        \n        VagonePasseggeri vp1 = new VagonePasseggeri(\n            \"VP-001\", 45000, \"Alstom\", 2015, 1, 60, 45\n        );\n        trenoRegionale.addVag(vp1);\n        System.out.println(\"+ \" + vp1.toString());\n        \n        VagonePasseggeri vp2 = new VagonePasseggeri(\n            \"VP-002\", 42000, \"Bombardier\", 2018, 1, 64, 58\n        );\n        trenoRegionale.addVag(vp2);\n        System.out.println(\"+ \" + vp2.toString());\n        \n        VagonePasseggeri vp3 = new VagonePasseggeri(\n            \"VP-003\", 40000, \"Siemens\", 2020, 2, 80, 72\n        );\n        trenoRegionale.addVag(vp3);\n        System.out.println(\"+ \" + vp3.toString());\n        \n        VagonePasseggeri vp4 = new VagonePasseggeri(\n            \"VP-004\", 41000, \"Alstom\", 2019, 2, 80, 65\n        );\n        trenoRegionale.addVag(vp4);\n        System.out.println(\"+ \" + vp4.toString());\n        \n        System.out.println();\n        \n        // Vagoni merci\n        System.out.println(\"--- Vagoni Cargo ---\");\n        \n        VagoneMerci vm1 = new VagoneMerci(\n            \"VM-101\", 28000, \"Greenbrier\", 2016, 120.0, 50000, 42000\n        );\n        trenoRegionale.addVag(vm1);\n        System.out.println(\"+ \" + vm1.toString());\n        \n        VagoneMerci vm2 = new VagoneMerci(\n            \"VM-102\", 30000, \"FreightCar\", 2017, 140.0, 60000, 55000\n        );\n        trenoRegionale.addVag(vm2);\n        System.out.println(\"+ \" + vm2.toString());\n        \n        VagoneMerci vm3 = new VagoneMerci(\n            \"VM-103\", 26000, \"Greenbrier\", 2021, 100.0, 45000, 38000\n        );\n        trenoRegionale.addVag(vm3);\n        System.out.println(\"+ \" + vm3.toString());\n        \n        System.out.println();\n        System.out.println(\"=\".repeat(80));\n        System.out.println();\n        \n        // Riepilogo composizione\n        System.out.println(\"--- RIEPILOGO ---\");\n        System.out.println(trenoRegionale.toString());\n        System.out.println();\n        \n        // Statistiche\n        System.out.println(\"--- STATS ---\");\n        System.out.println(\"Tot vag: \" + trenoRegionale.numVag());\n        System.out.println(\"  - Pass: \" + trenoRegionale.numVagPass());\n        System.out.println(\"  - Cargo: \" + trenoRegionale.numVagMerci());\n        System.out.println();\n        \n        System.out.println(\"Seats:\");\n        System.out.println(\"  - Tot: \" + trenoRegionale.getPassTot());\n        System.out.println(\"  - Occ: \" + trenoRegionale.getPassOcc());\n        System.out.println(\"  - Free: \" + \n            (trenoRegionale.getPassTot() - trenoRegionale.getPassOcc()));\n        System.out.println();\n        \n        System.out.println(String.format(\"Weight tot (no engine): %.2f kg (%.2f t)\",\n            trenoRegionale.totPeso(), \n            trenoRegionale.totPeso() / 1000));\n        System.out.println();\n        \n        // Test modifica peso medio\n        System.out.println(\"--- TEST AVG WEIGHT ---\");\n        System.out.println(\"avg now: \" + VagonePasseggeri.avgPeso + \" kg\");\n        System.out.println(\"tot now: \" + \n            String.format(\"%.2f kg\", trenoRegionale.totPeso()));\n        \n        VagonePasseggeri.avgPeso = 70.0;\n        System.out.println(\"\\navg -> \" + VagonePasseggeri.avgPeso + \" kg\");\n        System.out.println(\"tot -> \" + \n            String.format(\"%.2f kg\", trenoRegionale.totPeso()));\n        System.out.println(\"diff: \" + \n            String.format(\"%.2f kg\", (70.0 - 65.0) * trenoRegionale.getPassOcc()));\n        System.out.println();\n        \n        // Elenco completo vagoni\n        System.out.println(\"=\".repeat(80));\n        System.out.println(\"--- LIST ---\");\n        int numero = 1;\n        for (Vagone vagone : trenoRegionale.getVagoni()) {\n            System.out.println(numero + \". \" + vagone.toString());\n            numero++;\n        }\n        \n        System.out.println();\n        System.out.println(\"=== FINE ===\");\n    }\n}\n", "import java.util.Objects;\n\n// Vagone base astratto\npublic abstract class Vagone {\n    protected final String id;\n    protected final double tara;\n    protected final String manufactor;\n    protected final int created;\n\n    protected Vagone(String id, double tara, String manufactor, int created) {\n        Objects.requireNonNull(id, \"id != null\");\n        Objects.requireNonNull(manufactor, \"azienda != null\");\n        \n        if (id.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"id non vuoto\");\n        }\n        if (tara <= 0) {\n            throw new IllegalArgumentException(\"peso vuoto > 0\");\n        }\n        if (created < 1800 || created > 2100) {\n            throw new IllegalArgumentException(\"anno tra 1800 e 2100\");\n        }\n        \n        this.id = id;\n        this.tara = tara;\n        this.manufactor = manufactor;\n        this.created = created;\n    }\n\n    public abstract double totPeso();\n\n    public String getid() {\n        return id;\n    }\n\n    public double gettara() {\n        return tara;\n    }\n\n    public String getmanufactor() {\n        return manufactor;\n    }\n\n    public int getcreated() {\n        return created;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"id: %s, Peso a vuoto: %.2f kg, Costruttore: %s, Anno: %d\",\n                id, tara, manufactor, created);\n    }\n}\n", "// Vagone passeggeri\npublic class VagonePasseggeri extends Vagone {\n    public static double avgPeso = 65.0;\n    \n    private final int classe;\n    private final int totSeats;\n    private int occSeats;\n\n    public VagonePasseggeri(String id, double tara, String manufactor, \n                           int created, int classe, int totSeats, \n                           int occSeats) {\n        super(id, tara, manufactor, created);\n        \n        if (classe < 1 || classe > 2) {\n            throw new IllegalArgumentException(\"classe 1 o 2\");\n        }\n        if (totSeats <= 0) {\n            throw new IllegalArgumentException(\"posti disponibili > 0\");\n        }\n        if (occSeats < 0) {\n            throw new IllegalArgumentException(\"posti occupati >= 0\");\n        }\n        if (occSeats > totSeats) {\n            throw new IllegalArgumentException(\"occupati <= disponibili\");\n        }\n        \n        this.classe = classe;\n        this.totSeats = totSeats;\n        this.occSeats = occSeats;\n    }\n\n    @Override\n    public double totPeso() {\n        return tara + (occSeats * avgPeso);\n    }\n\n    public int getClasse() {\n        return classe;\n    }\n\n    public int getTotSeats() {\n        return totSeats;\n    }\n\n    public int getOccSeats() {\n        return occSeats;\n    }\n\n    public void setOccSeats(int occSeats) {\n        if (occSeats < 0) {\n            throw new IllegalArgumentException(\"posti occupati >= 0\");\n        }\n        if (occSeats > totSeats) {\n            throw new IllegalArgumentException(\"occupati <= disponibili\");\n        }\n        this.occSeats = occSeats;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"VAGONE PASSEGGERI - %s, Classe: %d, Posti: %d/%d, Peso totale: %.2f kg\",\n                super.toString(), classe, occSeats, totSeats, totPeso());\n    }\n}\n", "// Vagone merci\npublic class VagoneMerci extends Vagone {\n    private final double vol;\n    private final double maxLoad;\n    private double effLoad;\n\n    public VagoneMerci(String id, double tara, String manufactor, \n                      int created, double vol, double maxLoad, \n                      double effLoad) {\n        super(id, tara, manufactor, created);\n        \n        if (vol <= 0) {\n            throw new IllegalArgumentException(\"volume carico > 0\");\n        }\n        if (maxLoad <= 0) {\n            throw new IllegalArgumentException(\"peso max carico > 0\");\n        }\n        if (effLoad < 0) {\n            throw new IllegalArgumentException(\"peso effettivo >= 0\");\n        }\n        if (effLoad > maxLoad) {\n            throw new IllegalArgumentException(\"effettivo <= massimo\");\n        }\n        \n        this.vol = vol;\n        this.maxLoad = maxLoad;\n        this.effLoad = effLoad;\n    }\n\n    @Override\n    public double totPeso() {\n        return tara + effLoad;\n    }\n\n    public double getVol() {\n        return vol;\n    }\n\n    public double getMaxLoad() {\n        return maxLoad;\n    }\n\n    public double getEffLoad() {\n        return effLoad;\n    }\n\n    public void setEffLoad(double effLoad) {\n        if (effLoad < 0) {\n            throw new IllegalArgumentException(\"peso effettivo >= 0\");\n        }\n        if (effLoad > maxLoad) {\n            throw new IllegalArgumentException(\"effettivo <= massimo\");\n        }\n        this.effLoad = effLoad;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"VAGONE MERCI - %s, Volume: %.2f m³, Carico: %.2f/%.2f kg, Peso totale: %.2f kg\",\n                super.toString(), vol, effLoad, maxLoad, totPeso());\n    }\n}\n", "import java.util.ArrayList;\n\n// Gestione composizione treno\npublic class Treno {\n    private final String nome;\n    private final ArrayList<Vagone> vagoni;\n\n    public Treno(String nome) {\n        if (nome == null || nome.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"nome non vuoto\");\n        }\n        this.nome = nome;\n        this.vagoni = new ArrayList<>();\n    }\n\n    public void addVag(Vagone vagone) {\n        if (vagone == null) {\n            throw new NullPointerException(\"vagone != null\");\n        }\n        vagoni.add(vagone);\n    }\n\n    public double totPeso() {\n        double pesoTotale = 0.0;\n        for (Vagone vagone : vagoni) {\n            pesoTotale += vagone.totPeso();\n        }\n        return pesoTotale;\n    }\n\n    public int numVag() {\n        return vagoni.size();\n    }\n\n    public int numVagPass() {\n        int count = 0;\n        for (Vagone vagone : vagoni) {\n            if (vagone instanceof VagonePasseggeri) {\n                count++;\n            }\n        }\n        return count;\n    }\n\n    public int numVagMerci() {\n        int count = 0;\n        for (Vagone vagone : vagoni) {\n            if (vagone instanceof VagoneMerci) {\n                count++;\n            }\n        }\n        return count;\n    }\n\n    public int getPassTot() {\n        int capacita = 0;\n        for (Vagone vagone : vagoni) {\n            if (vagone instanceof VagonePasseggeri) {\n                capacita += ((VagonePasseggeri) vagone).getTotSeats();\n            }\n        }\n        return capacita;\n    }\n\n    public int getPassOcc() {\n        int occupati = 0;\n        for (Vagone vagone : vagoni) {\n            if (vagone instanceof VagonePasseggeri) {\n                occupati += ((VagonePasseggeri) vagone).getOccSeats();\n            }\n        }\n        return occupati;\n    }\n\n    public ArrayList<Vagone> getVagoni() {\n        return new ArrayList<>(vagoni);\n    }\n\n    public String getNome() {\n        return nome;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"Treno '%s' - Vagoni: %d (Passeggeri: %d, Merci: %d), Peso complessivo: %.2f kg\",\n                nome, numVag(), numVagPass(), \n                numVagMerci(), totPeso());\n    }\n}\n"];
+        const projectName = "Treni";
+        const buildStatus = "success";
+        const precompiledOutput = "=== TRENI ===\n\nTreno: Regionale Express 1234\n\n--- Vagoni Pass ---\n+ VAGONE PASSEGGERI - id: VP-001, Peso a vuoto: 45000.00 kg, Costruttore: Alstom, Anno: 2015, Classe: 1, Posti: 45/60, Peso totale: 47925.00 kg\n+ VAGONE PASSEGGERI - id: VP-002, Peso a vuoto: 42000.00 kg, Costruttore: Bombardier, Anno: 2018, Classe: 1, Posti: 58/64, Peso totale: 45770.00 kg\n+ VAGONE PASSEGGERI - id: VP-003, Peso a vuoto: 40000.00 kg, Costruttore: Siemens, Anno: 2020, Classe: 2, Posti: 72/80, Peso totale: 44680.00 kg\n+ VAGONE PASSEGGERI - id: VP-004, Peso a vuoto: 41000.00 kg, Costruttore: Alstom, Anno: 2019, Classe: 2, Posti: 65/80, Peso totale: 45225.00 kg\n\n--- Vagoni Cargo ---\n+ VAGONE MERCI - id: VM-101, Peso a vuoto: 28000.00 kg, Costruttore: Greenbrier, Anno: 2016, Volume: 120.00 m³, Carico: 42000.00/50000.00 kg, Peso totale: 70000.00 kg\n+ VAGONE MERCI - id: VM-102, Peso a vuoto: 30000.00 kg, Costruttore: FreightCar, Anno: 2017, Volume: 140.00 m³, Carico: 55000.00/60000.00 kg, Peso totale: 85000.00 kg\n+ VAGONE MERCI - id: VM-103, Peso a vuoto: 26000.00 kg, Costruttore: Greenbrier, Anno: 2021, Volume: 100.00 m³, Carico: 38000.00/45000.00 kg, Peso totale: 64000.00 kg\n\n================================================================================\n\n--- RIEPILOGO ---\nTreno 'Regionale Express 1234' - Vagoni: 7 (Passeggeri: 4, Merci: 3), Peso complessivo: 402600.00 kg\n\n--- STATS ---\nTot vag: 7\n  - Pass: 4\n  - Cargo: 3\n\nSeats:\n  - Tot: 284\n  - Occ: 240\n  - Free: 44\n\nWeight tot (no engine): 402600.00 kg (402.60 t)\n\n--- TEST AVG WEIGHT ---\navg now: 65.0 kg\ntot now: 402600.00 kg\n\navg -> 70.0 kg\ntot -> 403800.00 kg\ndiff: 1200.00 kg\n\n================================================================================\n--- LIST ---\n1. VAGONE PASSEGGERI - id: VP-001, Peso a vuoto: 45000.00 kg, Costruttore: Alstom, Anno: 2015, Classe: 1, Posti: 45/60, Peso totale: 48150.00 kg\n2. VAGONE PASSEGGERI - id: VP-002, Peso a vuoto: 42000.00 kg, Costruttore: Bombardier, Anno: 2018, Classe: 1, Posti: 58/64, Peso totale: 46060.00 kg\n3. VAGONE PASSEGGERI - id: VP-003, Peso a vuoto: 40000.00 kg, Costruttore: Siemens, Anno: 2020, Classe: 2, Posti: 72/80, Peso totale: 45040.00 kg\n4. VAGONE PASSEGGERI - id: VP-004, Peso a vuoto: 41000.00 kg, Costruttore: Alstom, Anno: 2019, Classe: 2, Posti: 65/80, Peso totale: 45550.00 kg\n5. VAGONE MERCI - id: VM-101, Peso a vuoto: 28000.00 kg, Costruttore: Greenbrier, Anno: 2016, Volume: 120.00 m³, Carico: 42000.00/50000.00 kg, Peso totale: 70000.00 kg\n6. VAGONE MERCI - id: VM-102, Peso a vuoto: 30000.00 kg, Costruttore: FreightCar, Anno: 2017, Volume: 140.00 m³, Carico: 55000.00/60000.00 kg, Peso totale: 85000.00 kg\n7. VAGONE MERCI - id: VM-103, Peso a vuoto: 26000.00 kg, Costruttore: Greenbrier, Anno: 2021, Volume: 100.00 m³, Carico: 38000.00/45000.00 kg, Peso totale: 64000.00 kg\n\n=== FINE ===\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

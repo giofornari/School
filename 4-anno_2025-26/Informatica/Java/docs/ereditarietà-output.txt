@@ -1,0 +1,2 @@
+Studente{codiceFiscale='RSSMRA80A01H501U', nome='Mario', cognome='Rossi', matricola='S12345', universita='Universita degli Studi'}
+Docente{codiceFiscale='BNCLRA70B41H501K', nome='Laura', cognome='Bianchi', materia='Programmazione', salario=2800.0}

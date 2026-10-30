@@ -1,0 +1,1564 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonoleggio - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg: #03060f;
+            --panel: #0a101f;
+            --panel-alt: #121a30;
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f5f6ff;
+            --muted: #9aa4c6;
+            --accent: #6bb8ff;
+            --accent-strong: #4a92ff;
+            --success: #38d98a;
+            --error: #f48b9c;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        header {
+            flex-shrink: 0;
+            background: rgba(10, 16, 31, 0.96);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        header h1 i {
+            color: var(--accent);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            border-top: 1px solid var(--border);
+            min-height: 0;
+            overflow: hidden;
+        }
+        
+        .left-panel {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+        }
+        
+        .tabs {
+            display: flex;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            border: none;
+            background: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 10px 12px;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text);
+        }
+        
+        .tab-button.active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .code-area {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--panel-alt);
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        
+        pre {
+            height: 100%;
+            margin: 0;
+        }
+        
+        pre code {
+            display: block;
+            height: 100%;
+            padding: 16px !important;
+            background: #060a17 !important;
+            color: #eaf0ff !important;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: 1px solid var(--border);
+            background: rgba(3, 6, 15, 0.85);
+            color: var(--text);
+            border-radius: 4px;
+            padding: 4px 9px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        
+        .copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .right-panel {
+            width: 32%;
+            min-width: 280px;
+            min-height: 0;
+            background: var(--panel);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .run-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .run-header h2 {
+            font-size: 0.9rem;
+        }
+        
+        .run-btn {
+            border: none;
+            background: linear-gradient(120deg, var(--accent-strong), var(--accent));
+            color: #fff;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        
+        .output-area {
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: var(--panel-alt);
+        }
+        
+        .output-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 130px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            background: rgba(4, 8, 20, 0.92);
+            color: var(--muted);
+        }
+        
+        .output-box.success {
+            border-color: rgba(56, 217, 138, 0.45);
+            color: var(--success);
+        }
+        
+        .output-box.error {
+            border-color: rgba(244, 139, 156, 0.45);
+            color: var(--error);
+        }
+        
+        .status-indicator {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            padding: 6px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            color: var(--muted);
+        }
+        
+        .status-indicator.success {
+            color: var(--success);
+            border-color: rgba(56, 217, 138, 0.35);
+        }
+        
+        .status-indicator.error {
+            color: var(--error);
+            border-color: rgba(244, 139, 156, 0.35);
+        }
+        
+        .status-indicator.running {
+            color: var(--accent);
+            border-color: rgba(107, 184, 255, 0.35);
+        }
+        
+        .spinner {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 999px;
+            border: 2px solid rgba(107, 184, 255, 0.2);
+            border-top-color: var(--accent);
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            border-left: 3px solid var(--accent);
+            padding: 7px 10px;
+            background: rgba(107, 184, 255, 0.08);
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 960px) {
+            body {
+                overflow: auto;
+            }
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            header {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .tabs {
+                padding: 0 8px;
+            }
+            .tab-button {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            Autonoleggio
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="autonoleggio-tab0">Main.java</button>
+        
+            <button class="tab-button " data-tab="autonoleggio-tab1">Veicolo.java</button>
+        
+            <button class="tab-button " data-tab="autonoleggio-tab2">Autovettura.java</button>
+        
+            <button class="tab-button " data-tab="autonoleggio-tab3">Furgone.java</button>
+        
+            <button class="tab-button " data-tab="autonoleggio-tab4">Noleggio.java</button>
+        
+            <button class="tab-button " data-tab="autonoleggio-tab5">GestioneAutonoleggio.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="autonoleggio-tab0" class="tab-content active">
+                <pre><code class="language-java">
+import java.time.LocalDate;
+
+/**
+ * Classe Main per testare il sistema di gestione autonoleggio. Dimostra tutte
+ * le funzionalità del sistema con esempi pratici.
+ *
+ * @author giordii.dev
+ */
+public class Main {
+
+    public static void main(String[] args) {
+        System.out.println(&quot;=== SISTEMA GESTIONE AUTONOLEGGIO ===\n&quot;);
+
+        // Creazione autonoleggio
+        GestioneAutonoleggio autonoleggio = new GestioneAutonoleggio(&quot;RentCar Italia&quot;);
+
+        System.out.println(&quot;--- CREAZIONE FLOTTA ---\n&quot;);
+
+        // Aggiunta autovetture
+        Autovettura auto1 = new Autovettura(
+                &quot;AB123CD&quot;,
+                1001,
+                &quot;Fiat&quot;,
+                &quot;Panda&quot;,
+                1200,
+                2020,
+                35.0,
+                5
+        );
+
+        Autovettura auto2 = new Autovettura(
+                &quot;EF456GH&quot;,
+                1002,
+                &quot;Volkswagen&quot;,
+                &quot;Golf&quot;,
+                1600,
+                2021,
+                50.0,
+                5
+        );
+
+        Autovettura auto3 = new Autovettura(
+                &quot;IJ789KL&quot;,
+                1003,
+                &quot;BMW&quot;,
+                &quot;Serie 3&quot;, // per fare bella figura
+                2000,
+                2022,
+                60.0,
+                5
+        );
+
+        // Aggiunta furgoni
+        Furgone furgone1 = new Furgone(
+                &quot;MN012OP&quot;,
+                2001,
+                &quot;Fiat&quot;,
+                &quot;Ducato&quot;,
+                2300,
+                2019,
+                90.0,
+                1200.0
+        );
+
+        Furgone furgone2 = new Furgone(
+                &quot;QR345ST&quot;,
+                2002,
+                &quot;Mercedes&quot;,
+                &quot;Sprinter&quot;, // costa un patrimonio
+                2500,
+                2021,
+                100.0,
+                1500.0
+        );
+
+        Furgone furgone3 = new Furgone(
+                &quot;UV678WX&quot;,
+                2003,
+                &quot;Iveco&quot;,
+                &quot;Daily&quot;,
+                3000,
+                2020,
+                80.0,
+                1800.0
+        );
+
+        autonoleggio.aggiungiVeicolo(auto1);
+        autonoleggio.aggiungiVeicolo(auto2);
+        autonoleggio.aggiungiVeicolo(auto3);
+        autonoleggio.aggiungiVeicolo(furgone1);
+        autonoleggio.aggiungiVeicolo(furgone2);
+        autonoleggio.aggiungiVeicolo(furgone3);
+
+        System.out.println(&quot;Flotta creata con successo!&quot;);
+        autonoleggio.stampaFlotta();
+
+        System.out.println(&quot;--- STATISTICHE FLOTTA ---&quot;);
+        System.out.println(&quot;Autovetture: &quot; + autonoleggio.getAutovetture().size());
+        System.out.println(&quot;Furgoni: &quot; + autonoleggio.getFurgoni().size());
+        System.out.println(&quot;Veicoli disponibili: &quot; + autonoleggio.getVeicoliDisponibili().size());
+        System.out.println();
+
+        // Test noleggi
+        System.out.println(&quot;--- AVVIO NOLEGGI ---\n&quot;);
+
+        LocalDate oggi = LocalDate.of(2025, 12, 1);
+
+        // Noleggio 1: Weekend con la Panda
+        System.out.println(&quot;Cliente Mario Rossi noleggia Fiat Panda (1001)&quot;);
+        Noleggio noleggio1 = autonoleggio.avviaNoleggio(1001, &quot;Mario Rossi&quot;, oggi);
+        System.out.println(&quot;✓ Noleggio avviato\n&quot;);
+
+        // Noleggio 2: Trasloco
+        System.out.println(&quot;Cliente Luigi Verdi noleggia Fiat Ducato (2001)&quot;);
+        Noleggio noleggio2 = autonoleggio.avviaNoleggio(2001, &quot;Luigi Verdi&quot;, oggi);  // trasloco
+        System.out.println(&quot;✓ Noleggio avviato\n&quot;);
+
+        // Noleggio 3: Settimana di lusso
+        System.out.println(&quot;Cliente Anna Bianchi noleggia BMW Serie 3 (1003)&quot;);
+        Noleggio noleggio3 = autonoleggio.avviaNoleggio(1003, &quot;Anna Bianchi&quot;, oggi);
+        System.out.println(&quot;✓ Noleggio avviato\n&quot;);
+
+        autonoleggio.stampaNoleggiAttivi();
+
+        System.out.println(&quot;--- VEICOLI ANCORA DISPONIBILI ---&quot;);
+        for (Veicolo v : autonoleggio.getVeicoliDisponibili()) {
+            System.out.println(v);
+        }
+        System.out.println();
+
+        // Conclusione noleggi
+        System.out.println(&quot;--- CONCLUSIONE NOLEGGI ---\n&quot;);
+
+        // Restituzione 1: 3 giorni, 200 km, serbatoio mezzo vuoto
+        System.out.println(&quot;Restituzione Fiat Panda da Mario Rossi&quot;);
+        LocalDate dataFine1 = oggi.plusDays(3);
+        noleggio1.concludiNoleggio(dataFine1, 200.0, 5.0);
+        System.out.println(noleggio1.getDettaglioCosti());
+        System.out.println();
+
+        // Restituzione 2: 5 giorni, 250 km
+        System.out.println(&quot;Restituzione Fiat Ducato da Luigi Verdi&quot;);
+        LocalDate dataFine2 = oggi.plusDays(5);
+        noleggio2.concludiNoleggio(dataFine2, 250.0, 10.0);  // consumo folle
+        System.out.println(noleggio2.getDettaglioCosti());
+        System.out.println();
+
+        // Restituzione 3: Ha girato tutta Italia
+        System.out.println(&quot;Restituzione BMW Serie 3 da Anna Bianchi&quot;);
+        LocalDate dataFine3 = oggi.plusDays(7);
+        noleggio3.concludiNoleggio(dataFine3, 500.0, 15.0);
+        System.out.println(noleggio3.getDettaglioCosti());
+        System.out.println();
+
+        autonoleggio.stampaStoricoNoleggi();
+
+        // Test calcolo costi diretto
+        System.out.println(&quot;--- TEST CALCOLO COSTI (metodo override) ---\n&quot;);
+
+        System.out.println(&quot;AUTOVETTURA - Esempio: 5 giorni, 300 km, 8 litri mancanti&quot;);
+        double costoAuto = auto2.calcolaCostoNoleggio(5, 300.0, 8.0);
+        System.out.println(&quot;Costo autovettura:&quot;);
+        System.out.println(&quot;  - Giorni: 5 * 50€ = 250€&quot;);
+        System.out.println(&quot;  - Km: 300 / 25 = 12€&quot;);
+        System.out.println(&quot;  - Carburante: 8 * 2€ = 16€&quot;);
+        System.out.println(&quot;  TOTALE: &quot; + String.format(&quot;%.2f&quot;, costoAuto) + &quot; €&quot;);
+        System.out.println();
+
+        System.out.println(&quot;FURGONE - Esempio: 5 giorni, 250 km, 12 litri mancanti&quot;);
+        double costoFurgone = furgone2.calcolaCostoNoleggio(5, 250.0, 12.0);
+        System.out.println(&quot;Costo furgone:&quot;);
+        System.out.println(&quot;  - Giorni: 5 * 70€ = 350€&quot;);
+        System.out.println(&quot;  - Km: (250-100) / 30 = 5€&quot;);
+        System.out.println(&quot;  - Carburante: 12 * 2€ = 24€&quot;);
+        System.out.println(&quot;  TOTALE: &quot; + String.format(&quot;%.2f&quot;, costoFurgone) + &quot; €&quot;);
+        System.out.println();
+
+        // confronto prezzi per noleggio breve
+        System.out.println(&quot;--- CONFRONTO TARIFFE (1 giorno, 50 km, 0 litri) ---&quot;);
+        double autoBreve = auto1.calcolaCostoNoleggio(1, 50.0, 0.0);
+        double furgoneBreve = furgone1.calcolaCostoNoleggio(1, 50.0, 0.0);
+        System.out.println(&quot;Autovettura: &quot; + String.format(&quot;%.2f&quot;, autoBreve) + &quot; €&quot;);
+        System.out.println(&quot;Furgone: &quot; + String.format(&quot;%.2f&quot;, furgoneBreve) + &quot; € (primi 100km gratis!)&quot;);
+        System.out.println();
+
+        // Statistiche finali
+        System.out.println(&quot;--- STATISTICHE FINALI ---&quot;);
+        System.out.println(&quot;Totale veicoli in flotta: &quot; + autonoleggio.contaVeicoli());
+        System.out.println(&quot;Totale noleggi effettuati: &quot; + autonoleggio.contaNoleggi());
+        System.out.println(&quot;Noleggi attivi: &quot; + autonoleggio.getNoleggiAttivi().size());
+        System.out.println(&quot;Noleggi conclusi: &quot; + autonoleggio.getNoleggiConclusi().size());
+        System.out.println(&quot;Veicoli disponibili: &quot; + autonoleggio.getVeicoliDisponibili().size());
+
+        // quanto abbiamo incassato oggi
+        double fatturatoTotale = 0;
+        for (Noleggio n : autonoleggio.getNoleggiConclusi()) {
+            fatturatoTotale += n.calcolaCostoTotale();
+        }
+        System.out.println(&quot;Fatturato totale: &quot; + String.format(&quot;%.2f&quot;, fatturatoTotale) + &quot; €&quot;);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="autonoleggio-tab1" class="tab-content ">
+                <pre><code class="language-java">
+/**
+ * Classe astratta che rappresenta un veicolo generico di autonoleggio.
+ * Contiene le informazioni comuni a tutti i veicoli e definisce il metodo astratto
+ * per il calcolo del costo del noleggio.
+ *
+ * @author giordii.dev
+ */
+public abstract class Veicolo {
+
+    private final String targa;
+    private final int numMatr;
+    private final String marca;
+    private final String modello;
+    private final int cilindrata;
+    private final int annoAcq;
+    private final double capSerbatoio;
+
+    /**
+     * Costruttore della classe Veicolo
+     *
+     * @param targa targa del veicolo
+     * @param numeroMatricola numero identificativo del veicolo
+     * @param marca marca del veicolo
+     * @param modello modello del veicolo
+     * @param cilindrata cilindrata in cc
+     * @param annoAcquisto anno di acquisto del veicolo
+     * @param capacitaSerbatoio capacità del serbatoio in litri
+     */
+    protected Veicolo(String targa, int numMatr, String marca, String modello,
+            int cilindrata, int annoAcq, double capSerbatoio) {
+        if (targa == null || targa.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;targa != null&quot;);
+        }
+        if (numMatr &lt;= 0) {
+            throw new IllegalArgumentException(&quot;numero matricola &gt; 0&quot;);
+        }
+        if (marca == null || marca.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;marca != null&quot;);
+        }
+        if (modello == null || modello.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;modello != null&quot;);
+        }
+        if (cilindrata &lt;= 0) {
+            throw new IllegalArgumentException(&quot;cilindrata &gt; 0&quot;);
+        }
+        if (annoAcq &lt;= 0) {
+            throw new IllegalArgumentException(&quot;anno acquisto &gt; 0&quot;);
+        }
+        if (capSerbatoio &lt;= 0) {
+            throw new IllegalArgumentException(&quot;capacita serbatoio &gt; 0&quot;);
+        }
+
+        this.targa = targa;
+        this.numMatr = numMatr;
+        this.marca = marca;
+        this.modello = modello;
+        this.cilindrata = cilindrata;
+        this.annoAcq = annoAcq;
+        this.capSerbatoio = capSerbatoio;
+    }
+
+    /**
+     * Metodo astratto per calcolare il costo del noleggio. Ogni tipo di veicolo
+     * implementa la propria logica di calcolo.
+     *
+     * @param giorni numero di giorni di noleggio
+     * @param kmPercorsi chilometri percorsi durante il noleggio
+     * @param litriMancanti litri di carburante mancanti al momento della
+     * restituzione
+     * @return l&#39;importo totale del noleggio in euro
+     */
+    public abstract double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti);
+
+    // Getters
+    public String getTarga() {
+        return targa;
+    }
+
+    public int getNumeroMatricola() {
+        return numMatr;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getModello() {
+        return modello;
+    }
+
+    public int getCilindrata() {
+        return cilindrata;
+    }
+
+    public int getAnnoAcquisto() {
+        return annoAcq;
+    }
+
+    public double getCapacitaSerbatoio() {
+        return capSerbatoio;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(&quot;Matricola: %d | Targa: %s | %s %s (%dcc) | Anno: %d | Serbatoio: %.1fL&quot;,
+                numMatr, targa, marca, modello, cilindrata, annoAcq, capSerbatoio);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="autonoleggio-tab2" class="tab-content ">
+                <pre><code class="language-java">
+/**
+ * Classe che rappresenta un&#39;autovettura.
+ * Estende la classe Veicolo aggiungendo il numero di posti.
+ *
+ * Tariffa noleggio:
+ * - 50 euro al giorno
+ * - 1 euro ogni 25 km percorsi
+ * - 2 euro per ogni litro di carburante mancante
+ *
+ * @author giordii.dev
+ */
+public class Autovettura extends Veicolo {
+
+    private final int numPosti;
+
+    // Costanti per il calcolo del costo
+    private static final double COSTO_AL_GIORNO = 50.0;
+    private static final double KM_PER_EURO = 25.0;
+    private static final double COSTO_LITRO_MANCANTE = 2.0;
+
+    /**
+     * Costruttore della classe Autovettura
+     *
+     * @param targa targa del veicolo
+     * @param numeroMatricola numero identificativo del veicolo
+     * @param marca marca del veicolo
+     * @param modello modello del veicolo
+     * @param cilindrata cilindrata in cc
+     * @param annoAcquisto anno di acquisto del veicolo
+     * @param capacitaSerbatoio capacità del serbatoio in litri
+     * @param numeroPosti numero di posti dell&#39;autovettura
+     */
+    public Autovettura(String targa, int numMatr, String marca, String modello,
+            int cilindrata, int annoAcq, double capSerbatoio, int numPosti) {
+        super(targa, numMatr, marca, modello, cilindrata, annoAcq, capSerbatoio);
+
+        if (numPosti &lt;= 0) {
+            throw new IllegalArgumentException(&quot;numero posti &gt; 0&quot;);
+        }
+
+        this.numPosti = numPosti;
+    }
+
+    /**
+     * Calcola il costo del noleggio per un&#39;autovettura. Formula: (50 * giorni)
+     * + (kmPercorsi / 25) + (litriMancanti * 2)
+     *
+     * @param giorni numero di giorni di noleggio
+     * @param kmPercorsi chilometri percorsi durante il noleggio
+     * @param litriMancanti litri di carburante mancanti al momento della
+     * restituzione
+     * @return l&#39;importo totale del noleggio in euro
+     */
+    @Override
+    public double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti) {
+        if (giorni &lt;= 0) {
+            throw new IllegalArgumentException(&quot;giorni &gt; 0&quot;);
+        }
+        if (kmPercorsi &lt; 0) {
+            throw new IllegalArgumentException(&quot;km &gt;= 0&quot;);
+        }
+        if (litriMancanti &lt; 0) {
+            throw new IllegalArgumentException(&quot;litri mancanti &gt;= 0&quot;);
+        }
+        if (litriMancanti &gt; getCapacitaSerbatoio()) {
+            throw new IllegalArgumentException(&quot;litri mancanti &lt;= capacita serbatoio&quot;);
+        }
+
+        double costoGiorni = COSTO_AL_GIORNO * giorni;
+        double costoKm = (kmPercorsi / KM_PER_EURO);
+        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;
+
+        return costoGiorni + costoKm + costoCarburante;
+    }
+
+    public int getNumeroPosti() {
+        return numPosti;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;AUTOVETTURA: &quot; + super.toString()
+                + String.format(&quot; | Posti: %d&quot;, numPosti);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="autonoleggio-tab3" class="tab-content ">
+                <pre><code class="language-java">
+/**
+ * Classe che rappresenta un furgone.
+ * Estende la classe Veicolo aggiungendo la capacità di carico.
+ *
+ * Tariffa noleggio:
+ * - 70 euro al giorno
+ * - 1 euro ogni 30 km percorsi dopo i primi 100 km gratuiti
+ * - 2 euro per ogni litro di carburante mancante
+ *
+ * @author giordii.dev
+ */
+public class Furgone extends Veicolo {
+
+    private final double capCarico;
+
+    // Costanti per il calcolo del costo
+    private static final double COSTO_AL_GIORNO = 70.0;
+    private static final double KM_GRATUITI = 100.0;
+    private static final double KM_PER_EURO = 30.0;
+    private static final double COSTO_LITRO_MANCANTE = 2.0;
+
+    /**
+     * Costruttore della classe Furgone
+     *
+     * @param targa targa del veicolo
+     * @param numeroMatricola numero identificativo del veicolo
+     * @param marca marca del veicolo
+     * @param modello modello del veicolo
+     * @param cilindrata cilindrata in cc
+     * @param annoAcquisto anno di acquisto del veicolo
+     * @param capacitaSerbatoio capacità del serbatoio in litri
+     * @param capacitaCarico capacità di carico del furgone in kg
+     */
+    public Furgone(String targa, int numMatr, String marca, String modello,
+            int cilindrata, int annoAcq, double capSerbatoio, double capCarico) {
+        super(targa, numMatr, marca, modello, cilindrata, annoAcq, capSerbatoio);
+
+        if (capCarico &lt;= 0) {
+            throw new IllegalArgumentException(&quot;capacita carico &gt; 0&quot;);
+        }
+
+        this.capCarico = capCarico;
+    }
+
+    /**
+     * Calcola il costo del noleggio per un furgone. Formula: (70 * giorni) +
+     * ((kmPercorsi - 100) / 30) + (litriMancanti * 2) I primi 100 km sono
+     * gratuiti
+     *
+     * @param giorni numero di giorni di noleggio
+     * @param kmPercorsi chilometri percorsi durante il noleggio
+     * @param litriMancanti litri di carburante mancanti al momento della
+     * restituzione
+     * @return l&#39;importo totale del noleggio in euro
+     */
+    @Override
+    public double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti) {
+        if (giorni &lt;= 0) {
+            throw new IllegalArgumentException(&quot;giorni &gt; 0&quot;);
+        }
+        if (kmPercorsi &lt; 0) {
+            throw new IllegalArgumentException(&quot;km &gt;= 0&quot;);
+        }
+        if (litriMancanti &lt; 0) {
+            throw new IllegalArgumentException(&quot;litri mancanti &gt;= 0&quot;);
+        }
+        if (litriMancanti &gt; getCapacitaSerbatoio()) {
+            throw new IllegalArgumentException(&quot;litri mancanti &lt;= capacita serbatoio&quot;);
+        }
+
+        double costoGiorni = COSTO_AL_GIORNO * giorni;
+
+        // Calcolo costo km: i primi 100 km sono gratuiti
+        double kmOltreFranchigia = Math.max(0, kmPercorsi - KM_GRATUITI);
+        double costoKm = kmOltreFranchigia / KM_PER_EURO;
+
+        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;
+
+        return costoGiorni + costoKm + costoCarburante;
+    }
+
+    public double getCapacitaCarico() {
+        return capCarico;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;FURGONE: &quot; + super.toString()
+                + String.format(&quot; | Carico: %.0fkg&quot;, capCarico);
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="autonoleggio-tab4" class="tab-content ">
+                <pre><code class="language-java">
+import java.time.LocalDate;
+
+/**
+ * Classe che rappresenta un singolo contratto di noleggio. Gestisce le
+ * informazioni del noleggio e calcola il costo finale.
+ *
+ * @author giordii.dev
+ */
+public class Noleggio {
+
+    private final Veicolo veicolo;
+    private final String nomeCliente;
+    private final LocalDate dataInizio;
+    private LocalDate dataFine;
+    private double kmPercorsi;
+    private double litriMancanti;
+    private boolean concluso;
+
+    /**
+     * Costruttore per creare un nuovo noleggio
+     *
+     * @param veicolo il veicolo noleggiato
+     * @param nomeCliente nome del cliente
+     * @param dataInizio data di inizio del noleggio
+     */
+    public Noleggio(Veicolo veicolo, String nomeCliente, LocalDate dataInizio) {
+        if (veicolo == null) {
+            throw new IllegalArgumentException(&quot;veicolo != null&quot;);
+        }
+        if (nomeCliente == null || nomeCliente.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;nome cliente != null&quot;);
+        }
+        if (dataInizio == null) {
+            throw new IllegalArgumentException(&quot;data inizio != null&quot;);
+        }
+
+        this.veicolo = veicolo;
+        this.nomeCliente = nomeCliente;
+        this.dataInizio = dataInizio;
+        this.dataFine = null;
+        this.kmPercorsi = 0;
+        this.litriMancanti = 0;
+        this.concluso = false;
+    }
+
+    /**
+     * Conclude il noleggio registrando i dati finali
+     *
+     * @param dataFine data di restituzione del veicolo
+     * @param kmPercorsi km percorsi durante il noleggio
+     * @param litriMancanti litri di carburante mancanti
+     */
+    public void concludiNoleggio(LocalDate dataFine, double kmPercorsi, double litriMancanti) {
+        if (concluso) {
+            throw new IllegalStateException(&quot;noleggio gia concluso&quot;);
+        }
+        if (dataFine == null) {
+            throw new IllegalArgumentException(&quot;data fine != null&quot;);
+        }
+        if (dataFine.isBefore(dataInizio)) {
+            throw new IllegalArgumentException(&quot;data fine &gt;= data inizio&quot;);
+        }
+        if (kmPercorsi &lt; 0) {
+            throw new IllegalArgumentException(&quot;km &gt;= 0&quot;);
+        }
+        if (litriMancanti &lt; 0) {
+            throw new IllegalArgumentException(&quot;litri mancanti &gt;= 0&quot;);
+        }
+
+        this.dataFine = dataFine;
+        this.kmPercorsi = kmPercorsi;
+        this.litriMancanti = litriMancanti;
+        this.concluso = true;
+    }
+
+    /**
+     * Calcola il numero di giorni di noleggio
+     *
+     * @return il numero di giorni di noleggio
+     */
+    public int calcolaGiorniNoleggio() {
+        if (!concluso || dataFine == null) {
+            throw new IllegalStateException(&quot;noleggio non ancora concluso&quot;);
+        }
+
+        long giorni = java.time.temporal.ChronoUnit.DAYS.between(dataInizio, dataFine);
+        // se lo riporta lo stesso giorno, minimo 1 giorno si paga
+        return (int) Math.max(1, giorni);
+    }
+
+    /**
+     * Calcola il costo totale del noleggio
+     *
+     * @return il costo totale in euro
+     */
+    public double calcolaCostoTotale() {
+        if (!concluso) {
+            throw new IllegalStateException(&quot;Il noleggio non è ancora stato concluso&quot;);
+        }
+
+        int giorni = calcolaGiorniNoleggio();
+        return veicolo.calcolaCostoNoleggio(giorni, kmPercorsi, litriMancanti);
+    }
+
+    /**
+     * Restituisce un dettaglio completo del costo con la scomposizione
+     *
+     * @return una stringa con il dettaglio dei costi
+     */
+    public String getDettaglioCosti() {
+        if (!concluso) {
+            return &quot;Noleggio non ancora concluso&quot;;
+        }
+
+        int giorni = calcolaGiorniNoleggio();
+        double totale = calcolaCostoTotale();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(&quot;Dettaglio costi per %s:\n&quot;, veicolo.getTarga()));
+        sb.append(String.format(&quot;- Periodo: %s → %s (%d giorni)\n&quot;, dataInizio, dataFine, giorni));
+        sb.append(String.format(&quot;- Km percorsi: %.2f km\n&quot;, kmPercorsi));
+        sb.append(String.format(&quot;- Carburante mancante: %.2f litri\n&quot;, litriMancanti));
+        sb.append(String.format(&quot;TOTALE: %.2f €&quot;, totale));
+
+        return sb.toString();
+    }
+
+    // Getters
+    public Veicolo getVeicolo() {
+        return veicolo;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public LocalDate getDataInizio() {
+        return dataInizio;
+    }
+
+    public LocalDate getDataFine() {
+        return dataFine;
+    }
+
+    public double getKmPercorsi() {
+        return kmPercorsi;
+    }
+
+    public double getLitriMancanti() {
+        return litriMancanti;
+    }
+
+    public boolean isConcluso() {
+        return concluso;
+    }
+
+    @Override
+    public String toString() {
+        if (!concluso) {
+            return String.format(&quot;Noleggio ATTIVO - Cliente: %s | Veicolo: %s | Dal: %s&quot;,
+                    nomeCliente, veicolo.getTarga(), dataInizio);
+        } else {
+            return String.format(&quot;Noleggio CONCLUSO - Cliente: %s | Veicolo: %s | %s → %s | Costo: %.2f €&quot;,
+                    nomeCliente, veicolo.getTarga(), dataInizio, dataFine, calcolaCostoTotale());
+        }
+    }
+}
+</code></pre>
+            </div>
+        
+            <div id="autonoleggio-tab5" class="tab-content ">
+                <pre><code class="language-java">
+import java.time.LocalDate;
+import java.util.ArrayList;
+
+/**
+ * Classe che gestisce la flotta di veicoli e i noleggi di una catena di
+ * autonoleggio. Permette di aggiungere veicoli, cercare veicoli disponibili,
+ * avviare e concludere noleggi.
+ *
+ * @author giordii.dev
+ */
+public class GestioneAutonoleggio {
+
+    private final String nomeAzienda;
+    private final ArrayList&lt;Veicolo&gt; flotta;
+    private final ArrayList&lt;Noleggio&gt; noleggi;
+
+    /**
+     * Costruttore della classe GestioneAutonoleggio
+     *
+     * @param nomeAzienda nome della catena di autonoleggio
+     */
+    public GestioneAutonoleggio(String nomeAzienda) {
+        if (nomeAzienda == null || nomeAzienda.trim().isEmpty()) {
+            throw new IllegalArgumentException(&quot;nome azienda != null&quot;);
+        }
+
+        this.nomeAzienda = nomeAzienda;
+        this.flotta = new ArrayList&lt;&gt;();
+        this.noleggi = new ArrayList&lt;&gt;();
+    }
+
+    /**
+     * Aggiunge un veicolo alla flotta
+     *
+     * @param veicolo il veicolo da aggiungere
+     */
+    public void aggiungiVeicolo(Veicolo veicolo) {
+        if (veicolo == null) {
+            throw new IllegalArgumentException(&quot;veicolo != null&quot;);
+        }
+
+        // Verifica che non esista già un veicolo con la stessa targa
+        for (Veicolo v : flotta) {
+            if (v.getTarga().equals(veicolo.getTarga())) {
+                throw new IllegalArgumentException(&quot;targa &quot; + veicolo.getTarga() + &quot; gia presente&quot;);
+            }
+        }
+
+        flotta.add(veicolo);
+    }
+
+    /**
+     * Cerca un veicolo per numero di matricola
+     *
+     * @param numeroMatricola numero identificativo del veicolo
+     * @return il veicolo trovato o null se non presente
+     */
+    public Veicolo cercaVeicolo(int numeroMatricola) {
+        for (Veicolo v : flotta) {
+            if (v.getNumeroMatricola() == numeroMatricola) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Cerca un veicolo per targa
+     *
+     * @param targa targa del veicolo
+     * @return il veicolo trovato o null se non presente
+     */
+    public Veicolo cercaVeicoloPerTarga(String targa) {
+        if (targa == null) {
+            return null;
+        }
+
+        for (Veicolo v : flotta) {
+            if (v.getTarga().equalsIgnoreCase(targa)) {
+                return v;  // match!
+            }
+        }
+        return null;  // nessun veicolo con questa targa
+    }
+
+    /**
+     * Verifica se un veicolo è disponibile per il noleggio
+     *
+     * @param veicolo il veicolo da verificare
+     * @return true se il veicolo è disponibile, false se è in noleggio attivo
+     */
+    public boolean isVeicoloDisponibile(Veicolo veicolo) {
+        for (Noleggio n : noleggi) {
+            if (!n.isConcluso() &amp;&amp; n.getVeicolo().equals(veicolo)) {
+                return false;  // in giro con qualcuno
+            }
+        }
+        return true;  // parcheggiato e pronto
+    }
+
+    /**
+     * Avvia un nuovo noleggio
+     *
+     * @param numeroMatricola numero di matricola del veicolo da noleggiare
+     * @param nomeCliente nome del cliente
+     * @param dataInizio data di inizio del noleggio
+     * @return il noleggio creato
+     */
+    public Noleggio avviaNoleggio(int numeroMatricola, String nomeCliente, LocalDate dataInizio) {
+        Veicolo veicolo = cercaVeicolo(numeroMatricola);
+
+        if (veicolo == null) {
+            throw new IllegalArgumentException(&quot;veicolo &quot; + numeroMatricola + &quot; non trovato&quot;);
+        }
+
+        if (!isVeicoloDisponibile(veicolo)) {
+            throw new IllegalStateException(&quot;veicolo &quot; + veicolo.getTarga() + &quot; gia in noleggio&quot;);
+        }
+
+        Noleggio noleggio = new Noleggio(veicolo, nomeCliente, dataInizio);
+        noleggi.add(noleggio);  // registrato nel sistema
+
+        return noleggio;
+    }
+
+    /**
+     * Restituisce la lista dei veicoli disponibili
+     *
+     * @return lista di veicoli disponibili
+     */
+    public ArrayList&lt;Veicolo&gt; getVeicoliDisponibili() {
+        ArrayList&lt;Veicolo&gt; disponibili = new ArrayList&lt;&gt;();
+
+        for (Veicolo v : flotta) {
+            if (isVeicoloDisponibile(v)) {
+                disponibili.add(v);  // libero e pronto
+            }
+        }
+
+        return disponibili;
+    }
+
+    /**
+     * Restituisce la lista dei noleggi attivi
+     *
+     * @return lista di noleggi attivi
+     */
+    public ArrayList&lt;Noleggio&gt; getNoleggiAttivi() {
+        ArrayList&lt;Noleggio&gt; attivi = new ArrayList&lt;&gt;();
+
+        for (Noleggio n : noleggi) {
+            if (!n.isConcluso()) {
+                attivi.add(n);  // ancora in giro
+            }
+        }
+
+        return attivi;
+    }
+
+    /**
+     * Restituisce la lista dei noleggi conclusi
+     *
+     * @return lista di noleggi conclusi
+     */
+    public ArrayList&lt;Noleggio&gt; getNoleggiConclusi() {
+        ArrayList&lt;Noleggio&gt; conclusi = new ArrayList&lt;&gt;();
+
+        for (Noleggio n : noleggi) {
+            if (n.isConcluso()) {
+                conclusi.add(n);  // già restituiti
+            }
+        }
+
+        return conclusi;
+    }
+
+    /**
+     * Restituisce solo le autovetture della flotta
+     *
+     * @return lista di autovetture
+     */
+    public ArrayList&lt;Autovettura&gt; getAutovetture() {
+        ArrayList&lt;Autovettura&gt; autovetture = new ArrayList&lt;&gt;();
+
+        for (Veicolo v : flotta) {
+            if (v instanceof Autovettura) {
+                autovetture.add((Autovettura) v);  // cast sicuro dopo instanceof
+            }
+        }
+
+        return autovetture;
+    }
+
+    /**
+     * Restituisce solo i furgoni della flotta
+     *
+     * @return lista di furgoni
+     */
+    public ArrayList&lt;Furgone&gt; getFurgoni() {
+        ArrayList&lt;Furgone&gt; furgoni = new ArrayList&lt;&gt;();
+
+        for (Veicolo v : flotta) {
+            if (v instanceof Furgone) {
+                furgoni.add((Furgone) v);  // downcast sicuro
+            }
+        }
+
+        return furgoni;
+    }
+
+    /**
+     * Stampa l&#39;intera flotta di veicoli
+     */
+    public void stampaFlotta() {
+        System.out.println(&quot;\n=== FLOTTA &quot; + nomeAzienda.toUpperCase() + &quot; ===&quot;);
+        System.out.println(&quot;Totale veicoli: &quot; + flotta.size());
+        System.out.println();
+
+        if (flotta.isEmpty()) {
+            System.out.println(&quot;Nessun veicolo nella flotta.&quot;);  // ancora da comprare
+        } else {
+            for (Veicolo v : flotta) {
+                String stato = isVeicoloDisponibile(v) ? &quot;[DISPONIBILE]&quot; : &quot;[IN NOLEGGIO]&quot;;
+                System.out.println(stato + &quot; &quot; + v);
+            }
+        }
+        System.out.println(&quot;================================\n&quot;);
+    }
+
+    /**
+     * Stampa tutti i noleggi attivi
+     */
+    public void stampaNoleggiAttivi() {
+        System.out.println(&quot;\n=== NOLEGGI ATTIVI ===&quot;);
+        ArrayList&lt;Noleggio&gt; attivi = getNoleggiAttivi();
+
+        if (attivi.isEmpty()) {
+            System.out.println(&quot;Nessun noleggio attivo.&quot;);
+        } else {
+            for (Noleggio n : attivi) {
+                System.out.println(n);
+            }
+        }
+        System.out.println(&quot;======================\n&quot;);
+    }
+
+    /**
+     * Stampa lo storico dei noleggi conclusi
+     */
+    public void stampaStoricoNoleggi() {
+        System.out.println(&quot;\n=== STORICO NOLEGGI CONCLUSI ===&quot;);
+        ArrayList&lt;Noleggio&gt; conclusi = getNoleggiConclusi();
+
+        if (conclusi.isEmpty()) {
+            System.out.println(&quot;Nessun noleggio concluso.&quot;);
+        } else {
+            for (Noleggio n : conclusi) {
+                System.out.println(n);
+            }
+        }
+        System.out.println(&quot;================================\n&quot;);
+    }
+
+    public String getNomeAzienda() {
+        return nomeAzienda;
+    }
+
+    public int contaVeicoli() {
+        return flotta.size();
+    }
+
+    public int contaNoleggi() {
+        return noleggi.size();
+    }
+}
+</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">=== SISTEMA GESTIONE AUTONOLEGGIO ===
+
+--- CREAZIONE FLOTTA ---
+
+Flotta creata con successo!
+
+=== FLOTTA RENTCAR ITALIA ===
+Totale veicoli: 6
+
+[DISPONIBILE] AUTOVETTURA: Matricola: 1001 | Targa: AB123CD | Fiat Panda (1200cc) | Anno: 2020 | Serbatoio: 35.0L | Posti: 5
+[DISPONIBILE] AUTOVETTURA: Matricola: 1002 | Targa: EF456GH | Volkswagen Golf (1600cc) | Anno: 2021 | Serbatoio: 50.0L | Posti: 5
+[DISPONIBILE] AUTOVETTURA: Matricola: 1003 | Targa: IJ789KL | BMW Serie 3 (2000cc) | Anno: 2022 | Serbatoio: 60.0L | Posti: 5
+[DISPONIBILE] FURGONE: Matricola: 2001 | Targa: MN012OP | Fiat Ducato (2300cc) | Anno: 2019 | Serbatoio: 90.0L | Carico: 1200kg
+[DISPONIBILE] FURGONE: Matricola: 2002 | Targa: QR345ST | Mercedes Sprinter (2500cc) | Anno: 2021 | Serbatoio: 100.0L | Carico: 1500kg
+[DISPONIBILE] FURGONE: Matricola: 2003 | Targa: UV678WX | Iveco Daily (3000cc) | Anno: 2020 | Serbatoio: 80.0L | Carico: 1800kg
+================================
+
+--- STATISTICHE FLOTTA ---
+Autovetture: 3
+Furgoni: 3
+Veicoli disponibili: 6
+
+--- AVVIO NOLEGGI ---
+
+Cliente Mario Rossi noleggia Fiat Panda (1001)
+✓ Noleggio avviato
+
+Cliente Luigi Verdi noleggia Fiat Ducato (2001)
+✓ Noleggio avviato
+
+Cliente Anna Bianchi noleggia BMW Serie 3 (1003)
+✓ Noleggio avviato
+
+
+=== NOLEGGI ATTIVI ===
+Noleggio ATTIVO - Cliente: Mario Rossi | Veicolo: AB123CD | Dal: 2025-12-01
+Noleggio ATTIVO - Cliente: Luigi Verdi | Veicolo: MN012OP | Dal: 2025-12-01
+Noleggio ATTIVO - Cliente: Anna Bianchi | Veicolo: IJ789KL | Dal: 2025-12-01
+======================
+
+--- VEICOLI ANCORA DISPONIBILI ---
+AUTOVETTURA: Matricola: 1002 | Targa: EF456GH | Volkswagen Golf (1600cc) | Anno: 2021 | Serbatoio: 50.0L | Posti: 5
+FURGONE: Matricola: 2002 | Targa: QR345ST | Mercedes Sprinter (2500cc) | Anno: 2021 | Serbatoio: 100.0L | Carico: 1500kg
+FURGONE: Matricola: 2003 | Targa: UV678WX | Iveco Daily (3000cc) | Anno: 2020 | Serbatoio: 80.0L | Carico: 1800kg
+
+--- CONCLUSIONE NOLEGGI ---
+
+Restituzione Fiat Panda da Mario Rossi
+Dettaglio costi per AB123CD:
+- Periodo: 2025-12-01 → 2025-12-04 (3 giorni)
+- Km percorsi: 200.00 km
+- Carburante mancante: 5.00 litri
+TOTALE: 168.00 €
+
+Restituzione Fiat Ducato da Luigi Verdi
+Dettaglio costi per MN012OP:
+- Periodo: 2025-12-01 → 2025-12-06 (5 giorni)
+- Km percorsi: 250.00 km
+- Carburante mancante: 10.00 litri
+TOTALE: 375.00 €
+
+Restituzione BMW Serie 3 da Anna Bianchi
+Dettaglio costi per IJ789KL:
+- Periodo: 2025-12-01 → 2025-12-08 (7 giorni)
+- Km percorsi: 500.00 km
+- Carburante mancante: 15.00 litri
+TOTALE: 400.00 €
+
+
+=== STORICO NOLEGGI CONCLUSI ===
+Noleggio CONCLUSO - Cliente: Mario Rossi | Veicolo: AB123CD | 2025-12-01 → 2025-12-04 | Costo: 168.00 €
+Noleggio CONCLUSO - Cliente: Luigi Verdi | Veicolo: MN012OP | 2025-12-01 → 2025-12-06 | Costo: 375.00 €
+Noleggio CONCLUSO - Cliente: Anna Bianchi | Veicolo: IJ789KL | 2025-12-01 → 2025-12-08 | Costo: 400.00 €
+================================
+
+--- TEST CALCOLO COSTI (metodo override) ---
+
+AUTOVETTURA - Esempio: 5 giorni, 300 km, 8 litri mancanti
+Costo autovettura:
+  - Giorni: 5 * 50€ = 250€
+  - Km: 300 / 25 = 12€
+  - Carburante: 8 * 2€ = 16€
+  TOTALE: 278.00 €
+
+FURGONE - Esempio: 5 giorni, 250 km, 12 litri mancanti
+Costo furgone:
+  - Giorni: 5 * 70€ = 350€
+  - Km: (250-100) / 30 = 5€
+  - Carburante: 12 * 2€ = 24€
+  TOTALE: 379.00 €
+
+--- CONFRONTO TARIFFE (1 giorno, 50 km, 0 litri) ---
+Autovettura: 52.00 €
+Furgone: 70.00 € (primi 100km gratis!)
+
+--- STATISTICHE FINALI ---
+Totale veicoli in flotta: 6
+Totale noleggi effettuati: 3
+Noleggi attivi: 0
+Noleggi conclusi: 3
+Veicoli disponibili: 6
+Fatturato totale: 943.00 €
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["\nimport java.time.LocalDate;\n\n/**\n * Classe Main per testare il sistema di gestione autonoleggio. Dimostra tutte\n * le funzionalità del sistema con esempi pratici.\n *\n * @author giordii.dev\n */\npublic class Main {\n\n    public static void main(String[] args) {\n        System.out.println(\"=== SISTEMA GESTIONE AUTONOLEGGIO ===\\n\");\n\n        // Creazione autonoleggio\n        GestioneAutonoleggio autonoleggio = new GestioneAutonoleggio(\"RentCar Italia\");\n\n        System.out.println(\"--- CREAZIONE FLOTTA ---\\n\");\n\n        // Aggiunta autovetture\n        Autovettura auto1 = new Autovettura(\n                \"AB123CD\",\n                1001,\n                \"Fiat\",\n                \"Panda\",\n                1200,\n                2020,\n                35.0,\n                5\n        );\n\n        Autovettura auto2 = new Autovettura(\n                \"EF456GH\",\n                1002,\n                \"Volkswagen\",\n                \"Golf\",\n                1600,\n                2021,\n                50.0,\n                5\n        );\n\n        Autovettura auto3 = new Autovettura(\n                \"IJ789KL\",\n                1003,\n                \"BMW\",\n                \"Serie 3\", // per fare bella figura\n                2000,\n                2022,\n                60.0,\n                5\n        );\n\n        // Aggiunta furgoni\n        Furgone furgone1 = new Furgone(\n                \"MN012OP\",\n                2001,\n                \"Fiat\",\n                \"Ducato\",\n                2300,\n                2019,\n                90.0,\n                1200.0\n        );\n\n        Furgone furgone2 = new Furgone(\n                \"QR345ST\",\n                2002,\n                \"Mercedes\",\n                \"Sprinter\", // costa un patrimonio\n                2500,\n                2021,\n                100.0,\n                1500.0\n        );\n\n        Furgone furgone3 = new Furgone(\n                \"UV678WX\",\n                2003,\n                \"Iveco\",\n                \"Daily\",\n                3000,\n                2020,\n                80.0,\n                1800.0\n        );\n\n        autonoleggio.aggiungiVeicolo(auto1);\n        autonoleggio.aggiungiVeicolo(auto2);\n        autonoleggio.aggiungiVeicolo(auto3);\n        autonoleggio.aggiungiVeicolo(furgone1);\n        autonoleggio.aggiungiVeicolo(furgone2);\n        autonoleggio.aggiungiVeicolo(furgone3);\n\n        System.out.println(\"Flotta creata con successo!\");\n        autonoleggio.stampaFlotta();\n\n        System.out.println(\"--- STATISTICHE FLOTTA ---\");\n        System.out.println(\"Autovetture: \" + autonoleggio.getAutovetture().size());\n        System.out.println(\"Furgoni: \" + autonoleggio.getFurgoni().size());\n        System.out.println(\"Veicoli disponibili: \" + autonoleggio.getVeicoliDisponibili().size());\n        System.out.println();\n\n        // Test noleggi\n        System.out.println(\"--- AVVIO NOLEGGI ---\\n\");\n\n        LocalDate oggi = LocalDate.of(2025, 12, 1);\n\n        // Noleggio 1: Weekend con la Panda\n        System.out.println(\"Cliente Mario Rossi noleggia Fiat Panda (1001)\");\n        Noleggio noleggio1 = autonoleggio.avviaNoleggio(1001, \"Mario Rossi\", oggi);\n        System.out.println(\"✓ Noleggio avviato\\n\");\n\n        // Noleggio 2: Trasloco\n        System.out.println(\"Cliente Luigi Verdi noleggia Fiat Ducato (2001)\");\n        Noleggio noleggio2 = autonoleggio.avviaNoleggio(2001, \"Luigi Verdi\", oggi);  // trasloco\n        System.out.println(\"✓ Noleggio avviato\\n\");\n\n        // Noleggio 3: Settimana di lusso\n        System.out.println(\"Cliente Anna Bianchi noleggia BMW Serie 3 (1003)\");\n        Noleggio noleggio3 = autonoleggio.avviaNoleggio(1003, \"Anna Bianchi\", oggi);\n        System.out.println(\"✓ Noleggio avviato\\n\");\n\n        autonoleggio.stampaNoleggiAttivi();\n\n        System.out.println(\"--- VEICOLI ANCORA DISPONIBILI ---\");\n        for (Veicolo v : autonoleggio.getVeicoliDisponibili()) {\n            System.out.println(v);\n        }\n        System.out.println();\n\n        // Conclusione noleggi\n        System.out.println(\"--- CONCLUSIONE NOLEGGI ---\\n\");\n\n        // Restituzione 1: 3 giorni, 200 km, serbatoio mezzo vuoto\n        System.out.println(\"Restituzione Fiat Panda da Mario Rossi\");\n        LocalDate dataFine1 = oggi.plusDays(3);\n        noleggio1.concludiNoleggio(dataFine1, 200.0, 5.0);\n        System.out.println(noleggio1.getDettaglioCosti());\n        System.out.println();\n\n        // Restituzione 2: 5 giorni, 250 km\n        System.out.println(\"Restituzione Fiat Ducato da Luigi Verdi\");\n        LocalDate dataFine2 = oggi.plusDays(5);\n        noleggio2.concludiNoleggio(dataFine2, 250.0, 10.0);  // consumo folle\n        System.out.println(noleggio2.getDettaglioCosti());\n        System.out.println();\n\n        // Restituzione 3: Ha girato tutta Italia\n        System.out.println(\"Restituzione BMW Serie 3 da Anna Bianchi\");\n        LocalDate dataFine3 = oggi.plusDays(7);\n        noleggio3.concludiNoleggio(dataFine3, 500.0, 15.0);\n        System.out.println(noleggio3.getDettaglioCosti());\n        System.out.println();\n\n        autonoleggio.stampaStoricoNoleggi();\n\n        // Test calcolo costi diretto\n        System.out.println(\"--- TEST CALCOLO COSTI (metodo override) ---\\n\");\n\n        System.out.println(\"AUTOVETTURA - Esempio: 5 giorni, 300 km, 8 litri mancanti\");\n        double costoAuto = auto2.calcolaCostoNoleggio(5, 300.0, 8.0);\n        System.out.println(\"Costo autovettura:\");\n        System.out.println(\"  - Giorni: 5 * 50€ = 250€\");\n        System.out.println(\"  - Km: 300 / 25 = 12€\");\n        System.out.println(\"  - Carburante: 8 * 2€ = 16€\");\n        System.out.println(\"  TOTALE: \" + String.format(\"%.2f\", costoAuto) + \" €\");\n        System.out.println();\n\n        System.out.println(\"FURGONE - Esempio: 5 giorni, 250 km, 12 litri mancanti\");\n        double costoFurgone = furgone2.calcolaCostoNoleggio(5, 250.0, 12.0);\n        System.out.println(\"Costo furgone:\");\n        System.out.println(\"  - Giorni: 5 * 70€ = 350€\");\n        System.out.println(\"  - Km: (250-100) / 30 = 5€\");\n        System.out.println(\"  - Carburante: 12 * 2€ = 24€\");\n        System.out.println(\"  TOTALE: \" + String.format(\"%.2f\", costoFurgone) + \" €\");\n        System.out.println();\n\n        // confronto prezzi per noleggio breve\n        System.out.println(\"--- CONFRONTO TARIFFE (1 giorno, 50 km, 0 litri) ---\");\n        double autoBreve = auto1.calcolaCostoNoleggio(1, 50.0, 0.0);\n        double furgoneBreve = furgone1.calcolaCostoNoleggio(1, 50.0, 0.0);\n        System.out.println(\"Autovettura: \" + String.format(\"%.2f\", autoBreve) + \" €\");\n        System.out.println(\"Furgone: \" + String.format(\"%.2f\", furgoneBreve) + \" € (primi 100km gratis!)\");\n        System.out.println();\n\n        // Statistiche finali\n        System.out.println(\"--- STATISTICHE FINALI ---\");\n        System.out.println(\"Totale veicoli in flotta: \" + autonoleggio.contaVeicoli());\n        System.out.println(\"Totale noleggi effettuati: \" + autonoleggio.contaNoleggi());\n        System.out.println(\"Noleggi attivi: \" + autonoleggio.getNoleggiAttivi().size());\n        System.out.println(\"Noleggi conclusi: \" + autonoleggio.getNoleggiConclusi().size());\n        System.out.println(\"Veicoli disponibili: \" + autonoleggio.getVeicoliDisponibili().size());\n\n        // quanto abbiamo incassato oggi\n        double fatturatoTotale = 0;\n        for (Noleggio n : autonoleggio.getNoleggiConclusi()) {\n            fatturatoTotale += n.calcolaCostoTotale();\n        }\n        System.out.println(\"Fatturato totale: \" + String.format(\"%.2f\", fatturatoTotale) + \" €\");\n    }\n}\n", "\n/**\n * Classe astratta che rappresenta un veicolo generico di autonoleggio.\n * Contiene le informazioni comuni a tutti i veicoli e definisce il metodo astratto\n * per il calcolo del costo del noleggio.\n *\n * @author giordii.dev\n */\npublic abstract class Veicolo {\n\n    private final String targa;\n    private final int numMatr;\n    private final String marca;\n    private final String modello;\n    private final int cilindrata;\n    private final int annoAcq;\n    private final double capSerbatoio;\n\n    /**\n     * Costruttore della classe Veicolo\n     *\n     * @param targa targa del veicolo\n     * @param numeroMatricola numero identificativo del veicolo\n     * @param marca marca del veicolo\n     * @param modello modello del veicolo\n     * @param cilindrata cilindrata in cc\n     * @param annoAcquisto anno di acquisto del veicolo\n     * @param capacitaSerbatoio capacità del serbatoio in litri\n     */\n    protected Veicolo(String targa, int numMatr, String marca, String modello,\n            int cilindrata, int annoAcq, double capSerbatoio) {\n        if (targa == null || targa.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"targa != null\");\n        }\n        if (numMatr <= 0) {\n            throw new IllegalArgumentException(\"numero matricola > 0\");\n        }\n        if (marca == null || marca.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"marca != null\");\n        }\n        if (modello == null || modello.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"modello != null\");\n        }\n        if (cilindrata <= 0) {\n            throw new IllegalArgumentException(\"cilindrata > 0\");\n        }\n        if (annoAcq <= 0) {\n            throw new IllegalArgumentException(\"anno acquisto > 0\");\n        }\n        if (capSerbatoio <= 0) {\n            throw new IllegalArgumentException(\"capacita serbatoio > 0\");\n        }\n\n        this.targa = targa;\n        this.numMatr = numMatr;\n        this.marca = marca;\n        this.modello = modello;\n        this.cilindrata = cilindrata;\n        this.annoAcq = annoAcq;\n        this.capSerbatoio = capSerbatoio;\n    }\n\n    /**\n     * Metodo astratto per calcolare il costo del noleggio. Ogni tipo di veicolo\n     * implementa la propria logica di calcolo.\n     *\n     * @param giorni numero di giorni di noleggio\n     * @param kmPercorsi chilometri percorsi durante il noleggio\n     * @param litriMancanti litri di carburante mancanti al momento della\n     * restituzione\n     * @return l'importo totale del noleggio in euro\n     */\n    public abstract double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti);\n\n    // Getters\n    public String getTarga() {\n        return targa;\n    }\n\n    public int getNumeroMatricola() {\n        return numMatr;\n    }\n\n    public String getMarca() {\n        return marca;\n    }\n\n    public String getModello() {\n        return modello;\n    }\n\n    public int getCilindrata() {\n        return cilindrata;\n    }\n\n    public int getAnnoAcquisto() {\n        return annoAcq;\n    }\n\n    public double getCapacitaSerbatoio() {\n        return capSerbatoio;\n    }\n\n    @Override\n    public String toString() {\n        return String.format(\"Matricola: %d | Targa: %s | %s %s (%dcc) | Anno: %d | Serbatoio: %.1fL\",\n                numMatr, targa, marca, modello, cilindrata, annoAcq, capSerbatoio);\n    }\n}\n", "\n/**\n * Classe che rappresenta un'autovettura.\n * Estende la classe Veicolo aggiungendo il numero di posti.\n *\n * Tariffa noleggio:\n * - 50 euro al giorno\n * - 1 euro ogni 25 km percorsi\n * - 2 euro per ogni litro di carburante mancante\n *\n * @author giordii.dev\n */\npublic class Autovettura extends Veicolo {\n\n    private final int numPosti;\n\n    // Costanti per il calcolo del costo\n    private static final double COSTO_AL_GIORNO = 50.0;\n    private static final double KM_PER_EURO = 25.0;\n    private static final double COSTO_LITRO_MANCANTE = 2.0;\n\n    /**\n     * Costruttore della classe Autovettura\n     *\n     * @param targa targa del veicolo\n     * @param numeroMatricola numero identificativo del veicolo\n     * @param marca marca del veicolo\n     * @param modello modello del veicolo\n     * @param cilindrata cilindrata in cc\n     * @param annoAcquisto anno di acquisto del veicolo\n     * @param capacitaSerbatoio capacità del serbatoio in litri\n     * @param numeroPosti numero di posti dell'autovettura\n     */\n    public Autovettura(String targa, int numMatr, String marca, String modello,\n            int cilindrata, int annoAcq, double capSerbatoio, int numPosti) {\n        super(targa, numMatr, marca, modello, cilindrata, annoAcq, capSerbatoio);\n\n        if (numPosti <= 0) {\n            throw new IllegalArgumentException(\"numero posti > 0\");\n        }\n\n        this.numPosti = numPosti;\n    }\n\n    /**\n     * Calcola il costo del noleggio per un'autovettura. Formula: (50 * giorni)\n     * + (kmPercorsi / 25) + (litriMancanti * 2)\n     *\n     * @param giorni numero di giorni di noleggio\n     * @param kmPercorsi chilometri percorsi durante il noleggio\n     * @param litriMancanti litri di carburante mancanti al momento della\n     * restituzione\n     * @return l'importo totale del noleggio in euro\n     */\n    @Override\n    public double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti) {\n        if (giorni <= 0) {\n            throw new IllegalArgumentException(\"giorni > 0\");\n        }\n        if (kmPercorsi < 0) {\n            throw new IllegalArgumentException(\"km >= 0\");\n        }\n        if (litriMancanti < 0) {\n            throw new IllegalArgumentException(\"litri mancanti >= 0\");\n        }\n        if (litriMancanti > getCapacitaSerbatoio()) {\n            throw new IllegalArgumentException(\"litri mancanti <= capacita serbatoio\");\n        }\n\n        double costoGiorni = COSTO_AL_GIORNO * giorni;\n        double costoKm = (kmPercorsi / KM_PER_EURO);\n        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;\n\n        return costoGiorni + costoKm + costoCarburante;\n    }\n\n    public int getNumeroPosti() {\n        return numPosti;\n    }\n\n    @Override\n    public String toString() {\n        return \"AUTOVETTURA: \" + super.toString()\n                + String.format(\" | Posti: %d\", numPosti);\n    }\n}\n", "\n/**\n * Classe che rappresenta un furgone.\n * Estende la classe Veicolo aggiungendo la capacità di carico.\n *\n * Tariffa noleggio:\n * - 70 euro al giorno\n * - 1 euro ogni 30 km percorsi dopo i primi 100 km gratuiti\n * - 2 euro per ogni litro di carburante mancante\n *\n * @author giordii.dev\n */\npublic class Furgone extends Veicolo {\n\n    private final double capCarico;\n\n    // Costanti per il calcolo del costo\n    private static final double COSTO_AL_GIORNO = 70.0;\n    private static final double KM_GRATUITI = 100.0;\n    private static final double KM_PER_EURO = 30.0;\n    private static final double COSTO_LITRO_MANCANTE = 2.0;\n\n    /**\n     * Costruttore della classe Furgone\n     *\n     * @param targa targa del veicolo\n     * @param numeroMatricola numero identificativo del veicolo\n     * @param marca marca del veicolo\n     * @param modello modello del veicolo\n     * @param cilindrata cilindrata in cc\n     * @param annoAcquisto anno di acquisto del veicolo\n     * @param capacitaSerbatoio capacità del serbatoio in litri\n     * @param capacitaCarico capacità di carico del furgone in kg\n     */\n    public Furgone(String targa, int numMatr, String marca, String modello,\n            int cilindrata, int annoAcq, double capSerbatoio, double capCarico) {\n        super(targa, numMatr, marca, modello, cilindrata, annoAcq, capSerbatoio);\n\n        if (capCarico <= 0) {\n            throw new IllegalArgumentException(\"capacita carico > 0\");\n        }\n\n        this.capCarico = capCarico;\n    }\n\n    /**\n     * Calcola il costo del noleggio per un furgone. Formula: (70 * giorni) +\n     * ((kmPercorsi - 100) / 30) + (litriMancanti * 2) I primi 100 km sono\n     * gratuiti\n     *\n     * @param giorni numero di giorni di noleggio\n     * @param kmPercorsi chilometri percorsi durante il noleggio\n     * @param litriMancanti litri di carburante mancanti al momento della\n     * restituzione\n     * @return l'importo totale del noleggio in euro\n     */\n    @Override\n    public double calcolaCostoNoleggio(int giorni, double kmPercorsi, double litriMancanti) {\n        if (giorni <= 0) {\n            throw new IllegalArgumentException(\"giorni > 0\");\n        }\n        if (kmPercorsi < 0) {\n            throw new IllegalArgumentException(\"km >= 0\");\n        }\n        if (litriMancanti < 0) {\n            throw new IllegalArgumentException(\"litri mancanti >= 0\");\n        }\n        if (litriMancanti > getCapacitaSerbatoio()) {\n            throw new IllegalArgumentException(\"litri mancanti <= capacita serbatoio\");\n        }\n\n        double costoGiorni = COSTO_AL_GIORNO * giorni;\n\n        // Calcolo costo km: i primi 100 km sono gratuiti\n        double kmOltreFranchigia = Math.max(0, kmPercorsi - KM_GRATUITI);\n        double costoKm = kmOltreFranchigia / KM_PER_EURO;\n\n        double costoCarburante = litriMancanti * COSTO_LITRO_MANCANTE;\n\n        return costoGiorni + costoKm + costoCarburante;\n    }\n\n    public double getCapacitaCarico() {\n        return capCarico;\n    }\n\n    @Override\n    public String toString() {\n        return \"FURGONE: \" + super.toString()\n                + String.format(\" | Carico: %.0fkg\", capCarico);\n    }\n}\n", "\nimport java.time.LocalDate;\n\n/**\n * Classe che rappresenta un singolo contratto di noleggio. Gestisce le\n * informazioni del noleggio e calcola il costo finale.\n *\n * @author giordii.dev\n */\npublic class Noleggio {\n\n    private final Veicolo veicolo;\n    private final String nomeCliente;\n    private final LocalDate dataInizio;\n    private LocalDate dataFine;\n    private double kmPercorsi;\n    private double litriMancanti;\n    private boolean concluso;\n\n    /**\n     * Costruttore per creare un nuovo noleggio\n     *\n     * @param veicolo il veicolo noleggiato\n     * @param nomeCliente nome del cliente\n     * @param dataInizio data di inizio del noleggio\n     */\n    public Noleggio(Veicolo veicolo, String nomeCliente, LocalDate dataInizio) {\n        if (veicolo == null) {\n            throw new IllegalArgumentException(\"veicolo != null\");\n        }\n        if (nomeCliente == null || nomeCliente.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"nome cliente != null\");\n        }\n        if (dataInizio == null) {\n            throw new IllegalArgumentException(\"data inizio != null\");\n        }\n\n        this.veicolo = veicolo;\n        this.nomeCliente = nomeCliente;\n        this.dataInizio = dataInizio;\n        this.dataFine = null;\n        this.kmPercorsi = 0;\n        this.litriMancanti = 0;\n        this.concluso = false;\n    }\n\n    /**\n     * Conclude il noleggio registrando i dati finali\n     *\n     * @param dataFine data di restituzione del veicolo\n     * @param kmPercorsi km percorsi durante il noleggio\n     * @param litriMancanti litri di carburante mancanti\n     */\n    public void concludiNoleggio(LocalDate dataFine, double kmPercorsi, double litriMancanti) {\n        if (concluso) {\n            throw new IllegalStateException(\"noleggio gia concluso\");\n        }\n        if (dataFine == null) {\n            throw new IllegalArgumentException(\"data fine != null\");\n        }\n        if (dataFine.isBefore(dataInizio)) {\n            throw new IllegalArgumentException(\"data fine >= data inizio\");\n        }\n        if (kmPercorsi < 0) {\n            throw new IllegalArgumentException(\"km >= 0\");\n        }\n        if (litriMancanti < 0) {\n            throw new IllegalArgumentException(\"litri mancanti >= 0\");\n        }\n\n        this.dataFine = dataFine;\n        this.kmPercorsi = kmPercorsi;\n        this.litriMancanti = litriMancanti;\n        this.concluso = true;\n    }\n\n    /**\n     * Calcola il numero di giorni di noleggio\n     *\n     * @return il numero di giorni di noleggio\n     */\n    public int calcolaGiorniNoleggio() {\n        if (!concluso || dataFine == null) {\n            throw new IllegalStateException(\"noleggio non ancora concluso\");\n        }\n\n        long giorni = java.time.temporal.ChronoUnit.DAYS.between(dataInizio, dataFine);\n        // se lo riporta lo stesso giorno, minimo 1 giorno si paga\n        return (int) Math.max(1, giorni);\n    }\n\n    /**\n     * Calcola il costo totale del noleggio\n     *\n     * @return il costo totale in euro\n     */\n    public double calcolaCostoTotale() {\n        if (!concluso) {\n            throw new IllegalStateException(\"Il noleggio non è ancora stato concluso\");\n        }\n\n        int giorni = calcolaGiorniNoleggio();\n        return veicolo.calcolaCostoNoleggio(giorni, kmPercorsi, litriMancanti);\n    }\n\n    /**\n     * Restituisce un dettaglio completo del costo con la scomposizione\n     *\n     * @return una stringa con il dettaglio dei costi\n     */\n    public String getDettaglioCosti() {\n        if (!concluso) {\n            return \"Noleggio non ancora concluso\";\n        }\n\n        int giorni = calcolaGiorniNoleggio();\n        double totale = calcolaCostoTotale();\n\n        StringBuilder sb = new StringBuilder();\n        sb.append(String.format(\"Dettaglio costi per %s:\\n\", veicolo.getTarga()));\n        sb.append(String.format(\"- Periodo: %s → %s (%d giorni)\\n\", dataInizio, dataFine, giorni));\n        sb.append(String.format(\"- Km percorsi: %.2f km\\n\", kmPercorsi));\n        sb.append(String.format(\"- Carburante mancante: %.2f litri\\n\", litriMancanti));\n        sb.append(String.format(\"TOTALE: %.2f €\", totale));\n\n        return sb.toString();\n    }\n\n    // Getters\n    public Veicolo getVeicolo() {\n        return veicolo;\n    }\n\n    public String getNomeCliente() {\n        return nomeCliente;\n    }\n\n    public LocalDate getDataInizio() {\n        return dataInizio;\n    }\n\n    public LocalDate getDataFine() {\n        return dataFine;\n    }\n\n    public double getKmPercorsi() {\n        return kmPercorsi;\n    }\n\n    public double getLitriMancanti() {\n        return litriMancanti;\n    }\n\n    public boolean isConcluso() {\n        return concluso;\n    }\n\n    @Override\n    public String toString() {\n        if (!concluso) {\n            return String.format(\"Noleggio ATTIVO - Cliente: %s | Veicolo: %s | Dal: %s\",\n                    nomeCliente, veicolo.getTarga(), dataInizio);\n        } else {\n            return String.format(\"Noleggio CONCLUSO - Cliente: %s | Veicolo: %s | %s → %s | Costo: %.2f €\",\n                    nomeCliente, veicolo.getTarga(), dataInizio, dataFine, calcolaCostoTotale());\n        }\n    }\n}\n", "\nimport java.time.LocalDate;\nimport java.util.ArrayList;\n\n/**\n * Classe che gestisce la flotta di veicoli e i noleggi di una catena di\n * autonoleggio. Permette di aggiungere veicoli, cercare veicoli disponibili,\n * avviare e concludere noleggi.\n *\n * @author giordii.dev\n */\npublic class GestioneAutonoleggio {\n\n    private final String nomeAzienda;\n    private final ArrayList<Veicolo> flotta;\n    private final ArrayList<Noleggio> noleggi;\n\n    /**\n     * Costruttore della classe GestioneAutonoleggio\n     *\n     * @param nomeAzienda nome della catena di autonoleggio\n     */\n    public GestioneAutonoleggio(String nomeAzienda) {\n        if (nomeAzienda == null || nomeAzienda.trim().isEmpty()) {\n            throw new IllegalArgumentException(\"nome azienda != null\");\n        }\n\n        this.nomeAzienda = nomeAzienda;\n        this.flotta = new ArrayList<>();\n        this.noleggi = new ArrayList<>();\n    }\n\n    /**\n     * Aggiunge un veicolo alla flotta\n     *\n     * @param veicolo il veicolo da aggiungere\n     */\n    public void aggiungiVeicolo(Veicolo veicolo) {\n        if (veicolo == null) {\n            throw new IllegalArgumentException(\"veicolo != null\");\n        }\n\n        // Verifica che non esista già un veicolo con la stessa targa\n        for (Veicolo v : flotta) {\n            if (v.getTarga().equals(veicolo.getTarga())) {\n                throw new IllegalArgumentException(\"targa \" + veicolo.getTarga() + \" gia presente\");\n            }\n        }\n\n        flotta.add(veicolo);\n    }\n\n    /**\n     * Cerca un veicolo per numero di matricola\n     *\n     * @param numeroMatricola numero identificativo del veicolo\n     * @return il veicolo trovato o null se non presente\n     */\n    public Veicolo cercaVeicolo(int numeroMatricola) {\n        for (Veicolo v : flotta) {\n            if (v.getNumeroMatricola() == numeroMatricola) {\n                return v;\n            }\n        }\n        return null;\n    }\n\n    /**\n     * Cerca un veicolo per targa\n     *\n     * @param targa targa del veicolo\n     * @return il veicolo trovato o null se non presente\n     */\n    public Veicolo cercaVeicoloPerTarga(String targa) {\n        if (targa == null) {\n            return null;\n        }\n\n        for (Veicolo v : flotta) {\n            if (v.getTarga().equalsIgnoreCase(targa)) {\n                return v;  // match!\n            }\n        }\n        return null;  // nessun veicolo con questa targa\n    }\n\n    /**\n     * Verifica se un veicolo è disponibile per il noleggio\n     *\n     * @param veicolo il veicolo da verificare\n     * @return true se il veicolo è disponibile, false se è in noleggio attivo\n     */\n    public boolean isVeicoloDisponibile(Veicolo veicolo) {\n        for (Noleggio n : noleggi) {\n            if (!n.isConcluso() && n.getVeicolo().equals(veicolo)) {\n                return false;  // in giro con qualcuno\n            }\n        }\n        return true;  // parcheggiato e pronto\n    }\n\n    /**\n     * Avvia un nuovo noleggio\n     *\n     * @param numeroMatricola numero di matricola del veicolo da noleggiare\n     * @param nomeCliente nome del cliente\n     * @param dataInizio data di inizio del noleggio\n     * @return il noleggio creato\n     */\n    public Noleggio avviaNoleggio(int numeroMatricola, String nomeCliente, LocalDate dataInizio) {\n        Veicolo veicolo = cercaVeicolo(numeroMatricola);\n\n        if (veicolo == null) {\n            throw new IllegalArgumentException(\"veicolo \" + numeroMatricola + \" non trovato\");\n        }\n\n        if (!isVeicoloDisponibile(veicolo)) {\n            throw new IllegalStateException(\"veicolo \" + veicolo.getTarga() + \" gia in noleggio\");\n        }\n\n        Noleggio noleggio = new Noleggio(veicolo, nomeCliente, dataInizio);\n        noleggi.add(noleggio);  // registrato nel sistema\n\n        return noleggio;\n    }\n\n    /**\n     * Restituisce la lista dei veicoli disponibili\n     *\n     * @return lista di veicoli disponibili\n     */\n    public ArrayList<Veicolo> getVeicoliDisponibili() {\n        ArrayList<Veicolo> disponibili = new ArrayList<>();\n\n        for (Veicolo v : flotta) {\n            if (isVeicoloDisponibile(v)) {\n                disponibili.add(v);  // libero e pronto\n            }\n        }\n\n        return disponibili;\n    }\n\n    /**\n     * Restituisce la lista dei noleggi attivi\n     *\n     * @return lista di noleggi attivi\n     */\n    public ArrayList<Noleggio> getNoleggiAttivi() {\n        ArrayList<Noleggio> attivi = new ArrayList<>();\n\n        for (Noleggio n : noleggi) {\n            if (!n.isConcluso()) {\n                attivi.add(n);  // ancora in giro\n            }\n        }\n\n        return attivi;\n    }\n\n    /**\n     * Restituisce la lista dei noleggi conclusi\n     *\n     * @return lista di noleggi conclusi\n     */\n    public ArrayList<Noleggio> getNoleggiConclusi() {\n        ArrayList<Noleggio> conclusi = new ArrayList<>();\n\n        for (Noleggio n : noleggi) {\n            if (n.isConcluso()) {\n                conclusi.add(n);  // già restituiti\n            }\n        }\n\n        return conclusi;\n    }\n\n    /**\n     * Restituisce solo le autovetture della flotta\n     *\n     * @return lista di autovetture\n     */\n    public ArrayList<Autovettura> getAutovetture() {\n        ArrayList<Autovettura> autovetture = new ArrayList<>();\n\n        for (Veicolo v : flotta) {\n            if (v instanceof Autovettura) {\n                autovetture.add((Autovettura) v);  // cast sicuro dopo instanceof\n            }\n        }\n\n        return autovetture;\n    }\n\n    /**\n     * Restituisce solo i furgoni della flotta\n     *\n     * @return lista di furgoni\n     */\n    public ArrayList<Furgone> getFurgoni() {\n        ArrayList<Furgone> furgoni = new ArrayList<>();\n\n        for (Veicolo v : flotta) {\n            if (v instanceof Furgone) {\n                furgoni.add((Furgone) v);  // downcast sicuro\n            }\n        }\n\n        return furgoni;\n    }\n\n    /**\n     * Stampa l'intera flotta di veicoli\n     */\n    public void stampaFlotta() {\n        System.out.println(\"\\n=== FLOTTA \" + nomeAzienda.toUpperCase() + \" ===\");\n        System.out.println(\"Totale veicoli: \" + flotta.size());\n        System.out.println();\n\n        if (flotta.isEmpty()) {\n            System.out.println(\"Nessun veicolo nella flotta.\");  // ancora da comprare\n        } else {\n            for (Veicolo v : flotta) {\n                String stato = isVeicoloDisponibile(v) ? \"[DISPONIBILE]\" : \"[IN NOLEGGIO]\";\n                System.out.println(stato + \" \" + v);\n            }\n        }\n        System.out.println(\"================================\\n\");\n    }\n\n    /**\n     * Stampa tutti i noleggi attivi\n     */\n    public void stampaNoleggiAttivi() {\n        System.out.println(\"\\n=== NOLEGGI ATTIVI ===\");\n        ArrayList<Noleggio> attivi = getNoleggiAttivi();\n\n        if (attivi.isEmpty()) {\n            System.out.println(\"Nessun noleggio attivo.\");\n        } else {\n            for (Noleggio n : attivi) {\n                System.out.println(n);\n            }\n        }\n        System.out.println(\"======================\\n\");\n    }\n\n    /**\n     * Stampa lo storico dei noleggi conclusi\n     */\n    public void stampaStoricoNoleggi() {\n        System.out.println(\"\\n=== STORICO NOLEGGI CONCLUSI ===\");\n        ArrayList<Noleggio> conclusi = getNoleggiConclusi();\n\n        if (conclusi.isEmpty()) {\n            System.out.println(\"Nessun noleggio concluso.\");\n        } else {\n            for (Noleggio n : conclusi) {\n                System.out.println(n);\n            }\n        }\n        System.out.println(\"================================\\n\");\n    }\n\n    public String getNomeAzienda() {\n        return nomeAzienda;\n    }\n\n    public int contaVeicoli() {\n        return flotta.size();\n    }\n\n    public int contaNoleggi() {\n        return noleggi.size();\n    }\n}\n"];
+        const projectName = "Autonoleggio";
+        const buildStatus = "success";
+        const precompiledOutput = "=== SISTEMA GESTIONE AUTONOLEGGIO ===\n\n--- CREAZIONE FLOTTA ---\n\nFlotta creata con successo!\n\n=== FLOTTA RENTCAR ITALIA ===\nTotale veicoli: 6\n\n[DISPONIBILE] AUTOVETTURA: Matricola: 1001 | Targa: AB123CD | Fiat Panda (1200cc) | Anno: 2020 | Serbatoio: 35.0L | Posti: 5\n[DISPONIBILE] AUTOVETTURA: Matricola: 1002 | Targa: EF456GH | Volkswagen Golf (1600cc) | Anno: 2021 | Serbatoio: 50.0L | Posti: 5\n[DISPONIBILE] AUTOVETTURA: Matricola: 1003 | Targa: IJ789KL | BMW Serie 3 (2000cc) | Anno: 2022 | Serbatoio: 60.0L | Posti: 5\n[DISPONIBILE] FURGONE: Matricola: 2001 | Targa: MN012OP | Fiat Ducato (2300cc) | Anno: 2019 | Serbatoio: 90.0L | Carico: 1200kg\n[DISPONIBILE] FURGONE: Matricola: 2002 | Targa: QR345ST | Mercedes Sprinter (2500cc) | Anno: 2021 | Serbatoio: 100.0L | Carico: 1500kg\n[DISPONIBILE] FURGONE: Matricola: 2003 | Targa: UV678WX | Iveco Daily (3000cc) | Anno: 2020 | Serbatoio: 80.0L | Carico: 1800kg\n================================\n\n--- STATISTICHE FLOTTA ---\nAutovetture: 3\nFurgoni: 3\nVeicoli disponibili: 6\n\n--- AVVIO NOLEGGI ---\n\nCliente Mario Rossi noleggia Fiat Panda (1001)\n✓ Noleggio avviato\n\nCliente Luigi Verdi noleggia Fiat Ducato (2001)\n✓ Noleggio avviato\n\nCliente Anna Bianchi noleggia BMW Serie 3 (1003)\n✓ Noleggio avviato\n\n\n=== NOLEGGI ATTIVI ===\nNoleggio ATTIVO - Cliente: Mario Rossi | Veicolo: AB123CD | Dal: 2025-12-01\nNoleggio ATTIVO - Cliente: Luigi Verdi | Veicolo: MN012OP | Dal: 2025-12-01\nNoleggio ATTIVO - Cliente: Anna Bianchi | Veicolo: IJ789KL | Dal: 2025-12-01\n======================\n\n--- VEICOLI ANCORA DISPONIBILI ---\nAUTOVETTURA: Matricola: 1002 | Targa: EF456GH | Volkswagen Golf (1600cc) | Anno: 2021 | Serbatoio: 50.0L | Posti: 5\nFURGONE: Matricola: 2002 | Targa: QR345ST | Mercedes Sprinter (2500cc) | Anno: 2021 | Serbatoio: 100.0L | Carico: 1500kg\nFURGONE: Matricola: 2003 | Targa: UV678WX | Iveco Daily (3000cc) | Anno: 2020 | Serbatoio: 80.0L | Carico: 1800kg\n\n--- CONCLUSIONE NOLEGGI ---\n\nRestituzione Fiat Panda da Mario Rossi\nDettaglio costi per AB123CD:\n- Periodo: 2025-12-01 → 2025-12-04 (3 giorni)\n- Km percorsi: 200.00 km\n- Carburante mancante: 5.00 litri\nTOTALE: 168.00 €\n\nRestituzione Fiat Ducato da Luigi Verdi\nDettaglio costi per MN012OP:\n- Periodo: 2025-12-01 → 2025-12-06 (5 giorni)\n- Km percorsi: 250.00 km\n- Carburante mancante: 10.00 litri\nTOTALE: 375.00 €\n\nRestituzione BMW Serie 3 da Anna Bianchi\nDettaglio costi per IJ789KL:\n- Periodo: 2025-12-01 → 2025-12-08 (7 giorni)\n- Km percorsi: 500.00 km\n- Carburante mancante: 15.00 litri\nTOTALE: 400.00 €\n\n\n=== STORICO NOLEGGI CONCLUSI ===\nNoleggio CONCLUSO - Cliente: Mario Rossi | Veicolo: AB123CD | 2025-12-01 → 2025-12-04 | Costo: 168.00 €\nNoleggio CONCLUSO - Cliente: Luigi Verdi | Veicolo: MN012OP | 2025-12-01 → 2025-12-06 | Costo: 375.00 €\nNoleggio CONCLUSO - Cliente: Anna Bianchi | Veicolo: IJ789KL | 2025-12-01 → 2025-12-08 | Costo: 400.00 €\n================================\n\n--- TEST CALCOLO COSTI (metodo override) ---\n\nAUTOVETTURA - Esempio: 5 giorni, 300 km, 8 litri mancanti\nCosto autovettura:\n  - Giorni: 5 * 50€ = 250€\n  - Km: 300 / 25 = 12€\n  - Carburante: 8 * 2€ = 16€\n  TOTALE: 278.00 €\n\nFURGONE - Esempio: 5 giorni, 250 km, 12 litri mancanti\nCosto furgone:\n  - Giorni: 5 * 70€ = 350€\n  - Km: (250-100) / 30 = 5€\n  - Carburante: 12 * 2€ = 24€\n  TOTALE: 379.00 €\n\n--- CONFRONTO TARIFFE (1 giorno, 50 km, 0 litri) ---\nAutovettura: 52.00 €\nFurgone: 70.00 € (primi 100km gratis!)\n\n--- STATISTICHE FINALI ---\nTotale veicoli in flotta: 6\nTotale noleggi effettuati: 3\nNoleggi attivi: 0\nNoleggi conclusi: 3\nVeicoli disponibili: 6\nFatturato totale: 943.00 €\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

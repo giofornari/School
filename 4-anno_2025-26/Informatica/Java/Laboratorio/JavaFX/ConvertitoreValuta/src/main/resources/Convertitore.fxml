@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" prefHeight="320.0" prefWidth="550.0" spacing="20.0" style="-fx-background-color: #0d0d0d;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ConvertitoreController">
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
+   <children>
+      <HBox alignment="TOP_RIGHT">
+         <children>
+            <Button fx:id="btnExit1337" mnemonicParsing="false" onAction="#executeShutdown" text="[X]" style="-fx-background-color: #ff0000; -fx-text-fill: white;" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" spacing="15.0">
+         <children>
+            <Label minWidth="90.0" text="EUR_INPUT:" style="-fx-text-fill: #00ff00; -fx-font-family: 'Courier New';" />
+            <TextField fx:id="bufferEurozone" prefWidth="250.0" style="-fx-background-color: #1a1a1a; -fx-text-fill: #00ff00; -fx-border-color: #00ff00;" />
+            <Button fx:id="hackEuroToDollar" mnemonicParsing="false" onAction="#pwn3dEuro" text=">> USD" style="-fx-background-color: #00ff00; -fx-text-fill: black;" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" spacing="15.0">
+         <children>
+            <Label minWidth="90.0" text="USD_INPUT:" style="-fx-text-fill: #00ff00; -fx-font-family: 'Courier New';" />
+            <TextField fx:id="bufferAmerica" prefWidth="250.0" style="-fx-background-color: #1a1a1a; -fx-text-fill: #00ff00; -fx-border-color: #00ff00;" />
+            <Button fx:id="hackDollarToEuro" mnemonicParsing="false" onAction="#pwn3dDollar" text=">> EUR" style="-fx-background-color: #00ff00; -fx-text-fill: black;" />
+         </children>
+      </HBox>
+   </children>
+</VBox>

@@ -1,0 +1,2 @@
+# This file ensures the docs directory is tracked by git
+# It will be replaced by generated content during the GitHub Actions workflow

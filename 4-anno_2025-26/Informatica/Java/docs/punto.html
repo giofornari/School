@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto - Java Project</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg: #03060f;
+            --panel: #0a101f;
+            --panel-alt: #121a30;
+            --border: rgba(255, 255, 255, 0.07);
+            --text: #f5f6ff;
+            --muted: #9aa4c6;
+            --accent: #6bb8ff;
+            --accent-strong: #4a92ff;
+            --success: #38d98a;
+            --error: #f48b9c;
+        }
+        
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        header {
+            flex-shrink: 0;
+            background: rgba(10, 16, 31, 0.96);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        header h1 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        header h1 i {
+            color: var(--accent);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid var(--border);
+            color: var(--text);
+            text-decoration: none;
+            font-size: 0.82rem;
+        }
+        
+        .back-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .container {
+            flex: 1;
+            display: flex;
+            border-top: 1px solid var(--border);
+            min-height: 0;
+            overflow: hidden;
+        }
+        
+        .left-panel {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: var(--panel);
+            border-right: 1px solid var(--border);
+        }
+        
+        .tabs {
+            display: flex;
+            padding: 0 12px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        
+        .tab-button {
+            border: none;
+            background: none;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            padding: 10px 12px;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab-button:hover {
+            color: var(--text);
+        }
+        
+        .tab-button.active {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .code-area {
+            position: relative;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            background: var(--panel-alt);
+        }
+        
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+        
+        .tab-content.active {
+            display: block;
+            height: 100%;
+        }
+        
+        pre {
+            height: 100%;
+            margin: 0;
+        }
+        
+        pre code {
+            display: block;
+            height: 100%;
+            padding: 16px !important;
+            background: #060a17 !important;
+            color: #eaf0ff !important;
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            border: 1px solid var(--border);
+            background: rgba(3, 6, 15, 0.85);
+            color: var(--text);
+            border-radius: 4px;
+            padding: 4px 9px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        
+        .copy-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .right-panel {
+            width: 32%;
+            min-width: 280px;
+            min-height: 0;
+            background: var(--panel);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .run-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .run-header h2 {
+            font-size: 0.9rem;
+        }
+        
+        .run-btn {
+            border: none;
+            background: linear-gradient(120deg, var(--accent-strong), var(--accent));
+            color: #fff;
+            border-radius: 5px;
+            padding: 7px 14px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+        
+        .run-btn:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+        
+        .output-area {
+            padding: 16px;
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            background: var(--panel-alt);
+        }
+        
+        .output-box {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            min-height: 130px;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            background: rgba(4, 8, 20, 0.92);
+            color: var(--muted);
+        }
+        
+        .output-box.success {
+            border-color: rgba(56, 217, 138, 0.45);
+            color: var(--success);
+        }
+        
+        .output-box.error {
+            border-color: rgba(244, 139, 156, 0.45);
+            color: var(--error);
+        }
+        
+        .status-indicator {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            padding: 6px 9px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            color: var(--muted);
+        }
+        
+        .status-indicator.success {
+            color: var(--success);
+            border-color: rgba(56, 217, 138, 0.35);
+        }
+        
+        .status-indicator.error {
+            color: var(--error);
+            border-color: rgba(244, 139, 156, 0.35);
+        }
+        
+        .status-indicator.running {
+            color: var(--accent);
+            border-color: rgba(107, 184, 255, 0.35);
+        }
+        
+        .spinner {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 999px;
+            border: 2px solid rgba(107, 184, 255, 0.2);
+            border-top-color: var(--accent);
+            animation: spin 0.6s linear infinite;
+        }
+        
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .info-box {
+            border-left: 3px solid var(--accent);
+            padding: 7px 10px;
+            background: rgba(107, 184, 255, 0.08);
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 960px) {
+            body {
+                overflow: auto;
+            }
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+            .right-panel {
+                width: 100%;
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            header {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            .tabs {
+                padding: 0 8px;
+            }
+            .tab-button {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <i class="fas fa-coffee"></i>
+            Punto
+        </h1>
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Tutti i Progetti
+        </a>
+    </header>
+    
+    <div class="container">
+        <div class="left-panel">
+            <div class="tabs">
+                
+            <button class="tab-button active" data-tab="punto-tab0">Punto.java</button>
+        
+            </div>
+            <div class="code-area" id="codeArea">
+                
+            <div id="punto-tab0" class="tab-content active">
+                <pre><code class="language-java">public class Punto {
+    private double x;
+    private double y;
+
+    public Punto(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Punto(Punto p) {
+        this.x = p.x;
+        this.y = p.y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double distanza(Punto p) {
+        double dx = this.x - p.x;
+        double dy = this.y - p.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    public boolean equals(Punto p) {
+        return this.x == p.x &amp;&amp; this.y == p.y;
+    }
+
+    @Override
+    public String toString() {
+        return &quot;(&quot; + x + &quot;, &quot; + y + &quot;)&quot;;
+    }
+    public static void main(String[] args) {
+        Punto p1 = new Punto(3.0, 4.0);
+        Punto p2 = new Punto(0.0, 0.0);
+        Punto p3 = new Punto(p1);
+    
+        System.out.println(&quot;p1: &quot; + p1);
+        System.out.println(&quot;p2: &quot; + p2);
+        System.out.println(&quot;p3: &quot; + p3);
+    
+        System.out.println(&quot;space tra p1 e p2: &quot; + p1.distanza(p2));
+        
+        System.out.println(&quot;p1 == p2: &quot; + p1.equals(p2));
+        System.out.println(&quot;p1 == p3: &quot; + p1.equals(p3));
+    
+        p2.setX(3.0);
+        p2.setY(4.0);
+        System.out.println(&quot;p2: &quot; + p2);
+        System.out.println(&quot;p1 == p2: &quot; + p1.equals(p2));
+    }
+}</code></pre>
+            </div>
+        
+                <button class="copy-btn" onclick="copyCode()">
+                    <i class="fas fa-copy"></i> Copia
+                </button>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="run-header">
+                <h2>
+                    <i class="fas fa-terminal"></i>
+                    Output
+                </h2>
+                <button class="run-btn" onclick="runCode()" id="runBtn">
+                    <i class="fas fa-play"></i>
+                    Esegui
+                </button>
+            </div>
+            <div class="output-area">
+                <div id="statusIndicator"></div>
+                <div class="output-box" id="output">p1: (3.0, 4.0)
+p2: (0.0, 0.0)
+p3: (3.0, 4.0)
+space tra p1 e p2: 5.0
+p1 == p2: false
+p1 == p3: true
+p2: (3.0, 4.0)
+p1 == p2: true
+</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Project data
+        const sourceCode = ["public class Punto {\n    private double x;\n    private double y;\n\n    public Punto(double x, double y) {\n        this.x = x;\n        this.y = y;\n    }\n\n    public Punto(Punto p) {\n        this.x = p.x;\n        this.y = p.y;\n    }\n\n    public void setX(double x) {\n        this.x = x;\n    }\n\n    public void setY(double y) {\n        this.y = y;\n    }\n\n    public double getX() {\n        return x;\n    }\n\n    public double getY() {\n        return y;\n    }\n\n    public double distanza(Punto p) {\n        double dx = this.x - p.x;\n        double dy = this.y - p.y;\n        return Math.sqrt(dx * dx + dy * dy);\n    }\n\n    public boolean equals(Punto p) {\n        return this.x == p.x && this.y == p.y;\n    }\n\n    @Override\n    public String toString() {\n        return \"(\" + x + \", \" + y + \")\";\n    }\n    public static void main(String[] args) {\n        Punto p1 = new Punto(3.0, 4.0);\n        Punto p2 = new Punto(0.0, 0.0);\n        Punto p3 = new Punto(p1);\n    \n        System.out.println(\"p1: \" + p1);\n        System.out.println(\"p2: \" + p2);\n        System.out.println(\"p3: \" + p3);\n    \n        System.out.println(\"space tra p1 e p2: \" + p1.distanza(p2));\n        \n        System.out.println(\"p1 == p2: \" + p1.equals(p2));\n        System.out.println(\"p1 == p3: \" + p1.equals(p3));\n    \n        p2.setX(3.0);\n        p2.setY(4.0);\n        System.out.println(\"p2: \" + p2);\n        System.out.println(\"p1 == p2: \" + p1.equals(p2));\n    }\n}"];
+        const projectName = "Punto";
+        const buildStatus = "success";
+        const precompiledOutput = "p1: (3.0, 4.0)\np2: (0.0, 0.0)\np3: (3.0, 4.0)\nspace tra p1 e p2: 5.0\np1 == p2: false\np1 == p3: true\np2: (3.0, 4.0)\np1 == p2: true\n";
+        
+        // Tab switching functionality
+        function switchTab(tabId) {
+            console.log('Switching to tab:', tabId);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+            
+            // Mark button as active
+            const clickedButton = document.querySelector(`[data-tab="${tabId}"]`);
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+            
+            // Re-highlight
+            hljs.highlightAll();
+        }
+        
+        // Add click handlers to tab buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+        });
+        
+        function copyCode() {
+            const activeTab = document.querySelector('.tab-content.active code');
+            if (activeTab) {
+                navigator.clipboard.writeText(activeTab.textContent);
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> Copiato!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+        
+        async function runCode() {
+            console.log('runCode called');
+            const runBtn = document.getElementById('runBtn');
+            const output = document.getElementById('output');
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            // Disable button
+            runBtn.disabled = true;
+            runBtn.innerHTML = '<div class="spinner"></div> Esecuzione...';
+            
+            // Show running status
+            statusIndicator.innerHTML = '<div class="status-indicator running"><div class="spinner"></div> Esecuzione in corso...</div>';
+            output.className = 'output-box';
+            output.textContent = '';
+            
+            // Simulate compilation and execution with animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show the pre-compiled output with typing effect
+            statusIndicator.innerHTML = '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Eseguito con successo</div>';
+            output.className = 'output-box success';
+            
+            // Type out the output character by character
+            let i = 0;
+            const outputText = precompiledOutput;
+            const typeSpeed = 2; // milliseconds per character
+            
+            function typeWriter() {
+                if (i < outputText.length) {
+                    output.textContent += outputText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typeSpeed);
+                } else {
+                    // Re-enable button when done
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<i class="fas fa-redo"></i> Ri-esegui';
+                }
+            }
+            
+            typeWriter();
+        }
+        
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // Highlight code
+            hljs.highlightAll();
+            
+            // Show precompiled status
+            const statusIndicator = document.getElementById('statusIndicator');
+            if (buildStatus === 'success') {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator success"><i class="fas fa-check-circle"></i> Compilato con successo</div>';
+            } else {
+                statusIndicator.innerHTML = 
+                    '<div class="status-indicator error"><i class="fas fa-times-circle"></i> Errori di compilazione</div>';
+            }
+            
+            console.log('Initialization complete');
+        });
+    </script>
+</body>
+</html>

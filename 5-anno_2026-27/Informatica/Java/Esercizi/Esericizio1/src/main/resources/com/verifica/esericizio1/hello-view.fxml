@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox alignment="TOP_CENTER" spacing="12" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="com.verifica.esericizio1.HelloController">
+
+    <padding><Insets bottom="15" left="15" right="15" top="15" /></padding>
+
+    <Label text="benvenido. strumiento?!">
+      <font>
+         <Font name="JetBrains Mono Bold" size="18.0" />
+      </font></Label>
+
+    <HBox alignment="TOP_LEFT" spacing="15">
+
+        <VBox spacing="8">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label minWidth="90" text="Name0:" />
+                <TextField fx:id="txtnome" prefWidth="170" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label minWidth="90" text="__marca__:" />
+                <TextField fx:id="txtmarca" prefWidth="170" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label minWidth="90" text="Valore oggettivo:" />
+                <TextField fx:id="txtvalore" prefWidth="170" promptText="€" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label minWidth="90" text="__type__:" />
+                <TextField fx:id="txttipo" prefWidth="170" promptText="citarra / tastiera / botteria / oculele" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label fx:id="lblnumm" minWidth="90" text="numero di cose:" />
+                <TextField fx:id="txtnumm" prefWidth="170" />
+            </HBox>
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label minWidth="90" text="OxGiorni:" />
+                <TextField fx:id="txtggiorni" prefWidth="170" />
+            </HBox>
+            <HBox spacing="8">
+                <Button onAction="#onGo" style="-fx-background-color: lightblue;" text="Go">
+               <font>
+                  <Font name="JetBrains Mono Bold" size="12.0" />
+               </font></Button>
+                <Button onAction="#onDimmi" style="-fx-background-color: orange;" text="dimmi tutto" />
+            </HBox>
+            <Label fx:id="lblerror" text="" />
+        </VBox>
+
+        <VBox spacing="20.0">
+            <Label text="la nostra offer SOLO per TE (no clickbait, stay calm)" textFill="#000000d9" />
+            <TextArea fx:id="txaoffer" editable="false" opacity="0.75" prefHeight="54.0" prefWidth="260" wrapText="true" />
+            <Label text="il tuo carrello:" />
+            <TextArea fx:id="txacarrello" editable="false" prefHeight="53.0" prefWidth="217.0" wrapText="true" />
+        </VBox>
+
+    </HBox>
+
+</VBox>

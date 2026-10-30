@@ -1,0 +1,34 @@
+OK per importo: 500.0
+CC [1234-5678-9012-3456 12/2027] 
+	ID: 1 
+	 importo: 500.00 
+	 commissioni: 10.00 
+	 totale: 510.00
+
+
+OK per importo: 500.0
+CP [9876-5432-1098-7654 06/2028] ID: 2 
+	 Importo: 500.00 
+	 Commissione: 7.50 
+	 Totale: 507.50
+
+
+OK per importo: 500.0
+BB [IT12345678900000] 
+	ID: 3 
+	 importo: 500.00 
+	 commissioni: 2.50 
+	 totale: 502.50
+
+
+OK per importo: 100.0
+Marco Verdi >> CP [9876-5432-1098-7654 06/2028] ID: 2 
+	 Importo: 100.00 
+	 Commissione: 1.50 
+	 Totale: 101.50
+
+
+Marco Verdi (ID:1001) >> CartadiCredito
+
+Laura Bianchi (ID:1002) >> CartadiCredito
+

@@ -1,0 +1,37 @@
+# Local archives/backup junk
+oldfiles/
+
+# IDE/project settings
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Build artifacts
+bin/
+out/
+target/
+obj/
+build/
+.gradle/
+
+# Compiled/package outputs
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*~
+
+# OS metadata
+.DS_Store
+Thumbs.db

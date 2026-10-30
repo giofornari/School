@@ -1,0 +1,13 @@
+Spese inserite:
+1) Trasporto - 12.80 (Carta) | 2024-05-10
+2) Alimentari - 42.30 (Contanti) | 2024-05-12
+3) Bar - 7.50 (Contanti) | data non disponibile
+4) Tecnologia - 120.00 (Bonifico) | data non disponibile
+
+Totale: 182.60
+Media: 45.65
+Massimo: 120.00
+Minimo: 7.50
+
+Categoria con media piu alta: Tecnologia (120.00)
+Metodo con totale piu alto: Bonifico (120.00)

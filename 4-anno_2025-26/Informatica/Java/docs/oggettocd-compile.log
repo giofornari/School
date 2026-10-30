@@ -1,0 +1,26 @@
+OggettoCD/src/PortaCD.java:12: error: cannot find symbol
+        validateIndex(position);
+        ^
+  symbol:   method validateIndex(int)
+  location: class PortaCD
+OggettoCD/src/PortaCD.java:17: error: cannot find symbol
+        validateIndex(position);
+        ^
+  symbol:   method validateIndex(int)
+  location: class PortaCD
+OggettoCD/src/PortaCD.java:41: error: cannot find symbol
+            if (cd != null && Objects.equals(titolo, cd.getTitolo())) {
+                              ^
+  symbol:   variable Objects
+  location: class PortaCD
+OggettoCD/src/PortaCD.java:89: error: cannot find symbol
+        return Objects.equals(first.getTitolo(), second.getTitolo())
+               ^
+  symbol:   variable Objects
+  location: class PortaCD
+OggettoCD/src/PortaCD.java:90: error: cannot find symbol
+            && Objects.equals(first.getAutore(), second.getAutore())
+               ^
+  symbol:   variable Objects
+  location: class PortaCD
+5 errors

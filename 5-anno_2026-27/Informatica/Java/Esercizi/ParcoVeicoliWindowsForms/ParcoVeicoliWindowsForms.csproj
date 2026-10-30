@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Gli stessi sorgenti vengono usati dalla console e dalla GUI. -->
+    <Compile Include="../ParcoVeicoli/Veicolo.cs" Link="Modello/Veicolo.cs" />
+    <Compile Include="../ParcoVeicoli/Auto.cs" Link="Modello/Auto.cs" />
+    <Compile Include="../ParcoVeicoli/Camion.cs" Link="Modello/Camion.cs" />
+    <Compile Include="../ParcoVeicoli/Flotta.cs" Link="Modello/Flotta.cs" />
+  </ItemGroup>
+</Project>

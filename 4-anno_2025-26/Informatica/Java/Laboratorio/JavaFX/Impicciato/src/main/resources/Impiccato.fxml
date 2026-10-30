@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.impicciato.ImpiccatoController">
+   <center>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="imgImpiccato" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <!-- images are in src/main/resources/images -->
+                  <Image url="@images/0.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblParolaDaIndovinare" text="_ _ _ _ _">
+               <font>
+                  <Font name="Courier New Bold" size="25.0" />
+               </font>
+            </Label>
+            <!-- new label to show tried letters -->
+            <Label fx:id="lblLettereProvate" text="Lettere provate: " />
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

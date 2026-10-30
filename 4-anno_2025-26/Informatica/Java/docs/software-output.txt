@@ -1,0 +1,8 @@
+Numero programmi: 3
+Contenitore programmi:
+- ZeroCool
+- AcidBurn
+- CrashOverride
+
+Posizione CrashOverride: 2
+Programmi in comune: 2
