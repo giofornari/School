@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/readme/hero.svg" width="100%" alt="School — tre anni di codice all’ITIS Leonardo da Vinci di Parma, indirizzo Informatica. Terzo, quarto e quinto anno: 2024–2027.">
+  <img src=".github/readme/lavagna-hero.svg" width="100%" alt="School — tre anni di codice all’ITIS Leonardo da Vinci di Parma, indirizzo Informatica. Terzo, quarto e quinto anno: 2024–2027.">
 </p>
 
 # School
@@ -21,7 +21,7 @@ Il mio percorso all’**ITIS Leonardo da Vinci di Parma**, indirizzo Informatica
 
 ## Terzo anno
 
-<a href="3-anno_2024-25"><img src=".github/readme/anno-3.svg" width="100%" alt="Terzo anno, 2024–25. Convertitore C: 13 in decimale diventa 1101 in binario. I bit pesano 8, 4, 2, 1: 8 + 4 + 0 + 1 = 13."></a>
+<a href="3-anno_2024-25"><img src=".github/readme/lavagna-anno-3.svg" width="100%" alt="Terzo anno, 2024–25. Convertitore C: 13 in decimale diventa 1101 in binario. I bit pesano 8, 4, 2, 1: 8 + 4 + 0 + 1 = 13."></a>
 
 La lavagna mostra **[dectobin.c](3-anno_2024-25/Sistemi/C/gcc/dec2bin/dectobin.c)**: leggi un numero, lo elabori, stampi il risultato.
 
@@ -39,7 +39,7 @@ I primi algoritmi, la programmazione procedurale e il funzionamento delle reti. 
 
 ## Quarto anno
 
-<a href="4-anno_2025-26"><img src=".github/readme/anno-4.svg" width="100%" alt="Quarto anno, 2025–26. Biblioteca: Libro e Rivista ereditano titolo, data e numeroPagine da Pubblicazione. Libro aggiunge ISBN e autore; Rivista volume e periodicità."></a>
+<a href="4-anno_2025-26"><img src=".github/readme/lavagna-anno-4.svg" width="100%" alt="Quarto anno, 2025–26. Biblioteca: Libro e Rivista ereditano titolo, data e numeroPagine da Pubblicazione. Libro aggiunge ISBN e autore; Rivista volume e periodicità."></a>
 
 La lavagna mostra le classi di **[Biblioteca](4-anno_2025-26/Informatica/Java/Laboratorio/Biblioteca/src)**: la freccia risale alla classe astratta comune.
 
@@ -56,7 +56,7 @@ Classi, ereditarietà e applicazioni più strutturate. Si passa dagli esercizi J
 
 ## Quinto anno
 
-<a href="5-anno_2026-27"><img src=".github/readme/anno-5.svg" width="100%" alt="Quinto anno, 2026–27. ServerWebStatico: il browser richiede GET / su localhost:3000, server.js legge public/index.html e invia lo stream come risposta 200 con contenuto HTML."></a>
+<a href="5-anno_2026-27"><img src=".github/readme/lavagna-anno-5.svg" width="100%" alt="Quinto anno, 2026–27. ServerWebStatico: il browser richiede GET / su localhost:3000, server.js legge public/index.html e invia lo stream come risposta 200 con contenuto HTML."></a>
 
 La lavagna segue il caso base di **[ServerWebStatico](5-anno_2026-27/TPSIT/JavaScript/ServerWebStatico/server.js)**, senza compressione gzip o richiesta di un intervallo del file.
 
@@ -83,17 +83,17 @@ La lavagna segue il caso base di **[ServerWebStatico](5-anno_2026-27/TPSIT/JavaS
 
 ## Il percorso, in numeri
 
-<img src=".github/readme/percorso.svg" width="100%" alt="Distribuzione mensile dei 353 commit importati: 94 nel terzo anno, 237 nel quarto e 22 nel quinto, secondo le date originali dei commit.">
+<img src=".github/readme/lavagna-percorso.svg" width="100%" alt="Distribuzione mensile dei 353 commit importati: 94 nel terzo anno, 237 nel quarto e 22 nel quinto, secondo le date originali dei commit.">
 
 Il grafico racconta la **history importata prima dell’unificazione del 30 ottobre 2026**, usando le date originali dei commit. Non misura ore di studio o difficoltà dei progetti.
 
-<img src=".github/readme/linguaggi.svg" width="100%" alt="Distribuzione delle righe non vuote per linguaggio nei file didattici, escluse le cartelle generate riconosciute dal generatore.">
+<img src=".github/readme/lavagna-linguaggi.svg" width="100%" alt="Distribuzione delle righe non vuote per linguaggio nei file didattici, escluse le cartelle generate riconosciute dal generatore.">
 
 Il conteggio dei linguaggi comprende anche commenti e markup; esclude le cartelle di piattaforma Flutter, dipendenze, build e documentazione riconosciute dal generatore. È una fotografia del materiale, non una misura dell’esperienza.
 
 ## Le origini
 
-<img src=".github/readme/confluenza.svg" width="100%" alt="Mappa delle dodici sorgenti confluite in School: nove repository con history e tre cartelle locali, distribuite nei tre anni scolastici.">
+<img src=".github/readme/lavagna-confluenza.svg" width="100%" alt="Mappa delle dodici sorgenti confluite in School: nove repository con history e tre cartelle locali, distribuite nei tre anni scolastici.">
 
 Nove repository e tre cartelle locali sono confluite qui. Le repository originali sono archiviate; i commit importati mantengono autori e date, con hash cambiati dalla riorganizzazione dei percorsi. Le tre cartelle locali sono state aggiunte senza una history precedente.
 

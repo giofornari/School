@@ -6,13 +6,13 @@ Riferimenti locali: `corsi/security-awareness/sistema/montaggio.md`, `produzione
 
 | Tavola | Utilità |
 | :--- | :--- |
-| `hero.svg` | Associa ciascuna cartella annuale ai temi che contiene. |
-| `anno-3.svg` | Spiega la conversione 13 → 1101 del programma C `dectobin.c`. |
-| `anno-4.svg` | Mostra l’ereditarietà delle classi reali di Biblioteca. |
-| `anno-5.svg` | Segue richiesta, lettura del file e risposta di ServerWebStatico. |
-| `percorso.svg` | Distribuisce la history importata per mese e anno scolastico. |
-| `linguaggi.svg` | Confronta il materiale presente per linguaggio, con conteggi e percentuali. |
-| `confluenza.svg` | Indica gli anni e le aree in cui ritrovare ciascuna sorgente originale. |
+| `lavagna-hero.svg` | Associa ciascuna cartella annuale ai temi che contiene. |
+| `lavagna-anno-3.svg` | Spiega la conversione 13 → 1101 del programma C `dectobin.c`. |
+| `lavagna-anno-4.svg` | Mostra l’ereditarietà delle classi reali di Biblioteca. |
+| `lavagna-anno-5.svg` | Segue richiesta, lettura del file e risposta di ServerWebStatico. |
+| `lavagna-percorso.svg` | Distribuisce la history importata per mese e anno scolastico. |
+| `lavagna-linguaggi.svg` | Confronta il materiale presente per linguaggio, con conteggi e percentuali. |
+| `lavagna-confluenza.svg` | Indica gli anni e le aree in cui ritrovare ciascuna sorgente originale. |
 
 ## Rigenerazione
 

@@ -82,8 +82,10 @@ def tavola(nome, h, corpo, titolo, descrizione):
            f'<marker id="punta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M1 1L9 5L1 9" fill="none" stroke="{NAVY}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>'
            f'<rect width="1200" height="{h}" fill="{CARTA}"/><rect width="1200" height="{h}" fill="url(#quadretti)"/>{corpo}</svg>')
     ET.fromstring(doc)
+    # Il nome nuovo evita le vecchie immagini ancora servite dalla cache raw di GitHub.
+    nome = "lavagna-" + nome
     (QUI / nome).write_text(doc, encoding="utf-8")
-    print(f"{nome:<22} {len(doc)/1024:6.1f} KB")
+    print(f"{nome:<30} {len(doc)/1024:6.1f} KB")
 
 # ---------- dati ----------
 def git(*a):
