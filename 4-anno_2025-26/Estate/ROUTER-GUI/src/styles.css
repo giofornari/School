@@ -1,0 +1,4 @@
+/* Stili - Tailwind cerca le classi solo in index.html e src/ui, non in node_modules */
+@import "tailwindcss" source(none);
+@source "../index.html";
+@source "./ui";
