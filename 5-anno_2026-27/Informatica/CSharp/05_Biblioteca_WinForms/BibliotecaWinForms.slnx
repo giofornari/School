@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BibliotecaWinForms/BibliotecaWinForms.csproj" />
+  <Project Path="LibreriaBiblioteca/LibreriaBiblioteca.csproj" />
+</Solution>

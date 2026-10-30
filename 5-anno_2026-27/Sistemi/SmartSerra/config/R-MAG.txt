@@ -1,0 +1,41 @@
+! ===================================================================
+! R-MAG  (Router-PT + 2 moduli PT-ROUTER-NM-1CGE negli slot 6 e 7)
+! Fa0/0 = LAN Magazzino, Gi6/0 = L4 verso R-SEDE, Gi7/0 = L3 verso R-DC
+! Incollare nella CLI partendo dal prompt "Router>"
+! ===================================================================
+enable
+configure terminal
+hostname R-MAG
+no ip domain-lookup
+banner motd # R-MAG - SmartSerra - accesso riservato #
+!
+interface FastEthernet0/0
+ description LAN MAGAZZINO 10.20.0.224/27
+ ip address 10.20.0.225 255.255.255.224
+ ip helper-address 10.20.1.2
+ no shutdown
+ exit
+!
+interface GigabitEthernet6/0
+ description L4 dorsale verso R-SEDE Gi7/0
+ ip address 10.20.1.29 255.255.255.252
+ no shutdown
+ exit
+!
+interface GigabitEthernet7/0
+ description L3 dorsale verso R-DC Gi6/0
+ ip address 10.20.1.26 255.255.255.252
+ no shutdown
+ exit
+!
+! ---------------- ROUTING STATICO ----------------
+! default primaria: verso R-DC (vicino diretto: Data Center e Internet)
+ip route 0.0.0.0 0.0.0.0 10.20.1.25
+! default di backup (floating, AD 10): verso R-SEDE, usata solo se cade L3
+ip route 0.0.0.0 0.0.0.0 10.20.1.30 10
+! summary 10.20.0.0/24 (Uffici + WLAN + IoT Serra) verso R-SEDE
+! (la rete del Magazzino e' direttamente connessa, quindi piu' specifica)
+ip route 10.20.0.0 255.255.255.0 10.20.1.30
+!
+end
+write memory

@@ -1,0 +1,11 @@
+<Project>
+  <!--
+    Vale per TUTTI i progetti sotto questa cartella.
+    Serve solo per compilare i progetti Windows Forms da Linux:
+    li compila, ma non li può eseguire (WinForms gira solo su Windows).
+    Su Windows con Visual Studio questo file è innocuo e si può ignorare.
+  -->
+  <PropertyGroup>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+  </PropertyGroup>
+</Project>

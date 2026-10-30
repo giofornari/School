@@ -1,0 +1,44 @@
+---
+references:
+  - "File: /porting_python/b3_p126_classful_netid.py"
+generationTime: 2026-08-26T16:45:49.853Z
+---
+flowchart TD
+    A["Start"] --> B["main()"]
+    B --> C["Initialize info = []"]
+    C --> D[(INIDIRIZZI)]
+    D --> E{"More IP addresses?"}
+
+    E -->|Yes| F["Read (a, b, c, d)"]
+    F --> G[["classifica(a, b, c, d)"]]
+
+    G --> H[["dotted_to_int(a, b, c, d)"]]
+    H --> I["Compute 32-bit IP integer"]
+    I --> J[(CLASSI_IP)]
+    J --> K{"For each class rule?"}
+    K -->|Yes| L{"(a & mask) == leading?"}
+    L -->|Yes| M["Return class letter, netmask, netid"]
+    L -->|No| K
+    K -->|No| N["Return None"]
+
+    M --> O{"ris is None?"}
+    N --> O
+
+    O -->|Yes| P["Print 'classe D/E (non unicast)'"]
+    P --> Q["Append None to info"]
+    O -->|No| R["Append netid to info"]
+    R --> S["Print class, netmask, and netId"]
+
+    Q --> E
+    S --> E
+
+    E -->|No| T["Print blank line"]
+    T --> U["Initialize i and j for pairwise comparison"]
+    U --> V{"More pairs (i, j)?"}
+    V -->|Yes| W{"info[i] and info[j] are not None and equal?"}
+    W -->|Yes| X["Print 'stessa rete' for the pair"]
+    W -->|No| V
+    X --> V
+
+    V -->|No| Y["Return"]
+    Y --> Z(["End"])

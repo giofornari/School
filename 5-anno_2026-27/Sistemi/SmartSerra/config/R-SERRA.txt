@@ -1,0 +1,41 @@
+! ===================================================================
+! R-SERRA  (Router-PT + 2 moduli PT-ROUTER-NM-1CGE negli slot 6 e 7)
+! Fa0/0 = LAN IoT Serra, Gi6/0 = L2 verso R-DC, Gi7/0 = L1 verso R-SEDE
+! Incollare nella CLI partendo dal prompt "Router>"
+! ===================================================================
+enable
+configure terminal
+hostname R-SERRA
+no ip domain-lookup
+banner motd # R-SERRA - SmartSerra - accesso riservato #
+!
+interface FastEthernet0/0
+ description LAN IOT SERRA 10.20.0.192/27 (AP-SERRA + dispositivi IoT)
+ ip address 10.20.0.193 255.255.255.224
+ ip helper-address 10.20.1.2
+ no shutdown
+ exit
+!
+interface GigabitEthernet6/0
+ description L2 dorsale verso R-DC Gi7/0
+ ip address 10.20.1.21 255.255.255.252
+ no shutdown
+ exit
+!
+interface GigabitEthernet7/0
+ description L1 dorsale verso R-SEDE Gi6/0
+ ip address 10.20.1.18 255.255.255.252
+ no shutdown
+ exit
+!
+! ---------------- ROUTING STATICO ----------------
+! default primaria: verso R-DC (vicino diretto: Data Center e Internet)
+ip route 0.0.0.0 0.0.0.0 10.20.1.22
+! default di backup (floating, AD 10): verso R-SEDE, usata solo se cade L2
+ip route 0.0.0.0 0.0.0.0 10.20.1.17 10
+! reti della Sede (Uffici e WLAN): direttamente verso R-SEDE
+ip route 10.20.0.0 255.255.255.128 10.20.1.17
+ip route 10.20.0.128 255.255.255.192 10.20.1.17
+!
+end
+write memory

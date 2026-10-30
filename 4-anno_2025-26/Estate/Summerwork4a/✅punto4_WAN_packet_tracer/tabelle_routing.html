@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabelle di routing — WAN 160.80.0.0</title>
+<style>
+:root{ color-scheme: light;
+  --bg:#f7f7f5; --card:#fff; --ink:#1c1c1a; --mut:#6b6b66; --line:#e2e2dd;
+  --dir:#0f7b4f; --dirbg:#e7f5ee; --ind:#8a5a00; --indbg:#fdf3e0;
+  --alt:#5b4fb8; --altbg:#efedfb; --acc:#b34a2c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+ font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;padding:20px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:21px;margin:0 0 3px;letter-spacing:-.01em}
+.sub{color:var(--mut);font-size:13px;margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:16px}
+h2{font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:0 0 12px;font-weight:600}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{padding:7px 15px;border:1px solid var(--line);background:var(--card);border-radius:8px;
+ cursor:pointer;font-size:14px;font-weight:600;color:var(--mut);transition:.12s}
+.tab:hover{border-color:#c9c9c2}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.ctrl{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:14px;
+ padding-bottom:14px;border-bottom:1px solid var(--line);font-size:13.5px}
+label.sw{display:flex;gap:7px;align-items:center;cursor:pointer;user-select:none}
+input[type=checkbox]{accent-color:var(--ink);width:15px;height:15px;cursor:pointer}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-weight:600;color:var(--mut);font-size:11.5px;text-transform:uppercase;
+ letter-spacing:.05em;padding:0 10px 8px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid #f0f0ec;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr.altrow{background:var(--altbg)}
+tr.altrow td:first-child{border-left:3px solid var(--alt)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;
+ text-transform:uppercase;letter-spacing:.04em}
+.p-dir{background:var(--dirbg);color:var(--dir)}
+.p-ind{background:var(--indbg);color:var(--ind)}
+.p-alt{background:var(--altbg);color:var(--alt)}
+.met{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+ border-radius:6px;background:#f0f0ec;font-weight:700;font-size:12.5px}
+.met.z{background:var(--dirbg);color:var(--dir)}
+.hide{color:transparent;background:#eeeee9;border-radius:4px;cursor:pointer;user-select:none}
+.hide:hover{background:#e4e4de}
+.rev{color:inherit!important;background:transparent!important}
+.net{font-weight:600}
+.netname{color:var(--mut);font-weight:400;font-size:12px}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--mut);margin-top:12px}
+.legend b{color:var(--ink);font-weight:600}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:10px}
+.kv{background:#fafaf8;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:13px}
+.kv .t{font-weight:600;font-size:12px;color:var(--mut);margin-bottom:5px}
+svg{width:100%;height:auto;max-height:390px;display:block}
+.note{background:#fdf3e0;border:1px solid #f0dcae;border-radius:8px;padding:11px 13px;
+ font-size:13px;color:#5c4409;margin-top:12px}
+.cnt{font-size:12.5px;color:var(--mut);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>Tabelle di routing statico — WAN 160.80.0.0/16</h1>
+<p class="sub">5 router · 10 sottoreti /24 · 34 rotte statiche. Attiva <b>Modalità quiz</b> per nascondere next hop e metrica e ripassare a voce.</p>
+
+<div class="card">
+<h2>Topologia</h2>
+<svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,sans-serif">
+  <defs><style>
+    .lk{stroke:#b9b9b2;stroke-width:2}
+    .rt{fill:#1c1c1a}.rtx{fill:#fff;font-size:13px;font-weight:700;text-anchor:middle}
+    .cl{fill:#e7f5ee;stroke:#0f7b4f;stroke-width:1.5}
+    .clx{fill:#0f7b4f;font-size:12px;font-weight:700;text-anchor:middle}
+    .nx{fill:#6b6b66;font-size:10.5px;text-anchor:middle;font-family:ui-monospace,monospace}
+    .hx{fill:#8a5a00;font-size:10px;text-anchor:middle}
+  </style></defs>
+
+  <!-- links -->
+  <line class="lk" x1="200" y1="230" x2="450" y2="120"/><!-- R1-R3 -->
+  <line class="lk" x1="450" y1="120" x2="690" y2="230"/><!-- R3-R2 -->
+  <line class="lk" x1="200" y1="230" x2="690" y2="230"/><!-- R1-R2 -->
+  <line class="lk" x1="200" y1="230" x2="200" y2="330"/><!-- R1-R4 -->
+  <line class="lk" x1="200" y1="330" x2="440" y2="330"/><!-- R4-E -->
+  <line class="lk" x1="440" y1="330" x2="620" y2="330"/><!-- E-R5 -->
+  <line class="lk" x1="690" y1="230" x2="790" y2="285"/><!-- R2-F -->
+  <line class="lk" x1="790" y1="285" x2="620" y2="330"/><!-- F-R5 -->
+  <line class="lk" x1="200" y1="230" x2="90" y2="175"/><!-- R1-A -->
+  <line class="lk" x1="450" y1="120" x2="450" y2="45"/><!-- R3-C -->
+  <line class="lk" x1="690" y1="230" x2="810" y2="175"/><!-- R2-B -->
+  <line class="lk" x1="620" y1="330" x2="620" y2="385" stroke="#b9b9b2" stroke-width="2"/><!-- R5-D -->
+
+  <!-- link labels -->
+  <text class="nx" x="310" y="168">.10.0</text>
+  <text class="nx" x="580" y="168">.9.0</text>
+  <text class="nx" x="445" y="222">.7.0</text>
+  <text class="nx" x="172" y="285">.8.0</text>
+
+  <!-- clouds -->
+  <ellipse class="cl" cx="90" cy="175" rx="46" ry="24"/>
+  <text class="clx" x="90" y="173">A</text><text class="hx" x="90" y="187">.1.0</text>
+  <ellipse class="cl" cx="450" cy="45" rx="46" ry="24"/>
+  <text class="clx" x="450" y="43">C</text><text class="hx" x="450" y="57">.5.0</text>
+  <ellipse class="cl" cx="810" cy="175" rx="46" ry="24"/>
+  <text class="clx" x="810" y="173">B</text><text class="hx" x="810" y="187">.3.0</text>
+  <ellipse class="cl" cx="440" cy="330" rx="46" ry="24"/>
+  <text class="clx" x="440" y="328">E</text><text class="hx" x="440" y="342">.4.0</text>
+  <ellipse class="cl" cx="790" cy="285" rx="46" ry="24"/>
+  <text class="clx" x="790" y="283">F</text><text class="hx" x="790" y="297">.6.0</text>
+  <ellipse class="cl" cx="620" cy="385" rx="46" ry="24"/>
+  <text class="clx" x="620" y="383">D</text><text class="hx" x="620" y="397">.2.0</text>
+
+  <!-- routers -->
+  <g><rect class="rt" x="172" y="212" width="56" height="34" rx="8"/><text class="rtx" x="200" y="234">R1</text></g>
+  <g><rect class="rt" x="662" y="212" width="56" height="34" rx="8"/><text class="rtx" x="690" y="234">R2</text></g>
+  <g><rect class="rt" x="422" y="103" width="56" height="34" rx="8"/><text class="rtx" x="450" y="125">R3</text></g>
+  <g><rect class="rt" x="172" y="313" width="56" height="34" rx="8"/><text class="rtx" x="200" y="335">R4</text></g>
+  <g><rect class="rt" x="592" y="313" width="56" height="34" rx="8"/><text class="rtx" x="620" y="335">R5</text></g>
+</svg>
+<div class="legend">
+  <span><b>Ovali verdi</b> = sottoreti popolate (nuvola + modem DSL + host)</span>
+  <span><b>Linee nude</b> = reti punto-punto fra router</span>
+</div>
+<div class="note"><b>E ed F sono sottoreti di transito E popolate.</b> Il Cloud-PT non inoltra Ethernet↔Ethernet: in quelle due sottoreti serve uno switch a cui si attestano i due router e la porta Ethernet della nuvola.</div>
+</div>
+
+<div class="card">
+<h2>Piano di indirizzamento</h2>
+<div class="grid2" id="plan"></div>
+</div>
+
+<div class="card">
+<div class="tabs" id="tabs"></div>
+<div class="ctrl">
+  <label class="sw"><input type="checkbox" id="quiz"> Modalità quiz (nascondi next hop e metrica)</label>
+  <label class="sw"><input type="checkbox" id="alts" checked> Mostra rotte alternative equivalenti</label>
+</div>
+<table><thead><tr>
+  <th style="width:23%">Destinazione</th><th style="width:12%">Tipo</th>
+  <th style="width:19%">Next hop</th><th style="width:19%">Interfaccia uscita</th>
+  <th style="width:9%">Metrica</th><th style="width:18%">Percorso</th>
+</tr></thead><tbody id="body"></tbody></table>
+<div class="cnt" id="cnt"></div>
+</div>
+
+<div class="card">
+<h2>Comandi da incollare</h2>
+<pre class="mono" id="cli" style="background:#fafaf8;border:1px solid var(--line);border-radius:8px;padding:12px;overflow-x:auto;margin:0;font-size:12.5px;line-height:1.5"></pre>
+</div>
+
+</div>
+<script>
+const NETS={"1":"A (cloud)","2":"D (cloud)","3":"B (cloud)","4":"E (cloud)","5":"C (cloud)","6":"F (cloud)",
+ "7":"link R1-R2","8":"link R1-R4","9":"link R2-R3","10":"link R1-R3"};
+const PLAN=[
+ ["A — 160.80.1.0/24","R1 = .1 &middot; PC A = .10"],
+ ["D — 160.80.2.0/24","R5 = .1 &middot; PC D = .10"],
+ ["B — 160.80.3.0/24","R2 = .1 &middot; PC B = .10"],
+ ["E — 160.80.4.0/24","R4 = .1 &middot; R5 = .2 &middot; PC E = .10"],
+ ["C — 160.80.5.0/24","R3 = .1 &middot; PC C1 = .10, PC C2 = .11"],
+ ["F — 160.80.6.0/24","R2 = .1 &middot; R5 = .2 &middot; PC F = .10"],
+ ["R1–R2 — 160.80.7.0/24","R1 = .1 &middot; R2 = .2"],
+ ["R1–R4 — 160.80.8.0/24","R1 = .1 &middot; R4 = .2"],
+ ["R2–R3 — 160.80.9.0/24","R2 = .1 &middot; R3 = .2"],
+ ["R1–R3 — 160.80.10.0/24","R1 = .1 &middot; R3 = .2"]];
+
+// [rete, tipo, nexthop, iface, metrica, percorso, alternativa?]
+const T={
+R1:[["1","D","—","160.80.1.1",0,"—",0],
+    ["2","I","160.80.8.2","160.80.8.1",2,"R4 → R5",0],
+    ["2","I","160.80.7.2","160.80.7.1",2,"R2 → R5",1],
+    ["3","I","160.80.7.2","160.80.7.1",1,"R2",0],
+    ["4","I","160.80.8.2","160.80.8.1",1,"R4",0],
+    ["5","I","160.80.10.2","160.80.10.1",1,"R3",0],
+    ["6","I","160.80.7.2","160.80.7.1",1,"R2",0],
+    ["7","D","—","160.80.7.1",0,"—",0],
+    ["8","D","—","160.80.8.1",0,"—",0],
+    ["9","I","160.80.7.2","160.80.7.1",1,"R2",0],
+    ["9","I","160.80.10.2","160.80.10.1",1,"R3",1],
+    ["10","D","—","160.80.10.1",0,"—",0]],
+R2:[["1","I","160.80.7.1","160.80.7.2",1,"R1",0],
+    ["2","I","160.80.6.2","160.80.6.1",1,"R5",0],
+    ["3","D","—","160.80.3.1",0,"—",0],
+    ["4","I","160.80.6.2","160.80.6.1",1,"R5",0],
+    ["5","I","160.80.9.2","160.80.9.1",1,"R3",0],
+    ["6","D","—","160.80.6.1",0,"—",0],
+    ["7","D","—","160.80.7.2",0,"—",0],
+    ["8","I","160.80.7.1","160.80.7.2",1,"R1",0],
+    ["9","D","—","160.80.9.1",0,"—",0],
+    ["10","I","160.80.7.1","160.80.7.2",1,"R1",0],
+    ["10","I","160.80.9.2","160.80.9.1",1,"R3",1]],
+R3:[["1","I","160.80.10.1","160.80.10.2",1,"R1",0],
+    ["2","I","160.80.9.1","160.80.9.2",2,"R2 → R5",0],
+    ["3","I","160.80.9.1","160.80.9.2",1,"R2",0],
+    ["4","I","160.80.9.1","160.80.9.2",2,"R2 → R5",0],
+    ["4","I","160.80.10.1","160.80.10.2",2,"R1 → R4",1],
+    ["5","D","—","160.80.5.1",0,"—",0],
+    ["6","I","160.80.9.1","160.80.9.2",1,"R2",0],
+    ["7","I","160.80.10.1","160.80.10.2",1,"R1",0],
+    ["7","I","160.80.9.1","160.80.9.2",1,"R2",1],
+    ["8","I","160.80.10.1","160.80.10.2",1,"R1",0],
+    ["9","D","—","160.80.9.2",0,"—",0],
+    ["10","D","—","160.80.10.2",0,"—",0]],
+R4:[["1","I","160.80.8.1","160.80.8.2",1,"R1",0],
+    ["2","I","160.80.4.2","160.80.4.1",1,"R5",0],
+    ["3","I","160.80.8.1","160.80.8.2",2,"R1 → R2",0],
+    ["3","I","160.80.4.2","160.80.4.1",2,"R5 → R2",1],
+    ["4","D","—","160.80.4.1",0,"—",0],
+    ["5","I","160.80.8.1","160.80.8.2",2,"R1 → R3",0],
+    ["6","I","160.80.4.2","160.80.4.1",1,"R5",0],
+    ["7","I","160.80.8.1","160.80.8.2",1,"R1",0],
+    ["8","D","—","160.80.8.2",0,"—",0],
+    ["9","I","160.80.8.1","160.80.8.2",2,"R1 → R2/R3",0],
+    ["10","I","160.80.8.1","160.80.8.2",1,"R1",0]],
+R5:[["1","I","160.80.6.1","160.80.6.2",2,"R2 → R1",0],
+    ["1","I","160.80.4.1","160.80.4.2",2,"R4 → R1",1],
+    ["2","D","—","160.80.2.1",0,"—",0],
+    ["3","I","160.80.6.1","160.80.6.2",1,"R2",0],
+    ["4","D","—","160.80.4.2",0,"—",0],
+    ["5","I","160.80.6.1","160.80.6.2",2,"R2 → R3",0],
+    ["6","D","—","160.80.6.2",0,"—",0],
+    ["7","I","160.80.6.1","160.80.6.2",1,"R2",0],
+    ["8","I","160.80.4.1","160.80.4.2",1,"R4",0],
+    ["9","I","160.80.6.1","160.80.6.2",1,"R2",0],
+    ["10","I","160.80.6.1","160.80.6.2",2,"R2 → R1",0],
+    ["10","I","160.80.4.1","160.80.4.2",2,"R4 → R1",1]]};
+
+const IF={R1:[["Fa0/0","160.80.1.1","Rete A"],["Fa1/0","160.80.7.1","R2"],["Fa2/0","160.80.10.1","R3"],["Fa3/0","160.80.8.1","R4"]],
+ R2:[["Fa0/0","160.80.3.1","Rete B"],["Fa1/0","160.80.7.2","R1"],["Fa2/0","160.80.9.1","R3"],["Fa3/0","160.80.6.1","Rete F"]],
+ R3:[["Fa0/0","160.80.5.1","Rete C"],["Fa1/0","160.80.10.2","R1"],["Fa2/0","160.80.9.2","R2"]],
+ R4:[["Fa0/0","160.80.4.1","Rete E"],["Fa1/0","160.80.8.2","R1"]],
+ R5:[["Fa0/0","160.80.2.1","Rete D"],["Fa1/0","160.80.4.2","Rete E"],["Fa2/0","160.80.6.2","Rete F"]]};
+
+let cur="R1";
+const $=id=>document.getElementById(id);
+const get=(k,d)=>{try{const v=localStorage.getItem(k);return v===null?d:v==="1"}catch(e){return d}};
+const set=(k,v)=>{try{localStorage.setItem(k,v?"1":"0")}catch(e){}};
+
+$("plan").innerHTML=PLAN.map(p=>`<div class="kv"><div class="t">${p[0]}</div>${p[1]}</div>`).join("");
+$("tabs").innerHTML=["R1","R2","R3","R4","R5"].map(r=>`<div class="tab" data-r="${r}">${r}</div>`).join("");
+$("tabs").onclick=e=>{const r=e.target.dataset.r; if(r){cur=r;draw()}};
+$("quiz").checked=get("wan_quiz",false);
+$("alts").checked=get("wan_alts",true);
+$("quiz").onchange=()=>{set("wan_quiz",$("quiz").checked);draw()};
+$("alts").onchange=()=>{set("wan_alts",$("alts").checked);draw()};
+
+function draw(){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t.dataset.r===cur));
+  const q=$("quiz").checked, sa=$("alts").checked;
+  const rows=T[cur].filter(r=>sa||!r[6]);
+  $("body").innerHTML=rows.map(r=>{
+    const dir=r[1]==="D";
+    const pill=r[6]?'<span class="pill p-alt">alt</span>'
+      :dir?'<span class="pill p-dir">diretto</span>':'<span class="pill p-ind">indiretto</span>';
+    const hid=(txt,cls="")=>q&&!dir?`<span class="hide ${cls}">${txt}</span>`:`<span class="${cls}">${txt}</span>`;
+    return `<tr class="${r[6]?'altrow':''}">
+      <td><span class="net mono">160.80.${r[0]}.0</span><br><span class="netname">${NETS[r[0]]}</span></td>
+      <td>${pill}</td>
+      <td class="mono">${hid(r[2])}</td>
+      <td class="mono">${r[3]}</td>
+      <td>${q&&!dir?`<span class="hide met">${r[4]}</span>`:`<span class="met ${dir?'z':''}">${r[4]}</span>`}</td>
+      <td class="mono" style="color:var(--mut)">${q&&!dir?`<span class="hide">${r[5]}</span>`:r[5]}</td></tr>`;
+  }).join("");
+  document.querySelectorAll(".hide").forEach(el=>el.onclick=()=>el.classList.toggle("rev"));
+  const nS=T[cur].filter(r=>r[1]==="I"&&!r[6]).length, nD=T[cur].filter(r=>r[1]==="D").length;
+  $("cnt").textContent=`${cur}: ${nD} reti direttamente connesse + ${nS} rotte statiche = 10 reti conosciute.`
+    +(q?"  ·  Clicca una casella grigia per svelarla.":"");
+  const ifs=IF[cur].map(i=>`interface ${i[0].replace("Fa","FastEthernet")}\n description --> ${i[2]}\n ip address ${i[1]} 255.255.255.0\n no shutdown\nexit`).join("\n");
+  const rts=T[cur].filter(r=>r[1]==="I"&&!r[6]).map(r=>`ip route 160.80.${r[0]}.0 255.255.255.0 ${r[2]}`).join("\n");
+  $("cli").textContent=`enable\nconfigure terminal\nhostname ${cur}\n${ifs}\n${rts}\nend\nwrite memory`;
+}
+draw();
+</script>
+</body>
+</html>

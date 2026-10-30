@@ -1,0 +1,29 @@
+! ===================================================================
+! R-ISP  (Router-PT + 1 modulo PT-ROUTER-NM-1CGE nello slot 6)
+! Gi6/0 = collegamento verso R-DC, Fa0/0 = LAN del server web
+! Incollare nella CLI partendo dal prompt "Router>"
+! ===================================================================
+enable
+configure terminal
+hostname R-ISP
+no ip domain-lookup
+banner motd # R-ISP - Provider #
+!
+interface GigabitEthernet6/0
+ description Collegamento cliente SmartSerra (R-DC Gi8/0)
+ ip address 203.0.113.1 255.255.255.252
+ no shutdown
+ exit
+!
+interface FastEthernet0/0
+ description LAN server web del provider 198.51.100.0/24
+ ip address 198.51.100.1 255.255.255.0
+ no shutdown
+ exit
+!
+! ---------------- ROUTING STATICO ----------------
+! una sola rotta riassuntiva per tutto il piano SmartSerra (10.20.0.0/22)
+ip route 10.20.0.0 255.255.252.0 203.0.113.2
+!
+end
+write memory

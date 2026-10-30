@@ -1,0 +1,41 @@
+---
+references:
+  - "File: /porting_python/b1_p087_hops.py"
+generationTime: 2026-08-26T16:38:11.833Z
+---
+flowchart TD
+    A["Start"] --> B["main()"]
+    B --> C["Read source router and destination router"]
+    C --> D{"Both inputs are digits?"}
+    D -->|No| E["Print 'Input non valido' and return"]
+    D -->|Yes| F["Call percorso(int(chS), int(chD))"]
+
+    F --> G[["percorso(rm, rd, verbose=True)"]]
+    G --> H["Initialize r = -1 and hops = [rm]"]
+    H --> I[(MAX_HOP)]
+    H --> J[(LINKROUTER)]
+    H --> K{"rm != rd?"}
+
+    K -->|No| L["Return hops"]
+    K -->|Yes| M{"len(hops) > MAX_HOP?"}
+    M -->|Yes| N["Print 'Errore TTL!' and return None"]
+    M -->|No| O["Set ok = None and mosso = False"]
+
+    O --> P["Iterate through LINKROUTER"]
+    P --> Q{"Link starts at current router rm?"}
+    Q -->|No| P
+    Q -->|Yes| R["Set ok to current index"]
+    R --> S{"Destination router differs from ingress router r?"}
+    S -->|Yes| T["Move to next router: r, rm = rm, rb"]
+    T --> U["Append rm to hops and optionally print path"]
+    U --> K
+    S -->|No| V{"Any outgoing link was found?"}
+    V -->|No| W["Print 'Impossibile instradare' and return None"]
+    V -->|Yes| X["Return along last available link"]
+    X --> U
+
+    L --> Y["main() prints 'ok'"]
+    E --> Z["End"]
+    N --> Z
+    W --> Z
+    Y --> Z

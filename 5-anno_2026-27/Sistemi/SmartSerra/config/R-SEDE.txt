@@ -1,0 +1,49 @@
+! ===================================================================
+! R-SEDE  (Router-PT + 2 moduli PT-ROUTER-NM-1CGE negli slot 6 e 7)
+! Fa0/0 = LAN Uffici, Fa1/0 = WLAN, Gi6/0 = L1 verso R-SERRA,
+! Gi7/0 = L4 verso R-MAG
+! Incollare nella CLI partendo dal prompt "Router>"
+! (se compare "initial configuration dialog" rispondere: no)
+! ===================================================================
+enable
+configure terminal
+hostname R-SEDE
+no ip domain-lookup
+banner motd # R-SEDE - SmartSerra - accesso riservato #
+!
+interface FastEthernet0/0
+ description LAN UFFICI 10.20.0.0/25
+ ip address 10.20.0.1 255.255.255.128
+ ip helper-address 10.20.1.2
+ no shutdown
+ exit
+!
+interface FastEthernet1/0
+ description WLAN SEDE (WLC + 2 LAP) 10.20.0.128/26
+ ip address 10.20.0.129 255.255.255.192
+ ip helper-address 10.20.1.2
+ no shutdown
+ exit
+!
+interface GigabitEthernet6/0
+ description L1 dorsale verso R-SERRA Gi7/0
+ ip address 10.20.1.17 255.255.255.252
+ no shutdown
+ exit
+!
+interface GigabitEthernet7/0
+ description L4 dorsale verso R-MAG Gi6/0
+ ip address 10.20.1.30 255.255.255.252
+ no shutdown
+ exit
+!
+! ---------------- ROUTING STATICO ----------------
+! default primaria: verso R-MAG (percorso SEDE-MAG-DC per DC e Internet)
+ip route 0.0.0.0 0.0.0.0 10.20.1.29
+! default di backup (floating, AD 10): verso R-SERRA, usata solo se cade L4
+ip route 0.0.0.0 0.0.0.0 10.20.1.18 10
+! rete IoT Serra: direttamente verso R-SERRA (vicino), altrimenti uscirebbe dalla default via MAG
+ip route 10.20.0.192 255.255.255.224 10.20.1.18
+!
+end
+write memory

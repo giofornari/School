@@ -1,0 +1,35 @@
+---
+references:
+  - "File: /porting_python/b3_p134_subnetting.py"
+generationTime: 2026-08-26T16:48:38.351Z
+---
+flowchart TD
+    A(("Start")) --> B[["main()"]]
+    B --> C["Call subnet(a=192, subnetmask=26)"]
+    C --> D["Print blank line"]
+    D --> E["Call subnet(a=172, subnetmask=20)"]
+    E --> F(("End"))
+
+    C -.-> G[["subnet()"]]
+    E -.-> G
+
+    G --> H["Find matching private group by first octet"]
+    H --> I{"Private group found?"}
+    I -->|No| Z["Raise ValueError"]
+    I -->|Yes| J{"Subnet mask valid? /m >= group netmask and /m <= 30"}
+    J -->|No| Z
+    J -->|Yes| K["Compute subnetlen, hostlen, and n_subnet"]
+    K --> L["Print group information"]
+    L --> M[["dec_to_bin(n_subnet - 1, subnetlen)"]]
+    M --> N["Initialize i = 0"]
+    N --> O{"i < n_subnet?"}
+    O -->|No| P["Return"]
+    O -->|Yes| Q["Compute u = i << hostlen"]
+    Q --> R{"Private group index?"}
+    R -->|10.0.0.0 /8| S["Print 10.x.x.x subnet"]
+    R -->|172.16.0.0 /16| T["Print 172.16.x.x subnet"]
+    R -->|192.168.0.0 /24| U["Print 192.168.0.x subnet"]
+    S --> V["i = i + 1"]
+    T --> V
+    U --> V
+    V --> O

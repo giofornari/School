@@ -1,0 +1,79 @@
+---
+references:
+  - "File: /porting_python/b3_p134_subnetting.py"
+generationTime: 2026-08-26T16:42:29.093Z
+---
+sequenceDiagram
+    actor User
+    participant M as main()
+    participant S as subnet()
+    participant B as dec_to_bin()
+    participant C as console
+
+    User->>M: run module
+    activate M
+    M->>C: enter main()
+
+    rect rgb(235,245,255)
+        M->>S: subnet(a=192, subnetmask=26)
+        activate S
+        S->>S: select private group by first octet
+        alt a not in GRUPPI_PRIVATI
+            S-->>M: ValueError
+        else subnetmask < group netmask
+            S-->>M: ValueError
+        else subnetmask > 30
+            S-->>M: ValueError
+        else valid input
+            S->>S: subnetlen = 26 - 24<br/>hostlen = 32 - 26<br/>n_subnet = 4
+            S->>C: print group header and subnet counts
+            S->>B: dec_to_bin(n_subnet - 1, subnetlen)
+            B-->>S: subnetid bits
+            loop for i in range(n_subnet)
+                S->>S: u = i << hostlen
+                alt group 10.0.0.0/8
+                    S->>C: print 10.b.c.d/26
+                else group 172.16.0.0/16
+                    S->>C: print 172.16.c.d/26
+                else group 192.168.0.0/24
+                    S->>C: print 192.168.0.d/26
+                    Note right of S: Book typo corrected.<br/>Third octet is computed, not copied.
+                end
+            end
+            S-->>M: first example complete
+        end
+    end
+
+    M->>C: print blank line
+
+    rect rgb(245,235,255)
+        M->>S: subnet(a=172, subnetmask=20)
+        S->>S: select private group by first octet
+        alt a not in GRUPPI_PRIVATI
+            S-->>M: ValueError
+        else subnetmask < group netmask
+            S-->>M: ValueError
+        else subnetmask > 30
+            S-->>M: ValueError
+        else valid input
+            S->>S: subnetlen = 20 - 16<br/>hostlen = 32 - 20<br/>n_subnet = 16
+            S->>C: print group header and subnet counts
+            S->>B: dec_to_bin(n_subnet - 1, subnetlen)
+            B-->>S: subnetid bits
+            loop for i in range(n_subnet)
+                S->>S: u = i << hostlen
+                alt group 10.0.0.0/8
+                    S->>C: print 10.b.c.d/20
+                else group 172.16.0.0/16
+                    S->>C: print 172.16.c.d/20
+                else group 192.168.0.0/24
+                    S->>C: print 192.168.0.d/20
+                end
+            end
+            S-->>M: second example complete
+        end
+    end
+
+    deactivate S
+    M-->>User: program ends
+    deactivate M

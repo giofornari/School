@@ -1,0 +1,39 @@
+---
+references:
+  - "File: /porting_python/b3_p129_instradamento_classful.py"
+generationTime: 2026-08-26T16:39:42.501Z
+---
+flowchart TD
+    A(["Start"]) --> B["main()"]
+    B --> C["Print TdI header"]
+    C --> D{"More rows in TDI_HOST?"}
+
+    TH[("TDI_HOST")] -.-> D
+    D -->|Yes| E["Print one routing table row with dotted()"]
+    E -.-> U[["dotted()"]]
+    U -.-> E
+    E --> D
+
+    D -->|No| F["Initialize scelta = None"]
+    F --> G{"More rows to evaluate?"}
+
+    G -->|Yes| H[["regola_vera(riga, DESTINAZIONE)"]]
+    DS[("DESTINAZIONE")] -.-> H
+    H -.-> Q[["dotted_to_decimal(dest)"]]
+    H -.-> R[["dotted_to_decimal(mask)"]]
+    H -.-> S[["dotted_to_decimal(indirizzo)"]]
+    H --> I{"Rule true?"}
+
+    I -->|No| G
+    I -->|Yes| J["Count 1 bits in mask"]
+    J --> K{"Better than current scelta?"}
+    K -->|Yes| L["Update scelta with longest prefix match"]
+    K -->|No| G
+    L --> G
+
+    G -->|No| M{"scelta is None?"}
+    M -->|Yes| N["Print no applicable rule and stop"]
+    M -->|No| O["Print selected next hop and output interface"]
+
+    N --> P(["End"])
+    O --> P

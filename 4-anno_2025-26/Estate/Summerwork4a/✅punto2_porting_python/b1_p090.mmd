@@ -1,0 +1,30 @@
+---
+references:
+  - "File: /porting_python/b1_p090_routing_cnls.py"
+generationTime: 2026-08-26T16:35:21.945Z
+---
+flowchart TD
+    A(["Start"]) --> B["main()"]
+    B --> C[/"Read source and destination"/]
+    C --> D[["instrada(sorgente, destinazione, router_iniziale=1)"]]
+    D --> E["Initialize router and path"]
+    E --> F{"More hops available in MAX_HOP?"}
+    F -->|Yes| G["Append current router to path"]
+    G --> H[["cerca_regola(router, destinazione)"]]
+    H -.-> I[("TDI")]
+    H --> J{"Rule found?"}
+    J -->|No| K["Print impossible routing and return None"]
+    J -->|Yes| L{"h == 0?"}
+    L -->|Yes| M["Append destination and return path"]
+    L -->|No| N[["next_hop(router, porta)"]]
+    N -.-> O[("LINKROUTER")]
+    N --> P{"Next router exists?"}
+    P -->|No| Q["Print port not connected and return None"]
+    P -->|Yes| R["Set router to next router"]
+    R --> F
+    F -->|No| S["Print TTL error and return None"]
+    M --> T["main() prints path result"]
+    K --> Z(["End"])
+    Q --> Z
+    S --> Z
+    T --> Z

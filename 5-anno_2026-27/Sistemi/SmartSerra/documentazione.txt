@@ -1,0 +1,463 @@
+=====================================================================================
+  SMARTSERRA - Rete per la gestione di una serra automatizzata
+  Documentazione del progetto Cisco Packet Tracer (SmartSerra.pkt)
+=====================================================================================
+
+INDICE
+  1. Topologia
+  2. Piano di indirizzamento VLSM
+  3. Assegnazione degli indirizzi alle interfacce
+  4. Routing statico
+  5. Verifiche e prova di guasto dell'anello
+  6. Servizi (DHCP, DNS, IoT Server, sito web ISP)
+  7. Wi-Fi
+  8. IoT - Illuminazione (SBC)
+  9. IoT - Temperatura (regole IoT Server)
+
+
+-------------------------------------------------------------------------------------
+1. TOPOLOGIA
+-------------------------------------------------------------------------------------
+
+Router: 5 x Router-PT (router generico di Packet Tracer). Le LAN usano le porte
+FastEthernet in rame gia' presenti (Fa0/0, e Fa1/0 su R-SEDE); i collegamenti tra
+router sono in Gigabit Ethernet, su moduli PT-ROUTER-NM-1CGE aggiunti negli slot
+liberi 6, 7 (e 8 su R-DC per la WAN). Ogni modulo diventa GigabitEthernet<slot>/0.
+
+Anello: R-SEDE -- R-SERRA -- R-DC -- R-MAG -- R-SEDE (4 dorsali Gigabit /30)
+
+                                 WEB-ISP 198.51.100.10
+                                        |
+                                 [Fa0/0] R-ISP
+                                 [Gi6/0] 203.0.113.1
+                                        |   WAN 203.0.113.0/30
+                                 [Gi8/0] 203.0.113.2
+     SW-DC ----------------[Fa0/0] R-DC
+     (SRV-DHCP-DNS, SRV-IOT)    [Gi7/0]  [Gi6/0]
+                                /            \
+               L2 10.20.1.20/30              L3 10.20.1.24/30
+                              /                \
+                       [Gi6/0]                  [Gi7/0]
+  SW-SERRA ---[Fa0/0] R-SERRA                    R-MAG [Fa0/0]--- SW-MAG
+  (AP-SERRA,           [Gi7/0]                  [Gi6/0]         (PC magazzino)
+   dispositivi IoT)       \                        /
+               L1 10.20.1.16/30              L4 10.20.1.28/30
+                            \                    /
+                           [Gi6/0]        [Gi7/0]
+                                   R-SEDE
+                           [Fa0/0]        [Fa1/0]
+                              |              |
+                         SW-UFFICI        SW-WLAN
+                         (PC uffici)      (WLC-SEDE, LAP-1, LAP-2)
+
+Convenzione sulle dorsali: su ogni router dell'anello la Gi6/0 va verso il router
+successivo in senso orario (SEDE->SERRA->DC->MAG->SEDE) e prende il primo IP del
+/30; la Gi7/0 arriva dal router precedente e prende il secondo IP.
+Le dorsali sono collegamenti diretti router-router con cavo Copper Cross-Over.
+
+Reti locali:
+  - Sede/Uffici  : su R-SEDE Fa0/0 (switch SW-UFFICI, PC cablati)
+  - WLAN Sede    : su R-SEDE Fa1/0 (switch SW-WLAN, WLC-SEDE + 2 LAP + client Wi-Fi)
+  - Serra/IoT    : su R-SERRA Fa0/0 (switch SW-SERRA, AP-SERRA, sensori e attuatori Wi-Fi)
+  - Magazzino    : su R-MAG Fa0/0 (switch SW-MAG, PC magazzino)
+  - Data Center  : su R-DC Fa0/0 (switch SW-DC, SRV-DHCP-DNS, SRV-IOT)
+  - Internet     : rete del provider dietro R-ISP (server WEB-ISP)
+
+
+-------------------------------------------------------------------------------------
+2. PIANO DI INDIRIZZAMENTO VLSM  (rete di partenza 10.20.0.0/22)
+-------------------------------------------------------------------------------------
+
+Metodo: le reti sono ordinate dalla piu' grande alla piu' piccola; per ognuna si
+sceglie il prefisso piu' piccolo che soddisfa  host richiesti + 2 <= 2^h.
+
+  Uffici       100 + 2 = 102  <= 128  -> h = 7 -> /25 (126 host)
+  WLAN          50 + 2 =  52  <=  64  -> h = 6 -> /26 ( 62 host)
+  IoT Serra     25 + 2 =  27  <=  32  -> h = 5 -> /27 ( 30 host)
+  Magazzino     20 + 2 =  22  <=  32  -> h = 5 -> /27 ( 30 host)
+  Data Center   10 + 2 =  12  <=  16  -> h = 4 -> /28 ( 14 host)
+  Dorsali        2 + 2 =   4  <=   4  -> h = 2 -> /30 (  2 host)
+
++---------------+-------+-------+---------------+-------------+-------------+-------------+
+| Rete          | Host  | Pref. | Indirizzo rete| Primo host  | Ultimo host | Broadcast   |
+|               | rich. | (disp)|               |             |             |             |
++---------------+-------+-------+---------------+-------------+-------------+-------------+
+| Uffici        |  100  | /25   | 10.20.0.0     | 10.20.0.1   | 10.20.0.126 | 10.20.0.127 |
+|               |       | (126) | 255.255.255.128             |             |             |
+| WLAN Sede     |   50  | /26   | 10.20.0.128   | 10.20.0.129 | 10.20.0.190 | 10.20.0.191 |
+|               |       | ( 62) | 255.255.255.192             |             |             |
+| IoT Serra     |   25  | /27   | 10.20.0.192   | 10.20.0.193 | 10.20.0.222 | 10.20.0.223 |
+|               |       | ( 30) | 255.255.255.224             |             |             |
+| Magazzino     |   20  | /27   | 10.20.0.224   | 10.20.0.225 | 10.20.0.254 | 10.20.0.255 |
+|               |       | ( 30) | 255.255.255.224             |             |             |
+| Data Center   |   10  | /28   | 10.20.1.0     | 10.20.1.1   | 10.20.1.14  | 10.20.1.15  |
+|               |       | ( 14) | 255.255.255.240             |             |             |
+| L1 SEDE-SERRA |    2  | /30   | 10.20.1.16    | 10.20.1.17  | 10.20.1.18  | 10.20.1.19  |
+| L2 SERRA-DC   |    2  | /30   | 10.20.1.20    | 10.20.1.21  | 10.20.1.22  | 10.20.1.23  |
+| L3 DC-MAG     |    2  | /30   | 10.20.1.24    | 10.20.1.25  | 10.20.1.26  | 10.20.1.27  |
+| L4 MAG-SEDE   |    2  | /30   | 10.20.1.28    | 10.20.1.29  | 10.20.1.30  | 10.20.1.31  |
++---------------+-------+-------+---------------+-------------+-------------+-------------+
+  (maschera delle dorsali: 255.255.255.252)
+
+Spazio libero per espansioni: 10.20.1.32 - 10.20.3.255 (736 indirizzi:
+10.20.1.32/27, 10.20.1.64/26, 10.20.1.128/25, 10.20.2.0/23).
+
+Nota: le quattro LAN Uffici, WLAN, IoT e Magazzino occupano esattamente 10.20.0.0/24.
+Questo permette di usare la rotta riassuntiva (summary) 10.20.0.0/24 (vedi cap. 4).
+
+Rete del provider (fuori dal piano aziendale, indirizzi "pubblici" simulati con i
+blocchi di documentazione RFC 5737):
+  WAN R-DC <-> R-ISP   203.0.113.0/30   (R-ISP .1, R-DC .2)
+  LAN server ISP       198.51.100.0/24  (R-ISP .1, WEB-ISP .10)
+
+
+-------------------------------------------------------------------------------------
+3. ASSEGNAZIONE DEGLI INDIRIZZI ALLE INTERFACCE
+-------------------------------------------------------------------------------------
+
++----------+------------+------------------+------------------+-------------------------+
+| Disposit.| Interfaccia| Indirizzo IP     | Maschera         | Collegata a             |
++----------+------------+------------------+------------------+-------------------------+
+| R-SEDE   | Fa0/0      | 10.20.0.1        | 255.255.255.128  | SW-UFFICI               |
+| R-SEDE   | Fa1/0      | 10.20.0.129      | 255.255.255.192  | SW-WLAN                 |
+| R-SEDE   | Gi6/0      | 10.20.1.17       | 255.255.255.252  | R-SERRA Gi7/0     (L1)  |
+| R-SEDE   | Gi7/0      | 10.20.1.30       | 255.255.255.252  | R-MAG Gi6/0       (L4)  |
+| R-SERRA  | Fa0/0      | 10.20.0.193      | 255.255.255.224  | SW-SERRA                |
+| R-SERRA  | Gi6/0      | 10.20.1.21       | 255.255.255.252  | R-DC Gi7/0        (L2)  |
+| R-SERRA  | Gi7/0      | 10.20.1.18       | 255.255.255.252  | R-SEDE Gi6/0      (L1)  |
+| R-DC     | Fa0/0      | 10.20.1.1        | 255.255.255.240  | SW-DC                   |
+| R-DC     | Gi6/0      | 10.20.1.25       | 255.255.255.252  | R-MAG Gi7/0       (L3)  |
+| R-DC     | Gi7/0      | 10.20.1.22       | 255.255.255.252  | R-SERRA Gi6/0     (L2)  |
+| R-DC     | Gi8/0      | 203.0.113.2      | 255.255.255.252  | R-ISP Gi6/0       (WAN) |
+| R-MAG    | Fa0/0      | 10.20.0.225      | 255.255.255.224  | SW-MAG                  |
+| R-MAG    | Gi6/0      | 10.20.1.29       | 255.255.255.252  | R-SEDE Gi7/0      (L4)  |
+| R-MAG    | Gi7/0      | 10.20.1.26       | 255.255.255.252  | R-DC Gi6/0        (L3)  |
+| R-ISP    | Gi6/0      | 203.0.113.1      | 255.255.255.252  | R-DC Gi8/0        (WAN) |
+| R-ISP    | Fa0/0      | 198.51.100.1     | 255.255.255.0    | WEB-ISP                 |
++----------+------------+------------------+------------------+-------------------------+
+
+Dispositivi con indirizzo statico:
++----------------+------------------+------------------+-------------+-------------+
+| Dispositivo    | Indirizzo IP     | Maschera         | Gateway     | DNS         |
++----------------+------------------+------------------+-------------+-------------+
+| SRV-DHCP-DNS   | 10.20.1.2        | 255.255.255.240  | 10.20.1.1   | 10.20.1.2   |
+| SRV-IOT        | 10.20.1.3        | 255.255.255.240  | 10.20.1.1   | 10.20.1.2   |
+| WLC-SEDE (mgmt)| 10.20.0.130      | 255.255.255.192  | 10.20.0.129 | 10.20.1.2   |
+| WEB-ISP        | 198.51.100.10    | 255.255.255.0    | 198.51.100.1| 10.20.1.2   |
++----------------+------------------+------------------+-------------+-------------+
+
+Tutti gli altri host (PC uffici, PC magazzino, LAP-1/LAP-2, client Wi-Fi, dispositivi
+IoT) ricevono l'indirizzo via DHCP dal server del Data Center, tramite il relay
+"ip helper-address 10.20.1.2" configurato sulle interfacce LAN dei router.
+
+
+-------------------------------------------------------------------------------------
+4. ROUTING STATICO
+-------------------------------------------------------------------------------------
+
+4.1 Criteri per ridurre il numero di rotte
+  a) Default route sui router dell'anello verso l'uscita Internet (R-DC): copre in una
+     sola riga Data Center, WAN e Internet. R-DC ha la default verso R-ISP.
+  b) Summary 10.20.0.0/24: Uffici, WLAN, IoT e Magazzino stanno tutte in 10.20.0.0/24,
+     quindi una sola rotta le copre. Le eccezioni sono gestite dal longest prefix match
+     (una rete direttamente connessa o una rotta /27 vincono sul /24).
+  c) Su R-ISP una sola rotta riassuntiva 10.20.0.0/22 per tutta l'azienda.
+  d) Backup "implicito": quando sparisce una rotta specifica (link giu'), il traffico
+     ricade sulla rotta piu' larga rimasta (default o summary). Su R-MAG questa punta
+     gia' dal lato giusto dell'anello (se cade L4 la rotta 10.20.0.0/24 sparisce e
+     il traffico per la Sede ricade sulla default via R-DC), quindi li' non serve
+     una floating. Negli altri casi (R-SEDE rete IoT, R-SERRA reti Sede, R-DC
+     Magazzino) la rotta larga punta verso un router che rimanda indietro il
+     pacchetto: sono proprio i guasti L1 e L3 descritti nel capitolo 5.3.
+  e) Rotte di backup (floating static) con distanza amministrativa 10: restano
+     nascoste finche' la rotta primaria (AD 1) e' presente e compaiono in
+     "show ip route" solo quando l'interfaccia del percorso primario va giu'.
+
+Totale: 17 rotte statiche (13 primarie + 4 floating).
+
+4.2 Tabella delle rotte
+
+R-SEDE (3 rotte)
++--------------------+-------------+----+---------------------------------------------+
+| Destinazione       | Next hop    | AD | Motivo                                      |
++--------------------+-------------+----+---------------------------------------------+
+| 0.0.0.0/0          | 10.20.1.29  |  1 | Default primaria via R-MAG: DC e Internet   |
+|                    | (R-MAG)     |    | (SEDE-MAG-DC), anche Magazzino (vicino)     |
+| 0.0.0.0/0          | 10.20.1.18  | 10 | BACKUP: se cade L4 tutto esce via R-SERRA   |
+|                    | (R-SERRA)   |    |                                             |
+| 10.20.0.192/27     | 10.20.1.18  |  1 | Rete IoT Serra: vicino diretto R-SERRA      |
+|                    | (R-SERRA)   |    | (percorso piu' corto della default via MAG) |
++--------------------+-------------+----+---------------------------------------------+
+
+R-SERRA (4 rotte)
++--------------------+-------------+----+---------------------------------------------+
+| 0.0.0.0/0          | 10.20.1.22  |  1 | Default primaria via R-DC: DC, Internet,    |
+|                    | (R-DC)      |    | Magazzino (SERRA-DC-MAG)                    |
+| 0.0.0.0/0          | 10.20.1.17  | 10 | BACKUP: se cade L2 tutto esce via R-SEDE    |
+|                    | (R-SEDE)    |    |                                             |
+| 10.20.0.0/25       | 10.20.1.17  |  1 | Uffici: vicino diretto R-SEDE               |
+| 10.20.0.128/26     | 10.20.1.17  |  1 | WLAN Sede: vicino diretto R-SEDE            |
+|                    |             |    | (due rotte e non il /24: il /24 manderebbe  |
+|                    |             |    | via SEDE anche il Magazzino, che con L4     |
+|                    |             |    | guasto finirebbe in loop; via R-DC no)      |
++--------------------+-------------+----+---------------------------------------------+
+
+R-MAG (3 rotte)
++--------------------+-------------+----+---------------------------------------------+
+| 0.0.0.0/0          | 10.20.1.25  |  1 | Default primaria via R-DC: DC e Internet    |
+| 0.0.0.0/0          | 10.20.1.30  | 10 | BACKUP: se cade L3 tutto esce via R-SEDE    |
+| 10.20.0.0/24       | 10.20.1.30  |  1 | Summary Uffici+WLAN+IoT via R-SEDE (la LAN  |
+|                    | (R-SEDE)    |    | Magazzino e' connessa, quindi piu' specif.) |
++--------------------+-------------+----+---------------------------------------------+
+
+R-DC (6 rotte)
++--------------------+-------------+----+---------------------------------------------+
+| 0.0.0.0/0          | 203.0.113.1 |  1 | Default verso Internet (R-ISP)              |
+| 10.20.0.0/24       | 10.20.1.21  |  1 | Summary Uffici+WLAN+IoT via R-SERRA         |
+| 10.20.0.0/24       | 10.20.1.26  | 10 | BACKUP: se cade L2 il summary va via R-MAG  |
+| 10.20.0.224/27     | 10.20.1.26  |  1 | Magazzino diretto a R-MAG: eccezione al     |
+|                    |             |    | summary /24 (vince per prefisso piu' lungo) |
+| 10.20.1.16/30      | 10.20.1.21  |  1 | Dorsale L1, per raggiungere le interfacce   |
+|                    |             |    | dei router (ping, gestione)                 |
+| 10.20.1.28/30      | 10.20.1.26  |  1 | Dorsale L4, idem                            |
++--------------------+-------------+----+---------------------------------------------+
+
+R-ISP (1 rotta)
++--------------------+-------------+----+---------------------------------------------+
+| 10.20.0.0/22       | 203.0.113.2 |  1 | Tutta la rete SmartSerra via R-DC           |
++--------------------+-------------+----+---------------------------------------------+
+
+4.3 Percorsi in condizioni normali
+Tutti i percorsi sono minimi (al massimo 2 router di transito nell'anello):
+  Uffici/WLAN -> DC/Internet : SEDE -> MAG -> DC
+  DC/Internet -> Uffici/WLAN : DC -> SERRA -> SEDE
+  IoT Serra  <-> DC          : SERRA <-> DC
+  Magazzino  <-> DC          : MAG <-> DC
+  Uffici     <-> IoT Serra   : SEDE <-> SERRA
+  Uffici     <-> Magazzino   : SEDE <-> MAG
+  IoT Serra   -> Magazzino   : SERRA -> DC -> MAG  (ritorno MAG -> SEDE -> SERRA)
+
+Il traffico tra Sede e Data Center e' asimmetrico (andata via R-MAG, ritorno via
+R-SERRA). E' una scelta voluta: e' la combinazione che protegge piu' guasti (cap. 5.3).
+
+
+-------------------------------------------------------------------------------------
+5. VERIFICHE
+-------------------------------------------------------------------------------------
+
+5.1 Tutti raggiungono tutti (rete integra)
+Ping riusciti tra: PC uffici, laptop WLAN, dispositivi IoT, PC magazzino,
+SRV-DHCP-DNS, SRV-IOT, WEB-ISP. Funzionano anche i ping verso tutte le interfacce
+dei router.
+
+5.2 Sito web su R-ISP
+Da un PC: Web Browser -> http://www.smartserra.local
+  il DNS del Data Center risolve www.smartserra.local in 198.51.100.10 (WEB-ISP),
+  il traffico esce da R-DC verso R-ISP e si apre la pagina del sito.
+In alternativa: http://198.51.100.10
+
+5.3 Prova di guasto di un link dell'anello
+
+Come funzionano le floating static: quando un'interfaccia va in down, la rete
+connessa sparisce, il next hop non e' piu' raggiungibile e la rotta primaria viene
+tolta dalla tabella. Al suo posto compare la rotta di backup con AD 10.
+Limite: un router si accorge solo dei guasti sui SUOI link. Gli altri router
+continuano a usare le rotte primarie, perche' con il routing statico non c'e'
+scambio di informazioni tra router.
+
+PROVA 1 - spengo L2 (R-SERRA Gi6/0 "shutdown"):
+  Prima  R-SERRA:  S*  0.0.0.0/0 [1/0] via 10.20.1.22
+         R-DC   :  S   10.20.0.0/24 [1/0] via 10.20.1.21
+  Dopo   R-SERRA:  S*  0.0.0.0/0 [10/0] via 10.20.1.17       <- backup via R-SEDE
+         R-DC   :  S   10.20.0.0/24 [10/0] via 10.20.1.26    <- backup via R-MAG
+  Ping: tutti continuano a raggiungere tutti (al massimo si perde il primo pacchetto).
+  Esempio IoT -> SRV-IOT: SERRA -> SEDE -> MAG -> DC; risposta DC -> MAG -> SEDE -> SERRA.
+  La serra resta collegata all'IoT Server.
+
+PROVA 2 - spengo L4 (R-MAG Gi6/0 "shutdown"):
+  Dopo   R-SEDE :  S*  0.0.0.0/0 [10/0] via 10.20.1.18       <- backup via R-SERRA
+         R-MAG  :  la rotta 10.20.0.0/24 sparisce, il traffico per la Sede
+                   ricade sulla default via R-DC (backup implicito)
+  Ping: tutti continuano a raggiungere tutti.
+
+PROVA 3 - spengo L1 o L3: alcuni ping falliscono con "Request timed out" o
+"TTL expired in transit".
+  Con L1 giu' in "show ip route" non compare nessuna floating: le default
+  primarie di R-SEDE e R-SERRA restano valide; spariscono solo le rotte verso il
+  vicino (rete IoT su R-SEDE, Uffici e WLAN su R-SERRA) e il traffico ricade
+  sulle default, che puntano dalla parte sbagliata.
+  Con L3 giu' su R-MAG compare S* 0.0.0.0/0 [10/0] via 10.20.1.30, ma e' proprio
+  questa rotta a rimandare indietro il traffico diretto al Data Center.
+  Esempio L1 giu', ping da R-DC verso gli Uffici:
+     R-DC non sa del guasto e manda il pacchetto a R-SERRA (summary primario);
+     R-SERRA ha perso la rotta verso la Sede, usa la default primaria e lo
+     rimanda a R-DC -> il pacchetto rimbalza R-DC <-> R-SERRA finche' il TTL
+     arriva a 0 (routing loop). In Simulation mode si vede il pacchetto che fa
+     avanti e indietro.
+  Esempio L3 giu', ping da Uffici verso il DC: R-SEDE manda a R-MAG, R-MAG usa
+     la default di backup e lo rimanda a R-SEDE -> loop SEDE <-> MAG.
+
+Risultati dei ping per ogni guasto (OK = andata e ritorno riusciti):
+  +---------------+---------------------------------------------------------------+
+  | Link giu'     | Risultato                                                     |
+  +---------------+---------------------------------------------------------------+
+  | nessuno       | tutti OK                                                      |
+  | L2 SERRA-DC   | tutti OK                                                      |
+  | L4 MAG-SEDE   | tutti OK                                                      |
+  | L1 SEDE-SERRA | OK:   IoT<->DC/Internet, Magazzino<->DC/Internet,             |
+  |               |       Uffici/WLAN<->Magazzino                                 |
+  |               | LOOP: Uffici/WLAN<->DC/Internet, IoT<->Uffici/WLAN/Magazzino  |
+  | L3 DC-MAG     | OK:   IoT<->DC/Internet, Uffici/WLAN<->IoT/Magazzino          |
+  |               | LOOP: Uffici/WLAN<->DC/Internet, Magazzino<->DC/Internet,     |
+  |               |       IoT<->Magazzino                                         |
+  +---------------+---------------------------------------------------------------+
+
+Perche' proprio L2 e L4 sono protetti: con 4 router ad anello e rotte statiche,
+per ogni rete di destinazione esiste sempre un link il cui guasto crea un loop
+(il router "opposto" non puo' sapere quale lato si e' rotto). I percorsi primari
+sono stati scelti in modo che questi link "scoperti" siano sempre gli stessi due
+(L1 e L3). Cosi' il guasto di L2 o L4 e' coperto al 100%. Inoltre il collegamento
+IoT Serra <-> IoT Server funziona con QUALSIASI link guasto, quindi
+l'automazione della serra non si ferma mai. Abbiamo controllato tutte le
+combinazioni possibili di percorsi primari: nessuna fa meglio di questa.
+
+Nota sul ping lanciato DAL router: il router usa come sorgente l'IP
+dell'interfaccia di uscita. Con L2 giu', R-SERRA esce da Gi7/0 (10.20.1.18) e
+la risposta verso la dorsale L1 non ha un percorso alternativo, quindi il ping
+dal router fallisce anche se il traffico degli host funziona. Per le prove usare
+i PC, oppure il ping esteso con sorgente l'interfaccia LAN (10.20.0.193).
+
+Come si supera il limite: con un protocollo di routing dinamico (es. OSPF) i
+router si scambiano lo stato dei link e ricalcolano i percorsi da soli dopo
+qualsiasi guasto. Con le sole statiche servirebbe il tracking delle rotte
+(IP SLA), che va oltre le richieste del compito.
+
+
+-------------------------------------------------------------------------------------
+6. SERVIZI
+-------------------------------------------------------------------------------------
+
+6.1 DHCP (SRV-DHCP-DNS 10.20.1.2) - i router fanno da relay (ip helper-address)
++-------------+-------------+-----------+-------------+-----------------+------+-------------+
+| Pool        | Gateway     | DNS       | IP iniziale | Maschera        | Max  | WLC Address |
++-------------+-------------+-----------+-------------+-----------------+------+-------------+
+| UFFICI      | 10.20.0.1   | 10.20.1.2 | 10.20.0.10  | 255.255.255.128 | 117  | -           |
+| WLAN        | 10.20.0.129 | 10.20.1.2 | 10.20.0.131 | 255.255.255.192 |  60  | 10.20.0.130 |
+| IOT-SERRA   | 10.20.0.193 | 10.20.1.2 | 10.20.0.194 | 255.255.255.224 |  29  | -           |
+| MAGAZZINO   | 10.20.0.225 | 10.20.1.2 | 10.20.0.226 | 255.255.255.224 |  29  | -           |
++-------------+-------------+-----------+-------------+-----------------+------+-------------+
+  Uffici: 10.20.0.2 - 10.20.0.9 riservati a dispositivi statici (es. stampanti).
+  WLAN: 10.20.0.130 e' il WLC; il campo "WLC Address" indica ai LAP il controller.
+  Il pool predefinito serverPool non viene usato (nel Data Center gli IP sono statici).
+
+6.2 DNS (SRV-DHCP-DNS 10.20.1.2)
++---------------------------+------+------------------+------------------------------+
+| Nome                      | Tipo | Indirizzo        | Note                         |
++---------------------------+------+------------------+------------------------------+
+| www.smartserra.local      | A    | 198.51.100.10    | Sito web ospitato dall'ISP   |
+| iot.smartserra.local      | A    | 10.20.1.3        | Pannello dell'IoT Server     |
++---------------------------+------+------------------+------------------------------+
+
+6.3 IoT Server (SRV-IOT 10.20.1.3)
+  Services -> IoT: On. Account creato dal browser (http://10.20.1.3 -> Sign up):
+  utente "serra", password "Serra2026".
+  I dispositivi della serra si registrano con: Settings -> IoT Server -> Remote Server,
+  indirizzo 10.20.1.3, utente serra, password Serra2026 -> Connect.
+
+6.4 Server web ISP (WEB-ISP 198.51.100.10)
+  Services -> HTTP: On, pagina index.html personalizzata "SmartSerra".
+
+
+-------------------------------------------------------------------------------------
+7. WI-FI
+-------------------------------------------------------------------------------------
+
++-----------------+-------------------+-----------------------------+-----------------+
+| WLAN            | SSID              | Sicurezza                   | Passphrase      |
++-----------------+-------------------+-----------------------------+-----------------+
+| Sede            | SmartSerra-Sede   | WPA2-Personal (PSK), AES    | SedeSerra2026   |
+| Serra (IoT)     | SmartSerra-IoT    | WPA2-Personal (PSK), AES    | IoTSerra2026    |
++-----------------+-------------------+-----------------------------+-----------------+
+
+a) Sede - soluzione con controller:
+   - WLC-SEDE (Cisco WLC 2504), management 10.20.0.130/26, collegato a SW-WLAN.
+   - LAP-1 e LAP-2 (LAP-PT, lightweight) collegati a SW-WLAN, alimentati con
+     l'adattatore (ACCESS_POINT_POWER_ADAPTER). Prendono l'IP dal pool WLAN e si
+     associano al WLC (stessa subnet + opzione WLC Address del DHCP).
+   - La WLAN "SmartSerra-Sede" e' creata sul WLC (web GUI) e associata
+     all'interfaccia management: i client wireless finiscono nella rete
+     10.20.0.128/26 e ricevono l'IP dal DHCP del Data Center.
+   - Le impostazioni SSID/sicurezza sono centralizzate sul WLC: i LAP non si
+     configurano singolarmente.
+b) Serra - rete separata:
+   - AP-SERRA (AccessPoint-PT, autonomo) collegato a SW-SERRA, canale 6.
+   - Rete IP separata 10.20.0.192/27 (diversa dalla WLAN della Sede).
+   - Client: sensori e attuatori IoT con scheda wireless PT-IOT-NM-1W.
+
+
+-------------------------------------------------------------------------------------
+8. IOT - ILLUMINAZIONE (scheda SBC, programma Python sbc_illuminazione.py)
+-------------------------------------------------------------------------------------
+
+Collegamenti alla scheda SBC-SERRA (cavo IoT Custom Cable):
++-------+---------------------+-----------------------------------------------------+
+| Porta | Componente          | Funzione                                            |
++-------+---------------------+-----------------------------------------------------+
+| A0    | Photo Sensor        | luce misurata (analogRead, 0..1023)                 |
+| A1    | Potentiometer       | luce desiderata (analogRead, 0..1023)               |
+| D0    | Servo               | tenda: customWrite(angolo), 0 = aperta, 90 = chiusa |
+| D1    | LED (lampada)       | intensita': analogWrite 0..1023                     |
++-------+---------------------+-----------------------------------------------------+
+
+Algoritmo (ciclo ogni 0,5 s), errore = luce misurata - luce desiderata:
+  - errore > +50 (troppa luce): se la lampada e' accesa si spegne; altrimenti la
+    tenda si chiude di una percentuale proporzionale all'eccesso:
+        chiusura % = errore x 100 / 512   (limitata a 0..100)
+  - errore < -50 (poca luce): se la tenda e' chiusa si riapre; se e' aperta la
+    lampada si accende con intensita' proporzionale alla carenza:
+        intensita' % = |errore| x 100 / 512   (limitata a 0..100)
+  - |errore| <= 50 (luce corretta, banda di tolleranza del 5% circa): tenda e
+    lampada mantengono lo stato attuale.
+La banda di tolleranza evita che gli attuatori oscillino per piccole variazioni.
+Il programma stampa in console ogni cambio di stato (luce, obiettivo, azione).
+
+
+-------------------------------------------------------------------------------------
+9. IOT - TEMPERATURA (regole dell'IoT Server)
+-------------------------------------------------------------------------------------
+
+Dispositivi (smart device registrati su SRV-IOT, connessi in Wi-Fi a SmartSerra-IoT):
+  - Temperature Monitor  -> sensore di temperatura (proprieta' Temperature, gradi C)
+  - Furnace              -> riscaldamento (proprieta' On: true/false)
+  - Window               -> finestra (proprieta' On: true = aperta)
+  - Ceiling Fan          -> ventilatore (proprieta' Status: Off / Low / High)
+
+Soglie scelte:
+  riscaldamento ON sotto 16 C, OFF sopra 19 C (isteresi 16-19 C);
+  raffrescamento livello 1 sopra 27 C, livello 2 sopra 31 C;
+  fine raffrescamento sotto 25 C (isteresi 25-27 C: la finestra non apre e
+  chiude in continuazione intorno alla soglia).
+
++----------------------+-------------------------------------+---------------------------------+
+| Regola               | Condizione                          | Azione                          |
++----------------------+-------------------------------------+---------------------------------+
+| Riscaldamento_ON     | Temperature < 16                    | Furnace On = true               |
+|                      | AND Window On = false               |                                 |
+| Riscaldamento_OFF    | Temperature > 19                    | Furnace On = false              |
+| Finestra_no_riscald. | Window On = true                    | Furnace On = false              |
+| Raffrescamento_1     | Temperature > 27                    | Window On = true                |
+|                      | AND Temperature <= 31               | Ceiling Fan Status = Low        |
+| Raffrescamento_2     | Temperature > 31                    | Window On = true                |
+|                      |                                     | Ceiling Fan Status = High       |
+| Fine_raffrescamento  | Temperature < 25                    | Window On = false               |
+|                      |                                     | Ceiling Fan Status = Off        |
++----------------------+-------------------------------------+---------------------------------+
+
+Note:
+  - La condizione "Window On = false" nella prima regola, insieme alla regola
+    Finestra_no_riscald., garantisce che con finestra aperta il riscaldamento sia
+    sempre spento (anche se la finestra viene aperta a mano).
+  - Raffrescamento_1 e Raffrescamento_2 si escludono a vicenda (<= 31 / > 31),
+    cosi' le due regole non comandano il ventilatore in modo opposto.
+  - Tra 19 e 25 C e tra 25 e 27 C nessuna regola e' attiva: gli attuatori
+    mantengono lo stato (isteresi).

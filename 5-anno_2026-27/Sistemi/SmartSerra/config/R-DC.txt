@@ -1,0 +1,51 @@
+! ===================================================================
+! R-DC  (Router-PT + 3 moduli PT-ROUTER-NM-1CGE negli slot 6, 7 e 8)
+! Fa0/0 = LAN Data Center, Gi6/0 = L3 verso R-MAG,
+! Gi7/0 = L2 verso R-SERRA, Gi8/0 = WAN verso R-ISP
+! Incollare nella CLI partendo dal prompt "Router>"
+! ===================================================================
+enable
+configure terminal
+hostname R-DC
+no ip domain-lookup
+banner motd # R-DC - SmartSerra - accesso riservato #
+!
+interface FastEthernet0/0
+ description LAN DATA CENTER 10.20.1.0/28 (DHCP/DNS, IoT Server)
+ ip address 10.20.1.1 255.255.255.240
+ no shutdown
+ exit
+!
+interface GigabitEthernet6/0
+ description L3 dorsale verso R-MAG Gi7/0
+ ip address 10.20.1.25 255.255.255.252
+ no shutdown
+ exit
+!
+interface GigabitEthernet7/0
+ description L2 dorsale verso R-SERRA Gi6/0
+ ip address 10.20.1.22 255.255.255.252
+ no shutdown
+ exit
+!
+interface GigabitEthernet8/0
+ description WAN verso R-ISP Gi6/0 (indirizzo assegnato dal provider)
+ ip address 203.0.113.2 255.255.255.252
+ no shutdown
+ exit
+!
+! ---------------- ROUTING STATICO ----------------
+! default verso Internet (R-ISP)
+ip route 0.0.0.0 0.0.0.0 203.0.113.1
+! summary 10.20.0.0/24 (Uffici + WLAN + IoT Serra) verso R-SERRA
+ip route 10.20.0.0 255.255.255.0 10.20.1.21
+! stesso summary di backup (floating, AD 10) verso R-MAG, usato solo se cade L2
+ip route 10.20.0.0 255.255.255.0 10.20.1.26 10
+! Magazzino: piu' specifica del summary (/27 batte /24), va diretta a R-MAG
+ip route 10.20.0.224 255.255.255.224 10.20.1.26
+! dorsali non collegate a R-DC (servono per raggiungere/gestire le interfacce dei router)
+ip route 10.20.1.16 255.255.255.252 10.20.1.21
+ip route 10.20.1.28 255.255.255.252 10.20.1.26
+!
+end
+write memory

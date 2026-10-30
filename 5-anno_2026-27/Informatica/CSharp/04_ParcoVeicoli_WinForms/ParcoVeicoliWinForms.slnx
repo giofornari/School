@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ParcoVeicoliWinForms/ParcoVeicoliWinForms.csproj" />
+  <Project Path="LibreriaParcoVeicoli/LibreriaParcoVeicoli.csproj" />
+</Solution>
