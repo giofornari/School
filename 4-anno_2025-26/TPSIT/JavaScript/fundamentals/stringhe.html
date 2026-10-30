@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Controllo ultimo carattere</title>
+		<link rel="stylesheet" href="style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<main>
+				<h1>Analizza l'ultimo carattere</h1>
+				<p>
+					Inserisci una frase o una parola: il programma leggerà l'ultimo
+					carattere e ti dirà se è una domanda, un'affermazione entusiasta o se
+					devi riformulare.
+				</p>
+				<form id="string-form">
+					<div class="input-group">
+						<label for="user-input">La tua stringa</label>
+						<input
+							type="text"
+							id="user-input"
+							name="user-input"
+							placeholder="Scrivi qui..."
+							autocomplete="off"
+							required
+						/>
+					</div>
+					<div class="buttons">
+						<button type="submit" id="analyze">Analizza</button>
+					</div>
+				</form>
+				<div id="message" class="message">
+					Inserisci una frase per iniziare.
+				</div>
+			</main>
+		</div>
+
+		<script>
+			const form = document.getElementById("string-form");
+			const input = document.getElementById("user-input");
+			const messageBox = document.getElementById("message");
+
+			const responses = {
+				question: "Non lo so..",
+				exclamation: "Hai ragione!",
+				default: "Riformula la frase.",
+				empty: "Per favore, inserisci almeno un carattere.",
+			};
+
+			form.addEventListener("submit", (event) => {
+				event.preventDefault();
+
+				const value = input.value.trim();
+
+				if (!value) {
+					showMessage(responses.empty, true);
+					return;
+				}
+
+				const lastChar = value.at(-1);
+
+				if (lastChar === "?") {
+					showMessage(responses.question);
+				} else if (lastChar === "!") {
+					showMessage(responses.exclamation);
+				} else {
+					showMessage(responses.default);
+				}
+			});
+
+			function showMessage(text, isError = false) {
+				messageBox.textContent = text;
+				messageBox.classList.toggle("error", isError);
+			}
+		</script>
+	</body>
+</html>

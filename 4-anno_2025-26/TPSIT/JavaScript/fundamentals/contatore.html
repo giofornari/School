@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contatore Semplice</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      input[type="number"]:focus {
+        border-color: #667eea;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Contatore (+1 / -1)</h1>
+      <label for="counter">Valore corrente:</label>
+      <input type="number" id="counter" value="0" />
+      <div class="buttons">
+        <button onclick="decrementa()">-1</button>
+        <button onclick="incrementa()">+1</button>
+      </div>
+    </div>
+
+    <script>
+      function incrementa() {
+        const val = document.getElementById("counter");
+        const intVal = parseInt(val.value) || 0;
+        val.value = intVal + 1;
+      }
+
+      function decrementa() {
+        const val = document.getElementById("counter");
+        const intVal = parseInt(val.value) || 0;
+        val.value = intVal - 1;
+      }
+    </script>
+  </body>
+</html>

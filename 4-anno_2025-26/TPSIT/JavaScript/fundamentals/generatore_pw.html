@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generatore di Password Complesse</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Generatore di Password</h1>
+      <p>
+        Clicca sul pulsante per generare 5 password complesse da almeno 12
+        caratteri, comprensive di lettere maiuscole e minuscole, numeri e
+        simboli (-_*+%&$=).
+      </p>
+      <div class="buttons">
+        <button id="generate">Genera password</button>
+      </div>
+      <div id="password-list" class="password-output">
+        <p>Premi "Genera password" per iniziare.</p>
+      </div>
+    </div>
+
+    <script>
+      const LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
+      const UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      const NUMBERS = "0123456789";
+      const SYMBOLS = "-_*+%&$=";
+      const ALL_CHARS = LOWERCASE + UPPERCASE + NUMBERS + SYMBOLS;
+      const PASSWORD_LENGTH = 12;
+      const PASSWORD_COUNT = 5;
+
+      const passwordList = document.getElementById("password-list");
+      const generateButton = document.getElementById("generate");
+
+      generateButton.addEventListener("click", createPasswords);
+
+      function createPasswords() {
+        passwordList.innerHTML = "";
+
+        for (let i = 0; i < PASSWORD_COUNT; i++) {
+          const password = buildPassword();
+          const item = document.createElement("p");
+          item.textContent = password;
+          passwordList.appendChild(item);
+        }
+      }
+
+      function buildPassword() {
+        while (true) {
+          let password = "";
+          let hasLower = false;
+          let hasUpper = false;
+          let hasNumber = false;
+          let hasSymbol = false;
+
+          for (let i = 0; i < Math.random() * 8 + 12; i++) {
+            const randomIndex = Math.floor(Math.random() * ALL_CHARS.length);
+            const char = ALL_CHARS[randomIndex];
+            password += char;
+
+            if (LOWERCASE.includes(char)) hasLower = true;
+            if (UPPERCASE.includes(char)) hasUpper = true;
+            if (NUMBERS.includes(char)) hasNumber = true;
+            if (SYMBOLS.includes(char)) hasSymbol = true;
+          }
+
+          if (hasLower && hasUpper && hasNumber && hasSymbol) {
+            return password;
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

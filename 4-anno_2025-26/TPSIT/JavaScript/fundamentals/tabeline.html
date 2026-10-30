@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Tabelline</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+
+        input[type="number"] {
+            width: 100%;
+            max-width: 500px;
+            padding: 3% 8%;
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            max-width: 500px;
+            padding: 15px;
+            background: linear-gradient(135deg, #ee9b16 0%, #a24b4b 100%);
+            color: white;
+            font-size: 16px;
+        }
+
+        button:hover {
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #tabellina {
+            width: 100%;
+            margin-top: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            line-height: 2;
+        }
+
+        #tabellina:empty {
+            display: none;
+        }
+    </style>
+    <script>
+        function generaTabellina() {
+            var numero = document.getElementById('numero').value;
+            var tabellinaDiv = document.getElementById('tabellina');
+            tabellinaDiv.innerHTML = '';
+            if (numero >=1 && numero <= 10) {
+                for(var i = 1; i <= 10; i++) {
+                    var risultato = numero * i;
+                    tabellinaDiv.innerHTML += `${numero} x ${i} = ${risultato}<br>`;
+                }
+            }
+            else if (numero > 10) {
+                tabellinaDiv.innerHTML = '<img src="https://parma.repubblica.it/images/2010/05/25/190724475-e1822f0e-de4b-465b-b532-48d0ae8cdff1.jpg" alt="Numero troppo grande!" style="width:100%; height:260px; object-fit:cover; object-position:50% 40%; border-radius:10px; display:block; max-width:500px; margin:0 auto;">\n<br> I tablin non esistn per i numer piò grand de 10!!!!!';
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Generatore di Tabelline</h1>
+        <div class="input-group">
+            <label for="numero">Inserisci un numero (1-10):</label>
+            <input type="number" id="numero" min="1" oninput="if(this.value>10){alert('TSI UN NADOR!! \n\n Il numero deve essere minore di 10');}" onkeydown="if(event.key==='Enter'){generaTabellina();}">
+        </div>
+        <button onclick="generaTabellina()">Genera Tabellina</button>
+        <div id="tabellina"></div>
+    </div>
+</body>
+
+</html>

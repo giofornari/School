@@ -1,0 +1,21 @@
+@startuml VisualizzatoreFunzioni
+
+class Retta {
+  + m: number
+  + b: number
+  + calcola(x: number): number
+}
+
+class Parabola {
+  + a: number
+  + b: number
+  + c: number
+  + calcola(x: number): number
+}
+
+note "funzioneCorrente punta\na Retta o Parabola" as N1
+
+Retta .. N1
+Parabola .. N1
+
+@enduml

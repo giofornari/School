@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form di Validazione</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-500 to-purple-600 min-h-screen flex items-center justify-center p-5">
+    <div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">Form di Validazione</h1>
+        
+        <div class="flex justify-center gap-4 mb-6 text-sm">
+            <label class="flex items-center gap-2">
+                <input type="radio" name="modalita" value="interattiva" checked>
+                <span>Validazione Interattiva</span>
+            </label>
+            <label class="flex items-center gap-2">
+                <input type="radio" name="modalita" value="posteriori">
+                <span>Validazione a Posteriori</span>
+            </label>
+        </div>
+
+        <form id="mioForm">
+            <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">Nominativo *</label>
+                <input type="text" id="nominativo" placeholder="Mario Rossi" class="w-full px-3 py-2 border-2 rounded-lg">
+                <div id="errore-nominativo" class="text-red-600 text-xs mt-1 hidden"></div>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">Età *</label>
+                <input type="number" id="eta" placeholder="25" class="w-full px-3 py-2 border-2 rounded-lg">
+                <div id="errore-eta" class="text-red-600 text-xs mt-1 hidden"></div>
+            </div>
+
+            <div class="mb-4">
+                <label class="flex items-center gap-2">
+                    <input type="checkbox" id="consenso" class="w-4 h-4">
+                    <span class="text-sm">Accetto il consenso dati *</span>
+                </label>
+                <div id="errore-consenso" class="text-red-600 text-xs mt-1 hidden"></div>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-semibold mb-1">Password *</label>
+                <input type="password" id="password" placeholder="Password123!" class="w-full px-3 py-2 border-2 rounded-lg">
+                <p class="text-xs text-gray-500 mt-1">8-20 caratteri, maiuscola, minuscola, numero e (!@#$%^&*)</p>
+                <div id="errore-password" class="text-red-600 text-xs mt-1 hidden"></div>
+            </div>
+
+            <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg font-semibold hover:bg-indigo-700">
+                Valida
+            </button>
+        </form>
+
+        <div id="errori-globali" class="mt-4 p-3 rounded-lg bg-red-100 text-red-600 text-sm hidden"></div>
+        
+        <div id="messaggio" class="mt-4 p-3 rounded-lg text-center font-semibold hidden"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+Ciao, questo è il file di input.
+Verrà copiato in output.txt usando gli stream.

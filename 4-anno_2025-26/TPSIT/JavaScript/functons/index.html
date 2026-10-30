@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Visualizzatore di Funzioni</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .contenitore {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .controlli {
+            width: 180px;
+        }
+
+        .controlli label {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .controlli input,
+        .controlli select {
+            width: 100%;
+            padding: 4px;
+            margin-top: 3px;
+            box-sizing: border-box;
+        }
+
+        #grafico {
+            flex: 1;
+            height: 480px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Visualizzatore di Funzioni</h1>
+
+    <div class="contenitore">
+        <div class="controlli">
+
+            <label>Funzione:
+                <select id="sceltaFunzione">
+                    <option value="retta">Retta (y = mx + b)</option>
+                    <option value="parabola">Parabola (y = ax² + bx + c)</option>
+                </select>
+            </label>
+
+            <label>X minimo:
+                <input type="number" id="xMin" value="-10">
+            </label>
+
+            <label>X massimo:
+                <input type="number" id="xMax" value="10">
+            </label>
+
+            <div id="parametri"></div>
+
+        </div>
+
+        <div id="grafico"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
