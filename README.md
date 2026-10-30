@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="./"><img src=".github/readme/banner-school-9e5f6c82e9.svg" width="100%" alt="School: il percorso di Giordano Fornari all’ITIS Leonardo da Vinci di Parma, indirizzo Informatica, dal 2024 al 2027. Dalle basi della programmazione alle applicazioni e alle reti."></a>
+  <a href="https://github.com/giofornari/School"><img src=".github/readme/banner-school-9e5f6c82e9.svg" width="100%" alt="School: il percorso di Giordano Fornari all’ITIS Leonardo da Vinci di Parma, indirizzo Informatica, dal 2024 al 2027. Dalle basi della programmazione alle applicazioni e alle reti."></a>
 </p>
 
 Esplora tre anni di Informatica attraverso il codice scritto a scuola: esercizi, laboratori e verifiche. Il percorso mostra come si passa dai primi algoritmi alla costruzione di applicazioni, servizi e reti.
@@ -12,7 +12,7 @@ Esplora tre anni di Informatica attraverso il codice scritto a scuola: esercizi,
 
 <a id="terzo-anno"></a>
 
-<a href="3-anno_2024-25"><img src=".github/readme/anno-3-rosso-48d4c642f4.svg" width="100%" alt="Terzo anno, 2024–25: le basi. Algoritmi, programmazione procedurale e primi concetti di rete e web. Python, C e HTML."></a>
+<a href="https://github.com/giofornari/School/tree/main/3-anno_2024-25"><img src=".github/readme/anno-3-rosso-48d4c642f4.svg" width="100%" alt="Terzo anno, 2024–25: le basi. Algoritmi, programmazione procedurale e primi concetti di rete e web. Python, C e HTML."></a>
 
 | Area | Cosa esplorare |
 | :--- | :--- |
@@ -24,7 +24,7 @@ Esplora tre anni di Informatica attraverso il codice scritto a scuola: esercizi,
 
 <a id="quarto-anno"></a>
 
-<a href="4-anno_2025-26"><img src=".github/readme/anno-4-giallo-eebc068358.svg" width="100%" alt="Quarto anno, 2025–26: oggetti e interfacce. Classi, ereditarietà, strutture dati, applicazioni e sviluppo web. Java, Python, JavaScript e Dart."></a>
+<a href="https://github.com/giofornari/School/tree/main/4-anno_2025-26"><img src=".github/readme/anno-4-giallo-eebc068358.svg" width="100%" alt="Quarto anno, 2025–26: oggetti e interfacce. Classi, ereditarietà, strutture dati, applicazioni e sviluppo web. Java, Python, JavaScript e Dart."></a>
 
 | Area | Cosa esplorare |
 | :--- | :--- |
@@ -35,7 +35,7 @@ Esplora tre anni di Informatica attraverso il codice scritto a scuola: esercizi,
 
 <a id="quinto-anno"></a>
 
-<a href="5-anno_2026-27"><img src=".github/readme/anno-5-blu-3b8c541573.svg" width="100%" alt="Quinto anno, 2026–27, in corso: applicazioni e reti. Applicazioni desktop, servizi web, subnetting e IoT. C#, Node.js e Packet Tracer."></a>
+<a href="https://github.com/giofornari/School/tree/main/5-anno_2026-27"><img src=".github/readme/anno-5-blu-3b8c541573.svg" width="100%" alt="Quinto anno, 2026–27, in corso: applicazioni e reti. Applicazioni desktop, servizi web, subnetting e IoT. C#, Node.js e Packet Tracer."></a>
 
 | Area | Cosa esplorare |
 | :--- | :--- |
