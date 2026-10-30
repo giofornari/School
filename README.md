@@ -19,8 +19,8 @@ Le repo che c'erano prima sono confluite qui **con tutta la loro history**: `git
 ├── Informatica/Java/        esercizi, laboratori, verifiche
 ├── Informatica/Python/      OOP e progetti
 ├── Sistemi/C/               strutture in C
+├── Informatica/Laboratorio/Flutter/  Dart e Flutter
 ├── TPSIT/JavaScript/        fondamenti, form, thread, client
-├── TPSIT/Flutter/           Dart e Flutter
 └── Estate/                  Summerwork4a, ROUTER-GUI
 5-anno_2026-27/
 ├── Informatica/Java/
@@ -41,7 +41,7 @@ Le repo che c'erano prima sono confluite qui **con tutta la loro history**: `git
 | [PythonAlmostSelfLearned](https://github.com/giofornari/PythonAlmostSelfLearned) | `Informatica/Python` del 3° e 4° anno |
 | [JavaProjects](https://github.com/giofornari/JavaProjects) | `Informatica/Java` del 4° e 5° anno |
 | [DIYJavaScript](https://github.com/giofornari/DIYJavaScript) | `TPSIT/JavaScript` del 4° e 5° anno |
-| [GAppProjects](https://github.com/giofornari/GAppProjects) | `4-anno_2025-26/TPSIT/Flutter` |
+| [GAppProjects](https://github.com/giofornari/GAppProjects) | `4-anno_2025-26/Informatica/Laboratorio/Flutter` |
 | [ROUTER-GUI](https://github.com/giofornari/ROUTER-GUI) | `4-anno_2025-26/Estate/ROUTER-GUI` |
 
 Le repo che coprivano più anni sono state divise per data: una cartella va nell'anno scolastico (settembre–agosto) in cui è stata creata.
