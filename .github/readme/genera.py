@@ -6,14 +6,14 @@ uv run --with fonttools --with brotli python .github/readme/genera.py
 Stile ripreso dal design system DCS Academy: fondale petrolio → verde con onde di luce,
 Poppins, eyebrow maiuscoli, anello in tre segmenti, icone lineari su cerchio petrolio.
 """
-import base64, collections, datetime as dt, io, math, os, random, subprocess
+import base64, collections, io, math, os, random, subprocess
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from fontTools.ttLib import TTFont
 from fontTools import subset
 
 QUI = Path(__file__).resolve().parent
 RADICE = QUI.parent.parent
-OGGI = dt.date.today().isoformat()
 
 # palette DCS Academy
 PETROLIO, TURCHESE, VERDE, VERDE_SCURO = "#05343E", "#1BA79C", "#66C26B", "#137E6C"
@@ -42,7 +42,7 @@ def ttf(peso):
 def woff2(peso):
     if peso not in _woff:
         opt = subset.Options(); opt.flavor = "woff2"; opt.layout_features = ["kern", "liga"]
-        f = TTFont(QUI / "font" / f"{PESI[peso]}.ttf")
+        f = TTFont(QUI / "font" / f"{PESI[peso]}.ttf", recalcTimestamp=False)
         s = subset.Subsetter(opt); s.populate(text=CARATTERI); s.subset(f)
         buf = io.BytesIO(); f.flavor = "woff2"; f.save(buf)
         _woff[peso] = base64.b64encode(buf.getvalue()).decode()
@@ -67,6 +67,7 @@ def svg(w, h, corpo, pesi, titolo):
             f'<title>{esc(titolo)}</title><style>{font}</style>{corpo}</svg>')
 
 def salva(nome, contenuto):
+    ET.fromstring(contenuto)
     (QUI / nome).write_text(contenuto, encoding="utf-8")
     print(f"{nome:<22} {len(contenuto) / 1024:6.1f} KB")
 
@@ -113,7 +114,7 @@ def icona(nome, cx, cy, r):
     g = {
         "informatica": f'<path d="M23 22 L13 32 L23 42 M41 22 L51 32 L41 42" {a}/><path d="M36 18 L28 46" {v}/>',
         "sistemi": f'<path d="M32 21 L19 41 M32 21 L45 41 M19 43 L45 43" {v}/><circle cx="32" cy="18" r="5" {a}/><circle cx="17" cy="44" r="5" {a}/><circle cx="47" cy="44" r="5" {a}/>',
-        "tpsit": f'<rect x="16" y="15" width="32" height="9" rx="2.5" {a}/><rect x="16" y="28" width="32" height="9" rx="2.5" {a}/><rect x="16" y="41" width="32" height="9" rx="2.5" {a}/><path d="M21 19.5h.1M21 32.5h.1M21 45.5h.1M26 19.5h.1M26 32.5h.1M26 45.5h.1" {v} stroke-width="3.2"/><path d="M36 19.5h7M36 32.5h7M36 45.5h7" {v}/>',
+        "tpsit": f'<rect x="16" y="15" width="32" height="9" rx="2.5" {a}/><rect x="16" y="28" width="32" height="9" rx="2.5" {a}/><rect x="16" y="41" width="32" height="9" rx="2.5" {a}/><path d="M21 19.5h.1M21 32.5h.1M21 45.5h.1M26 19.5h.1M26 32.5h.1M26 45.5h.1" {v}/><path d="M36 19.5h7M36 32.5h7M36 45.5h7" {v}/>',
         "attacco-difesa": f'<path d="M32 12 L48 18 V31 C48 41 41 48 32 52 C23 48 16 41 16 31 V18 Z" {a}/><path d="M27 41 V23 M27 24 H39 L36 28.5 L39 33 H27" {v}/>',
         "pcto": f'<path d="M32 16 L54 26 L32 36 L10 26 Z" {a}/><path d="M19 30 V40 C19 44 26 47 32 47 C38 47 45 44 45 40 V30" {a}/><path d="M54 26 V38" {v}/><circle cx="54" cy="41" r="2.5" {v}/>',
         "estate": f'<circle cx="32" cy="32" r="9" {a}/><path d="M32 13v5M32 46v5M13 32h5M46 32h5M18.6 18.6l3.5 3.5M41.9 41.9l3.5 3.5M18.6 45.4l3.5-3.5M41.9 22.1l3.5-3.5" {v}/>',
@@ -138,16 +139,16 @@ def dati():
     # i commit che hanno assemblato School (merge, import, README) non sono lavoro scolastico
     commit = [r.split("|", 1)[0][:7] for r in righe if r[:10] < "2026-10-30"]
     mesi = collections.Counter(commit)
-    primo, ultimo = min(mesi), max(max(mesi), dt.date.today().strftime("%Y-%m"))
+    primo, ultimo = min(mesi), "2026-10"
     asse, (y, m) = [], map(int, primo.split("-"))
     while f"{y}-{m:02d}" <= ultimo:
         asse.append(f"{y}-{m:02d}"); m += 1
         if m > 12: y, m = y + 1, 1
     per_anno = [0, 0, 0]
     for k, n in mesi.items(): per_anno[anno_scolastico(k)] += n
-    file = git("ls-files").splitlines()
+    file = git("-c", "core.quotepath=false", "ls-files", "--", *(a[0] for a in ANNI)).splitlines()
     return dict(commit=len(commit), mesi=mesi, asse=asse, per_anno=per_anno, file=len(file),
-                elenco=file, progetti=len({"/".join(f.split("/")[:3]) for f in file if f.count("/") >= 3}))
+                elenco=file)
 
 LINGUAGGI = {".java": "Java", ".py": "Python", ".c": "C", ".h": "C", ".js": "JavaScript", ".mjs": "JavaScript",
              ".cs": "C#", ".html": "HTML", ".css": "CSS", ".dart": "Dart", ".sh": "Shell", ".bat": "Batch"}
@@ -166,21 +167,20 @@ def righe_per_linguaggio(elenco):
 def hero(d):
     W, H = 1600, 620
     tot = sum(d["per_anno"]) or 1
-    cx, cy, r, sp = 1262, 318, 150, 46
+    cx, cy, r, sp = 1202, 318, 150, 46
     circ = 2 * math.pi * r; gap = 10; ang = 0; seg = ""
     for i, n in enumerate(d["per_anno"]):
         l = max(circ * n / tot - gap, 2)
         seg += (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{SEG[i]}" stroke-width="{sp}"'
-                f' stroke-dasharray="{l:.1f} {circ:.1f}" stroke-dashoffset="{-ang:.1f}" transform="rotate(-90 {cx} {cy})">'
-                f'<animate attributeName="stroke-dasharray" from="0 {circ:.1f}" to="{l:.1f} {circ:.1f}" dur="1.2s" begin="{.25 + i * .35:.2f}s" fill="freeze" calcMode="spline" keySplines=".2 .7 .2 1"/></circle>')
+                f' stroke-dasharray="{l:.1f} {circ:.1f}" stroke-dashoffset="{-ang:.1f}" transform="rotate(-90 {cx} {cy})"/>')
         ang += circ * n / tot
     # etichette dei tre anni accanto all'anello, come i verbi accanto all'infografica DCS
     eti = ""
     for i, (_, o, per, _, _) in enumerate(ANNI):
         y = 196 + i * 92
-        eti += (f'<rect x="1448" y="{y - 30}" width="6" height="44" rx="3" fill="{SEG[i] if i else MENTA}"/>'
-                + testo(1468, y - 6, f"{o} · {per}", 700, 15, MENTA, spaziatura=.08)
-                + testo(1468, y + 16, f"{d['per_anno'][i]} commit", 900, 22, BIANCO))
+        eti += (f'<rect x="1388" y="{y - 30}" width="6" height="44" rx="3" fill="{SEG[i] if i else MENTA}"/>'
+                + testo(1408, y - 6, f"{o} · {per}", 700, 15, MENTA, spaziatura=.08)
+                + testo(1408, y + 16, f"{d['per_anno'][i]} commit", 900, 22, BIANCO))
     corpo = (f'<defs>{gradiente("g", 104, COPERTINA)}<clipPath id="c"><rect width="{W}" height="{H}" rx="28"/></clipPath></defs>'
              f'<g clip-path="url(#c)"><rect width="{W}" height="{H}" fill="url(#g)"/>{onde(W, H, 7, da=.42, n=11)}'
              f'<circle cx="{cx}" cy="{cy}" r="{r + sp / 2 + 18}" fill="{SCURO}" fill-opacity=".35"/>{seg}'
@@ -198,18 +198,17 @@ def hero(d):
 
 def numeri(d):
     W, H = 1600, 260
-    voci = [("COMMIT", f"{d['commit']}", "dal primo all’ultimo, history intatta"),
+    voci = [("COMMIT IMPORTATI", f"{d['commit']}", "history dei repository di origine"),
             ("SORGENTI", "12", "9 repository e 3 cartelle locali"),
-            ("PROGETTI", f"{d['progetti']}", "cartelle di lavoro sotto le materie"),
-            ("FILE", f"{d['file']:,}".replace(",", "."), "tutto quello che è stato consegnato")]
+            ("ANNI", "3", "dal 2024 al 2027"),
+            ("FILE DIDATTICI", f"{d['file']:,}".replace(",", "."), "nelle tre cartelle scolastiche")]
     col = W / 4; corpo = f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="28" fill="{BIANCO}" stroke="{P16}" stroke-width="2"/>'
     for i, (e, n, c) in enumerate(voci):
         x = 64 + i * col
         if i: corpo += f'<rect x="{i * col:.0f}" y="56" width="2" height="{H - 112}" fill="{P16}"/>'
         corpo += (f'<rect x="{x}" y="58" width="36" height="5" rx="2.5" fill="{SEG[min(i, 2)] if i < 3 else VERDE_SCURO}"/>'
                   + testo(x, 98, e, 700, 15, P70, spaziatura=.1)
-                  + f'<text x="{x - 4}" y="178" font-family="P900" font-size="80" fill="{VERDE_SCURO}" opacity="0">{esc(n)}'
-                    f'<animate attributeName="opacity" from="0" to="1" dur=".6s" begin="{.15 * i:.2f}s" fill="freeze"/></text>'
+                  + testo(x - 4, 178, n, 900, 80, VERDE_SCURO)
                   + testo(x, 214, c, 400, 17, P70))
     salva("numeri.svg", svg(W, H, corpo, {900, 700, 400}, "School in numeri"))
 
@@ -227,18 +226,16 @@ def percorso(d):
         idx = [j for j, m in enumerate(asse) if anno_scolastico(m) == i]
         if not idx: continue
         x0, x1 = L + idx[0] * passo + 4, L + (idx[-1] + 1) * passo - 4
-        corpo += (f'<rect x="{x0:.1f}" y="{B + 18}" width="{x1 - x0:.1f}" height="8" rx="4" fill="{SEG[i]}"/>'
-                  + testo(x0, B + 56, f"{o} ANNO · {per}", 700, 14, PETROLIO, spaziatura=.08)
-                  + testo(x0, B + 80, tit, 400, 15, P70))
+        corpo += (f'<rect x="{x0:.1f}" y="{B + 40}" width="{x1 - x0:.1f}" height="8" rx="4" fill="{SEG[i]}"/>'
+                  + testo(x0, B + 78, f"{o} ANNO · {per}", 700, 14, PETROLIO, spaziatura=.08)
+                  + testo(x0, B + 102, tit, 400, 15, P70))
     for j, m in enumerate(asse):
         v = mesi.get(m, 0); h = max(v * scala, 3 if v else 0); x = L + j * passo + (passo - bw) / 2
         if v:
-            corpo += (f'<rect x="{x:.1f}" y="{B - h:.1f}" width="{bw:.1f}" height="{h:.1f}" rx="6" fill="{SEG[anno_scolastico(m)]}">'
-                      f'<animate attributeName="height" from="0" to="{h:.1f}" dur=".7s" begin="{j * .04:.2f}s" fill="freeze"/>'
-                      f'<animate attributeName="y" from="{B}" to="{B - h:.1f}" dur=".7s" begin="{j * .04:.2f}s" fill="freeze"/></rect>'
+            corpo += (f'<rect x="{x:.1f}" y="{B - h:.1f}" width="{bw:.1f}" height="{h:.1f}" rx="6" fill="{SEG[anno_scolastico(m)]}"/>'
                       + testo(x + bw / 2, B - h - 10, str(v), 700, 14, PETROLIO, "middle"))
         lab = ["gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic"][int(m[5:]) - 1]
-        corpo += testo(x + bw / 2, B + 0 - 6 + 0, "", 400, 1) if False else ""
+        corpo += testo(x + bw / 2, B + 22, lab, 500, 12, P70, "middle")
         if m[5:] in ("01", "09") or j == 0:
             corpo += testo(x + bw / 2, T - 26, f"{lab} {m[2:4]}", 700, 13, P70, "middle", .06)
             corpo += f'<rect x="{x + bw / 2 - .6:.1f}" y="{T - 18}" width="1.2" height="{B - T + 18}" fill="{P16}"/>'
@@ -299,7 +296,7 @@ def linguaggi(d):
     col = [PETROLIO, VERDE_SCURO, TURCHESE, VERDE, NAVY, MENTA, P70, P16]
     corpo = f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="28" fill="{BIANCO}" stroke="{P16}" stroke-width="2"/>'
     corpo += testo(L, 82, "LINGUAGGI", 700, 15, VERDE_SCURO, spaziatura=.1)
-    corpo += testo(L, 132, f"{tot:,} righe scritte a mano".replace(",", "."), 900, 40, PETROLIO)
+    corpo += testo(L, 132, f"{tot:,} righe non vuote".replace(",", "."), 900, 40, PETROLIO)
     x, bw = L, W - 2 * L
     corpo += f'<clipPath id="b"><rect x="{L}" y="168" width="{bw}" height="40" rx="12"/></clipPath><g clip-path="url(#b)">'
     for i, (k, v) in enumerate(top):
@@ -354,5 +351,5 @@ def chiusura(d):
 
 if __name__ == "__main__":
     d = dati()
-    print(f"commit {d['commit']} · per anno {d['per_anno']} · file {d['file']} · progetti {d['progetti']}")
+    print(f"commit {d['commit']} · per anno {d['per_anno']} · file {d['file']}")
     hero(d); numeri(d); percorso(d); confluenza(d); linguaggi(d); testate(d); icone(); chiusura(d)
