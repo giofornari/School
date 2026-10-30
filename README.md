@@ -8,13 +8,13 @@ Esercizi, laboratori e verifiche del mio **terzo, quarto e quinto anno di Inform
 
 **[Terzo anno](#terzo-anno) · [Quarto anno](#quarto-anno) · [Quinto anno](#quinto-anno)**
 
-<img src=".github/readme/mappa-percorso.svg" width="100%" alt="Terzo anno: capire un problema e tradurlo in un algoritmo. Quarto anno: organizzare dati e codice in applicazioni con interfacce. Quinto anno, in corso: collegare applicazioni, servizi e reti.">
+<img src=".github/readme/percorso-triennio.svg" width="100%" alt="Terzo anno: capire un problema e tradurlo in un algoritmo. Quarto anno: organizzare dati e codice in applicazioni con interfacce. Quinto anno, in corso: collegare applicazioni, servizi e reti.">
 
 **Struttura delle cartelle:** anno → materia → attività.
 
 ## Terzo anno
 
-<a href="3-anno_2024-25"><img src=".github/readme/banner-anno-3.svg" width="100%" alt="Terzo anno, 2024–25: le basi. Algoritmi, programmazione procedurale e primi concetti di rete e web. Python, C e HTML."></a>
+<a href="3-anno_2024-25"><img src=".github/readme/anno-3-rosso.svg" width="100%" alt="Terzo anno, 2024–25: le basi. Algoritmi, programmazione procedurale e primi concetti di rete e web. Python, C e HTML."></a>
 
 | Area | Argomenti e materiale |
 | :--- | :--- |
@@ -26,7 +26,7 @@ Esercizi, laboratori e verifiche del mio **terzo, quarto e quinto anno di Inform
 
 ## Quarto anno
 
-<a href="4-anno_2025-26"><img src=".github/readme/banner-anno-4.svg" width="100%" alt="Quarto anno, 2025–26: oggetti e interfacce. Classi, ereditarietà, strutture dati, applicazioni e sviluppo web. Java, Python, JavaScript e Dart."></a>
+<a href="4-anno_2025-26"><img src=".github/readme/anno-4-giallo.svg" width="100%" alt="Quarto anno, 2025–26: oggetti e interfacce. Classi, ereditarietà, strutture dati, applicazioni e sviluppo web. Java, Python, JavaScript e Dart."></a>
 
 | Area | Argomenti e materiale |
 | :--- | :--- |
@@ -37,7 +37,7 @@ Esercizi, laboratori e verifiche del mio **terzo, quarto e quinto anno di Inform
 
 ## Quinto anno
 
-<a href="5-anno_2026-27"><img src=".github/readme/banner-anno-5.svg" width="100%" alt="Quinto anno, 2026–27, in corso: applicazioni e reti. Applicazioni desktop, servizi web, subnetting e IoT. C#, Node.js e Packet Tracer."></a>
+<a href="5-anno_2026-27"><img src=".github/readme/anno-5-blu.svg" width="100%" alt="Quinto anno, 2026–27, in corso: applicazioni e reti. Applicazioni desktop, servizi web, subnetting e IoT. C#, Node.js e Packet Tracer."></a>
 
 | Area | Argomenti e materiale |
 | :--- | :--- |
