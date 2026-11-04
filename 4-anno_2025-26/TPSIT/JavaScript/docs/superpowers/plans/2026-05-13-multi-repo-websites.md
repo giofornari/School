@@ -11,8 +11,8 @@
 **Repos and local paths:**
 | Repo | Local path | GitHub Pages URL |
 |------|-----------|-----------------|
-| DIYJavaScript | `/home/giordi/Repos/DIYJavaScript/` | `https://bigbrodyg.github.io/DIYJavaScript/` |
-| JavaProjects | `/home/giordi/Repos/JavaProjects/` | `https://bigbrodyg.github.io/JavaProjects/` |
+| DIYJavaScript | `/home/giordi/Repos/1_School/DIYJavaScript/` | `https://bigbrodyg.github.io/DIYJavaScript/` |
+| JavaProjects | `/home/giordi/Repos/1_School/JavaProjects/` | `https://bigbrodyg.github.io/JavaProjects/` |
 | PythonAlmostSelfLearned | `/home/giordi/Repos/1_School/PythonAlmostSelfLearned/` | `https://bigbrodyg.github.io/PythonAlmostSelfLearned/` |
 | GAppProjects | `/home/giordi/Repos/1_School/GAppProjects/` | `https://bigbrodyg.github.io/GAppProjects/` |
 
@@ -48,7 +48,7 @@ JavaProjects/
 This is the core of the whole plan. All four generators use this same `render_page()` function — copy it verbatim into each `generate-site.py`.
 
 **Files:**
-- Reference: `/home/giordi/Repos/DIYJavaScript/docs/superpowers/specs/shared_template_reference.py` (not deployed — local reference only)
+- Reference: `/home/giordi/Repos/1_School/DIYJavaScript/docs/superpowers/specs/shared_template_reference.py` (not deployed — local reference only)
 
 - [ ] **Step 1: Create the reference template file**
 
@@ -397,7 +397,7 @@ Expected: `syntax OK`
 - [ ] **Step 3: Commit**
 
 ```bash
-cd /home/giordi/Repos/DIYJavaScript
+cd /home/giordi/Repos/1_School/DIYJavaScript
 git add docs/superpowers/specs/shared_template_reference.py
 git commit -m "docs: add shared HTML template reference for all repo sites"
 ```
@@ -409,7 +409,7 @@ git commit -m "docs: add shared HTML template reference for all repo sites"
 Replace the existing `generate_index.py` with a new version that uses the Charcoal design. The new generator scans for HTML/JS/Python project directories (same as before) but emits the new template.
 
 **Files:**
-- Replace: `/home/giordi/Repos/DIYJavaScript/generate_index.py`
+- Replace: `/home/giordi/Repos/1_School/DIYJavaScript/generate_index.py`
 
 - [ ] **Step 1: Write the new generator**
 
@@ -569,7 +569,7 @@ if __name__ == '__main__':
 - [ ] **Step 2: Run the generator locally and verify**
 
 ```bash
-cd /home/giordi/Repos/DIYJavaScript
+cd /home/giordi/Repos/1_School/DIYJavaScript
 python3 generate_index.py
 ```
 
@@ -592,7 +592,7 @@ Check: nav shows 4 links, hero title is "DIYJavaScript", cards show project name
 - [ ] **Step 4: Commit**
 
 ```bash
-cd /home/giordi/Repos/DIYJavaScript
+cd /home/giordi/Repos/1_School/DIYJavaScript
 git add generate_index.py docs/index.html
 git commit -m "feat: rewrite generator with Charcoal design system"
 ```
@@ -601,15 +601,15 @@ git commit -m "feat: rewrite generator with Charcoal design system"
 
 ## Task 3: Rewrite JavaProjects generator
 
-Replace `/home/giordi/Repos/JavaProjects/.github/scripts/generate-site.py` with a clean version using the Charcoal design. The CI workflow (`auto-update-site.yml`) already compiles Java and captures output to `docs/{name}-output.txt` — the generator just reads those files.
+Replace `/home/giordi/Repos/1_School/JavaProjects/.github/scripts/generate-site.py` with a clean version using the Charcoal design. The CI workflow (`auto-update-site.yml`) already compiles Java and captures output to `docs/{name}-output.txt` — the generator just reads those files.
 
 **Files:**
-- Replace: `/home/giordi/Repos/JavaProjects/.github/scripts/generate-site.py`
+- Replace: `/home/giordi/Repos/1_School/JavaProjects/.github/scripts/generate-site.py`
 
 - [ ] **Step 1: Understand the existing output file naming convention**
 
 ```bash
-ls /home/giordi/Repos/JavaProjects/docs/*.txt 2>/dev/null | head -10
+ls /home/giordi/Repos/1_School/JavaProjects/docs/*.txt 2>/dev/null | head -10
 # Output files are named like: cerchio-output.txt, convertitorexml-output.txt
 # Project dirs are: Cerchio/, ConvertitoreXML/, Laboratorio/Esercizio1/, etc.
 ```
@@ -735,7 +735,7 @@ if __name__ == '__main__':
 - [ ] **Step 3: Run locally and verify**
 
 ```bash
-cd /home/giordi/Repos/JavaProjects
+cd /home/giordi/Repos/1_School/JavaProjects
 python3 .github/scripts/generate-site.py
 ```
 
@@ -751,7 +751,7 @@ Check: cards show Java project names, output pills on projects with `docs/*-outp
 - [ ] **Step 4: Commit**
 
 ```bash
-cd /home/giordi/Repos/JavaProjects
+cd /home/giordi/Repos/1_School/JavaProjects
 git add .github/scripts/generate-site.py docs/index.html
 git commit -m "feat: rewrite generator with Charcoal design system"
 ```
@@ -1174,7 +1174,7 @@ The current site's nav link should be styled `.active` (lighter background). The
 - [ ] **Step 4: Trigger a push to JavaProjects and verify auto-rebuild**
 
 ```bash
-cd /home/giordi/Repos/JavaProjects
+cd /home/giordi/Repos/1_School/JavaProjects
 echo "# test" >> README.md
 git add README.md && git commit -m "test: trigger CI rebuild"
 git push
