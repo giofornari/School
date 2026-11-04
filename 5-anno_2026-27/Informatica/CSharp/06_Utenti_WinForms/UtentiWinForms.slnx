@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="UtentiWinForms/UtentiWinForms.csproj" />
+  <Project Path="LibreriaUtenti/LibreriaUtenti.csproj" />
+</Solution>
