@@ -10,6 +10,7 @@ Ordine di studio, dal più semplice al più complesso:
 | 4 | `04_ParcoVeicoli_WinForms` | Esercizio 1 in grafica, stile prof | compila soltanto |
 | 5 | `05_Biblioteca_WinForms` | Esercizio 2 in grafica | compila soltanto |
 | 6 | `06_Utenti_WinForms` | Compito DataTable + DataGridView + login | compila soltanto |
+| 7 | `07_Ordini_WinForms` | Compito DataTable + DataGridView ordini e articoli | compila soltanto |
 
 Domani c'è la console: se sai scrivere la 1 e la 2 a memoria sei a posto. I punti dal 3 al 5 servono per la parte grafica.
 
