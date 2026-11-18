@@ -1,0 +1,42 @@
+body {
+    font-family: system-ui, sans-serif;
+    background: #1b1b1f;
+    color: #f2f2f2;
+    margin: 0;
+}
+
+main {
+    max-width: 22rem;
+    margin: 3rem auto;
+    padding: 1.5rem;
+    background: #26262c;
+    border-radius: 12px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+input,
+button {
+    font: inherit;
+    padding: 0.6rem;
+    border-radius: 8px;
+    border: 1px solid #55555f;
+}
+
+button {
+    margin-top: 0.8rem;
+    background: #2bd96b;
+    color: #0b2414;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+.errore {
+    color: #ff6b6b;
+    font-weight: bold;
+}

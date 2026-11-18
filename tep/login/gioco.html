@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Palestra Login Node</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=JetBrains+Mono:wght@400;700&family=Rubik:wght@400;600;800&display=swap">
+<style>
+/* Tabellone da sala giochi: fondo prugna notte a puntini (le lampadine spente),
+   colori saturi solo per gli stati: verde giusto, rosso sbagliato, giallo XP, arancio tempo. */
+:root {
+    --fondo: #150a17;
+    --pannello: #241027;
+    --pannello-2: #2f1533;
+    --bordo: #4a2352;
+    --codice: #0c050e;
+    --testo: #fff3fb;
+    --tenue: #d3a9db;
+    --verde: #1fe06a;
+    --verde-ombra: #0c8a3c;
+    --rosso: #ff2d55;
+    --rosso-ombra: #a0102c;
+    --giallo: #ffd400;
+    --giallo-ombra: #a88a00;
+    --arancio: #ff7b00;
+    --arancio-ombra: #a84e00;
+    --viola: #c45cff;
+    --viola-ombra: #6f2499;
+    --display: "Bungee", "Impact", "Arial Black", sans-serif;
+    --corpo: "Rubik", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+    margin: 0;
+    background: radial-gradient(circle, rgba(255, 243, 251, 0.05) 1.2px, transparent 1.6px) 0 0 / 14px 14px, var(--fondo);
+    color: var(--testo);
+    font-family: var(--corpo);
+    font-size: 16px;
+    line-height: 1.45;
+    -webkit-tap-highlight-color: transparent;
+}
+#app {
+    max-width: 640px;
+    margin: 0 auto;
+    padding-block: 12px 40px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; text-wrap: balance; letter-spacing: 0.02em; }
+h1 { font-size: clamp(1.6rem, 7vw, 2.3rem); line-height: 1.05; }
+h2 { font-size: 1.35rem; }
+p { margin: 0; }
+code, pre, .mono { font-family: var(--mono); }
+/* niente legature: !== e => devono restare i caratteri che scrivi a mano */
+code, pre, .mono, .riga, input.risposta, textarea.risposta { font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+button { font: inherit; color: inherit; }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--giallo); outline-offset: 2px; }
+
+/* ---------- barra punteggi ---------- */
+.barra {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    background: var(--pannello);
+    border: 2px solid var(--bordo);
+    border-radius: 16px;
+    font-variant-numeric: tabular-nums;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--fondo); }
+.barra .vite { color: var(--rosso); font-size: 1.3rem; letter-spacing: 2px; white-space: nowrap; }
+.barra .vite .persa { color: var(--bordo); }
+.barra .xp { font-family: var(--display); color: var(--giallo); margin-left: auto; white-space: nowrap; }
+.barra .combo { font-family: var(--display); color: var(--arancio); white-space: nowrap; }
+.barra .combo[data-n="0"] { color: var(--bordo); }
+.barra .esci { background: none; border: 0; color: var(--tenue); font-size: 0.9rem; cursor: pointer; padding: 4px; }
+
+/* ---------- bottoni 3D ---------- */
+.btn {
+    --c: var(--verde); --o: var(--verde-ombra); --t: #062b13;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 10px 18px;
+    background: var(--c); color: var(--t);
+    border: 0; border-radius: 14px;
+    box-shadow: 0 6px 0 var(--o);
+    font-family: var(--display); font-size: 1rem; letter-spacing: 0.04em;
+    cursor: pointer; transition: transform 0.06s, box-shadow 0.06s;
+    margin-bottom: 6px;
+    touch-action: manipulation;
+}
+.btn:active:not(:disabled) { transform: translateY(6px); box-shadow: 0 0 0 var(--o); }
+.btn:disabled { filter: saturate(0.2) brightness(0.6); cursor: not-allowed; }
+.btn.largo { width: 100%; }
+.btn.rosso { --c: var(--rosso); --o: var(--rosso-ombra); --t: #fff; }
+.btn.giallo { --c: var(--giallo); --o: var(--giallo-ombra); --t: #2b2300; }
+.btn.arancio { --c: var(--arancio); --o: var(--arancio-ombra); --t: #2b1400; }
+.btn.viola { --c: var(--viola); --o: var(--viola-ombra); --t: #fff; }
+.btn.scuro { --c: var(--pannello-2); --o: #12060f; --t: var(--testo); border: 2px solid var(--bordo); }
+
+/* ---------- home ---------- */
+.titolo { display: flex; flex-direction: column; gap: 6px; padding-top: 6px; }
+.titolo .occhiello { font-family: var(--mono); color: var(--tenue); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+.titolo h1 span { color: var(--verde); }
+.titolo p { color: var(--tenue); }
+.mappa { display: flex; flex-direction: column; gap: 10px; }
+.tappa {
+    display: grid; grid-template-columns: 52px 1fr auto; align-items: center; gap: 12px;
+    width: 100%; text-align: left; padding: 10px 12px;
+    background: var(--pannello); border: 2px solid var(--bordo); border-radius: 16px;
+    box-shadow: 0 5px 0 #0b040c; cursor: pointer; margin-bottom: 5px;
+}
+.tappa:active:not(:disabled) { transform: translateY(5px); box-shadow: none; }
+.tappa .num {
+    width: 52px; height: 52px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--display); font-size: 1.3rem;
+    background: var(--giallo); color: #2b2300; box-shadow: 0 4px 0 var(--giallo-ombra);
+}
+.tappa.fatta .num { background: var(--verde); color: #062b13; box-shadow: 0 4px 0 var(--verde-ombra); }
+.tappa.boss .num { background: var(--rosso); color: #fff; box-shadow: 0 4px 0 var(--rosso-ombra); }
+.tappa:disabled { cursor: not-allowed; opacity: 0.45; }
+.tappa:disabled .num { background: var(--bordo); color: var(--tenue); box-shadow: none; }
+.tappa .nome { font-weight: 800; display: block; }
+.tappa .sotto { color: var(--tenue); font-size: 0.85rem; display: block; min-width: 0; }
+.tappa .stato { font-family: var(--display); font-size: 0.8rem; color: var(--tenue); white-space: nowrap; }
+.tappa.fatta .stato { color: var(--verde); }
+.azioni { display: flex; flex-direction: column; gap: 8px; }
+.azzera { background: none; border: 0; color: var(--tenue); text-decoration: underline; cursor: pointer; padding: 8px; align-self: center; font-size: 0.9rem; }
+
+/* ---------- esercizio ---------- */
+.progresso { height: 14px; background: var(--pannello); border: 2px solid var(--bordo); border-radius: 99px; overflow: hidden; }
+.progresso div { height: 100%; width: 0; background: var(--verde); border-radius: 99px; transition: width 0.3s; }
+.tempo { height: 8px; background: var(--pannello); border-radius: 99px; overflow: hidden; }
+.tempo div { height: 100%; width: 100%; background: var(--arancio); }
+.tempo.poco div { background: var(--rosso); }
+.scheda { display: flex; flex-direction: column; gap: 14px; background: var(--pannello); border: 2px solid var(--bordo); border-radius: 20px; padding: 16px; min-width: 0; }
+.chip { align-self: flex-start; font-family: var(--display); font-size: 0.75rem; letter-spacing: 0.08em; padding: 4px 10px; border-radius: 99px; background: var(--viola); color: #fff; }
+.consegna { font-size: 1.15rem; font-weight: 800; }
+pre.codice, .riga-codice {
+    margin: 0; padding: 12px; background: var(--codice); border: 2px solid var(--bordo); border-radius: 12px;
+    font-size: 0.8rem; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; min-width: 0;
+}
+pre.codice .dim { color: var(--tenue); opacity: 0.75; }
+.buco { color: var(--giallo); background: rgba(255, 212, 0, 0.14); border-bottom: 2px solid var(--giallo); padding: 0 3px; border-radius: 3px; }
+.domanda { font-weight: 600; }
+.aiuto { color: var(--giallo); font-size: 0.9rem; }
+.aiuto::before { content: "AIUTO · "; font-family: var(--display); font-size: 0.75rem; }
+input.risposta, textarea.risposta {
+    width: 100%; padding: 12px; font-family: var(--mono); font-size: 16px;
+    color: var(--testo); background: var(--codice); border: 2px solid var(--bordo); border-radius: 12px;
+}
+textarea.risposta { min-height: 180px; resize: vertical; line-height: 1.5; tab-size: 4; }
+.righe { display: flex; flex-direction: column; gap: 8px; }
+.riga {
+    text-align: left; font-family: var(--mono); font-size: 0.8rem; line-height: 1.45;
+    padding: 10px 12px; background: var(--codice); color: var(--testo);
+    border: 2px solid var(--bordo); border-radius: 12px; box-shadow: 0 4px 0 #07020a;
+    white-space: pre-wrap; overflow-wrap: anywhere; cursor: pointer; margin-bottom: 4px;
+}
+.riga:active { transform: translateY(4px); box-shadow: none; }
+.riga.scelta { border-color: var(--giallo); background: #2a2300; }
+.zona { min-height: 56px; padding: 8px; border: 2px dashed var(--bordo); border-radius: 14px; display: flex; flex-direction: column; gap: 6px; }
+.zona:empty::before { content: "Tocca le righe qui sotto nell'ordine giusto"; color: var(--tenue); font-size: 0.85rem; padding: 8px; }
+.zona .riga { border-color: var(--verde-ombra); }
+
+/* ---------- foglio esito ---------- */
+#foglio {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+    padding: 18px max(16px, env(safe-area-inset-right, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+    border-radius: 22px 22px 0 0; max-height: 82vh; overflow-y: auto;
+    animation: sale 0.22s ease-out;
+}
+#foglio .dentro { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+#foglio.verde { background: #0b3a1d; border-top: 4px solid var(--verde); }
+#foglio.rosso { background: #4a0716; border-top: 4px solid var(--rosso); }
+#foglio .esito { font-family: var(--display); font-size: 1.7rem; line-height: 1.05; }
+#foglio.verde .esito { color: var(--verde); }
+#foglio.rosso .esito { color: #fff; text-shadow: 0 0 18px var(--rosso); }
+#foglio .insulto { display: inline-block; animation: botta 0.6s cubic-bezier(.2, 1.6, .4, 1) both; }
+#foglio .motivo { animation: appare 0.3s 0.45s both; }
+#foglio .motivo b { font-family: var(--display); font-weight: 400; font-size: 0.8rem; letter-spacing: 0.06em; display: block; margin-bottom: 2px; }
+#foglio.rosso .motivo b { color: var(--giallo); }
+#foglio.verde .motivo b { color: var(--verde); }
+#foglio .riga-codice { border-color: rgba(255, 255, 255, 0.18); }
+#foglio .xpvinti { font-family: var(--display); color: var(--giallo); }
+.mancanti { color: var(--giallo); }
+@keyframes sale { from { transform: translateY(100%); } to { transform: none; } }
+@keyframes botta {
+    0% { transform: scale(3) rotate(-12deg); opacity: 0; }
+    55% { transform: scale(0.9) rotate(4deg); opacity: 1; }
+    70% { transform: translateX(-8px) rotate(-3deg); }
+    85% { transform: translateX(8px) rotate(2deg); }
+    100% { transform: none; }
+}
+@keyframes appare { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes trema { 0%, 100% { transform: none; } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.trema { animation: trema 0.25s 2; }
+
+/* ---------- schermate di fine e boss ---------- */
+.grande { font-family: var(--display); font-size: clamp(3rem, 18vw, 5rem); line-height: 1; }
+.grande.verde { color: var(--verde); }
+.grande.rosso { color: var(--rosso); }
+.statistiche { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.statistiche div { background: var(--pannello-2); border-radius: 12px; padding: 10px; text-align: center; }
+.statistiche b { display: block; font-family: var(--display); font-size: 1.3rem; color: var(--giallo); font-weight: 400; }
+.statistiche span { font-size: 0.75rem; color: var(--tenue); }
+.orologio { font-family: var(--display); font-size: 2rem; color: var(--arancio); font-variant-numeric: tabular-nums; }
+.orologio.poco { color: var(--rosso); }
+#editor { min-height: 60vh; white-space: pre; overflow-x: auto; overflow-wrap: normal; font-size: 13px; }
+.griglia { display: flex; flex-direction: column; gap: 6px; padding: 0; margin: 0; list-style: none; }
+.griglia li { display: grid; grid-template-columns: 28px 1fr; gap: 8px; padding: 8px 10px; border-radius: 10px; background: var(--pannello-2); min-width: 0; }
+.griglia .si { color: var(--verde); font-family: var(--display); }
+.griglia .no { color: var(--rosso); font-family: var(--display); }
+.griglia code { display: block; margin-top: 4px; font-size: 0.75rem; color: var(--giallo); white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+    <header class="barra" id="barra">
+        <span class="vite" id="vite" aria-label="Vite"></span>
+        <span class="combo" id="combo" data-n="0">x0</span>
+        <span class="xp" id="xp">0 XP</span>
+        <button class="esci" id="esci" type="button" hidden>Esci</button>
+    </header>
+
+    <section id="home"></section>
+    <section id="gioco" hidden></section>
+    <section id="boss" hidden></section>
+    <section id="fine" hidden></section>
+</div>
+
+<div id="foglio" hidden role="dialog" aria-live="assertive"><div class="dentro" id="foglio-dentro"></div></div>
+
+<script id="dati" type="application/json">{"livelli":[{"n":1,"titolo":"Form HTML","sottotitolo":"index.html: label, input, POST","esercizi":[{"id":"f1","tipo":"completa","consegna":"Con che metodo il form manda i dati?","testo":"<form action=\"/login\" method=\"___\">","risposta":["POST"],"ignoraMaiuscole":true,"aiuto":"Quello che NON mette i dati nell'URL.","perche":"Con POST i dati vanno nel body: la password non finisce nell'URL né nella cronologia (slide 46)."},{"id":"f2","tipo":"completa","consegna":"Quale attributo lega il label al campo?","testo":"<label ___=\"nome\">Username<\/label>","risposta":["for"],"aiuto":"Tre lettere, deve valere quanto l'id.","perche":"for del label = id dell'input: cliccando la scritta si attiva il campo."},{"id":"f3","tipo":"completa","consegna":"Che tipo di input nasconde i caratteri?","testo":"<input type=\"___\" id=\"pass\" name=\"pass\" maxlength=\"30\" required>","risposta":["password"],"aiuto":"Si chiama come il campo.","perche":"type=\"password\" mostra i pallini: chi guarda lo schermo non legge la password."},{"id":"f4","tipo":"completa","consegna":"Quale attributo limita la lunghezza nel browser?","testo":"<input type=\"text\" id=\"nome\" name=\"nome\" value=\"\" ___=\"30\" required>","risposta":["maxlength"],"ignoraMaiuscole":true,"aiuto":"max + length.","perche":"maxlength blocca la digitazione oltre 30 caratteri, ma con curl si aggira: il server ricontrolla."},{"id":"f5","tipo":"completa","consegna":"Il bottone che invia il form:","testo":"<button type=\"___\">Accedi<\/button>","risposta":["submit"],"aiuto":"Inviare, in inglese.","perche":"type=\"submit\" invia il form all'action con il method indicato."},{"id":"f6","tipo":"completa","consegna":"Il CSS: che URL chiede il browser?","testo":"<link rel=\"stylesheet\" href=\"___\">","risposta":["/stile.css"],"aiuto":"Deve essere una chiave di allowedURLPaths.","perche":"Il browser chiede /stile.css e il server lo trova in allowedURLPaths, altrimenti risponde 404."},{"id":"f7","tipo":"riordina","consegna":"Rimetti in ordine il form.","righe":["<form action=\"/login\" method=\"POST\">","<label for=\"nome\">Username<\/label>","<input type=\"text\" id=\"nome\" name=\"nome\" value=\"\" maxlength=\"30\" required>","<label for=\"pass\">Password<\/label>","<input type=\"password\" id=\"pass\" name=\"pass\" maxlength=\"30\" required>","<button type=\"submit\">Accedi<\/button>","<\/form>"],"perche":"Prima il form che apre, poi ogni label seguito dal suo input, il bottone e la chiusura."},{"id":"f8","tipo":"errore","consegna":"Tocca la riga sbagliata.","righe":["<label for=\"utente\">Username<\/label>","<input type=\"text\" id=\"nome\" name=\"nome\" value=\"\" maxlength=\"30\" required>","<label for=\"pass\">Password<\/label>","<input type=\"password\" id=\"pass\" name=\"pass\" maxlength=\"30\" required>"],"sbagliata":0,"corretta":"<label for=\"nome\">Username<\/label>","perche":"for=\"utente\" non corrisponde a nessun id: il label deve puntare a id=\"nome\"."},{"id":"f9","tipo":"errore","consegna":"Tocca la riga sbagliata.","righe":["<label for=\"nome\">Username<\/label>","<input type=\"text\" id=\"nome\" name=\"nome\" value=\"\" maxlength=\"30\" required>","<label for=\"pass\">Password<\/label>","<input type=\"text\" id=\"pass\" name=\"pass\" maxlength=\"30\" required>"],"sbagliata":3,"corretta":"<input type=\"password\" id=\"pass\" name=\"pass\" maxlength=\"30\" required>","perche":"La password con type=\"text\" si legge in chiaro sullo schermo."},{"id":"f10","tipo":"prevedi","consegna":"Scrivo mario e Rossi2026 e premo Accedi.","codice":"<input type=\"text\" id=\"nome\" name=\"nome\" value=\"\" maxlength=\"30\" required>\n<label for=\"pass\">Password<\/label>\n<input type=\"password\" id=\"pass\" name=\"pass\" maxlength=\"30\" required>","domanda":"Che body arriva al server?","risposta":["nome=mario&pass=Rossi2026"],"js":"qs.stringify({ nome: \"mario\", pass: \"Rossi2026\" })","perche":"Il browser manda name=valore uniti da &, in formato application/x-www-form-urlencoded."},{"id":"f11","tipo":"blocco","consegna":"Scrivi label e input della password (ordine attributi: type, id, name, maxlength, required).","soluzione":"<label for=\"pass\">Password<\/label>\n<input type=\"password\" id=\"pass\" name=\"pass\" maxlength=\"30\" required>","perche":"Label con for=id, input password con name (la chiave nel body), maxlength e required."}]},{"n":2,"titolo":"require e costanti","sottotitolo":"moduli, porta, mimeTypes, allowedURLPaths","esercizi":[{"id":"c1","tipo":"completa","consegna":"Il modulo per creare il server:","testo":"const http = require(___);","risposta":["\"http\""],"aiuto":"Tra virgolette, come il protocollo.","perche":"require(\"http\") dà createServer: senza, non c'è server (slide 18)."},{"id":"c2","tipo":"completa","consegna":"Il modulo che legge il body del POST:","testo":"const qs = require(\"___\");","risposta":["querystring"],"aiuto":"query + string, tutto attaccato.","perche":"querystring.parse trasforma nome=mario&pass=x in un oggetto (slide 51)."},{"id":"c3","tipo":"completa","consegna":"L'host locale:","testo":"const hostname = \"___\";","risposta":["127.0.0.1"],"aiuto":"localhost in numeri.","perche":"127.0.0.1 ascolta solo sulla macchina stessa (slide 18)."},{"id":"c4","tipo":"completa","consegna":"La porta del prof:","testo":"const port = ___;","risposta":["3000"],"aiuto":"Quella di tutte le slide.","perche":"3000 è la porta usata in tutte le slide: http://127.0.0.1:3000."},{"id":"c5","tipo":"completa","consegna":"Il Content-Type per l'HTML:","testo":"'.html': '___',","risposta":["text/html; charset=utf-8"],"aiuto":"tipo/sottotipo; charset=...","perche":"Senza charset=utf-8 le lettere accentate arrivano rotte (slide 23)."},{"id":"c6","tipo":"completa","consegna":"Il tetto al body del POST:","testo":"const MAX_BODY = ___;","risposta":["1024"],"aiuto":"1 KB in byte.","perche":"Due campi da 30 caratteri stanno larghi in 1024 byte: oltre è un abuso, e si risponde 413."},{"id":"c7","tipo":"riordina","consegna":"Rimetti in ordine allowedURLPaths.","righe":["const allowedURLPaths = {","'/': './index.html',","'/stile.css': './stile.css'","};"],"perche":"Oggetto URL -> file: solo queste chiavi sono servite, il resto è 404 (slide 31)."},{"id":"c8","tipo":"errore","consegna":"Tocca la riga sbagliata.","righe":["const mimeTypes = {","'.html': 'text/html; charset=utf-8',","'.css': 'text/html; charset=utf-8'","};"],"sbagliata":2,"corretta":"'.css': 'text/css; charset=utf-8'","perche":"Un .css mandato come text/html non viene applicato: il browser lo scarta."},{"id":"c9","tipo":"errore","consegna":"Tocca la riga sbagliata.","righe":["const http = require(\"http\");","const fs = require(\"fs\");","const path = require(\"path\");","const qs = require(\"query-string\");"],"sbagliata":3,"corretta":"const qs = require(\"querystring\");","perche":"query-string è un pacchetto npm; il modulo nativo è querystring, attaccato."},{"id":"c10","tipo":"prevedi","consegna":"Il modulo path.","codice":"const contentType = mimeTypes[path.extname(filePath)] || 'application/octet-stream';","domanda":"Cosa restituisce path.extname(\"./stile.css\")?","risposta":[".css"],"js":"path.extname(\"./stile.css\")","perche":"extname restituisce l'estensione col punto: è la chiave di mimeTypes (slide 31)."},{"id":"c11","tipo":"blocco","consegna":"Scrivi l'array utenti (mario/Rossi2026, anna/Verdi2026).","soluzione":"const utenti = [\n{ nome: \"mario\", pass: \"Rossi2026\" },\n{ nome: \"anna\", pass: \"Verdi2026\" }\n];","perche":"Un array di oggetti con le stesse chiavi del form: nome e pass (slide 48)."}]},{"n":3,"titolo":"requestHandler","sottotitolo":"metodo, routing, 404 e 405","esercizi":[{"id":"h1","tipo":"completa","consegna":"I due argomenti del gestore:","testo":"function requestHandler(___) {","risposta":["req, res"],"aiuto":"Richiesta e risposta, abbreviate.","perche":"Il gestore riceve la richiesta (req) e la risposta da scrivere (res) (slide 18, 23)."},{"id":"h2","tipo":"completa","consegna":"Quale rotta riceve il form?","testo":"if (req.url === \"___\") {","risposta":["/login"],"aiuto":"Uguale all'action del form.","perche":"req.url deve essere uguale all'action del form, altrimenti il POST finisce nel 404."},{"id":"h3","tipo":"completa","consegna":"Su /login si accetta solo:","testo":"if (req.method !== \"___\") {","risposta":["POST"],"aiuto":"Il method del form.","perche":"Qualunque metodo diverso da POST su /login riceve 405."},{"id":"h4","tipo":"completa","consegna":"Il codice di 'metodo non consentito':","testo":"res.writeHead(___, { 'Content-Type': 'text/plain; charset=utf-8', 'Allow': 'POST' });","risposta":["405"],"aiuto":"4xx, subito dopo 404.","perche":"405 Method Not Allowed, con l'header Allow che dice quale metodo usare (slide 51)."},{"id":"h5","tipo":"completa","consegna":"Come controlli che l'URL è permesso?","testo":"if (allowedURLPaths.___(req.url)) {","risposta":["hasOwnProperty"],"aiuto":"has + Own + Property.","perche":"hasOwnProperty guarda solo le chiavi dell'oggetto: tutto il resto è 404 (slide 32)."},{"id":"h6","tipo":"riordina","consegna":"Rimetti in ordine il ramo /login.","righe":["if (req.method !== \"POST\") {","res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', 'Allow': 'POST' });","res.end(\"Metodo non consentito\");","return;","}","riceviLogin(req, res);","return;"],"perche":"Prima il controllo del metodo con return, poi la ricezione del POST."},{"id":"h7","tipo":"errore","consegna":"Tocca la riga sbagliata.","righe":["} else {","res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });","res.end(\"Pagina non trovata\");","}"],"sbagliata":1,"corretta":"res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });","perche":"Pagina non trovata con 200 è una bugia: il codice giusto è 404."},{"id":"h8","tipo":"errore","consegna":"Tocca la riga sbagliata.","righe":["if (req.method !== \"GET\" && req.method !== \"HEAD\") {","res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', 'Allow': 'GET, HEAD' });","res.write(\"Metodo non consentito\");","return;"],"sbagliata":2,"corretta":"res.end(\"Metodo non consentito\");","perche":"write non chiude la risposta: il browser resta in attesa. Ci vuole end (slide 26)."},{"id":"h9","tipo":"prevedi","consegna":"Apro http://127.0.0.1:3000/login nella barra del browser (GET).","domanda":"Codice di stato?","risposta":["405"],"http":{"metodo":"GET","url":"/login"},"perche":"Su /login si accetta solo POST: un GET riceve 405."},{"id":"h10","tipo":"prevedi","consegna":"GET /admin","domanda":"Codice di stato?","risposta":["404"],"http":{"metodo":"GET","url":"/admin"},"perche":"/admin non è in allowedURLPaths: 404."},{"id":"h11","tipo":"prevedi","consegna":"POST / con body x=1","domanda":"Codice di stato?","risposta":["405"],"http":{"metodo":"POST","url":"/","body":"x=1"},"perche":"I file statici accettano solo GET e HEAD: il POST riceve 405."},{"id":"h12","tipo":"blocco","consegna":"Scrivi il controllo GET/HEAD per i file statici (if, 405 con Allow, end, return).","soluzione":"if (req.method !== \"GET\" && req.method !== \"HEAD\") {\nres.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8', 'Allow': 'GET, HEAD' });\nres.end(\"Metodo non consentito\");\nreturn;\n}","perche":"Metodo prima di tutto, come nella slide 32: se non è GET o HEAD, 405 e stop."}]},{"n":4,"titolo":"File statici","sottotitolo":"createReadStream, open, pipe, error","esercizi":[{"id":"s1","tipo":"completa","consegna":"Lo stream di lettura:","testo":"const fileStream = fs.___(path.join(__dirname, filePath));","risposta":["createReadStream"],"aiuto":"create + Read + Stream.","perche":"createReadStream legge a pezzi da 64 KB senza caricare tutto il file in RAM (slide 34-35)."},{"id":"s2","tipo":"completa","consegna":"L'evento che dice 'file aperto':","testo":"fileStream.on('___', function () {","risposta":["open"],"aiuto":"Aperto, in inglese.","perche":"Il 200 parte solo su 'open': se il file non esiste non mandi un 200 falso (slide 35)."},{"id":"s3","tipo":"completa","consegna":"Collega lo stream alla risposta:","testo":"fileStream.___(res);","risposta":["pipe"],"aiuto":"Tubo, in inglese.","perche":"pipe travasa i chunk in res e chiama da solo res.end() alla fine (slide 35)."},{"id":"s4","tipo":"completa","consegna":"Ricava l'estensione:","testo":"const contentType = mimeTypes[path.___(filePath)] || 'application/octet-stream';","risposta":["extname"],"aiuto":"ext + name.","perche":"path.extname dà '.html' o '.css': la chiave per mimeTypes."},{"id":"s5","tipo":"completa","consegna":"Il codice di errore di 'file inesistente':","testo":"if (error.code === '___') {","risposta":["ENOENT"],"ignoraMaiuscole":true,"aiuto":"Error NO ENTry.","perche":"ENOENT = il file non esiste: si risponde 404 (slide 35)."},{"id":"s6","tipo":"completa","consegna":"Gli header sono già partiti?","testo":"if (!res.___) {","risposta":["headersSent"],"aiuto":"headers + Sent.","perche":"Se gli header sono partiti non puoi più cambiare codice: chiudi con res.destroy() (slide 35)."},{"id":"s7","tipo":"errore","consegna":"Tocca la riga sbagliata.","righe":["fileStream.on('open', function () {","res.writeHead(200, { 'Content-Type': contentType });","fileStream.pipe(req);","});"],"sbagliata":2,"corretta":"fileStream.pipe(res);","perche":"Il file va nella risposta (res), non nella richiesta (req)."},{"id":"s8","tipo":"riordina","consegna":"Rimetti in ordine la gestione dell'errore.","righe":["if (!res.headersSent) {","if (error.code === 'ENOENT') {","res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });","res.end(\"File non trovato\");","} else {","res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });","res.end(\"Errore interno del server\");","}","} else {","res.destroy();","}"],"perche":"Header non partiti: 404 o 500. Già partiti: res.destroy(), così il client non resta appeso."},{"id":"s9","tipo":"prevedi","consegna":"GET /stile.css","domanda":"Codice di stato?","risposta":["200"],"http":{"metodo":"GET","url":"/stile.css"},"perche":"/stile.css è in allowedURLPaths e il file esiste: 'open', poi 200 e pipe."},{"id":"s10","tipo":"prevedi","consegna":"Il file in allowedURLPaths è stato cancellato dal disco.","codice":"if (error.code === 'ENOENT') {\nres.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });","domanda":"Che codice risponde?","risposta":["404"],"perche":"'open' non arriva mai, arriva 'error' con ENOENT: 404."},{"id":"s11","tipo":"blocco","consegna":"Scrivi il gestore 'open' (writeHead 200 + pipe).","soluzione":"fileStream.on('open', function () {\nres.writeHead(200, { 'Content-Type': contentType });\nfileStream.pipe(res);\n});","perche":"Header 200 col Content-Type giusto, poi pipe: è la versione della slide 35."}]},{"n":5,"titolo":"Ricezione POST","sottotitolo":"on('data'), on('end'), qs.parse, 413","esercizi":[{"id":"p1","tipo":"completa","consegna":"Il body parte vuoto:","testo":"let body = ___;","risposta":["\"\""],"aiuto":"Una stringa vuota.","perche":"Il body si costruisce concatenando i chunk: si parte da stringa vuota (slide 51)."},{"id":"p2","tipo":"completa","consegna":"L'evento di ogni pezzo del body:","testo":"req.on('___', function (data) {","risposta":["data"],"aiuto":"Dati.","perche":"'data' scatta per ogni chunk del body (slide 51)."},{"id":"p3","tipo":"completa","consegna":"Accumula il chunk:","testo":"body ___ data;","risposta":["+="],"aiuto":"Concatena e assegna.","perche":"+= attacca il pezzo nuovo al body: con = perderesti i precedenti."},{"id":"p4","tipo":"completa","consegna":"L'evento 'body finito':","testo":"req.on('___', function () {","risposta":["end"],"aiuto":"Fine.","perche":"'end' scatta una volta sola, a body completo: solo lì si fa qs.parse (slide 51)."},{"id":"p5","tipo":"completa","consegna":"Da stringa a oggetto:","testo":"const post = qs.___(body);","risposta":["parse"],"aiuto":"Analizzare, in inglese.","perche":"qs.parse('nome=mario&pass=x') dà { nome: 'mario', pass: 'x' }."},{"id":"p6","tipo":"completa","consegna":"Il controllo del tetto:","testo":"if (body.length + data.length > ___) {","risposta":["MAX_BODY"],"aiuto":"La costante di 1024.","perche":"Controlli prima di accumulare: oltre il tetto non aggiungi più niente."},{"id":"p7","tipo":"riordina","consegna":"Rimetti in ordine il controllo 413 dentro 'end'.","righe":["req.on('end', function () {","if (troppoGrande) {","res.writeHead(413, { 'Content-Type': 'text/plain; charset=utf-8' });","res.end(\"Dati troppo grandi\");","return;","}"],"perche":"Prima cosa in 'end': se era troppo grande rispondi 413 e return, senza fare il parse."},{"id":"p8","tipo":"errore","consegna":"Tocca la riga sbagliata e correggila.","correggi":true,"righe":["if (troppoGrande) {","res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });","res.end(\"Dati troppo grandi\");","return;"],"sbagliata":1,"corretta":"res.writeHead(413, { 'Content-Type': 'text/plain; charset=utf-8' });","perche":"Body troppo grande = 413 Content Too Large; 400 è per dati sbagliati."},{"id":"p9","tipo":"prevedi","consegna":"POST /login con un body di 2000 caratteri.","domanda":"Codice di stato?","risposta":["413"],"http":{"metodo":"POST","url":"/login","bodyLungo":2000},"perche":"2000 > MAX_BODY (1024): troppoGrande diventa true e in 'end' si risponde 413."},{"id":"p10","tipo":"prevedi","consegna":"Body: nome=mario&pass=Rossi2026","domanda":"Quanto vale post.pass?","risposta":["Rossi2026"],"js":"qs.parse(\"nome=mario&pass=Rossi2026\").pass","perche":"qs.parse divide sugli & e sugli =: pass vale Rossi2026."},{"id":"p11","tipo":"prevedi","consegna":"Body: nome=Mario+Rossi","domanda":"Quanto vale post.nome?","risposta":["Mario Rossi"],"js":"qs.parse(\"nome=Mario+Rossi\").nome","perche":"Il browser codifica lo spazio come +, e qs.parse lo rimette spazio (slide 52)."},{"id":"p12","tipo":"blocco","consegna":"Scrivi il gestore 'data' con il tetto MAX_BODY (flag troppoGrande).","soluzione":"req.on('data', function (data) {\nif (body.length + data.length > MAX_BODY) {\ntroppoGrande = true;\n} else {\nbody += data;\n}\n});","perche":"Accumuli solo finché stai sotto il tetto: così la RAM non si riempie."}]},{"n":6,"titolo":"Validazione e utenti","sottotitolo":"trim, vuoti, lunghezza, find","esercizi":[{"id":"v1","tipo":"completa","consegna":"Togli gli spazi ai lati:","testo":"const nome = String(post.nome || \"\").___();","risposta":["trim"],"perche":"Con trim \"  \" diventa \"\" e conta come vuoto."},{"id":"v2","tipo":"completa","consegna":"Se il campo manca:","testo":"const pass = String(post.pass ___ \"\");","risposta":["||"],"perche":"post.pass è undefined se il campo manca: || \"\" lo trasforma in stringa vuota."},{"id":"v3","tipo":"completa","consegna":"Uno dei due vuoto:","testo":"if (nome === \"\" ___ pass === \"\") {","risposta":["||"],"perche":"Basta un campo vuoto per il 400: serve OR, non AND."},{"id":"v4","tipo":"completa","consegna":"Lunghezza:","testo":"if (nome.length > MAX_CAMPO || pass.___ > MAX_CAMPO) {","risposta":["length"],"perche":"maxlength del browser si aggira: il server ricontrolla la lunghezza."},{"id":"v5","tipo":"completa","consegna":"Cerca l'utente nell'array:","testo":"const utente = utenti.___(function (u) {","risposta":["find"],"perche":"find restituisce il primo elemento che soddisfa la condizione, o undefined."},{"id":"v6","tipo":"errore","consegna":"Tocca la riga sbagliata e correggila.","correggi":true,"righe":["const utente = utenti.find(function (u) {","return u.nome === nome || u.pass === pass;","});"],"sbagliata":1,"corretta":"return u.nome === nome && u.pass === pass;","perche":"Con || entra chi indovina solo lo username. Servono entrambi: &&."},{"id":"v7","tipo":"errore","consegna":"Tocca la riga sbagliata e correggila.","correggi":true,"righe":["const post = qs.parse(body);","const nome = String(post.nome || \"\").trim();","const pass = String(post.pass || \"\");","if (nome === \"\" && pass === \"\") {"],"sbagliata":3,"corretta":"if (nome === \"\" || pass === \"\") {","perche":"Con && passa chi ne compila uno solo: basta un campo vuoto per il 400."},{"id":"v8","tipo":"prevedi","consegna":"POST /login con body nome=&pass=","domanda":"Codice di stato?","risposta":["400"],"http":{"metodo":"POST","url":"/login","body":"nome=&pass="},"perche":"Campi vuoti: 400 Bad Request (slide 32: parametri mancanti)."},{"id":"v9","tipo":"prevedi","consegna":"POST /login con body nome=%20%20%20&pass=x (solo spazi)","domanda":"Codice di stato?","risposta":["400"],"http":{"metodo":"POST","url":"/login","body":"nome=%20%20%20&pass=x"},"perche":"trim toglie gli spazi: nome diventa vuoto, quindi 400."},{"id":"v10","tipo":"prevedi","consegna":"POST /login con body pass=Rossi2026 (manca nome)","domanda":"Codice di stato?","risposta":["400"],"http":{"metodo":"POST","url":"/login","body":"pass=Rossi2026"},"perche":"post.nome è undefined, || \"\" lo fa vuoto: 400."},{"id":"v11","tipo":"prevedi","consegna":"POST /login: nome di 31 'a', pass=x","domanda":"Codice di stato?","risposta":["400"],"http":{"metodo":"POST","url":"/login","body":"nome=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa&pass=x"},"perche":"31 > MAX_CAMPO (30): 400, anche se il browser col maxlength non l'avrebbe permesso."},{"id":"v12","tipo":"blocco","consegna":"Scrivi il controllo dei campi vuoti (if, 400 html, paginaLogin con nome, return).","soluzione":"if (nome === \"\" || pass === \"\") {\nres.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });\nres.end(paginaLogin(\"Compila username e password.\", nome));\nreturn;\n}","perche":"400 e form ripresentato con lo username già scritto: l'utente non riscrive tutto."}]},{"n":7,"titolo":"Risposte","sottotitolo":"codici, Content-Type, escape","esercizi":[{"id":"r1","tipo":"completa","consegna":"Credenziali sbagliate:","prima":["if (!utente) {"],"testo":"res.writeHead(___, { 'Content-Type': 'text/html; charset=utf-8' });","risposta":["401"],"perche":"401 Unauthorized = credenziali non valide (slide 32)."},{"id":"r2","tipo":"completa","consegna":"L'escape del minore:","testo":".replace(/<\/g, \"___\")","risposta":["&lt;"],"perche":"&lt; si vede come < ma non apre un tag: <script> diventa testo."},{"id":"r3","tipo":"completa","consegna":"La prima sostituzione dell'escape:","prima":["return String(testo)"],"testo":".replace(/&/g, \"___\")","risposta":["&amp;"],"perche":"& va per primo: se lo fai dopo, rovini le &lt; appena create."},{"id":"r4","tipo":"completa","consegna":"Il value del form ripresentato:","testo":"<input type=\"text\" id=\"nome\" name=\"nome\" value=\"${___(nome)}\" maxlength=\"30\" required>","risposta":["escapeHtml"],"perche":"Anche dentro value=\"...\" serve l'escape: un \" chiuderebbe l'attributo."},{"id":"r5","tipo":"prevedi","consegna":"escapeHtml(\"<script>\")","domanda":"Cosa restituisce?","risposta":["&lt;script&gt;"],"js":"escapeHtml(\"<script>\")","perche":"< e > diventano &lt; e &gt;: il browser mostra il testo, non esegue lo script."},{"id":"r6","tipo":"prevedi","consegna":"escapeHtml('\"io\" & te')","domanda":"Cosa restituisce?","risposta":["&quot;io&quot; &amp; te"],"js":"escapeHtml('\"io\" & te')","perche":"\" diventa &quot; e & diventa &amp;."},{"id":"r7","tipo":"prevedi","consegna":"POST /login con nome=mario&pass=Rossi2026","domanda":"Codice di stato?","risposta":["200"],"http":{"metodo":"POST","url":"/login","body":"nome=mario&pass=Rossi2026"},"perche":"Utente trovato: 200 e pagina di benvenuto."},{"id":"r8","tipo":"prevedi","consegna":"POST /login con nome=mario&pass=rossi2026 (minuscola)","domanda":"Codice di stato?","risposta":["401"],"http":{"metodo":"POST","url":"/login","body":"nome=mario&pass=rossi2026"},"perche":"=== distingue maiuscole e minuscole: password diversa, 401."},{"id":"r9","tipo":"errore","consegna":"Tocca la riga sbagliata e correggila.","correggi":true,"righe":["if (!utente) {","res.writeHead(401, { 'Content-Type': 'text/html; charset=utf-8' });","res.end(paginaLogin(\"Password sbagliata per \" + nome, nome));","return;"],"sbagliata":2,"corretta":"res.end(paginaLogin(\"Username o password errati.\", nome));","perche":"Dire 'password sbagliata' rivela che lo username esiste. Un messaggio unico (e nome senza escape: XSS)."},{"id":"r10","tipo":"errore","consegna":"Tocca la riga sbagliata e correggila.","correggi":true,"righe":["res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });","res.end(pagina(\"Benvenuto\", `<h1>Benvenuto ${utente.nome}!<\/h1>"],"sbagliata":1,"corretta":"res.end(pagina(\"Benvenuto\", `<h1>Benvenuto ${escapeHtml(utente.nome)}!<\/h1>","perche":"Ogni dato messo nell'HTML passa da escapeHtml, sempre: niente XSS."},{"id":"r11","tipo":"errore","consegna":"Tocca la riga sbagliata e correggila.","correggi":true,"righe":["res.writeHead(200, { 'Content-Type': 'text/plain' });","res.end(pagina(\"Benvenuto\", `<h1>Benvenuto ${escapeHtml(utente.nome)}!<\/h1>"],"sbagliata":0,"corretta":"res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });","perche":"È HTML: con text/plain il browser mostra i tag come testo. E manca il charset."},{"id":"r12","tipo":"riordina","consegna":"Rimetti in ordine escapeHtml (attento a chi va primo).","righe":["function escapeHtml(testo) {","return String(testo)",".replace(/&/g, \"&amp;\")",".replace(/<\/g, \"&lt;\")",".replace(/>/g, \"&gt;\")",".replace(/\"/g, \"&quot;\")",".replace(/'/g, \"&#39;\");","}"],"perche":"& per primo, poi < > \" '. Il ; solo sull'ultimo replace."},{"id":"r13","tipo":"blocco","consegna":"Scrivi il ramo 401 (if !utente, writeHead html, paginaLogin col messaggio unico, return).","soluzione":"if (!utente) {\nres.writeHead(401, { 'Content-Type': 'text/html; charset=utf-8' });\nres.end(paginaLogin(\"Username o password errati.\", nome));\nreturn;\n}","perche":"401, messaggio unico, form con lo username e password vuota."}]}],"boss":{"minuti":15,"soglia":80,"griglia":[{"nome":"require http","re":["require\\(\\s*[\"'`]http[\"'`]\\s*\\)"],"riga":"const http = require(\"http\");"},{"nome":"require fs","re":["require\\(\\s*[\"'`]fs[\"'`]\\s*\\)"],"riga":"const fs = require(\"fs\");"},{"nome":"require path","re":["require\\(\\s*[\"'`]path[\"'`]\\s*\\)"],"riga":"const path = require(\"path\");"},{"nome":"require querystring","re":["require\\(\\s*[\"'`]querystring[\"'`]\\s*\\)"],"riga":"const qs = require(\"querystring\");"},{"nome":"hostname e port","re":["hostname\\s*=\\s*[\"'`]127\\.0\\.0\\.1[\"'`]","port\\s*=\\s*3000"],"riga":"const port = 3000;"},{"nome":"mimeTypes, allowedURLPaths, hasOwnProperty","re":["mimeTypes\\s*=\\s*\\{","allowedURLPaths\\s*=\\s*\\{","hasOwnProperty\\(\\s*req\\.url\\s*\\)"],"riga":"if (allowedURLPaths.hasOwnProperty(req.url)) {"},{"nome":"createServer(requestHandler) e listen(port, hostname)","re":["http\\.createServer\\(\\s*requestHandler\\s*\\)","\\.listen\\(\\s*port\\s*,\\s*hostname"],"riga":"server.listen(port, hostname, function () {"},{"nome":"405 su /login non POST","re":["req\\.method\\s*!==?\\s*[\"'`]POST[\"'`]","writeHead\\(\\s*405"],"riga":"if (req.method !== \"POST\") {"},{"nome":"404 per URL non permesso","re":["writeHead\\(\\s*404"],"riga":"res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });"},{"nome":"createReadStream + on('open') + pipe(res)","re":["createReadStream\\(","\\.on\\(\\s*[\"'`]open[\"'`]","\\.pipe\\(\\s*res\\s*\\)"],"riga":"fileStream.pipe(res);"},{"nome":"on('error') con 500","re":["\\.on\\(\\s*[\"'`]error[\"'`]","writeHead\\(\\s*500"],"riga":"res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });"},{"nome":"req.on('data')","re":["req\\.on\\(\\s*[\"'`]data[\"'`]"],"riga":"req.on('data', function (data) {"},{"nome":"req.on('end')","re":["req\\.on\\(\\s*[\"'`]end[\"'`]"],"riga":"req.on('end', function () {"},{"nome":"qs.parse(body)","re":["qs\\.parse\\(\\s*body\\s*\\)"],"riga":"const post = qs.parse(body);"},{"nome":"limite al body e 413","re":["body\\.length","writeHead\\(\\s*413"],"riga":"res.writeHead(413, { 'Content-Type': 'text/plain; charset=utf-8' });"},{"nome":"trim e 400 sui campi vuoti","re":["\\.trim\\(\\s*\\)","writeHead\\(\\s*400"],"riga":"res.writeHead(400, { 'Content-Type': 'text/html; charset=utf-8' });"},{"nome":"controllo su utenti e 401","re":["utenti","writeHead\\(\\s*401"],"riga":"res.writeHead(401, { 'Content-Type': 'text/html; charset=utf-8' });"},{"nome":"Content-Type text/html con charset","re":["Content-Type[\"'`]?\\s*:\\s*[\"'`]text\\/html;\\s*charset=utf-8"],"riga":"res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });"},{"nome":"escape di & e <","re":["&amp;","&lt;","\\.replace\\("],"riga":".replace(/<\/g, \"&lt;\")"},{"nome":"end() su ogni ramo (end + pipe ≥ writeHead)","tipo":"conta","piu":"\\.end\\(|\\.pipe\\(\\s*res\\s*\\)","meno":"writeHead\\(","riga":"res.end(\"...\");  // dopo ogni writeHead"}]}}</script>
+<script>
+"use strict";
+const DATI = JSON.parse(document.getElementById("dati").textContent);
+const CHIAVE = "tep-login-v1";
+const INSULTI = ["STRONZO!", "STUDIA!", "MA CHE CAZZO SCRIVI?", "COGLIONE!", "STUDIA, ASINO!", "PORCA TROIA, NO!", "VERGOGNATI!", "TORNA SULLE SLIDE, STRONZO", "SVEGLIA, STRONZO!", "SCEMO!"];
+const NOMI_TIPO = { completa: "COMPLETA LA RIGA", riordina: "RIORDINA", errore: "TROVA L'ERRORE", prevedi: "PREVEDI", blocco: "SCRIVI IL BLOCCO" };
+const SECONDI = { completa: 45, riordina: 75, errore: 45, prevedi: 40, blocco: 150 };
+
+const $ = function (id) { return document.getElementById(id); };
+const tutti = [];
+DATI.livelli.forEach(function (l) { l.esercizi.forEach(function (e) { e.livello = l.n; tutti.push(e); }); });
+const perId = {};
+tutti.forEach(function (e) { perId[e.id] = e; });
+
+// ---------- salvataggio (localStorage può mancare: il gioco funziona lo stesso) ----------
+function statoBase() { return { sbloccato: 1, xp: 0, completati: [], sbagliati: [], bossMigliore: null }; }
+function carica() {
+    try {
+        const s = JSON.parse(localStorage.getItem(CHIAVE));
+        if (s && typeof s === "object") return Object.assign(statoBase(), s);
+    } catch (e) { /* storage bloccato: si riparte da zero */ }
+    return statoBase();
+}
+function salva() {
+    try { localStorage.setItem(CHIAVE, JSON.stringify(stato)); } catch (e) { /* storage bloccato */ }
+}
+let stato = carica();
+
+// ---------- confronto: spazi ignorati, ' " ` equivalenti, la sintassi conta ----------
+function norm(s, minuscole) {
+    const t = String(s).replace(/\s+/g, "").replace(/['"`]/g, '"');
+    return minuscole ? t.toLowerCase() : t;
+}
+function righeCodice(testo) {
+    return String(testo).split("\n").map(function (r) { return r.trim(); })
+        .filter(function (r) { return r !== "" && !r.startsWith("//"); });
+}
+function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function mescola(a) {
+    const b = a.slice();
+    for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = b[i]; b[i] = b[j]; b[j] = t; }
+    return b;
+}
+function rigaGiusta(es) {
+    if (es.tipo === "completa") return (es.prima || []).concat([es.testo.replace("___", es.risposta[0])]).join("\n");
+    if (es.tipo === "riordina") return es.righe.join("\n");
+    if (es.tipo === "errore") return es.corretta;
+    if (es.tipo === "blocco") return es.soluzione;
+    return es.risposta[0];
+}
+
+// ---------- schermate ----------
+function mostra(id) {
+    ["home", "gioco", "boss", "fine"].forEach(function (s) { $(s).hidden = s !== id; });
+    $("esci").hidden = id === "home";
+    window.scrollTo(0, 0);
+}
+function aggiornaBarra() {
+    const v = partita && partita.modo === "livello" ? partita.vite : 3;
+    let cuori = "";
+    for (let i = 0; i < 3; i++) cuori += i < v ? "♥" : '<span class="persa">♥</span>';
+    $("vite").innerHTML = partita && partita.modo === "ripasso" ? '<span style="color:var(--viola)">RIPASSO</span>' : cuori;
+    const c = partita ? partita.combo : 0;
+    $("combo").textContent = "x" + c;
+    $("combo").dataset.n = c;
+    $("xp").textContent = stato.xp + " XP";
+}
+
+function home() {
+    fermaTimer();
+    partita = null;
+    aggiornaBarra();
+    const fatti = stato.completati.length;
+    let html = '<div class="titolo"><span class="occhiello">TEP · verifica pratica · Node.js</span>' +
+        '<h1>Login <span>da 10</span></h1>' +
+        '<p>Sette livelli nell\'ordine in cui scrivi il codice, poi il Boss: tutto server.js da zero in 15 minuti.</p></div>' +
+        '<div class="mappa">';
+    DATI.livelli.forEach(function (l) {
+        const fatto = stato.completati.indexOf(l.n) >= 0;
+        const aperto = l.n <= stato.sbloccato;
+        html += '<button type="button" class="tappa' + (fatto ? " fatta" : "") + '" data-livello="' + l.n + '"' + (aperto ? "" : " disabled") + '>' +
+            '<span class="num">' + l.n + '</span><span><span class="nome">' + esc(l.titolo) + '</span><span class="sotto">' + esc(l.sottotitolo) + ' · ' + l.esercizi.length + ' esercizi</span></span>' +
+            '<span class="stato">' + (fatto ? "FATTO" : aperto ? "GIOCA" : "CHIUSO") + '</span></button>';
+    });
+    const bossAperto = stato.sbloccato >= 8;
+    const bossFatto = stato.completati.indexOf(8) >= 0;
+    html += '<button type="button" class="tappa boss' + (bossFatto ? " fatta" : "") + '" data-livello="8"' + (bossAperto ? "" : " disabled") + '>' +
+        '<span class="num">8</span><span><span class="nome">BOSS: server.js</span><span class="sotto">15 minuti, ' + DATI.boss.griglia.length + ' controlli' +
+        (stato.bossMigliore !== null ? " · record " + stato.bossMigliore + "%" : "") + '</span></span>' +
+        '<span class="stato">' + (bossFatto ? "BATTUTO" : bossAperto ? "SFIDA" : "CHIUSO") + '</span></button></div>';
+    const nSbagli = stato.sbagliati.length;
+    html += '<div class="azioni"><button type="button" class="btn viola largo" id="ripasso"' + (nSbagli ? "" : " disabled") + '>Ripasso finale · ' + nSbagli + (nSbagli === 1 ? ' sbagliato' : ' sbagliati') + '</button>' +
+        '<p style="color:var(--tenue);font-size:.85rem;text-align:center">' + fatti + ' livelli su 8 · i progressi restano su questo telefono</p>' +
+        '<button type="button" class="azzera" id="azzera">Azzera i progressi</button></div>';
+    $("home").innerHTML = html;
+    $("home").querySelectorAll(".tappa").forEach(function (b) {
+        b.addEventListener("click", function () {
+            const n = Number(b.dataset.livello);
+            if (n === 8) bossIntro(); else iniziaLivello(n);
+        });
+    });
+    $("ripasso").addEventListener("click", iniziaRipasso);
+    $("azzera").addEventListener("click", function () {
+        const b = $("azzera");
+        if (b.dataset.sicuro) { stato = statoBase(); salva(); home(); return; }
+        b.dataset.sicuro = "1";
+        b.textContent = "Tocca di nuovo per cancellare tutto";
+    });
+    mostra("home");
+}
+
+// ---------- partita ----------
+let partita = null;
+function iniziaLivello(n) {
+    const l = DATI.livelli[n - 1];
+    const blocchi = l.esercizi.filter(function (e) { return e.tipo === "blocco"; });
+    const altri = l.esercizi.filter(function (e) { return e.tipo !== "blocco"; });
+    // mescolati, ma il blocco intero chiude il livello
+    partita = { modo: "livello", livello: n, coda: mescola(altri).concat(blocchi), totale: l.esercizi.length, fatti: 0, vite: 3, combo: 0, errori: 0, xp: 0 };
+    prossimo();
+}
+function iniziaRipasso() {
+    const lista = stato.sbagliati.map(function (id) { return perId[id]; }).filter(Boolean);
+    if (!lista.length) return;
+    partita = { modo: "ripasso", livello: 0, coda: mescola(lista), totale: lista.length, fatti: 0, vite: 3, combo: 0, errori: 0, xp: 0 };
+    prossimo();
+}
+
+let timer = null;
+function fermaTimer() { if (timer) { clearInterval(timer.id); timer = null; } }
+function avviaTimer(secondi) {
+    fermaTimer();
+    const fine = Date.now() + secondi * 1000;
+    timer = { id: setInterval(function () {
+        const resta = Math.max(0, fine - Date.now());
+        const barra = document.querySelector("#gioco .tempo");
+        if (barra) {
+            barra.firstElementChild.style.width = (resta / (secondi * 1000) * 100) + "%";
+            barra.classList.toggle("poco", resta < 8000);
+        }
+        if (resta === 0) { fermaTimer(); valuta(true); }
+    }, 100), inizio: Date.now(), secondi: secondi };
+}
+function secondiPer(es) {
+    const fattore = es.livello <= 2 ? 1.5 : es.livello <= 4 ? 1.25 : 1;
+    return Math.round((SECONDI[es.tipo] + (es.correggi ? 30 : 0)) * fattore);
+}
+// meno aiuti salendo: 1-2 aiuto visibile, 3-4 a richiesta, 5 costa XP, 6-7 niente
+function testoAiuto(es) {
+    if (es.aiuto) return es.aiuto;
+    if (es.tipo === "completa") return "Inizia con: " + es.risposta[0].slice(0, 2);
+    if (es.tipo === "blocco") return "Prima riga: " + righeCodice(es.soluzione)[0];
+    return "";
+}
+
+let corrente = null;
+let scelte = [];
+let selezionata = -1;
+
+function prossimo() {
+    aggiornaBarra();
+    if (!partita.coda.length) return fineLivello(true);
+    corrente = partita.coda[0];
+    scelte = [];
+    selezionata = -1;
+    ordineMescolato = [];
+    disegna();
+    avviaTimer(secondiPer(corrente));
+}
+
+function disegna() {
+    const es = corrente;
+    const lv = es.livello;
+    let h = '<div class="progresso"><div style="width:' + (partita.fatti / partita.totale * 100) + '%"></div></div>' +
+        '<div class="scheda" id="esercizio" data-id="' + es.id + '" data-tipo="' + es.tipo + '">' +
+        '<div class="tempo"><div></div></div>' +
+        '<span class="chip">' + NOMI_TIPO[es.tipo] + ' · LIV ' + lv + '</span>' +
+        '<p class="consegna">' + esc(es.consegna) + '</p>';
+
+    if (es.tipo === "completa") {
+        const parti = es.testo.split("___");
+        h += '<pre class="codice">' + (es.prima || []).map(function (r) { return '<span class="dim">' + esc(r) + '</span>\n'; }).join("") +
+            esc(parti[0]) + '<span class="buco">___</span>' + esc(parti[1]) + '</pre>' +
+            '<input class="risposta" id="risposta" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="scrivi il pezzo mancante">';
+    }
+    if (es.tipo === "prevedi") {
+        if (es.codice) h += '<pre class="codice">' + esc(es.codice) + '</pre>';
+        if (es.http) {
+            const body = es.http.bodyLungo ? "nome=" + "a".repeat(24) + "… (" + es.http.bodyLungo + " caratteri)" : (es.http.body || "");
+            h += '<pre class="codice">' + esc(es.http.metodo + " " + es.http.url + " HTTP/1.1") + (body ? "\n\n" + esc(body) : "") + '</pre>';
+        }
+        h += '<p class="domanda">' + esc(es.domanda) + '</p>' +
+            '<input class="risposta" id="risposta" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="la tua previsione">';
+    }
+    if (es.tipo === "riordina") {
+        h += '<div class="zona" id="zona"></div><div class="righe" id="pool"></div>';
+    }
+    if (es.tipo === "errore") {
+        h += '<div class="righe">' + es.righe.map(function (r, i) {
+            return '<button type="button" class="riga" data-i="' + i + '">' + esc(r) + '</button>';
+        }).join("") + '</div>';
+        if (es.correggi) h += '<input class="risposta" id="risposta" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="tocca la riga sbagliata, poi correggila qui">';
+    }
+    if (es.tipo === "blocco") {
+        h += '<textarea class="risposta" id="risposta" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="scrivi qui il blocco intero"></textarea>';
+    }
+
+    const aiuto = partita.modo === "livello" ? testoAiuto(es) : "";
+    if (aiuto && lv <= 2) h += '<p class="aiuto">' + esc(aiuto) + '</p>';
+    if (aiuto && (lv === 3 || lv === 4)) h += '<button type="button" class="btn scuro" id="chiedi">Aiuto</button>';
+    if (aiuto && lv === 5) h += '<button type="button" class="btn scuro" id="chiedi">Aiuto (-5 XP)</button>';
+    h += '<button type="button" class="btn largo" id="controlla">Controlla</button></div>';
+    $("gioco").innerHTML = h;
+    mostra("gioco");
+
+    if (es.tipo === "riordina") disegnaRiordina();
+    if (es.tipo === "errore") {
+        $("gioco").querySelectorAll(".riga").forEach(function (b) {
+            b.addEventListener("click", function () {
+                selezionata = Number(b.dataset.i);
+                $("gioco").querySelectorAll(".riga").forEach(function (x) { x.classList.toggle("scelta", x === b); });
+                if (es.correggi) { $("risposta").value = es.righe[selezionata]; $("risposta").focus(); }
+            });
+        });
+    }
+    const chiedi = $("chiedi");
+    if (chiedi) chiedi.addEventListener("click", function () {
+        if (lv === 5) { stato.xp = Math.max(0, stato.xp - 5); salva(); aggiornaBarra(); }
+        const p = document.createElement("p");
+        p.className = "aiuto";
+        p.textContent = aiuto;
+        chiedi.replaceWith(p);
+    });
+    $("controlla").addEventListener("click", function () { valuta(false); });
+    const input = $("risposta");
+    if (input && input.tagName === "INPUT") {
+        input.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); valuta(false); } });
+    }
+    if (input && input.tagName === "TEXTAREA") {
+        input.addEventListener("keydown", function (e) {
+            if (e.key === "Tab") { e.preventDefault(); const s = input.selectionStart; input.setRangeText("    ", s, input.selectionEnd, "end"); }
+        });
+    }
+}
+
+let ordineMescolato = [];
+function disegnaRiordina() {
+    const es = corrente;
+    if (!ordineMescolato.length) {
+        do { ordineMescolato = mescola(es.righe.map(function (_, i) { return i; })); }
+        while (es.righe.length > 1 && ordineMescolato.every(function (v, i) { return v === i; }));
+    }
+    $("zona").innerHTML = scelte.map(function (i) { return '<button type="button" class="riga" data-i="' + i + '">' + esc(es.righe[i]) + '</button>'; }).join("");
+    $("pool").innerHTML = ordineMescolato.filter(function (i) { return scelte.indexOf(i) < 0; })
+        .map(function (i) { return '<button type="button" class="riga" data-i="' + i + '">' + esc(es.righe[i]) + '</button>'; }).join("");
+    $("zona").querySelectorAll(".riga").forEach(function (b) {
+        b.addEventListener("click", function () { scelte.splice(scelte.indexOf(Number(b.dataset.i)), 1); disegnaRiordina(); });
+    });
+    $("pool").querySelectorAll(".riga").forEach(function (b) {
+        b.addEventListener("click", function () { scelte.push(Number(b.dataset.i)); disegnaRiordina(); });
+    });
+}
+
+function valuta(scaduto) {
+    if (!corrente || $("foglio").hidden === false) return;
+    const es = corrente;
+    const input = $("risposta");
+    const valore = input ? input.value : "";
+    let giusto = false;
+    let extra = "";
+
+    if (!scaduto) {
+        if (es.tipo === "completa") {
+            const m = !!es.ignoraMaiuscole;
+            giusto = valore.trim() !== "" && es.risposta.some(function (a) {
+                return norm(valore, m) === norm(a, m) || norm(valore, m) === norm(es.testo.replace("___", a), m);
+            });
+        }
+        if (es.tipo === "prevedi") {
+            giusto = valore.trim() !== "" && es.risposta.some(function (a) { return norm(valore) === norm(a); });
+        }
+        if (es.tipo === "riordina") {
+            if (scelte.length < es.righe.length) { $("zona").classList.add("trema"); setTimeout(function () { $("zona") && $("zona").classList.remove("trema"); }, 600); return; }
+            giusto = scelte.every(function (i, k) { return norm(es.righe[i]) === norm(es.righe[k]); });
+        }
+        if (es.tipo === "errore") {
+            if (selezionata < 0) return;
+            giusto = selezionata === es.sbagliata && (!es.correggi || norm(valore) === norm(es.corretta));
+        }
+        if (es.tipo === "blocco") {
+            const scritte = righeCodice(valore).map(function (r) { return norm(r); });
+            const attese = righeCodice(es.soluzione);
+            giusto = scritte.join("") === attese.map(function (r) { return norm(r); }).join("");
+            const mancano = attese.filter(function (r) { return scritte.indexOf(norm(r)) < 0; });
+            if (!giusto && mancano.length) extra = '<p class="mancanti">Righe mancanti o sbagliate:</p><pre class="riga-codice">' + esc(mancano.join("\n")) + '</pre>';
+            if (!giusto && !mancano.length) extra = '<p class="mancanti">Le righe ci sono, ma in ordine diverso o con righe in più.</p>';
+        }
+    }
+    fermaTimer();
+    esito(giusto, scaduto, extra);
+}
+
+function esito(giusto, scaduto, extra) {
+    const es = corrente;
+    let h;
+    if (giusto) {
+        const bonus = 10 + Math.min(partita.combo, 5) * 2;
+        partita.combo++;
+        partita.xp += bonus;
+        stato.xp += bonus;
+        partita.fatti++;
+        partita.coda.shift();
+        if (partita.modo === "ripasso") stato.sbagliati = stato.sbagliati.filter(function (id) { return id !== es.id; });
+        h = '<div class="esito">GIUSTO!</div><div class="xpvinti">+' + bonus + ' XP' + (partita.combo > 1 ? ' · COMBO x' + partita.combo : '') + '</div>' +
+            '<p class="motivo"><b>PERCHÉ</b>' + esc(es.perche) + '</p>';
+        $("foglio").className = "verde";
+    } else {
+        partita.combo = 0;
+        partita.errori++;
+        if (partita.modo === "livello") partita.vite--;
+        if (stato.sbagliati.indexOf(es.id) < 0) stato.sbagliati.push(es.id);
+        // torna più avanti, finché non è giusto
+        partita.coda.shift();
+        partita.coda.splice(Math.min(2, partita.coda.length), 0, es);
+        const insulto = scaduto ? "TEMPO SCADUTO, LUMACA!" : INSULTI[Math.floor(Math.random() * INSULTI.length)];
+        h = '<div class="esito"><span class="insulto">' + esc(insulto) + '</span></div>' +
+            '<div class="motivo"><b>PERCHÉ</b>' + esc(es.perche) + '</div>' +
+            '<div class="motivo"><b>RIGA GIUSTA</b><pre class="riga-codice">' + esc(rigaGiusta(es)) + '</pre></div>' + extra;
+        $("foglio").className = "rosso";
+    }
+    salva();
+    aggiornaBarra();
+    h += '<button type="button" class="btn largo ' + (giusto ? "" : "rosso") + '" id="continua">Continua</button>';
+    $("foglio-dentro").innerHTML = h;
+    $("foglio").hidden = false;
+    $("continua").focus({ preventScroll: true });
+    $("continua").addEventListener("click", function () {
+        $("foglio").hidden = true;
+        if (partita.modo === "livello" && partita.vite <= 0) return fineLivello(false);
+        prossimo();
+    });
+}
+
+function fineLivello(vinto) {
+    fermaTimer();
+    corrente = null;
+    let h;
+    if (partita.modo === "ripasso") {
+        h = '<div class="scheda"><span class="chip">RIPASSO FINITO</span><div class="grande verde">PULITO</div>' +
+            '<p>Hai sistemato tutti gli esercizi che avevi sbagliato.</p>';
+    } else if (vinto) {
+        const n = partita.livello;
+        if (stato.completati.indexOf(n) < 0) stato.completati.push(n);
+        stato.sbloccato = Math.max(stato.sbloccato, n + 1);
+        h = '<div class="scheda"><span class="chip">LIVELLO ' + n + ' FATTO</span><div class="grande verde">FATTO!</div>' +
+            '<p>' + (n === 7 ? "Il Boss è aperto: tutto server.js in 15 minuti." : "Livello " + (n + 1) + " sbloccato.") + '</p>';
+    } else {
+        h = '<div class="scheda"><span class="chip" style="background:var(--rosso)">GAME OVER</span><div class="grande rosso">VITE FINITE</div>' +
+            '<p>Tre errori. Rileggi i fogli rossi e riprova il livello: gli esercizi sbagliati sono già nel ripasso.</p>';
+    }
+    h += '<div class="statistiche"><div><b>' + partita.xp + '</b><span>XP</span></div><div><b>' + partita.errori + '</b><span>errori</span></div><div><b>' + partita.fatti + '/' + partita.totale + '</b><span>fatti</span></div></div>';
+    if (!vinto && partita.modo === "livello") h += '<button type="button" class="btn arancio largo" id="riprova">Riprova il livello</button>';
+    h += '<button type="button" class="btn largo" id="mappa">Torna alla mappa</button></div>';
+    salva();
+    $("fine").innerHTML = h;
+    mostra("fine");
+    const riprova = $("riprova");
+    const n = partita.livello;
+    if (riprova) riprova.addEventListener("click", function () { iniziaLivello(n); });
+    $("mappa").addEventListener("click", home);
+}
+
+// ---------- Boss ----------
+let bossTimer = null;
+function bossIntro() {
+    partita = null;
+    aggiornaBarra();
+    $("boss").innerHTML = '<div class="scheda"><span class="chip" style="background:var(--rosso)">BOSS</span><h2>Tutto server.js, da zero</h2>' +
+        '<p>Hai ' + DATI.boss.minuti + ' minuti. Nessun aiuto. Alla consegna, ' + DATI.boss.griglia.length + ' controlli sul testo: ti dico il punteggio e le righe che mancano. Per batterlo serve almeno il ' + DATI.boss.soglia + '%.</p>' +
+        '<button type="button" class="btn rosso largo" id="via">Via, parte il tempo</button></div>';
+    mostra("boss");
+    $("via").addEventListener("click", bossVia);
+}
+function bossVia() {
+    $("boss").innerHTML = '<div class="scheda"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span class="chip" style="background:var(--rosso)">BOSS</span><span class="orologio" id="orologio">15:00</span></div>' +
+        '<textarea class="risposta" id="editor" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="const http = require(&quot;http&quot;);"></textarea>' +
+        '<button type="button" class="btn largo" id="consegna">Consegna</button></div>';
+    const fine = Date.now() + DATI.boss.minuti * 60000;
+    const ed = $("editor");
+    ed.addEventListener("keydown", function (e) {
+        if (e.key === "Tab") { e.preventDefault(); const s = ed.selectionStart; ed.setRangeText("    ", s, ed.selectionEnd, "end"); }
+    });
+    clearInterval(bossTimer);
+    bossTimer = setInterval(function () {
+        const resta = Math.max(0, fine - Date.now());
+        const m = Math.floor(resta / 60000), s = Math.floor(resta / 1000) % 60;
+        const o = $("orologio");
+        if (o) { o.textContent = m + ":" + String(s).padStart(2, "0"); o.classList.toggle("poco", resta < 60000); }
+        if (resta === 0) bossConsegna();
+    }, 250);
+    $("consegna").addEventListener("click", bossConsegna);
+    ed.focus();
+}
+function voceOk(c, testo) {
+    if (c.tipo === "conta") {
+        const quanti = function (re) { return (testo.match(new RegExp(re, "g")) || []).length; };
+        return quanti(c.piu) >= quanti(c.meno) && quanti(c.meno) > 0;
+    }
+    return c.re.every(function (re) { return new RegExp(re).test(testo); });
+}
+function bossConsegna() {
+    clearInterval(bossTimer);
+    const testo = $("editor") ? $("editor").value : "";
+    const g = DATI.boss.griglia;
+    const esiti = g.map(function (c) { return voceOk(c, testo); });
+    const punti = esiti.filter(Boolean).length;
+    const perc = Math.round(punti * 100 / g.length);
+    const battuto = perc >= DATI.boss.soglia;
+    stato.bossMigliore = Math.max(stato.bossMigliore || 0, perc);
+    if (battuto && stato.completati.indexOf(8) < 0) stato.completati.push(8);
+    stato.xp += punti * 5;
+    salva();
+    aggiornaBarra();
+    let h = '<div class="scheda" id="esito-boss" data-perc="' + perc + '"><span class="chip" style="background:var(--' + (battuto ? "verde" : "rosso") + ')">' + (battuto ? "BOSS BATTUTO" : "BOSS TI HA FATTO IL CULO") + '</span>' +
+        '<div class="grande ' + (battuto ? "verde" : "rosso") + '" id="percentuale">' + perc + '%</div>' +
+        '<p>' + punti + ' controlli su ' + g.length + ' · +' + (punti * 5) + ' XP</p><ul class="griglia">';
+    g.forEach(function (c, i) {
+        h += '<li><span class="' + (esiti[i] ? "si" : "no") + '">' + (esiti[i] ? "✓" : "✗") + '</span><span>' + esc(c.nome) +
+            (esiti[i] ? "" : '<code>' + esc(c.riga) + '</code>') + '</span></li>';
+    });
+    h += '</ul><button type="button" class="btn arancio largo" id="ancora">Riprova il Boss</button><button type="button" class="btn largo" id="mappa-boss">Torna alla mappa</button></div>';
+    $("boss").innerHTML = h;
+    window.scrollTo(0, 0);
+    $("ancora").addEventListener("click", bossIntro);
+    $("mappa-boss").addEventListener("click", home);
+}
+
+$("esci").addEventListener("click", function () {
+    clearInterval(bossTimer);
+    $("foglio").hidden = true;
+    home();
+});
+home();
+</script>
+</body>
+</html>
